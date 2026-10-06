@@ -98,7 +98,7 @@
   .mrow{display:flex;align-items:center;gap:10px}
   .me{font-size:34px;line-height:1}
   .mt{flex:1;min-width:0}
-  .mt b{font-size:16px}
+  .mt b{font-size:16px;word-break:normal;overflow-wrap:break-word;hyphens:none}
   .vchip{display:inline-block;margin-top:4px;border:2px solid var(--gold);color:var(--gold);border-radius:999px;padding:3px 10px;font-size:13px;cursor:pointer}
   .fb{display:inline-block;margin-top:4px;font-size:12px;color:#fbbf24}
   .yn{display:flex;gap:6px}
@@ -1169,6 +1169,7 @@ function stToJSON(){
     photos:st.photos||{},
     equip:[...(st.equip||[])],
     coffee:typeof coffeeToJSON==="function"?coffeeToJSON(st.coffee):st.coffee,
+    drinks:st.drinks||{},
     meals:st.meals||{},
     mealV:st.mealV||{},
     mealVs:st.mealVs||{},
@@ -1196,6 +1197,7 @@ function applyStJSON(j){
   if(j.photos)st.photos=j.photos;
   if(j.equip)st.equip=new Set(j.equip);
   if(j.coffee)st.coffee=normalizeCoffee(j.coffee);
+  if(j.drinks)st.drinks=j.drinks;
   if(j.meals)st.meals=j.meals;
   if(j.mealV)st.mealV=j.mealV;
   if(j.mealVs)st.mealVs=j.mealVs;
@@ -1339,13 +1341,12 @@ function restoreDraft(){
     applyStJSON(j.st);
     if(typeof mealListOffset!=="undefined")mealListOffset=j.mealListOffset|0;
     /* Rebuild queue so MEALB/BUILD steps match restored meals/sides */
-    queue=["home","photos","stores","about","equip","coffee","meals","MEALB","sides","BUILD","summary"];
+    queue=["home","photos","stores","about","equip","meals","MEALB","sides","BUILD","summary"];
     pos=0;
     try{
       const want=j.step||"home";
       for(let guard=0;guard<80;guard++){
         const s=queue[pos];
-        if(s==="coffee"&&!(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))){pos++;continue}
         if(s==="MEALB"){buildMealSteps();continue}
         if(s==="BUILD"){buildDrill();continue}
         if(queueStepId()===want)break;
@@ -1357,7 +1358,7 @@ function restoreDraft(){
     }catch(_){pos=typeof j.pos==="number"?j.pos:0}
 
     /* CRITICAL: once a week package exists, refresh/back MUST restore the week board —
-       never dump to meal-picker mid-progress (Step 6/10). view flag is advisory only. */
+       never dump to meal-picker mid-progress. view flag is advisory only. */
     const hasWeek=!!(j.W&&j.W.base&&j.W.base.length);
     let lockPack=null;
     try{if(typeof getWeekLock==="function")lockPack=getWeekLock()}catch(_){}
@@ -1729,23 +1730,6 @@ function startWelcome(force){
       box.querySelector("[data-y]").onclick=()=>{st.equip.add("foreman");runStep(2)};
       box.querySelector("[data-n]").onclick=()=>{st.equip.delete("foreman");runStep(2)};
     }},
-    {id:"coffee",ask:"Coffee machines?",speak:"Do you use the Lavazza espresso maker or Nespresso?",render(box){
-      box.innerHTML=tools()+ `<p class="welcome-q">Coffee machines?</p>
-        <div class="welcome-opts">
-          <button type="button" class="welcome-opt primary" data-b="both">Lavazza + Nespresso</button>
-          <button type="button" class="welcome-opt" data-b="lavazza">Lavazza only</button>
-          <button type="button" class="welcome-opt" data-b="nespresso">Nespresso only</button>
-          <button type="button" class="welcome-opt" data-b="none">None</button>
-        </div>`;
-      bindTools(box,2);
-      box.querySelectorAll("[data-b]").forEach(b=>b.onclick=()=>{
-        const v=b.dataset.b;
-        ["lavazza","nespresso"].forEach(id=>st.equip.delete(id));
-        if(v==="both"||v==="lavazza")st.equip.add("lavazza");
-        if(v==="both"||v==="nespresso")st.equip.add("nespresso");
-        runStep(3);
-      });
-    }},
     {id:"stores",ask:"Where do you shop?",speak:"Where do you shop most? Aldi, Publix, or both? You can add a location next.",render(box){
       box.innerHTML=tools()+ `<p class="welcome-q">Where do you shop?</p>
         <div class="welcome-opts">
@@ -1754,24 +1738,24 @@ function startWelcome(force){
           <button type="button" class="welcome-opt" data-s="Publix">Publix</button>
         </div>
         <input class="welcome-field" id="w-loc" placeholder="Store location (e.g. St. Pete)" maxlength="60" autocomplete="off">`;
-      bindTools(box,3);wireAllAutocomplete(box);
+      bindTools(box,2);wireAllAutocomplete(box);
       box.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{
         const v=b.dataset.s, loc=($("w-loc").value||"").trim();
         st.stores=new Set(v==="both"?["Aldi","Publix"]:[v]);
         st.main=v==="both"?"Aldi":v;
         if(loc){st.stores.forEach(s=>{st.storeLoc[s]=loc});saveStoreLoc()}
-        runStep(4);
+        runStep(3);
       });
     }},
     {id:"budget",ask:"Weekly grocery budget?",speak:"Want a grocery budget? Pick an amount or skip.",render(box){
       box.innerHTML=tools()+ `<p class="welcome-q">Weekly grocery budget?</p>
         <div class="welcome-opts">${[40,60,80,100].map(n=>`<button type="button" class="welcome-opt" data-amt="${n}">${n}</button>`).join("")}
           <button type="button" class="welcome-opt" data-amt="0">No budget</button></div>`;
-      bindTools(box,4);
+      bindTools(box,3);
       box.querySelectorAll("[data-amt]").forEach(b=>b.onclick=()=>{
         const n=+b.dataset.amt; const c=getBud();
         if(!n){c.on=false;c.amt=null}else{c.on=true;c.amt=n;c.days=7}
-        setBud(c);runStep(5);
+        setBud(c);runStep(4);
       });
     }},
     {id:"bf",ask:"Breakfast pattern?",speak:"Weekday breakfast: mostly cereal with milk, or bagel with cream cheese?",render(box){
@@ -1781,15 +1765,15 @@ function startWelcome(force){
           <button type="button" class="welcome-opt" data-bf="bagel">Bagel + cream cheese</button>
           <button type="button" class="welcome-opt" data-bf="bec">Bacon egg cheese</button>
         </div>`;
-      bindTools(box,5);
+      bindTools(box,4);
       box.querySelectorAll("[data-bf]").forEach(b=>b.onclick=()=>{
-        const set=getSettings();set.bfWeekday=b.dataset.bf;setSettings(set);runStep(6);
+        const set=getSettings();set.bfWeekday=b.dataset.bf;setSettings(set);runStep(5);
       });
     }},
     {id:"act",ask:"Daily exercise?",speak:"How much daily exercise? About 30 minutes, an hour, or more?",render(box){
       box.innerHTML=tools()+ `<p class="welcome-q">Daily exercise?</p>
         <div class="welcome-opts">${ACT.map(([k,l])=>`<button type="button" class="welcome-opt" data-ac="${k}">${esc(l)}</button>`).join("")}</div>`;
-      bindTools(box,6);
+      bindTools(box,5);
       box.querySelectorAll("[data-ac]").forEach(b=>b.onclick=()=>{
         const ab=a();ab.act=b.dataset.ac;setAbout(ab);if(st)st.about=ab;finish();
       });
@@ -1809,7 +1793,7 @@ function startWelcome(force){
   // first card: tap to start (audio unlock)
   overlay.innerHTML=`<div class="welcome-card">
     <p class="welcome-hello">Welcome!</p>
-    <p class="welcome-sub">Tap to start a quick setup. I'll talk you through name, gear, coffee, stores, budget, breakfast, and exercise.</p>
+    <p class="welcome-sub">Tap to start a quick setup. I'll talk you through name, gear, stores, budget, breakfast, and exercise.</p>
     <button type="button" class="welcome-opt primary" id="w-start">Welcome! Tap to start</button>
     <div style="margin-top:12px"><button type="button" class="back-link" id="w-skip0">Skip</button></div>
   </div>`;
@@ -1995,11 +1979,11 @@ function reset(){
   const rawPatty=build.burger&&build.burger.top.patty?build.burger.top.patty.v:"";
   const migPatty=/Turkey|Chicken/i.test(rawPatty)?"80 or 20 beef patty":(/80\s*\/?\s*20|80 or 20/i.test(rawPatty)?"80 or 20 beef patty":(rawPatty||"80 or 20 beef patty"));
   if(build.burger&&build.burger.top.patty)build.burger.top.patty.v=migPatty;
-  st={stores:new Set(),extra:[],storeLoc:loadStoreLoc(),main:"",photos:{},equip:new Set(["foreman","lavazza","nespresso"]),coffee:normalizeCoffee({brand:"Lavazza Qualità Oro",brandOther:"",machines:["lavazza","nespresso"],drinks:["shot","americano"],milk:"No milk",perWeek:7}),meals:{},mealV:{},mealVs:{},pattyVs:[migPatty],tip:null,
+  st={stores:new Set(),extra:[],storeLoc:loadStoreLoc(),main:"",photos:{},equip:new Set(["foreman","lavazza","nespresso"]),coffee:normalizeCoffee({brand:"Lavazza Qualità Oro",brandOther:"",machines:["lavazza","nespresso"],drinks:["shot","americano"],milk:"No milk",perWeek:7}),drinks:{drink_espresso:"yes"},meals:{},mealV:{},mealVs:{},pattyVs:[migPatty],tip:null,
       build,xOpen:null,weekStart:null,about:getAbout(),aboutReturn:false,sides:new Set(),picks:{},custom:{},open:null,cOpen:null,mealCustom:[],kitPhotos:[],sidePick:null,pickBackup:null};
   loadBuildCheese();
   CUSTOM_MEALS.forEach(m=>{if(st.meals[m.id]==null){/* keep unset until user picks */}});
-  queue=["home","photos","stores","about","equip","coffee","meals","MEALB","sides","BUILD","summary"]; pos=0;
+  queue=["home","photos","stores","about","equip","meals","MEALB","sides","BUILD","summary"]; pos=0;
   document.body.classList.remove("light");
   document.body.classList.remove("view-week");
   // Do not clear mid-flow draft here — boot calls reset() then restoreDraft().
@@ -2027,7 +2011,6 @@ function go(n=1){pos+=n;
   for(let g=0;g<50;g++){const s=queue[pos];
     // Item 44: skip legacy "main" step if an old session still has it queued
     if(s==="main"){pos+=n>0?1:-1;continue}
-    if(s==="coffee"&&!(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))){pos+=n>0?1:-1;continue}
     if(s==="MEALB"){buildMealSteps();continue}
     if(s==="BUILD"){buildDrill();continue}
     break}
@@ -2418,7 +2401,7 @@ function render(){
       <p class="fnote">${fm?"✓ Yep. Meals and cook times are built around the Foreman.":"Tap the card if you still use it."}</p>
       <p class="lbl">Also have</p>
       <div class="chips">${rest.map(e=>`<span class="chip-row"><span class="emo">${e.emoji}</span><span class="chip${st.equip.has(e.id)?"":" off"}" data-e="${e.id}">${esc(e.label)}</span></span>`).join("")}${(st.custom.equip||[]).map(v=>`<span class="chip-row"><span class="emo">🔧</span><span class="chip cust${st.equip.has("c:"+v)?"":" off"}" data-e="c:${esc(v)}">${esc(v)}</span></span>`).join("")}${customChip("equip")}</div>${customRow("equip")}
-      <p class="fnote">${(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))?"☕ Coffee machines are on. Next: Lavazza Oro, drinks per week, optional milk.":"No coffee machine? Fine. The coffee step is skipped."}</p>
+      <p class="fnote">Coffee and drinks are on the next Yes or No page.</p>
       <div class="snap"><p class="lbl" style="margin-top:0">Anything else in your kitchen?</p>
         <p>Not sure if you have something? 📸 Snap a photo of your counters/cabinets and send it to your chef bot. It'll tell you what you've got.</p>
         <span class="emo">📸</span> <button class="sbtn" id="kitSnap">Snap a photo</button><input type="file" accept="image/*" capture="environment" id="kitIn" hidden>
@@ -2432,7 +2415,7 @@ function render(){
     photoShare({btn:$("kitSnap"),input:$("kitIn"),thumbs:$("kitThumbs"),act:$("kitAct"),store:st.kitPhotos,
       shareLabel:"Send to my chef bot",title:"Kitchen photo",text:"What do I have here? (photo from my meal picker)",
       fallback:"Saved. Send this photo to your chef bot (long-press it → Save, then send it in chat)."});
-  } else if(s==="coffee") coffeeStep();
+  } else if(s==="coffee"){pos++;render();return}
   else if(s==="meals") meals();
   else if(s==="sides"){
     const nb=st.meals.burger==="no";
@@ -2470,6 +2453,51 @@ function syncBreakfastFromMeals(){
   }
   if(changed)setSettings(set);
 }
+
+/* ---- Drinks Yes/No (replaces coffee setup step) ---- */
+const DRINK_YN=[
+  {id:"drink_espresso",emoji:"☕",name:"Espresso coffee (Lavazza Qualità Oro)",defaultYes:true},
+  {id:"drink_milk",emoji:"🥛",name:"Milk"},
+  {id:"drink_oj",emoji:"🍊",name:"Orange juice"},
+  {id:"drink_sparkling",emoji:"🫧",name:"Sparkling water"},
+  {id:"drink_sports",emoji:"🥤",name:"Sports drinks"},
+  {id:"drink_soda",emoji:"🥤",name:"Soda"}
+];
+function ensureDrinkDefaults(){
+  if(!st)return;
+  st.drinks=st.drinks||{};
+  DRINK_YN.forEach(d=>{
+    if(st.drinks[d.id]==null&&d.defaultYes)st.drinks[d.id]="yes";
+  });
+}
+function drinkYes(id){return !!(st&&st.drinks&&st.drinks[id]==="yes")}
+function drinkAns(id){return (st&&st.drinks&&st.drinks[id])||""}
+function drinksYesNoHTML(){
+  ensureDrinkDefaults();
+  return `<p class="lbl">Coffee and drinks</p><div class="meals">${DRINK_YN.map(d=>{
+    const a=drinkAns(d.id);
+    return `<div class="meal ${a}" data-drink="${d.id}"><div class="mrow"><div class="mtop"><span class="me">${d.emoji}</span></div><div class="mt"><b>${esc(d.name)}</b></div>
+      <div class="yn"><button class="y${a==="yes"?" sel":""}" data-drink="${d.id}" data-da="yes">Yes</button><button class="n${a==="no"?" sel":""}" data-drink="${d.id}" data-da="no">No</button></div></div></div>`;
+  }).join("")}</div>`;
+}
+function bindDrinkYesNo(root){
+  root.querySelectorAll("[data-da]").forEach(b=>b.onclick=()=>{
+    ensureDrinkDefaults();
+    const id=b.dataset.drink, v=b.dataset.da;
+    st.drinks[id]=st.drinks[id]===v?undefined:v;
+    if(!st.drinks[id])delete st.drinks[id];
+    /* Keep coffee defaults for bag sizing when espresso is yes */
+    if(id==="drink_espresso"&&st.drinks[id]==="yes"){
+      st.coffee=normalizeCoffee(st.coffee||{});
+      st.coffee.brand="Lavazza Qualità Oro";
+      st.coffee.machines=new Set(["lavazza","nespresso"]);
+      st.coffee.drinks=new Set(["shot","americano"]);
+      if(!st.coffee.perWeek)st.coffee.perWeek=7;
+    }
+    render();
+  });
+}
+
 /* Ted: Cameron meat-forward lead — never open on avocado toast / fancy eggs.
    Note: many meals overwrite grill:true with grill:[steps], so sort must not coerce those arrays. */
 function isForemanFriendly(m){
@@ -2545,11 +2573,14 @@ function meals(){
        ${m.custom?`<div class="m-edit"><button type="button" data-cedit="${m.id}">Edit name</button><button type="button" data-cdel="${m.id}">Delete</button></div>${rateStrip(m.id)}`:""}</div>`;
   };
   const from=pool.length?mealListOffset+1:0, to=Math.min(mealListOffset+page.length,pool.length);
+  ensureDrinkDefaults();
   card.innerHTML=`<div class="meals-head">
     <div class="meals-head-row"><div class="emoji">🥩</div><button type="button" class="gear ico-btn" id="mealsGear" aria-label="Settings">${icons.gear}</button></div>
     <h1>What sounds good?</h1>
     <p class="sub">Tap Yes or No on each.${fm?" 🔥 = great on your Foreman.":""} Showing ${from} to ${to} of ${pool.length}. Tap ▾ to swap meat or cut.</p>
    </div>
+   ${drinksYesNoHTML()}
+   <p class="lbl">Meals</p>
    <div class="meals">${page.map(row).join("")}</div>
    ${customs.length?`<p class="lbl">Your custom meals</p><div class="meals">${customs.map(row).join("")}</div>`:""}
    ${removed.length?`<details class="box"><summary>Removed meals (${removed.length})</summary><p class="no" style="margin:6px 0">👎 = never suggest again. Hidden from suggestions and Swap. Tap Restore to bring one back.</p>${removed.map(m=>`<div class="mrow" style="margin-top:6px"><span>${m.emoji} ${esc(m.name)}</span><button class="popt" style="margin-left:auto" data-restore="${m.id}">Restore</button></div>`).join("")}</details>`:""}
@@ -2560,6 +2591,7 @@ function meals(){
    ${btns(yesN?`Next → (${yesN} yes)`:"Next →",false,yesN?null:"Skip: pick for me")}`;
   const gearBtn=$("mealsGear");
   if(gearBtn)gearBtn.onclick=e=>{e.preventDefault();e.stopPropagation();openSettings()};
+  bindDrinkYesNo(card);
   card.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const id=b.dataset.m;st.meals[id]=st.meals[id]===b.dataset.a?undefined:b.dataset.a;if(!st.meals[id])delete st.meals[id];syncBreakfastFromMeals();render()});
   const mm=$("moreMeals");if(mm)mm.onclick=()=>appendMoreMeals();
   card.querySelectorAll("[data-restore]").forEach(b=>b.onclick=()=>{setRate(b.dataset.restore,0);render()});
@@ -2708,7 +2740,7 @@ function summary(){
     <h2>🛒 Stores</h2><p>${storeList.length?storeList.map(esc).join(" · "):"Skipped: using Aldi + Publix"}</p>
     <h2>📸 Photos</h2><p>${allStorageSections().map(s=>{const n=sectionPhotoCount(loadCamPhotos(),s.id);return(n?"✓ ":"✗ ")+s.label+(n>1?" ×"+n:"")}).join(" · ")}</p>
     <h2>🍳 Gear</h2><p>${eq.length?eq.map(x=>`<span class="tag">${esc(x)}</span>`).join(""):"None picked: assuming Foreman + microwave"}</p>
-    ${(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))?`<h2>☕ Coffee</h2><p>${coffeeDesc()}</p><p class="no">${coffeeLine(true)}</p>`:""}
+    ${drinkYes("drink_espresso")?`<h2>☕ Coffee and drinks</h2><p>${esc("Espresso coffee (Lavazza Qualità Oro)")}${drinkYes("drink_milk")?" · Milk":""}${drinkYes("drink_oj")?" · Orange juice":""}${drinkYes("drink_sparkling")?" · Sparkling water":""}${drinkYes("drink_sports")?" · Sports drinks":""}${drinkYes("drink_soda")?" · Soda":""}</p>`:(DRINK_YN.some(d=>drinkYes(d.id))?`<h2>☕ Drinks</h2><p>${DRINK_YN.filter(d=>drinkYes(d.id)).map(d=>esc(d.name)).join(" · ")}</p>`:"")}
     <h2>🥩 Meals</h2><p>${ys.length?[...ys.map(m=>`<span class="tag y">✓ ${esc(m.v?mv(m.id)+" · ":"")}${esc(m.name)}</span>`)].join(""):"Skipped: I'll pick grill favorites"}</p>
     ${ns.length?`<p class="no">No: ${ns.map(m=>esc(m.name)).join(", ")}</p>`:""}
     ${built.map(k=>{const bp=buildPicks(k);return `<h2>${BUILDS[k].emoji} ${esc(BUILDS[k].title.replace(/^(Build your|Your) /,"").replace(/^./,c=>c.toUpperCase()))}</h2><p>${bp.on.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</p>${bp.off.length?`<p class="no">No: ${bp.off.map(esc).join(", ")}</p>`:""}${mealTotalHTML(k)}`}).join("")}
@@ -3024,10 +3056,23 @@ function buildList(groups,mealIds){
       else add("custom:"+k,{id:"shop:"+mid+":"+k,n:String(k).replace(/^custom:/,""),q:"",aisle:"other",a:null,p:null,custom:true,why:m.name});
     });
   });
-  if(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso")){const k=coffeeCalc();
-    add("coffee:oro",{n:k.brandName+" (large can or bag)",q:k.bagLine,a:null,p:null,custom:true,hint:"Add the bag price from your receipt",why:`${k.n} drinks a week · ${k.gPerShot} g per shot · ${k.g} g a week`});
-    if(k.needLids)add("coffee:lids",{why:`Refillable capsule seals · restock every ${C.COFFEE.lidsEveryWeeks} weeks`});
-    if(k.milkKey)add(k.milkKey,{q:`${k.halfGal} × ½ gallon`,a:P[k.milkKey].a*k.halfGal,p:P[k.milkKey].p*k.halfGal,why:`Optional milk · ${k.milkOz} oz a week`});}
+  /* Drinks from Yes/No answers (coffee setup step removed). Espresso Yes → Lavazza Qualità Oro when due. */
+  ensureDrinkDefaults();
+  if(drinkYes("drink_espresso")){
+    st.coffee=normalizeCoffee(st.coffee||{});
+    st.coffee.brand="Lavazza Qualità Oro";
+    st.coffee.machines=new Set(["lavazza","nespresso"]);
+    if(!st.coffee.drinks||!st.coffee.drinks.size)st.coffee.drinks=new Set(["shot","americano"]);
+    if(!st.coffee.perWeek)st.coffee.perWeek=7;
+    const k=coffeeCalc();
+    add("coffee:oro",{n:"Lavazza Qualità Oro (large can or bag)",q:k.bagLine,a:null,p:null,custom:true,hint:"Add the bag price from your receipt",why:`${k.n} drinks a week · refillable capsules`});
+    if(k.needLids)add("coffee:lids",{why:`Capsule foil lids · restock every ${C.COFFEE.lidsEveryWeeks} weeks`});
+  }
+  if(drinkYes("drink_milk"))add("milk",{why:"drinks"});
+  if(drinkYes("drink_oj"))add("drink:oj",{why:"drinks"});
+  if(drinkYes("drink_sparkling"))add("drink:sparkling",{why:"drinks"});
+  if(drinkYes("drink_sports"))add("drink:sports",{why:"drinks"});
+  if(drinkYes("drink_soda"))add("drink:soda",{why:"drinks"});
   st.mealCustom.forEach(v=>add("custom:meal"+v,{n:`Stuff for: ${v}`,q:"",aisle:"other",a:null,p:null,custom:true,why:"your custom meal"}));
   return out;
 }
@@ -3969,7 +4014,7 @@ function renderWeek(){
     <div class="grocery-tools"><label class="visually-hidden" for="grocery-search">Search list</label><input type="search" id="grocery-search" class="grocery-search" placeholder="Search list" value="${esc(W.gSearch||"")}" autocomplete="off" /></div>
     <!-- Steve: estimate lives at end of list above footer (groceryEstimateHTML). Mid-list tot removed. -->
     ${W.cph?`<div class="cph" id="cphBox"><p class="cph-t">✓ Copied. Want to send a photo with it?</p><button type="button" class="cpb p ico-btn" id="cphB">${icons.cam} Take a photo</button><input type="file" accept="image/*" capture="environment" hidden id="cphIn"><div class="thumbs" id="cphTh"></div><div id="cphAct"></div></div>`:""}
-    ${(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))?`<p class="emo" style="margin:8px 0 2px">☕</p><p class="gnote cof">${coffeeLine(false)}</p>`:""}
+    ${drinkYes("drink_espresso")?`<p class="emo" style="margin:8px 0 2px">☕</p><p class="gnote cof">Lavazza Qualità Oro for espresso. Resealed into refillable capsules.</p>`:""}
     <p class="pchk">Prices updated ${fmtDateLong(PRICE_META.updated)}</p>
     ${budCmp(main==="Publix"?t.p:t.a,7)}
     ${renderListItems(byA,filt,days)}
@@ -4377,7 +4422,7 @@ fetch("prices.json",{cache:"no-cache"}).then(r=>r.ok?r.json():Promise.reject(r.s
 }).catch(()=>{});
 /* ---- v4: coffee, copy list, toast, per-day Swap + 🗑 Delete, meal log + week review ---- */
 function isoD(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
-function hasCoffeeGear(){return st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso")}
+function hasCoffeeGear(){ensureDrinkDefaults();return drinkYes("drink_espresso")}
 function coffeeBrandName(){const c=st.coffee;return c.brand==="Other"?(c.brandOther||"Other coffee"):(c.brand||"Lavazza Qualità Oro")}
 function coffeeCalc(){
   st.coffee=normalizeCoffee(st.coffee);
@@ -4420,27 +4465,7 @@ function coffeeLine(short){
   }
   return s;
 }
-function coffeeStep(){st.coffee=normalizeCoffee(st.coffee);const K=C.COFFEE,c=st.coffee;
-  if(!c.machines||!(c.machines instanceof Set))c.machines=new Set(["lavazza","nespresso"].filter(id=>st.equip.has(id)));
-  // keep machines in sync with gear chips
-  K.machines.forEach(m=>{if(st.equip.has(m.id))c.machines.add(m.id)});
-  const brands=K.brands||["Lavazza Qualità Oro","Other"];
-  card.innerHTML=`<div class="emoji">☕</div><h1>Your coffee</h1><p class="sub">Lavazza Oro into refillable capsules for the Nespresso, plus the Lavazza maker. Change anything below.</p>
-    <p class="lbl">Coffee (default Oro)</p><div class="chips">${brands.map(b=>`<span class="chip${c.brand===b?"":" off"}" data-br="${esc(b)}">${esc(b)}</span>`).join("")}</div>
-    ${c.brand==="Other"?`<div class="addrow cust"><input id="cbrand" placeholder="Type your coffee…" maxlength="40" value="${esc(c.brandOther||"")}"><button id="cbrandOk">Save</button></div>`:""}
-    <p class="lbl">Machines</p><div class="chips">${K.machines.map(m=>`<span class="chip${(c.machines.has(m.id)||st.equip.has(m.id))?"":" off"}" data-cm="${m.id}">${esc(m.label)}</span>`).join("")}</div>
-    <p class="lbl">Drinks (tap all you make)</p><div class="chips">${K.drinks.map(d=>`<span class="chip-row"><span class="emo">${d.emoji}</span><span class="chip${c.drinks.has(d.id)?"":" off"}" data-cd="${d.id}">${esc(d.label)}</span></span>`).join("")}</div>
-    <p class="lbl">Milk (optional)</p><div class="chips">${K.milks.map(m=>`<span class="chip${c.milk===m?"":" off"}" data-cmk="${esc(m)}">${esc(m)}</span>`).join("")}</div>
-    <p class="lbl">Drinks per week</p><div class="chips">${K.perWeek.map(n=>`<span class="chip${c.perWeek===n?"":" off"}" data-cw="${n}">${n}</span>`).join("")}</div>
-    <p class="emo" style="margin:14px 0 4px">☕</p><div class="cofbox">${coffeeLine(true)}<br><small>Coffee goes into refillable capsules (${K.gPerShot} g each). The shopping list adds a bag sized for your drinks${st.equip.has("nespresso")?", plus foil lids when you need them":""}. Add the bag price from a receipt to see your cost per cup.</small></div>
-    ${btns("Next →")}`;
-  card.querySelectorAll("[data-br]").forEach(b=>b.onclick=()=>{c.brand=b.dataset.br;render()});
-  const bok=$("cbrandOk");if(bok){const save=()=>{c.brandOther=$("cbrand").value.trim().slice(0,40);render()};bok.onclick=save;$("cbrand").onkeydown=e=>{if(e.key==="Enter")save()}}
-  card.querySelectorAll("[data-cm]").forEach(b=>b.onclick=()=>{const id=b.dataset.cm;if(c.machines.has(id)){c.machines.delete(id);st.equip.delete(id)}else{c.machines.add(id);st.equip.add(id)}render()});
-  card.querySelectorAll("[data-cd]").forEach(b=>b.onclick=()=>{const k=b.dataset.cd;c.drinks.has(k)?c.drinks.delete(k):c.drinks.add(k);render()});
-  card.querySelectorAll("[data-cmk]").forEach(b=>b.onclick=()=>{c.milk=b.dataset.cmk;render()});
-  card.querySelectorAll("[data-cw]").forEach(b=>b.onclick=()=>{c.perWeek=+b.dataset.cw;render()});
-  $("nx").onclick=()=>go()}
+function coffeeStep(){/* removed: drinks Yes/No on What sounds good */ pos=queue.indexOf("meals");if(pos<0)pos=0;render()}
 function toast(msg,undo){const t=$("toast2");clearTimeout(toast._t);t.innerHTML=`<span>${esc(msg)}</span>${undo?'<button id="t2u">Undo</button>':""}`;t.classList.add("show");
   if(undo)$("t2u").onclick=()=>{clearTimeout(toast._t);t.classList.remove("show");undo()};toast._t=setTimeout(()=>t.classList.remove("show"),undo?5000:2400)}
 async function copyTxt(text,msg){try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);else throw 0}
@@ -4449,7 +4474,7 @@ async function copyTxt(text,msg){try{if(navigator.clipboard&&window.isSecureCont
 function listText(which){const t=totals(),wl=fmtWeek(weekStartDate()),items=W.items.filter(it=>(typeof itemHaveSuppressed==="function"?!itemHaveSuppressed(it.id):!W.have.has(it.id)));
   const aw=it=>it.a!=null&&(it.p==null||it.a<=it.p),pw=it=>it.p!=null&&!aw(it);
   const pr=it=>{const v=aw(it)?it.a:(it.p!=null?it.p:it.a);return v==null?"n/a":$$(v)};const L=[];
-  if(which==="all"){L.push(`My shopping list: ${wl}`,(()=>{const main=typeof deriveMainStore==="function"?deriveMainStore():(st&&st.main)||"Aldi";const v=main==="Publix"?t.p:t.a;return $$(v)})());if(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))L.push(coffeeLine(true));
+  if(which==="all"){L.push(`My shopping list: ${wl}`,(()=>{const main=typeof deriveMainStore==="function"?deriveMainStore():(st&&st.main)||"Aldi";const v=main==="Publix"?t.p:t.a;return $$(v)})());if(drinkYes("drink_espresso"))L.push("Lavazza Qualità Oro (large can or bag)");
     AISLES.forEach(([k,lab])=>{const g=items.filter(i=>i.aisle===k);if(!g.length)return;L.push("",lab.toUpperCase());
       g.forEach(it=>L.push(`[ ] ${cleanCopy(it.n)}${it.q?" ("+cleanCopy(it.q)+")":""} · ${it.custom?(it.a!=null?$$(it.a):"check price"):pr(it)}`))})}
   else{const pick=which==="Aldi"?aw:pw,g=items.filter(pick),sum=g.reduce((a,it)=>a+(which==="Aldi"?it.a:it.p),0);
@@ -4766,7 +4791,7 @@ function xpToast(msg){let el=document.getElementById("xpToast");if(!el){el=docum
 function refreshStarBtn(){const b=document.getElementById("starBtn");if(!b)return;const x=getXp();b.innerHTML=icons.star+"<span>"+x.stars+"</span>";b.setAttribute("aria-label",x.stars+" stars, open badges")}
 function awardOnce(key,stars,label){const a=getAwards();if(a[key])return false;a[key]=1;setAwards(a);const x=getXp();x.stars=(x.stars||0)+stars;setXp(x);xpToast(label||("+"+stars+" star"+(stars===1?"":"s")));refreshStarBtn();checkBadges();return true}
 function aboutComplete(){const ab=getAbout()||{},set=getSettings()||{},bud=getBud();
-  return{hasName:!!(ab.name&&String(ab.name).trim()),hasEquip:!!(st&&st.equip&&st.equip.size),hasCoffee:!!(st&&(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso")||(ab.coffee&&ab.coffee.brand))),hasStores:!!(st&&st.stores&&st.stores.size),hasBud:!!(bud&&bud.on),hasBf:!!(set.bfWeekday),hasEx:!!(ab.exercise||ab.ex||ab.activity||ab.act)}}
+  return{hasName:!!(ab.name&&String(ab.name).trim()),hasEquip:!!(st&&st.equip&&st.equip.size),hasCoffee:!!(st&&st.drinks&&st.drinks.drink_espresso!=null),hasStores:!!(st&&st.stores&&st.stores.size),hasBud:!!(bud&&bud.on),hasBf:!!(set.bfWeekday),hasEx:!!(ab.exercise||ab.ex||ab.activity||ab.act)}}
 function aboutOk(){const a=aboutComplete();return a.hasName&&a.hasEquip&&a.hasCoffee&&a.hasStores&&a.hasBud&&a.hasBf&&a.hasEx}
 function madeMealIds(){const L=getLog().log||{},ids=new Set();Object.keys(L).forEach(iso=>{const e=L[iso];if(e&&e.s==="made"&&(e.m||e.n))ids.add(String(e.m||e.n))});return ids}
 function weekLogCount(weekStart){const L=getLog().log||{};let n=0;for(let i=0;i<7;i++){const iso=isoD(addDays(weekStart,i));if(L[iso]&&L[iso].s)n++}return n}
