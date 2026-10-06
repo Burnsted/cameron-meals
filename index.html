@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f6e6e'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%23fffaf4' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23d9a441'/%3E%3C/svg%3E" />
 <meta name="theme-color" content="#0b1220" id="theme-color-meta">
 <script>(function(){try{var t=localStorage.getItem("cm-theme");if(t!=="light"&&t!=="dark")t="dark";document.documentElement.setAttribute("data-theme",t);document.documentElement.style.colorScheme=t;if(t==="light")document.documentElement.classList.add("theme-light");}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
 <title>My Meal Picker</title>
@@ -47,9 +48,9 @@
   .ph .ok{position:absolute;bottom:6px;left:6px;right:6px;background:rgba(14,165,233,.9);color:#fff;border-radius:8px;padding:3px;font-size:12px}
   .ph input{display:none}
   .photos{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
-  .ph-sec{position:relative;border:2px dashed var(--chip);border-radius:14px;padding:10px 8px 8px;display:flex;flex-direction:column;gap:6px;min-height:140px;text-align:center}
+  .ph-sec{position:relative;border:2px dashed var(--chip);border-radius:14px;padding:10px 32px 8px 8px;display:flex;flex-direction:column;gap:6px;min-height:140px;text-align:center}
   .ph-sec.done{border-color:var(--on)}
-  .ph-sec-lab{font-size:13px;font-weight:800;color:var(--ink);line-height:1.2}
+  .ph-sec-lab{font-size:13px;font-weight:800;color:var(--ink);line-height:1.2;padding-right:4px;word-break:break-word}
   .ph-sec-lab .big{display:block;font-size:28px;margin-bottom:2px}
   .ph-thumbs{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
   .ph-thumb{position:relative;width:56px;height:56px;border-radius:8px;overflow:hidden;border:2px solid var(--chip);flex-shrink:0}
@@ -297,7 +298,6 @@
   .lr button[data-ls]{min-width:44px;min-height:44px;padding:0 4px;border:0;border-radius:0;background:transparent;box-shadow:none;font-size:13px;font-weight:800;color:var(--wsoft);opacity:.4;gap:4px;display:inline-flex;align-items:center}
   .lr button[data-ls] .emo{font-size:20px;line-height:1}
   .lr button[data-ls][aria-pressed="true"]{opacity:1;background:transparent;border:0;color:var(--wink)}
-  .sheet .lr button[data-ls]{background:transparent;color:#3d5566}.sheet .lr button[data-ls][aria-pressed="true"]{background:transparent;border:0;color:#173042;opacity:1}
   .rpanel ul{list-style:none;margin:0;padding:0}.rpanel li{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed rgba(23,48,66,.12);font-weight:800}
   .rpanel li span{flex:1}.rpanel li small{color:var(--wsoft);font-weight:650}
   .etm{display:inline-block;margin-top:6px;font-size:13px;font-weight:800;color:var(--teal)}
@@ -321,6 +321,9 @@
   .tml li span{flex:1}.sgl li{display:block}.sgl .have{margin-left:6px}
   .lgc{background:var(--wbg,#eef6f2);border-radius:14px;padding:10px;margin-bottom:8px}.lgh{font-weight:800;font-size:14px}.lgc .log{border-top:0;margin-top:2px;padding-top:0}
   .sheet .lr{color:#3d5566}.sheet .lr button{background:#fff;color:#173042}.sheet .lr button[aria-pressed="true"]{background:#d4efef;border-color:#0f6e6e}
+  /* Log it Light = 323756e: bare emoji, #3d5566/.4 unselected, #173042/1 pressed — after .sheet .lr button so it wins */
+  .sheet .lr button[data-ls],html[data-theme="light"] body.view-week .lr button[data-ls]{background:transparent;border:0;border-radius:0;box-shadow:none;color:#3d5566;opacity:.4}
+  .sheet .lr button[data-ls][aria-pressed="true"],html[data-theme="light"] body.view-week .lr button[data-ls][aria-pressed="true"]{background:transparent;border:0;color:#173042;opacity:1}
   .cpy{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.cpb{flex:1 1 30%;min-height:44px;border-radius:12px;border:2px solid rgba(15,110,110,.3);background:#fff;font:inherit;font-weight:800;font-size:13px;color:var(--tealD);cursor:pointer}.cpb.p{flex-basis:100%;background:linear-gradient(160deg,var(--teal),var(--tealD));color:#fff;border-color:transparent}
   .cph{background:#fff;border:2px dashed rgba(15,110,110,.35);border-radius:14px;padding:10px 12px;margin:6px 0 10px}.cph-t{margin:0 0 6px;font-weight:800;color:var(--tealD);font-size:14px}.cph .cpb{width:100%}.cph .thumbs img{max-width:100%;max-height:220px;border-radius:12px;margin-top:8px}
   .gnote.cof{background:#efe4d6}
@@ -511,8 +514,8 @@
   html[data-theme="dark"] body.view-week .pc{color:#c5d0dc}
   html[data-theme="dark"] body.view-week .rec{background:#0f1a2a;color:#c5d0dc;border-left-color:var(--teal)}
   html[data-theme="dark"] body.view-week .rec h4{color:var(--tealD)}
-  html[data-theme="dark"] body.view-week .log button,html[data-theme="dark"] body.view-week .have{background:#0b1220;color:var(--wink);border-color:rgba(45,212,191,.35)}
-  html[data-theme="dark"] body.view-week .log button.on{background:var(--teal);color:#041016}
+  html[data-theme="dark"] body.view-week .log button:not([data-ls]),html[data-theme="dark"] body.view-week .have{background:#0b1220;color:var(--wink);border-color:rgba(45,212,191,.35)}
+  html[data-theme="dark"] body.view-week .log button.on:not([data-ls]){background:var(--teal);color:#041016}
 
   
   /* fix-round snap/shuffle contrast */
@@ -520,8 +523,12 @@
   body.view-week .tot .best{text-align:left;padding:10px 14px}
   html[data-theme="dark"] body.view-week .gnote.cof{background:#3b2412;color:#ffe8cc;border:1px solid #7c4a1e}
   html[data-theme="dark"] body.view-week .gnote{color:var(--wink)}
+  /* Grocery Add item + storage Add — match other week buttons (not only .snap .sbtn) */
+  body.view-week .sbtn,body.view-week #gAdd{border:0;border-radius:12px;background:var(--teal);color:#fff;font:inherit;font-size:15px;font-weight:800;padding:10px 14px;cursor:pointer;min-height:44px}
   html[data-theme="dark"] body.view-week .sbtn,
   html[data-theme="dark"] body.view-week #gAdd{background:var(--teal);color:#041016;font-weight:800}
+  html[data-theme="light"] body.view-week .sbtn,
+  html[data-theme="light"] body.view-week #gAdd{background:var(--teal);color:#fff;font-weight:800}
   html[data-theme="light"] body.view-week .gnote.cof{background:#efe4d6;color:var(--wink)}
 
   html[data-theme="dark"] #grocery-sms[hidden],#grocery-sms[hidden]{display:none!important}
