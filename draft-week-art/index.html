@@ -3211,14 +3211,15 @@ function boardNote(d){
   if(!d)return "Plan it";
   let n=cleanCopy(d.note||"");
   n=n.replace(/^⏱\s*/,"").replace(/cook night:?\s*/ig,"");
-  n=n.replace(/make extra for leftovers tomorrow\.?/ig,"Make extra for tomorrow");
-  n=n.replace(/make extra for lunch tomorrow\.?/ig,"Make extra for tomorrow");
-  n=n.replace(/Fridge leftovers 3 to 4 days\.?.*/i,"Fridge leftovers");
-  n=n.replace(/Freezer day:?\s*/i,"From the freezer");
-  n=n.replace(/Night off\.?.*/i,"Night off");
-  n=n.replace(/Your swap\.?.*/i,"Your swap");
-  n=n.replace(/Free night\.?.*/i,"Free night");
-  n=n.replace(/Grab & go night\.?.*/i,"Grab and go");
+  /* Prefer short canned one-liners (no slash, no jammed words). */
+  if(/make extra for (leftovers|lunch) tomorrow/i.test(n))return "Make extra for tomorrow";
+  if(/Fridge leftovers/i.test(n)&&!/make extra/i.test(n))return "Fridge leftovers";
+  if(/Freezer day/i.test(n)||/from the freezer/i.test(n))return "From the freezer";
+  if(/Night off/i.test(n))return "Night off";
+  if(/Your swap/i.test(n))return "Your swap";
+  if(/Free night/i.test(n))return "Free night";
+  if(/Grab & go night|Grab and go/i.test(n))return "Grab and go";
+  n=n.replace(/\s+/g," ").trim();
   if(n)n=shortMealWords(n,6);
   if(n&&n.length>2&&n.toLowerCase()!=="meal")return n;
   if(d.kind==="hol")return "Holiday";
