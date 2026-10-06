@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b1220" id="theme-color-meta">
-<script>(function(){try{var t=localStorage.getItem("cm-theme");if(t!=="light"&&t!=="dark")t="dark";document.documentElement.setAttribute("data-theme",t);document.documentElement.style.colorScheme=t;if(t==="light")document.documentElement.classList.add("theme-light");}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<script>(function(){try{var t=localStorage.getItem("cm-theme");if(t!=="light"&&t!=="dark")t="light";document.documentElement.setAttribute("data-theme",t);document.documentElement.style.colorScheme=t;if(t==="light")document.documentElement.classList.add("theme-light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
 <title>My Meal Picker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
@@ -113,16 +113,11 @@
   details.box summary{cursor:pointer;font-weight:700}
   details.box ul{margin:8px 0 0;padding-left:20px;font-size:14px;line-height:1.45}
   .build{background:linear-gradient(135deg,#f59e0b,#d97706);font-size:22px;padding:20px;margin-top:18px;box-shadow:0 6px 0 rgba(146,64,14,.6)}
-  /* ===== week planner: view state ≠ theme ===== */
+  /* ===== week planner (light, like Ted's family site) ===== */
+  body.light{--wbg:#eef6f2;--wink:#173042;--wsoft:#3d5566;--teal:#0f6e6e;--tealD:#0a5555;--tealS:#d4efef;--coral:#d4572a;--coralD:#b9441c;--coralS:#ffe3d6;--wgold:#d9a441;--white:#fffaf4;
+    background:radial-gradient(circle at 10% 0%,rgba(15,110,110,.16),transparent 38%),radial-gradient(circle at 95% 12%,rgba(212,87,42,.12),transparent 34%),linear-gradient(180deg,#f4faf7 0%,#eef6f2 42%,#f8f1e8 100%);color:var(--wink);font-family:Nunito,Segoe UI,sans-serif}
   #week{display:none;width:100%;max-width:460px;padding:14px 14px 50px}
-  body.view-week #week{display:block}
-  body.view-week .wrap{display:none}
-  /* Dark week tokens (default when data-theme=dark) */
-  body.view-week{--wbg:#0f1a2a;--wink:#e8eef6;--wsoft:#9aa8b8;--teal:#2dd4bf;--tealD:#5eead4;--tealS:rgba(45,212,191,.18);--coral:#fb923c;--coralD:#fdba74;--coralS:rgba(251,146,60,.2);--wgold:#fbbf24;--white:#152033;
-    background:radial-gradient(circle at 10% 0%,rgba(45,212,191,.12),transparent 38%),radial-gradient(circle at 95% 12%,rgba(251,146,60,.1),transparent 34%),linear-gradient(180deg,#0b1220 0%,#0f1a2a 50%,#121a28 100%);color:var(--wink);font-family:Nunito,Segoe UI,sans-serif}
-  /* Light week tokens — unchanged from prior light week look */
-  html[data-theme="light"] body.view-week{--wbg:#eef6f2;--wink:#173042;--wsoft:#3d5566;--teal:#0f6e6e;--tealD:#0a5555;--tealS:#d4efef;--coral:#d4572a;--coralD:#b9441c;--coralS:#ffe3d6;--wgold:#d9a441;--white:#fffaf4;
-    background:radial-gradient(circle at 10% 0%,rgba(15,110,110,.16),transparent 38%),radial-gradient(circle at 95% 12%,rgba(212,87,42,.12),transparent 34%),linear-gradient(180deg,#f4faf7 0%,#eef6f2 42%,#f8f1e8 100%);color:var(--wink)}
+  body.light #week{display:block} body.light .wrap{display:none}
   .wk-h{text-align:center;padding:4px 0 10px}
   .kick{margin:0;font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--tealD)}
   .brand{margin:2px 0 0;font-family:Fraunces,Georgia,serif;font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.05}
@@ -192,7 +187,7 @@
   /* ===== v3: receipt button, calendar, budget, week customizer, build extras, prep badges ===== */
   .rcpt-btn{border:0;border-radius:999px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#111;font:inherit;font-weight:800;font-size:15px;padding:10px 16px;min-height:44px;cursor:pointer;box-shadow:0 4px 0 rgba(146,64,14,.45)}
   .rcpt-top{display:flex;justify-content:center;align-items:center;gap:8px;margin:0 0 12px;flex-wrap:wrap}
-  html[data-theme="light"] body.view-week .rcpt-btn{background:linear-gradient(135deg,var(--coral),var(--coralD));color:#fff;box-shadow:0 4px 0 rgba(185,68,28,.3)}
+  body.light .rcpt-btn{background:linear-gradient(135deg,var(--coral),var(--coralD));color:#fff;box-shadow:0 4px 0 rgba(185,68,28,.3)}
   .wl-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0 4px}
   .wl-row .wlabel{margin:0}
   .cal-btn{width:48px;height:48px;border-radius:14px;border:2px solid var(--teal);background:var(--white);font-size:22px;cursor:pointer;box-shadow:0 4px 0 rgba(15,110,110,.16);flex-shrink:0}
@@ -363,7 +358,7 @@
   .calb{display:inline-block;font-weight:800;font-size:12px;color:#b45309}
   .pc .calb,.pc span:last-child{color:inherit}
   .mtot{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:rgba(14,165,233,.14);border:2px solid rgba(14,165,233,.45);font-weight:800;font-size:16px;color:#e0f2fe}
-  html[data-theme="light"] body.view-week .mtot{background:#ecfeff;border-color:#0e7490;color:#155e75}
+  body.light .mtot{background:#ecfeff;border-color:#0e7490;color:#155e75}
   .list-link{display:inline-flex;align-items:center;justify-content:center;gap:3px;min-height:44px;min-width:44px;padding:0 4px;border:0;border-radius:0;background:transparent;box-shadow:none;color:#fff;font:inherit;font-size:12px;font-weight:800;letter-spacing:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;opacity:.85}
   .list-link .ico{display:block;width:14px;height:14px;stroke:currentColor}
   .list-link:hover{opacity:1}
@@ -388,13 +383,13 @@
   .back-link{display:inline-flex;align-items:center;gap:4px;min-height:44px;min-width:44px;padding:8px 10px;border:0;border-radius:0;background:transparent;box-shadow:none;color:inherit;font:inherit;font-size:13px;font-weight:800;letter-spacing:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;opacity:.95}
   .back-link .ico{display:block;width:16px;height:16px;opacity:.95}
   .back-link:disabled,.back-link[aria-disabled="true"]{opacity:.35;pointer-events:none;text-decoration:none}
-  html[data-theme="light"] body.view-week .back-link{color:var(--wink)}
+  body.light .back-link{color:var(--wink)}
   .wrap .rcpt-top,.hero .rcpt-top{display:flex;justify-content:flex-start;align-items:center;gap:8px;flex-wrap:wrap}
   .wrap .rcpt-top{justify-content:space-between}
   .rcpt-top .rcpt-right{display:inline-flex;align-items:center;gap:8px;margin-left:auto}
   .bw-top{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:2px solid rgba(15,110,110,.35);border-radius:999px;background:linear-gradient(135deg,var(--teal,#0f6e6e),var(--tealD,#0a5555));color:#fff;font:inherit;font-weight:800;font-size:15px;padding:10px 14px;min-height:44px;cursor:pointer;box-shadow:0 4px 0 rgba(10,85,85,.35)}
   .bw-top .ico{width:18px;height:18px;stroke:currentColor;flex-shrink:0}
-  html[data-theme="light"] body.view-week .bw-top{background:linear-gradient(135deg,var(--teal),var(--tealD));color:#fff;box-shadow:0 4px 0 rgba(10,85,85,.3)}
+  body.light .bw-top{background:linear-gradient(135deg,var(--teal),var(--tealD));color:#fff;box-shadow:0 4px 0 rgba(10,85,85,.3)}
   .aisle-fold{margin:8px 0 2px;border:0;padding:0}
   .aisle-fold>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0;padding:8px 2px 6px;border-bottom:2px solid #dceee6;color:var(--tealD);font-size:16px;font-weight:800;min-height:44px;user-select:none}
   .aisle-fold>summary::-webkit-details-marker{display:none}
@@ -438,7 +433,7 @@
   .ac-wrap{position:relative;flex:1;min-width:0}
   .ac-wrap input{width:100%}
   .ac-list{position:absolute;left:0;right:0;top:100%;z-index:40;margin:2px 0 0;padding:4px 0;background:#0b1222;border:2px solid var(--chip);border-radius:12px;max-height:180px;overflow:auto;text-align:left;box-shadow:0 8px 20px rgba(0,0,0,.35)}
-  html[data-theme="light"] body.view-week .ac-list{background:#fffaf4;border-color:rgba(15,110,110,.3);color:#173042}
+  body.light .ac-list{background:#fffaf4;border-color:rgba(15,110,110,.3);color:#173042}
   .ac-list button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:10px 12px;font:inherit;font-size:14px;font-weight:700;color:inherit;cursor:pointer}
   .ac-list button:hover,.ac-list button[aria-selected="true"]{background:rgba(14,165,233,.18)}
   .welcome-overlay{position:fixed;inset:0;z-index:100;background:rgba(15,23,42,.88);display:flex;align-items:center;justify-content:center;padding:16px}
@@ -477,44 +472,6 @@
   .meal .m-edit{margin-top:6px;display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
   .meal .m-edit button{border:0;background:transparent;color:var(--mut);font:inherit;font-size:13px;font-weight:800;text-decoration:underline;cursor:pointer;min-height:40px;padding:4px 8px}
 
-
-  /* urgent dark contrast cam */
-  html[data-theme="dark"] .card,html[data-theme="dark"] .welcome-card{background:var(--card);color:var(--ink);border-color:rgba(255,255,255,.1)}
-  html[data-theme="dark"] .chip{background:var(--chip);color:var(--ink)}
-  html[data-theme="dark"] .chip.on{background:var(--on);color:#041016}
-  html[data-theme="dark"] .next,html[data-theme="dark"] .welcome-opt{color:#041016}
-  html[data-theme="dark"] .next.ghost{color:var(--on);background:transparent}
-  html[data-theme="dark"] .addrow input,html[data-theme="dark"] .welcome-field,html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea{
-    background:#0b1220;color:var(--ink);border-color:rgba(45,212,191,.35)}
-  html[data-theme="dark"] .sheet .inn,html[data-theme="dark"] .sheet-bg .inn{background:#152033;color:var(--ink)}
-  html[data-theme="dark"] .sh-btn,html[data-theme="dark"] .dchips button{background:#0b1220;color:var(--ink);border-color:rgba(45,212,191,.35)}
-  html[data-theme="dark"] .dchips button.on,html[data-theme="dark"] .sh-btn.p{background:var(--on);color:#041016;border-color:transparent}
-  html[data-theme="dark"] .fld{color:var(--mut)}
-  html[data-theme="dark"] .muted,html[data-theme="dark"] .muted2{color:var(--mut)}
-  body.view-week .day{background:var(--white);color:var(--wink)}
-  body.view-week .gpanel,body.view-week .lt,body.view-week .wlabel{background:var(--white);color:var(--wink)}
-  body.view-week .dinner,body.view-week .dl,body.view-week .stitle h2,body.view-week .brand{color:var(--wink)}
-  body.view-week .hint,body.view-week .stitle span,body.view-week .gnote,body.view-week .pchk{color:var(--wsoft)}
-  body.view-week .aisle-fold>summary{color:var(--tealD);border-bottom-color:rgba(45,212,191,.25)}
-  body.view-week .have,body.view-week .cpb{color:var(--wink)}
-  body.view-week .grocery-search{background:var(--wbg);color:var(--wink);border-color:rgba(45,212,191,.35)}
-  body.view-week .share-list-link{color:var(--tealD)}
-  html[data-theme="dark"] body.view-week .budline.over{color:#fca5a5}
-  html[data-theme="dark"] body.view-week .budline.amber{color:#fcd34d}
-  html[data-theme="dark"] body.view-week .budline.under{color:#6ee7b7}
-  html[data-theme="dark"] body.view-week .bcmp.over{color:#fca5a5}
-  html[data-theme="dark"] body.view-week .bcmp.under{color:#6ee7b7}
-  html[data-theme="dark"] body.view-week .dnote{background:#3b2412;color:#ffe8cc;border:1px solid #7c4a1e}
-  html[data-theme="dark"] body.view-week .day:not(.cook) .dnote{background:#0f2f2c;color:#d1faf3;border:1px solid #1a6b62}
-  html[data-theme="dark"] body.view-week .daytag{background:rgba(45,212,191,.22);color:#e8fffa}
-  html[data-theme="dark"] body.view-week .sides-lbl{color:#c5d0dc}
-  html[data-theme="dark"] body.view-week .pc{color:#c5d0dc}
-  html[data-theme="dark"] body.view-week .rec{background:#0f1a2a;color:#c5d0dc;border-left-color:var(--teal)}
-  html[data-theme="dark"] body.view-week .rec h4{color:var(--tealD)}
-  html[data-theme="dark"] body.view-week .log button,html[data-theme="dark"] body.view-week .have{background:#0b1220;color:var(--wink);border-color:rgba(45,212,191,.35)}
-  html[data-theme="dark"] body.view-week .log button.on{background:var(--teal);color:#041016}
-
-  html[data-theme="dark"] #grocery-sms[hidden],#grocery-sms[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -676,69 +633,19 @@ function refreshTitles(){
   document.title=titlePicker();
   const t=$("appTitle"); if(t)t.textContent=titlePicker();
 }
-function getCamTheme(){try{const t=localStorage.getItem("cm-theme");return t==="light"||t==="dark"?t:"dark"}catch(_){return"dark"}}
+function getCamTheme(){try{const t=localStorage.getItem("cm-theme");return t==="light"||t==="dark"?t:"light"}catch(_){return"light"}}
 function applyCamTheme(theme){
   theme=theme==="light"?"light":"dark";
   try{localStorage.setItem("cm-theme",theme)}catch(_){}
   document.documentElement.setAttribute("data-theme",theme);
   document.documentElement.style.colorScheme=theme;
-  document.documentElement.classList.toggle("theme-light",theme==="light");
   const meta=$("theme-color-meta"); if(meta)meta.content=theme==="light"?"#f4f7f6":"#0b1220";
+  // Week view historically used body.light — keep in sync with theme
+  if(document.getElementById("week")&&!document.getElementById("week").hidden){
+    if(theme==="light")document.body.classList.add("light"); else document.body.classList.remove("light");
+  }
 }
 function toggleCamTheme(){applyCamTheme(getCamTheme()==="dark"?"light":"dark")}
-const CM_VIEW_KEY="cm-view-week-v1";
-const CM_WEEK_SNAP="cm-week-snap-v1";
-function isWeekView(){return document.body.classList.contains("view-week")}
-function saveWeekSnap(){
-  if(!W||!st)return;
-  try{
-    sessionStorage.setItem(CM_VIEW_KEY,"1");
-    sessionStorage.setItem(CM_WEEK_SNAP,JSON.stringify({
-      base:W.base,ov:W.ov,groups:W.groups,extra:W.extra,F:W.F,
-      have:[...W.have],ck:[...W.ck],daySides:W.daySides||{},
-      st:{stores:[...st.stores],equip:[...st.equip],meals:st.meals,sides:[...st.sides],main:st.main||"",weekStart:st.weekStart||null,about:st.about||null,coffee:st.coffee||null}
-    }));
-  }catch(_){}
-}
-function clearWeekSnap(){try{sessionStorage.removeItem(CM_VIEW_KEY);sessionStorage.removeItem(CM_WEEK_SNAP)}catch(_){}}
-function showWeekView(){
-  document.body.classList.add("view-week");
-  document.body.classList.remove("light");
-  applyCamTheme(getCamTheme());
-  saveWeekSnap();
-  updateBackBtn();
-}
-function hideWeekView(){
-  document.body.classList.remove("view-week");
-  document.body.classList.remove("light");
-  clearWeekSnap();
-  updateBackBtn();
-}
-function restoreWeekSnap(){
-  try{
-    if(sessionStorage.getItem(CM_VIEW_KEY)!=="1")return false;
-    const raw=sessionStorage.getItem(CM_WEEK_SNAP); if(!raw)return false;
-    const j=JSON.parse(raw); if(!j||!j.base)return false;
-    if(j.st){
-      st.stores=new Set(j.st.stores||[]);
-      st.equip=new Set(j.st.equip||[]);
-      st.meals=j.st.meals||{};
-      st.sides=new Set(j.st.sides||[]);
-      st.main=j.st.main||"";
-      st.weekStart=j.st.weekStart||null;
-      if(j.st.about)st.about=j.st.about;
-      if(j.st.coffee)st.coffee=j.st.coffee;
-    }
-    W={base:j.base,ov:j.ov||{},groups:j.groups||[],extra:j.extra||[],F:j.F,have:new Set(j.have||[]),ck:new Set(j.ck||[]),open:null,items:[],listFilter:null,shopHi:null,daySides:j.daySides||{},gSearch:""};
-    recomputeList();
-    document.body.classList.add("view-week");
-    document.body.classList.remove("light");
-    applyCamTheme(getCamTheme());
-    renderWeek();
-    updateBackBtn();
-    return true;
-  }catch(_){return false}
-}
 
 /* ---- Food autocomplete (local) ---- */
 const FOOD_WORDS=["apple","applesauce","asparagus","avocado","bacon","bagel","banana","basil","beans","beef","bell pepper","black beans","blueberry","bread","broccoli","broth","brown rice","brussels sprouts","butter","cabbage","carrot","cauliflower","celery","cheddar","cheese","chicken","chicken breast","chicken thigh","chili","chips","chocolate","cilantro","cinnamon","coconut","coffee","coleslaw","corn","cottage cheese","crackers","cream cheese","cucumber","deli meat","egg","eggs","english muffin","flour","garlic","granola","grape","green beans","ground beef","guac","guacamole","ham","honey","hot dog","hot sauce","hummus","jalapeno","ketchup","lemon","lettuce","lime","macaroni","mango","mayo","milk","mushroom","mustard","noodles","cereal","olive oil","onion","orange","pasta","peanut butter","pear","pepper","pickle","pineapple","pizza","pork","pork chop","potato","potato chips","pretzel","protein","quesadilla","ranch","rice","roast beef","roll","salad","salmon","salsa","sausage","sirloin","sour cream","spinach","steak","strawberry","sweet potato","syrup","taco","tomato","tortilla","tuna","turkey","waffle","watermelon","yogurt","zucchini","almond milk","oat milk","brioche","sesame bun","potato bun","american cheese","pepper jack","swiss","provolone","ribeye","filet","ny strip","flat iron","chuck eye","brats","italian sausage","smoked sausage","frozen pizza","rotisserie","bagel cream cheese","breakfast burrito","tater tots","air fryer fries","baked potato","microwave rice","caesar salad","fruit cup","baked beans","potato salad","green onion","teriyaki","bbq sauce","a1 sauce","cereal","granola bar","deli turkey","roast chicken","frozen burrito","protein box","sushi","fried egg","garlic bread","texas toast","mac and cheese","cottage","coleslaw","baby carrots","ranch dip","corn on the cob","asparagus spears","black bean","refried beans","sourdough","hoagie","pub sub","cream","half and half","espresso","lavazza","nespresso","frozen fries","hash browns","pancake","syrup maple","blue cheese","horseradish","sauerkraut","relish","pickled jalapenos","shredded cheese","mexican blend","flour tortilla","corn tortilla","english muffin","canadian bacon","sausage link","ground sirloin","chuck roast","skirt steak","flank steak","pork ribs","country ribs","chicken tender","wing","thigh","drumstick","salmon fillet","tilapia","shrimp","crab","lobster","clam","scallop","tofu","tempeh","edamame","quinoa","couscous","farro","barley","lentil","chickpea","hummus cup","pita","naan","bagel plain","everything bagel","croissant","muffin","danish","donut","brownie","cookie","ice cream","popsicle","gelato","pudding","jello","applesauce cup","fruit snacks","trail mix","almonds","peanuts","cashews","walnuts","sunflower seeds","pumpkin seeds","raisins","dates","fig","prune","kiwi","peach","plum","cherry","raspberry","blackberry","cantaloupe","honeydew","grapefruit","tangerine","clementine","nectarine","apricot","papaya","passion fruit","dragon fruit","pomegranate","coconut water","sparkling water","soda","juice","orange juice","apple juice","sports drink","protein shake","protein powder","creamer","sugar","brown sugar","salt","peppercorn","paprika","cumin","chili powder","oregano","thyme","rosemary","parsley","dill","bay leaf","vanilla","cocoa","baking soda","baking powder","flour all purpose","cornmeal","breadcrumb","panko","soy sauce","worcestershire","fish sauce","sesame oil","canola oil","vegetable oil","coconut oil","vinegar","balsamic","apple cider vinegar","stock","chicken stock","beef stock","vegetable stock","tomato sauce","tomato paste","crushed tomato","diced tomato","marinara","alfredo","pesto","gravy","stuffing","cranberry","mashed potato","scalloped potato","au gratin","risotto","paella","stir fry","fried rice","lo mein","ramen","udon","pho","curry","tikka","butter chicken","gyro","falafel","shawarma","kebab","meatball","meatloaf","pot roast","stew","soup","chili con carne","mac cheese","lasagna","spaghetti","ravioli","tortellini","gnocchi","pierogi","dumpling","egg roll","spring roll","wonton","bao","sushi roll","sashimi","poke","ceviche","tacos","burrito","enchilada","fajita","chimichanga","tamale","empanada","arepa","pupusa","pastelito","croqueta","cuban sandwich","philly cheese","reuben","club sandwich","blt","grilled cheese","panini","wrap","pita pocket","salad kit","caesar","cobb","greek salad","wedge salad","coleslaw mix","potato salad deli","pasta salad","macaroni salad","fruit salad","parfait","smoothie","acai","chia pudding"];
@@ -892,14 +799,15 @@ function sidesBlockHTML(d,i){
 function updateBackBtn(){
   const btn=$("backBtn"); if(!btn)return;
   btn.innerHTML=icons.backSm+'<span>Back</span>';
-  if(isWeekView()){btn.hidden=false;btn.disabled=false;btn.setAttribute("aria-disabled","false");return}
+  const light=document.body.classList.contains("light");
+  if(light){btn.hidden=false;btn.disabled=false;btn.setAttribute("aria-disabled","false");return}
   if(pos<=0){btn.hidden=true;btn.disabled=true;btn.setAttribute("aria-disabled","true")}
   else{btn.hidden=false;btn.disabled=false;btn.setAttribute("aria-disabled","false")}
 }
 function goBackApp(){
   if(sheetOpen()){closeSheet();updateBackBtn();return}
-  if(isWeekView()){
-    hideWeekView();
+  if(document.body.classList.contains("light")){
+    document.body.classList.remove("light");
     window.scrollTo(0,0);
     updateBackBtn();
     return;
@@ -1243,8 +1151,6 @@ function reset(){
   CUSTOM_MEALS.forEach(m=>{if(st.meals[m.id]==null){/* keep unset until user picks */}});
   queue=["photos","stores","about","equip","coffee","meals","MEALB","sides","BUILD","summary"]; pos=0;
   document.body.classList.remove("light");
-  document.body.classList.remove("view-week");
-  // Do not clearWeekSnap here — init calls reset() then restoreWeekSnap().
 }
 /** Item 44: no primary-store question — derive silently (cheapest selected store est., else first). */
 function deriveMainStore(){
@@ -1714,7 +1620,7 @@ function summary(){
   $("abE").onclick=()=>{st.aboutReturn=true;pos=queue.indexOf("about");render();window.scrollTo(0,0)};
   $("bw").onclick=()=>goBuildWeek();
 }
-function goBuildWeek(){buildWeek();showWeekView();window.scrollTo(0,0)}
+function goBuildWeek(){buildWeek();applyCamTheme(getCamTheme());window.scrollTo(0,0)}
 /* ================= WEEK PLANNER ================= */
 const yes=id=>st.meals[id]==="yes";
 let W=null; // {days, items, have:Set, ck:Set}
@@ -1955,7 +1861,6 @@ function totals(){let a=0,p=0,b=0,na=0,np=0,cu=0;W.items.forEach(it=>{if(W.have.
   if(it.a!=null)a+=it.a;else a+=(it.al!=null?it.al:it.p); if(it.p!=null)p+=it.p;else p+=it.a;
   const aw=it.p==null||(it.a!=null&&it.a<=it.p);b+=aw?it.a:it.p;aw?na++:np++});return {a,p,b,na,np,cu}}
 function renderWeek(){
-  try{if(isWeekView())saveWeekSnap()}catch(_){}
   const t=totals();
   const fm=st.equip.has("foreman")||st.equip.size===0;
   let days=effDays(W.ov);
@@ -2003,7 +1908,7 @@ function renderWeek(){
   ${ratingsPanel()}
   ${W.extra.length?`<div class="nextwk">Next up: ${W.extra.map(g=>({pork:mv("pork"),brats:mv("brats"),chicken:"chicken",burger:"burgers",steak:"steak"}[g])).join(", ")}</div>`:""}
   <section class="gpanel"><div class="stitle" style="margin-top:0"><h2>Shopping list · week of ${esc(wl.split(",")[0]||wl)}</h2><span>${nCk} checked</span></div>
-    <div class="grocery-tools"><label class="visually-hidden" for="grocery-search">Search list</label><input type="search" id="grocery-search" class="grocery-search" placeholder="Search list" value="${esc(W.gSearch||"")}" autocomplete="off" /><button type="button" class="share-list-link" id="grocery-share">Share list</button></div>
+    <div class="grocery-tools"><label class="visually-hidden" for="grocery-search">Search list</label><input type="search" id="grocery-search" class="grocery-search" placeholder="Search list" value="${esc(W.gSearch||"")}" autocomplete="off" /><button type="button" class="share-list-link" id="grocery-share">Share list</button><a class="share-list-link" id="grocery-sms" hidden>Text list</a></div>
     <div class="tot"><div class="best">Est. total (${esc(main==="Publix"?"Publix":main==="Aldi"?"Aldi":(main||"Aldi"))})<b>$${(main==="Publix"?t.p:t.a).toFixed(2)}</b>est.${estStoreNote(main==="Publix"?"Publix":"Aldi")}</div></div>
     <div class="cpy"><button type="button" class="cpb p ico-btn" data-copy="all">${icons.copy} Copy list</button></div>
     ${W.cph?`<div class="cph" id="cphBox"><p class="cph-t">✓ Copied. Want to send a photo with it?</p><button type="button" class="cpb p ico-btn" id="cphB">${icons.cam} Take a photo</button><input type="file" accept="image/*" capture="environment" hidden id="cphIn"><div class="thumbs" id="cphTh"></div><div id="cphAct"></div></div>`:""}
@@ -2039,7 +1944,7 @@ function renderWeek(){
     wk.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>{const tx=listText(b.dataset.copy);W.cph=true;W.cphText=tx;renderWeek();copyTxt(tx,b.dataset.copy==="all"?"Whole list copied":`${b.dataset.copy} list copied`)});
   if(W.cph&&$("cphB")){W.cphFiles=W.cphFiles||[];photoShare({btn:$("cphB"),input:$("cphIn"),thumbs:$("cphTh"),act:$("cphAct"),store:W.cphFiles,shareLabel:"Share",title:"My shopping list",text:W.cphText||"",fallback:"Save the photo and send with your list."})}
   bindLog(wk,days);
-  $("bk").onclick=()=>{hideWeekView();window.scrollTo(0,0);updateBackBtn()};
+  $("bk").onclick=()=>{document.body.classList.remove("light");window.scrollTo(0,0);updateBackBtn()};
   updateBackBtn();
   $("rs2").onclick=()=>{reset();render();window.scrollTo(0,0)};
   $("calB").onclick=()=>openCal({sel:s0,onPick:(mon)=>{st.weekStart=mon.getTime();buildWeek()}});
@@ -2356,7 +2261,7 @@ fetch("prices.json",{cache:"no-cache"}).then(r=>r.ok?r.json():Promise.reject(r.s
   Object.entries(j.items).forEach(([k,it])=>{const P=C.PRICES[k];if(!P||!Array.isArray(it.prices))return;
     it.prices.forEach(e=>{if(e.store===sa&&e.price!==undefined){P.a=e.price;P.sA=e}else if(e.store===sp&&e.price!==undefined){P.p=e.price;P.sP=e}})});
   if(j.updated)PRICE_META.updated=j.updated;PRICE_META.loaded=true;
-  if(W&&isWeekView()){recomputeList();renderWeek()}else if(W)recomputeList();
+  if(W&&document.body.classList.contains("light")){recomputeList();renderWeek()}else if(W)recomputeList();
 }).catch(()=>{});
 /* ---- v4: coffee, copy list, toast, per-day Swap + 🗑 Delete, meal log + week review ---- */
 function isoD(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
@@ -2735,8 +2640,8 @@ async function shareCamList(){
   lines.push("","Est. total ("+estStore+"): $"+total.toFixed(2));const text=lines.join("\n");
   try{if(navigator.share){await navigator.share({title:"Shopping list",text});return}}catch(err){if(err&&err.name==="AbortError")return}
   try{await navigator.clipboard.writeText(text);toast("List copied")}catch(_){copyTxt(text,"List copied")}
+  const sms=$("grocery-sms");if(sms){sms.href="sms:?&body="+encodeURIComponent(text.slice(0,1500));sms.hidden=false}
 }
-
 /* Item 40 template share */
 function b64url(bytes){let s="";bytes.forEach(b=>s+=String.fromCharCode(b));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
 function fromB64url(str){str=str.replace(/-/g,"+").replace(/_/g,"/");while(str.length%4)str+="=";const bin=atob(str);const out=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)out[i]=bin.charCodeAt(i);return out}
@@ -2908,7 +2813,6 @@ function startTemplateWelcome(){
 
 initSheet();bindReceipt(document);
 reset();try{applyCamTheme(getCamTheme())}catch(_){};refreshTitles();
-try{restoreWeekSnap()}catch(_){}
 const b0=$("backBtn");if(b0){b0.innerHTML=icons.backSm+'<span>Back</span>';b0.onclick=goBackApp}
 const bwTop=$("bwTop");if(bwTop){bwTop.innerHTML=icons.cal+'<span>Build my week</span>';bwTop.onclick=goBuildWeek}
 const _render=render;
