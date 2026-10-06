@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cameron's Meal Picker (sample)</title>
+<title>Cameron's Meal Picker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#0f172a;--card:#1e293b;--ink:#f1f5f9;--mut:#94a3b8;--chip:#334155;--on:#0ea5e9;--gold:#f59e0b}
   *{box-sizing:border-box}
@@ -21,12 +23,16 @@
   .chip.off{background:transparent;color:var(--ink);border-color:var(--chip)}
   .chip.drop.off{color:var(--mut);text-decoration:line-through}
   .chip.main{background:var(--gold);border-color:var(--gold)}
+  .chip.open{outline:3px solid var(--gold);outline-offset:2px}
+  .chip.addc{background:transparent;border:2px dashed var(--mut);color:var(--mut)}
+  .chip.cust:not(.off){background:#8b5cf6;border-color:#8b5cf6}
   .next{width:100%;border:0;border-radius:14px;padding:16px;font-size:18px;font-weight:700;background:var(--on);color:#fff;cursor:pointer}
   .next:disabled{opacity:.4}
   .ghost{background:transparent;color:var(--mut);font-weight:500;font-size:15px;margin-top:8px;padding:10px}
   .addrow{display:flex;gap:8px;margin:0 0 18px}
-  .addrow input{flex:1;border-radius:12px;border:2px solid var(--chip);background:#0b1222;color:var(--ink);padding:12px;font-size:16px}
+  .addrow input{flex:1;min-width:0;border-radius:12px;border:2px solid var(--chip);background:#0b1222;color:var(--ink);padding:12px;font-size:16px}
   .addrow button{border:0;border-radius:12px;background:var(--chip);color:#fff;padding:0 16px;font-size:16px;cursor:pointer}
+  .addrow.cust input{border-color:#8b5cf6}.addrow.cust button{background:#8b5cf6}
   .photos{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:0 0 18px}
   .ph{position:relative;aspect-ratio:3/4;border:2px dashed var(--chip);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;font-size:14px;color:var(--mut)}
   .ph span.big{font-size:34px;margin-bottom:6px}
@@ -38,59 +44,195 @@
   .sum h2{font-size:17px;margin:16px 0 6px}
   .sum p{margin:0}
   .tag{display:inline-block;background:var(--chip);border-radius:999px;padding:4px 10px;margin:3px;font-size:14px}
+  .tag.y{background:#065f46}
   .no{color:var(--mut);font-size:14px}
   .muted{color:var(--mut);font-size:13px;margin-top:16px}
+  /* variant pop list */
+  .pop{background:#0b1222;border:2px solid var(--gold);border-radius:16px;padding:12px;margin:-8px 0 18px;text-align:left;animation:pop .15s ease}
+  .pop .ph2{font-size:14px;color:var(--gold);font-weight:700;margin:0 0 8px}
+  .pop .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .popt{border:2px solid var(--chip);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 12px;font-size:15px;cursor:pointer}
+  .popt.sel{background:var(--on);border-color:var(--on);color:#fff}
+  .popt.rm{border-color:#7f1d1d;color:#fca5a5}
+  @keyframes pop{from{opacity:0;transform:translateY(-4px)}to{opacity:1}}
+  /* equipment */
+  .feat{display:flex;align-items:center;gap:12px;text-align:left;border:3px solid var(--chip);border-radius:18px;padding:14px;margin:0 0 8px;cursor:pointer;background:#0b1222}
+  .feat.on{border-color:var(--gold);background:linear-gradient(135deg,#3b2a06,#1e293b)}
+  .feat .fe{font-size:40px}
+  .feat b{font-size:18px}
+  .feat .dad{color:var(--gold);font-size:14px;margin-top:3px}
+  .feat .ck{margin-left:auto;width:34px;height:34px;border-radius:50%;border:2px solid var(--chip);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+  .feat.on .ck{background:var(--gold);border-color:var(--gold);color:#111}
+  .fnote{font-size:13px;color:var(--mut);margin:0 0 16px}
+  .lbl{font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;margin:6px 0 8px}
+  /* meals yes/no */
+  .meals{display:flex;flex-direction:column;gap:10px;margin:0 0 16px;text-align:left}
+  .meal{background:#0b1222;border:2px solid var(--chip);border-radius:16px;padding:10px 12px}
+  .meal.yes{border-color:#10b981}.meal.no{opacity:.55}
+  .mrow{display:flex;align-items:center;gap:10px}
+  .me{font-size:34px;line-height:1}
+  .mt{flex:1;min-width:0}
+  .mt b{font-size:16px}
+  .vchip{display:inline-block;margin-top:4px;border:2px solid var(--gold);color:var(--gold);border-radius:999px;padding:3px 10px;font-size:13px;cursor:pointer}
+  .fb{display:inline-block;margin-top:4px;font-size:12px;color:#fbbf24}
+  .yn{display:flex;gap:6px}
+  .yn button{border:2px solid var(--chip);background:transparent;color:var(--ink);border-radius:12px;padding:10px 12px;font-size:15px;font-weight:700;cursor:pointer}
+  .yn button.y.sel{background:#10b981;border-color:#10b981}
+  .yn button.n.sel{background:#7f1d1d;border-color:#7f1d1d}
+  .tipbtn{display:block;width:100%;margin-top:8px;border:0;background:transparent;color:var(--on);text-align:left;font-size:14px;padding:4px 0;cursor:pointer}
+  .tip{margin-top:6px;background:var(--card);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.4}
+  .tip ol{margin:6px 0;padding-left:20px}
+  .tip .t1{color:#fbbf24;font-weight:700}
+  .tip .t2{color:#f87171;font-weight:700}
+  .tip .t3{color:var(--mut);font-size:12px}
+  details.box{background:#0b1222;border:2px solid var(--chip);border-radius:14px;padding:10px 12px;margin:0 0 16px;text-align:left}
+  details.box summary{cursor:pointer;font-weight:700}
+  details.box ul{margin:8px 0 0;padding-left:20px;font-size:14px;line-height:1.45}
+  .build{background:linear-gradient(135deg,#f59e0b,#d97706);font-size:22px;padding:20px;margin-top:18px;box-shadow:0 6px 0 rgba(146,64,14,.6)}
+  /* ===== week planner (light, like Ted's family site) ===== */
+  body.light{--wbg:#eef6f2;--wink:#173042;--wsoft:#3d5566;--teal:#0f6e6e;--tealD:#0a5555;--tealS:#d4efef;--coral:#d4572a;--coralD:#b9441c;--coralS:#ffe3d6;--wgold:#d9a441;--white:#fffaf4;
+    background:radial-gradient(circle at 10% 0%,rgba(15,110,110,.16),transparent 38%),radial-gradient(circle at 95% 12%,rgba(212,87,42,.12),transparent 34%),linear-gradient(180deg,#f4faf7 0%,#eef6f2 42%,#f8f1e8 100%);color:var(--wink);font-family:Nunito,Segoe UI,sans-serif}
+  #week{display:none;width:100%;max-width:460px;padding:14px 14px 50px}
+  body.light #week{display:block} body.light .wrap{display:none}
+  .wk-h{text-align:center;padding:4px 0 10px}
+  .kick{margin:0;font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--tealD)}
+  .brand{margin:2px 0 0;font-family:Fraunces,Georgia,serif;font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.05}
+  .wlabel{display:inline-block;margin:10px 0 4px;border:2px solid var(--teal);background:var(--white);color:var(--coralD);font-weight:800;border-radius:14px;padding:8px 18px;box-shadow:0 4px 0 rgba(15,110,110,.16)}
+  .tagline{margin:6px auto 0;color:var(--wsoft);font-weight:700;font-size:14px}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+  .pill{font-weight:800;padding:7px 12px;border-radius:12px;font-size:14px}
+  .pill.t{background:var(--tealS);color:var(--tealD)}.pill.c{background:var(--coralS);color:var(--coralD)}
+  .rules{margin:6px 0 14px;padding:12px 14px;background:linear-gradient(135deg,#124f4f,var(--teal));color:#fff;border-radius:16px;box-shadow:0 8px 22px rgba(23,48,66,.12)}
+  .rules h2{margin:0 0 6px;font-family:Fraunces,Georgia,serif;font-size:17px}
+  .rules ul{margin:0;padding-left:18px;font-weight:650;font-size:13px;line-height:1.4}
+  .rules li+li{margin-top:3px}
+  .lt{background:var(--white);border:2px dashed rgba(212,87,42,.55);border-radius:16px;padding:10px 14px;margin:0 0 14px;box-shadow:0 8px 22px rgba(23,48,66,.12)}
+  .lt summary{font-weight:800;color:var(--coralD);cursor:pointer;font-size:16px}
+  .lt ul{margin:8px 0 0;padding-left:18px;font-weight:650;color:var(--wsoft);font-size:14px}
+  .stitle{display:flex;align-items:baseline;justify-content:space-between;margin:14px 0 10px}
+  .stitle h2{margin:0;font-family:Fraunces,Georgia,serif;font-size:22px}
+  .stitle span{color:var(--wsoft);font-weight:700;font-size:13px}
+  .day{background:var(--white);border-radius:16px;box-shadow:0 8px 22px rgba(23,48,66,.12);overflow:hidden;margin-bottom:12px;cursor:pointer;animation:pi .4s ease both}
+  @keyframes pi{from{opacity:0;transform:scale(.97) translateY(8px)}to{opacity:1}}
+  .dh{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,var(--teal),var(--tealD));color:#fff;padding:9px 14px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;font-size:14px}
+  .day.cook .dh{background:linear-gradient(135deg,var(--coral),var(--coralD))}
+  .db{padding:12px 14px 14px}
+  .memo{font-size:36px;line-height:1;display:block;margin-bottom:4px}
+  .dinner{margin:0;font-size:18px;font-weight:800}
+  .dnote{margin:7px 0 0;padding:7px 10px;background:var(--coralS);border-radius:10px;color:var(--coralD);font-weight:800;font-size:14px}
+  .day:not(.cook) .dnote{background:var(--tealS);color:var(--tealD)}
+  .dl{margin:7px 0 0;font-weight:700;font-size:14px;color:var(--wink)}
+  .dl.b{color:var(--wsoft);font-weight:650}
+  .hint{margin:7px 0 0;color:var(--wsoft);font-size:12px;font-weight:700}
+  .rec{margin-top:10px;padding:10px 12px;background:var(--wbg);border-left:5px solid var(--teal);border-radius:12px;font-size:14px;font-weight:650;color:var(--wsoft)}
+  .rec h4{margin:0 0 4px;color:var(--tealD);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+  .rec ol{margin:0;padding-left:18px}
+  .rec .t1{color:#b45309;font-weight:800}.rec .t2{color:#b91c1c;font-weight:800}.rec .t3{color:var(--wsoft);font-size:12px}
+  .gpanel{background:var(--white);border-radius:20px;box-shadow:0 8px 22px rgba(23,48,66,.12);padding:14px;margin-bottom:16px}
+  .tot{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px}
+  .tot div{background:var(--wbg);border-radius:12px;padding:8px 6px;text-align:center;font-weight:800;font-size:13px;color:var(--wsoft)}
+  .tot b{display:block;font-size:19px;color:var(--wink)}
+  .tot .best{background:var(--tealS);color:var(--tealD)}
+  .tot .main{outline:2px solid var(--wgold)}
+  .gnote{font-size:13px;font-weight:700;color:var(--wsoft);background:var(--coralS);border-radius:12px;padding:8px 10px;margin:0 0 6px}
+  .aisle{margin:14px 0 4px;padding-bottom:3px;border-bottom:2px solid #dceee6;color:var(--tealD);font-size:16px;display:flex;justify-content:space-between}
+  .aisle small{color:var(--wsoft);font-size:12px}
+  .it{display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:center;padding:9px 2px;border-bottom:1px dashed rgba(23,48,66,.12)}
+  .it .cb{width:26px;height:26px;border-radius:8px;border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;cursor:pointer}
+  .it.ck .cb{background:var(--teal)}
+  .it.ck .nm{text-decoration:line-through;opacity:.6}
+  .nm{font-weight:800;font-size:15px;cursor:pointer}
+  .nm small{display:block;font-weight:650;color:var(--wsoft);font-size:12px}
+  .nm .src{color:var(--teal)}
+  .pr{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;font-size:12px;font-weight:800}
+  .pr span{white-space:nowrap}
+  .pr span{padding:2px 6px;border-radius:8px;background:var(--wbg);color:var(--wsoft)}
+  .pr span.win{background:#d1fae5;color:#065f46}
+  .have{border:2px solid rgba(23,48,66,.15);background:#fff;border-radius:10px;padding:7px 8px;font-weight:800;font-size:12px;color:var(--wsoft);cursor:pointer;white-space:nowrap}
+  .gone{opacity:.45}
+  .gone .have{background:var(--wgold);color:var(--wink)}
+  .gone .nm{text-decoration:line-through}
+  .gh{display:block;background:#173042;color:#fff;border-radius:16px;padding:14px;text-decoration:none;margin:0 0 14px;box-shadow:0 8px 22px rgba(23,48,66,.18)}
+  .gh b{font-size:16px}.gh span{display:block;font-size:13px;opacity:.85;margin-top:3px;font-weight:650}
+  .wbtn{display:block;width:100%;border:0;border-radius:14px;min-height:52px;font:inherit;font-weight:800;font-size:16px;cursor:pointer;margin-top:10px}
+  .wbtn.p{background:linear-gradient(160deg,var(--teal),var(--tealD));color:#fff}
+  .wbtn.g{background:var(--white);color:var(--wink);border:2px solid rgba(23,48,66,.12)}
+  .foot{text-align:center;color:var(--wsoft);font-weight:650;font-size:12px;margin-top:16px;line-height:1.5}
+  .foot a{color:var(--teal)}
+  .nextwk{background:var(--white);border-radius:14px;padding:10px 14px;font-weight:700;font-size:14px;color:var(--wsoft);box-shadow:0 8px 22px rgba(23,48,66,.1);margin-bottom:12px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><span>Cameron's Meal Picker · sample</span><span id="count"></span></div>
+  <div class="top"><span>Cameron's Meal Picker</span><span id="count"></span></div>
   <div class="bar"><i id="prog" style="width:0"></i></div>
   <div class="card" id="card"></div>
-  <p class="muted">Sample only: one meal (burger) to show the flow. Taps only. Photos stay on your phone; nothing is saved or sent anywhere.</p>
+  <p class="muted">Taps only (typing just for "Other store" and "+ Custom"). Photos stay on your phone; nothing is saved or sent anywhere.</p>
 </div>
+<div id="week"></div>
+<script src="meals.js"></script>
 <script>
-const STORES=["Aldi","Publix","Walmart","Target","Trader Joe's","Winn-Dixie","Costco","Sam's Club"];
-const TOPPINGS=["Beef patty","Bun","Cheese","Lettuce","Tomato","Onion","Pickles","Ketchup","Mustard","Mayo","Bacon","Avocado","Jalapeños","Grilled onions","Mushrooms","BBQ sauce","Fried egg","Hot sauce"];
-const SIDES=["Potato chips","Fries","Fruit","Yogurt","Salad"];
-const DRILL={
- "Potato chips":{emoji:"🥔",q:"Which chips?",opts:["Doritos","Lay's","Pringles","Ruffles","Cheetos","Kettle Brand"],
-   sub:{"Doritos":["Nacho Cheese","Cool Ranch","Spicy Sweet Chili","Flamin' Hot"],"Lay's":["Classic","Sour Cream & Onion","BBQ","Salt & Vinegar"],"Pringles":["Original","Sour Cream & Onion","Cheddar Cheese","BBQ"],"Ruffles":["Original","Cheddar & Sour Cream","All Dressed"],"Cheetos":["Crunchy","Puffs","Flamin' Hot"],"Kettle Brand":["Sea Salt","Jalapeño","Salt & Vinegar","Honey Dijon"]}},
- "Fries":{emoji:"🍟",q:"Which fries?",opts:["Crinkle cut","Shoestring","Waffle","Curly","Steak fries","Sweet potato","Tots"]},
- "Fruit":{emoji:"🍎",q:"Which fruit?",opts:["Apples","Bananas","Grapes","Strawberries","Blueberries","Oranges","Watermelon","Pineapple"]},
- "Yogurt":{emoji:"🥣",q:"Which yogurt?",opts:["Chobani","Yoplait","Oikos","Dannon","Go-Gurt","Store brand"],
-   sub:{"*":["Strawberry","Vanilla","Blueberry","Peach","Mixed berry","Plain"]}},
- "Salad":{emoji:"🥗",q:"Which salad?",opts:["Garden","Caesar","Spinach","Wedge"],
-   then:{key:"Dressing",emoji:"🫙",q:"Which dressing?",opts:["Ranch","Italian","Caesar","Honey mustard","Balsamic","Blue cheese","Thousand Island"]}}
-};
-const BUNS=["Sesame","Brioche","Potato","Plain white","Pretzel","Whole wheat","Lettuce wrap"];
-const CHEESES=["American","Cheddar","Swiss","Pepper jack","Provolone"];
-
+const C=window.CAM, STORES=C.STORES, TOPPINGS=C.TOPPINGS, SIDES=C.SIDES, DRILL=C.DRILL, MEALS=C.MEALS;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const $=id=>document.getElementById(id);
+const M=id=>MEALS.find(m=>m.id===id);
 let st, queue, pos;
 function reset(){
-  st={stores:new Set(),extra:[],main:"",photos:{},toppings:new Set(TOPPINGS),sides:new Set(),picks:{},bun:new Set(),cheese:new Set()};
-  queue=["stores","main","photos","burger","sides","BUILD","bun","cheese","summary"]; pos=0;
+  const top={};TOPPINGS.forEach(t=>top[t.id]={on:true,v:t.v?t.v[0]:t.label});
+  st={stores:new Set(),extra:[],main:"",photos:{},equip:new Set(["foreman"]),meals:{},mealV:{},tip:null,
+      top,topCustom:[],sides:new Set(),picks:{},custom:{},open:null,cOpen:null,mealCustom:[]};
+  queue=["stores","main","photos","equip","meals","burger","sides","BUILD","summary"]; pos=0;
+  document.body.classList.remove("light");
 }
-const card=document.getElementById("card");
-function go(n=1){pos+=n; if(queue[pos]==="main"&&st.stores.size<2){if(st.stores.size===1)st.main=[...st.stores][0];pos+=n>0?1:-1}
-  if(queue[pos]==="BUILD"){buildDrill();} if(queue[pos]==="cheese"&&!st.toppings.has("Cheese")){pos++} render();}
+const card=$("card");
+function go(n=1){pos+=n;
+  for(let g=0;g<50;g++){const s=queue[pos];
+    if(s==="main"&&st.stores.size<2){if(st.stores.size===1)st.main=[...st.stores][0];pos+=n>0?1:-1;continue}
+    if(s==="burger"&&st.meals.burger==="no"){pos+=n>0?1:-1;continue}
+    if(s==="BUILD"){buildDrill();continue}
+    break}
+  st.open=null;st.cOpen=null;render();window.scrollTo(0,0)}
 function buildDrill(){
   const steps=[];
-  SIDES.filter(s=>st.sides.has(s)).forEach(s=>{
-    steps.push({side:s,level:"top"});
-  });
+  allSides().filter(s=>st.sides.has(s)&&DRILL[s]).forEach(s=>steps.push({side:s,level:"top"}));
   queue.splice(pos,1,...steps);
 }
+const allSides=()=>[...SIDES,...(st.custom.sides||[])];
 function progress(){
   const total=queue.length-1;
-  document.getElementById("prog").style.width=Math.min(pos/total,1)*100+"%";
-  document.getElementById("count").textContent=queue[pos]==="summary"?"Done":`Step ${pos+1} of ${queue.length}`;
+  $("prog").style.width=Math.min(pos/total,1)*100+"%";
+  $("count").textContent=queue[pos]==="summary"?"Done":`Step ${pos+1} of ${queue.length}`;
 }
-function chipList(opts,set,cls=""){return `<div class="chips">${opts.map(x=>`<span class="chip ${cls}${set.has(x)?"":" off"}" data-x="${x.replace(/"/g,'&quot;')}">${x}</span>`).join("")}</div>`}
-function bindChips(set,single=false,after){card.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{const x=c.dataset.x;if(single){set.clear();set.add(x)}else{set.has(x)?set.delete(x):set.add(x)}render()})}
+/* ---- chip helpers ---- */
+function chipList(opts,set,cls="",ckey=null){
+  const cust=ckey?(st.custom[ckey]||[]):[];
+  return `<div class="chips">${[...opts,...cust].map(x=>`<span class="chip ${cls}${cust.includes(x)?" cust":""}${set.has(x)?"":" off"}" data-x="${esc(x)}">${esc(x)}</span>`).join("")}${ckey?customChip(ckey):""}</div>${ckey?customRow(ckey):""}`}
+const customChip=k=>`<span class="chip addc" data-c="${esc(k)}">+ Custom</span>`;
+const customRow=k=>st.cOpen===k?`<div class="addrow cust"><input id="cin" placeholder="Type your own…" maxlength="30" autocomplete="off"><button id="cadd">Add</button></div>`:"";
+function bindChips(set,single=false){card.querySelectorAll(".chip[data-x]").forEach(c=>c.onclick=()=>{const x=c.dataset.x;if(single){set.clear();set.add(x)}else{set.has(x)?set.delete(x):set.add(x)}render()})}
+/* custom: onAdd(value) */
+function bindCustom(onAdd){
+  card.querySelectorAll(".chip.addc").forEach(c=>c.onclick=()=>{st.cOpen=st.cOpen===c.dataset.c?null:c.dataset.c;st.open=null;render();const i=$("cin");if(i)i.focus()});
+  const b=$("cadd");if(!b)return;
+  const add=()=>{const v=$("cin").value.trim().slice(0,30);if(v){onAdd(st.cOpen,v)}st.cOpen=null;render()};
+  b.onclick=add;$("cin").onkeydown=e=>{if(e.key==="Enter")add()};
+}
+function addCustomTo(set){return (k,v)=>{st.custom[k]=st.custom[k]||[];if(!st.custom[k].includes(v))st.custom[k].push(v);set.add(v)}}
 function btns(label,disabled=false,skip=null){return `<button class="next" id="nx" ${disabled?"disabled":""}>${label}</button>${skip?`<button class="next ghost" id="sk">${skip}</button>`:""}`}
+function popHTML(title,opts,cur,on){return `<div class="pop"><p class="ph2">${title}</p><div class="opts">${opts.map(v=>`<button class="popt${on&&cur===v?" sel":""}" data-v="${esc(v)}">${esc(v)}</button>`).join("")}${on?`<button class="popt rm" data-rm="1">✕ Remove</button>`:""}</div></div>`}
+const tool=()=>st.equip.has("foreman")?"grill":(st.equip.has("stove")||st.equip.has("skillet"))?"stove":st.equip.has("airfryer")?"air":(st.equip.has("oven")||st.equip.has("sheet"))?"oven":"grill";
+function tipHTML(m){
+  const t=tool();let steps=t==="grill"?m.grill:t==="stove"?m.stove:
+    t==="air"?["Air fryer 400°F. Chicken/chops about 10–14 min, burgers/steak about 8–10 min, flip halfway."]:["Oven/broiler: sheet pan, broil about 4–6 min per side for steak/chops; chicken bake 400°F about 20–25 min."];
+  const tn={grill:"🔥 On your Foreman",stove:"🍳 Stovetop",air:"💨 Air fryer",oven:"♨️ Oven"}[t];
+  return `<div class="tip"><b>${tn}</b><ol>${steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol>
+   ${t==="grill"?`<div class="t1">⏱ Approx. ${esc(m.time)}</div>`:""}<div class="t2">🌡 Check ${esc(m.temp)}</div>
+   <div class="t3">Times are approximate; grills vary. A cheap instant-read thermometer (~$10–15) is the real test. Leftovers: reheat to 165°F.</div></div>`}
+const tipsBox=()=>`<details class="box"><summary>💰 Meat money tips (tap)</summary><ul>${C.TIPS.meat.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></details>`;
+const mv=id=>st.mealV[id]||(M(id).v?M(id).v[0]:"");
+/* ---- render ---- */
 function render(){
-  progress();
+  progress();setTimeout(()=>{const p=card.querySelector(".pop,.addrow.cust");if(p&&p.scrollIntoView)p.scrollIntoView({block:"nearest",behavior:"smooth"})},0);
   const s=queue[pos];
   if(typeof s==="object") return drill(s);
   if(s==="stores"){
@@ -99,14 +241,14 @@ function render(){
       <div class="addrow"><input id="own" placeholder="Other store…" maxlength="30"><button id="add">Add</button></div>
       ${btns("Next →",!st.stores.size)}`;
     bindChips(st.stores);
-    const add=()=>{const v=document.getElementById("own").value.trim();if(v&&!STORES.includes(v)&&!st.extra.includes(v)){st.extra.push(v);st.stores.add(v)}render()};
-    document.getElementById("add").onclick=add;document.getElementById("own").onkeydown=e=>{if(e.key==="Enter")add()};
-    document.getElementById("nx").onclick=()=>st.stores.size&&go();
+    const add=()=>{const v=$("own").value.trim();if(v&&!STORES.includes(v)&&!st.extra.includes(v)){st.extra.push(v);st.stores.add(v)}render()};
+    $("add").onclick=add;$("own").onkeydown=e=>{if(e.key==="Enter")add()};
+    $("nx").onclick=()=>st.stores.size&&go();
   } else if(s==="main"){
     card.innerHTML=`<div class="emoji">⭐</div><h1>Which store most?</h1><p class="sub">Prices and the grocery list lean toward this one.</p>
-      <div class="chips">${[...st.stores].map(x=>`<span class="chip${st.main===x?" main":" off"}" data-x="${x}">${x}</span>`).join("")}</div>${btns("Next →",!st.main)}`;
+      <div class="chips">${[...st.stores].map(x=>`<span class="chip${st.main===x?" main":" off"}" data-x="${esc(x)}">${esc(x)}</span>`).join("")}</div>${btns("Next →",!st.main)}`;
     card.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{st.main=c.dataset.x;render()});
-    document.getElementById("nx").onclick=()=>st.main&&go();
+    $("nx").onclick=()=>st.main&&go();
   } else if(s==="photos"){
     const tile=(k,e,l)=>`<label class="ph${st.photos[k]?" done":""}">${st.photos[k]?`<img src="${st.photos[k]}"><span class="ok">✓ ${l}</span>`:`<span class="big">${e}</span>${l}<br>Tap for photo`}<input type="file" accept="image/*" capture="environment" data-k="${k}"></label>`;
     const n=Object.keys(st.photos).length;
@@ -114,22 +256,63 @@ function render(){
       <div class="photos">${tile("pantry","🥫","Pantry")}${tile("fridge","🧊","Fridge")}${tile("freezer","❄️","Freezer")}</div>
       ${btns(n===3?"Next →":`Next → (${n}/3)`,false,n<3?"Skip photos for now":null)}`;
     card.querySelectorAll("input[type=file]").forEach(inp=>inp.onchange=()=>{const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{st.photos[inp.dataset.k]=r.result;render()};r.readAsDataURL(f)});
-    document.getElementById("nx").onclick=()=>go();const sk=document.getElementById("sk");if(sk)sk.onclick=()=>go();
-  } else if(s==="burger"){
-    card.innerHTML=`<div class="emoji">🍔</div><h1>Build your burger</h1><p class="sub">Everything's on. Tap off what you don't want.</p>
-      ${chipList(TOPPINGS,st.toppings,"drop")}${btns("Next →")}`;
-    bindChips(st.toppings);document.getElementById("nx").onclick=()=>go();
-  } else if(s==="sides"){
-    card.innerHTML=`<div class="emoji">🍽️</div><h1>What goes with it?</h1><p class="sub">Pick any sides you like.</p>
-      ${chipList(SIDES,st.sides)}${btns(st.sides.size?"Next →":"No sides →")}`;
-    bindChips(st.sides);document.getElementById("nx").onclick=()=>go();
-  } else if(s==="bun"){
-    card.innerHTML=`<div class="emoji">🍞</div><h1>Back to the burger: which bun?</h1><p class="sub">Pick any you'd eat.</p>${chipList(BUNS,st.bun)}${btns("Next →",!st.bun.size)}`;
-    bindChips(st.bun);document.getElementById("nx").onclick=()=>st.bun.size&&go();
-  } else if(s==="cheese"){
-    card.innerHTML=`<div class="emoji">🧀</div><h1>Which cheese?</h1><p class="sub">Pick any you'd eat.</p>${chipList(CHEESES,st.cheese)}${btns("See my picks →",!st.cheese.size)}`;
-    bindChips(st.cheese);document.getElementById("nx").onclick=()=>st.cheese.size&&go();
+    $("nx").onclick=()=>go();const sk=$("sk");if(sk)sk.onclick=()=>go();
+  } else if(s==="equip"){
+    const fm=st.equip.has("foreman");
+    const rest=C.EQUIP.filter(e=>!e.featured);
+    card.innerHTML=`<div class="emoji">🍳</div><h1>What do you cook with?</h1><p class="sub">Tap what you've got. Meals lean toward these.</p>
+      <div class="feat${fm?" on":""}" id="fm"><div class="fe">🔥</div><div><b>George Foreman grill</b><div class="dad">🎁 Dad got you this. Still your go-to?</div></div><div class="ck">${fm?"✓":""}</div></div>
+      <p class="fnote">${fm?"✓ Yep. Meals and cook times are built around the Foreman.":"Tap the card if you still use it."}</p>
+      <p class="lbl">Also have</p>
+      <div class="chips">${rest.map(e=>`<span class="chip${st.equip.has(e.id)?"":" off"}" data-e="${e.id}">${e.emoji} ${e.label}</span>`).join("")}</div>
+      ${btns("Next →")}`;
+    $("fm").onclick=()=>{fm?st.equip.delete("foreman"):st.equip.add("foreman");render()};
+    card.querySelectorAll(".chip[data-e]").forEach(c=>c.onclick=()=>{const k=c.dataset.e;st.equip.has(k)?st.equip.delete(k):st.equip.add(k);render()});
+    $("nx").onclick=()=>go();
+  } else if(s==="meals") meals();
+  else if(s==="burger") burger();
+  else if(s==="sides"){
+    const nb=st.meals.burger==="no";
+    card.innerHTML=`<div class="emoji">🍽️</div><h1>${nb?"What sides do you like?":"What goes with it?"}</h1><p class="sub">Pick any sides you like.</p>
+      ${chipList(SIDES,st.sides,"","sides")}${btns(st.sides.size?"Next →":"No sides →")}`;
+    bindChips(st.sides);bindCustom(addCustomTo(st.sides));$("nx").onclick=()=>go();
   } else if(s==="summary") summary();
+}
+function meals(){
+  const fm=st.equip.has("foreman");
+  const list=[...MEALS].sort((a,b)=>fm?(b.grill-a.grill):0);
+  const yesN=Object.values(st.meals).filter(x=>x==="yes").length+st.mealCustom.length;
+  card.innerHTML=`<div class="emoji">🥩</div><h1>What sounds good?</h1><p class="sub">Tap Yes or No on each.${fm?" 🔥 = great on your Foreman.":""}</p>
+   <div class="meals">${list.map(m=>{const a=st.meals[m.id]||"";const op=st.tip===m.id;const po=st.open==="m:"+m.id;
+     return `<div class="meal ${a}"><div class="mrow"><span class="me">${m.emoji}</span><div class="mt"><b>${esc(m.name)}</b><br>
+       ${m.v?`<span class="vchip" data-mv="${m.id}">${esc(mv(m.id))} ▾</span> `:""}${fm&&m.grill?`<span class="fb">🔥 ${esc(m.time.split(" (")[0])}</span>`:""}</div>
+       <div class="yn"><button class="y${a==="yes"?" sel":""}" data-m="${m.id}" data-a="yes">Yes</button><button class="n${a==="no"?" sel":""}" data-m="${m.id}" data-a="no">No</button></div></div>
+       ${po?popHTML(m.id==="steak"?"Which cut?":"Which kind?",m.v,mv(m.id),false):""}
+       <button class="tipbtn" data-tip="${m.id}">${op?"▾":"▸"} How to cook it</button>${op?tipHTML(m):""}</div>`}).join("")}</div>
+   <p class="lbl">Something else you like?</p>
+   <div class="chips">${st.mealCustom.map(x=>`<span class="chip cust" data-mc="${esc(x)}">${esc(x)}</span>`).join("")}${customChip("meals")}</div>${customRow("meals")}
+   ${tipsBox()}
+   ${btns(yesN?`Next → (${yesN} yes)`:"Next →",false,yesN?null:"Skip: pick for me")}`;
+  card.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const id=b.dataset.m;st.meals[id]=st.meals[id]===b.dataset.a?undefined:b.dataset.a;if(!st.meals[id])delete st.meals[id];render()});
+  card.querySelectorAll("[data-tip]").forEach(b=>b.onclick=()=>{st.tip=st.tip===b.dataset.tip?null:b.dataset.tip;render()});
+  card.querySelectorAll("[data-mv]").forEach(b=>b.onclick=()=>{const k="m:"+b.dataset.mv;st.open=st.open===k?null:k;render()});
+  card.querySelectorAll(".pop .popt").forEach(b=>b.onclick=()=>{const id=st.open.slice(2);st.mealV[id]=b.dataset.v;st.meals[id]="yes";st.open=null;render()});
+  card.querySelectorAll("[data-mc]").forEach(b=>b.onclick=()=>{st.mealCustom=st.mealCustom.filter(x=>x!==b.dataset.mc);render()});
+  bindCustom((k,v)=>{if(!st.mealCustom.includes(v))st.mealCustom.push(v)});
+  $("nx").onclick=()=>go();const sk=$("sk");if(sk)sk.onclick=()=>go();
+}
+function burger(){
+  const open=TOPPINGS.find(t=>t.id===st.open);
+  card.innerHTML=`<div class="emoji">🍔</div><h1>Build your burger</h1><p class="sub">Everything's on. Tap ▾ items to swap; tap others off.</p>
+    <div class="chips">${TOPPINGS.map(t=>{const s=st.top[t.id];return `<span class="chip drop${s.on?"":" off"}${st.open===t.id?" open":""}" data-t="${t.id}">${esc(t.v?s.v:t.label)}${t.v?" ▾":""}</span>`}).join("")}
+    ${st.topCustom.map(c=>`<span class="chip drop cust${c.on?"":" off"}" data-tc="${esc(c.label)}">${esc(c.label)}</span>`).join("")}${customChip("burger")}</div>
+    ${open?popHTML(`Swap ${esc(open.label.toLowerCase())} for…`,open.v,st.top[open.id].v,st.top[open.id].on):""}${customRow("burger")}
+    ${btns("Next →")}`;
+  card.querySelectorAll("[data-t]").forEach(c=>c.onclick=()=>{const t=TOPPINGS.find(x=>x.id===c.dataset.t);if(t.v){st.open=st.open===t.id?null:t.id;st.cOpen=null}else{st.top[t.id].on=!st.top[t.id].on}render()});
+  card.querySelectorAll(".pop .popt").forEach(b=>b.onclick=()=>{const s=st.top[st.open];if(b.dataset.rm)s.on=false;else{s.v=b.dataset.v;s.on=true}st.open=null;render()});
+  card.querySelectorAll("[data-tc]").forEach(c=>c.onclick=()=>{const o=st.topCustom.find(x=>x.label===c.dataset.tc);o.on=!o.on;render()});
+  bindCustom((k,v)=>{if(!st.topCustom.some(x=>x.label===v))st.topCustom.push({label:v,on:true})});
+  $("nx").onclick=()=>go();
 }
 function drill(step){
   const d=DRILL[step.side];
@@ -138,41 +321,243 @@ function drill(step){
   let opts,q,emoji=d.emoji;
   if(step.level==="top"){opts=d.opts;q=d.q}
   else if(step.level==="then"){opts=d.then.opts;q=d.then.q;emoji=d.then.emoji}
-  else {opts=(d.sub[step.level]||d.sub["*"]);q=`${step.level}: which flavors?`}
-  card.innerHTML=`<div class="emoji">${emoji}</div><h1>${q}</h1><p class="sub">${step.side}${step.level!=="top"&&step.level!=="then"?" › "+step.level:""}. Pick any you like.</p>
-    ${chipList(opts,st.picks[key])}${btns("Next →",!st.picks[key].size)}`;
-  bindChips(st.picks[key]);
-  document.getElementById("nx").onclick=()=>{
+  else {opts=(d.sub[step.level]||d.sub["*"]);q=`${esc(step.level)}: which flavors?`}
+  card.innerHTML=`<div class="emoji">${emoji}</div><h1>${q}</h1><p class="sub">${step.side}${step.level!=="top"&&step.level!=="then"?" › "+esc(step.level):""}. Pick any you like.</p>
+    ${chipList(opts,st.picks[key],"",key)}${btns("Next →",!st.picks[key].size)}`;
+  bindChips(st.picks[key]);bindCustom(addCustomTo(st.picks[key]));
+  $("nx").onclick=()=>{
     if(!st.picks[key].size)return;
     if(step.level==="top"){
       const extra=[];
-      if(d.sub) [...st.picks[key]].forEach(b=>extra.push({side:step.side,level:b}));
+      if(d.sub) [...st.picks[key]].filter(b=>d.sub[b]||d.sub["*"]).forEach(b=>extra.push({side:step.side,level:b}));
       if(d.then) extra.push({side:step.side,level:"then"});
-      // remove any previously inserted children for this side
       queue=queue.filter((x,ix)=>!(ix>pos&&typeof x==="object"&&x.side===step.side&&x.level!=="top"));
       queue.splice(pos+1,0,...extra);
     }
     go();
   };
 }
+function topLabel(id){const s=st.top[id];return s&&s.on?s.v:null}
 function summary(){
-  const off=TOPPINGS.filter(x=>!st.toppings.has(x));
-  const sideLines=SIDES.filter(s=>st.sides.has(s)).map(s=>{
+  const off=TOPPINGS.filter(t=>!st.top[t.id].on).map(t=>t.label);
+  const on=[...TOPPINGS.filter(t=>st.top[t.id].on).map(t=>st.top[t.id].v),...st.topCustom.filter(c=>c.on).map(c=>c.label)];
+  const sideLines=allSides().filter(s=>st.sides.has(s)).map(s=>{
+    if(!DRILL[s])return `<p><b>${esc(s)}</b> <span class="no">(custom)</span></p>`;
     const top=[...(st.picks[s]||[])];
-    const subs=Object.keys(st.picks).filter(k=>k.startsWith(s+" › ")).map(k=>{const lv=k.split(" › ")[1];return `${lv==="then"?DRILL[s].then.key:lv}: ${[...st.picks[k]].join(", ")}`});
-    return `<p><b>${s}</b>: ${top.join(", ")}${subs.length?`<br><span class="no">${subs.join("<br>")}</span>`:""}</p>`;
+    const subs=Object.keys(st.picks).filter(k=>k.startsWith(s+" › ")&&st.picks[k].size).map(k=>{const lv=k.split(" › ")[1];return `${esc(lv==="then"?DRILL[s].then.key:lv)}: ${[...st.picks[k]].map(esc).join(", ")}`});
+    return `<p><b>${s}</b>: ${top.map(esc).join(", ")}${subs.length?`<br><span class="no">${subs.join("<br>")}</span>`:""}</p>`;
   }).join("");
   const others=[...st.stores].filter(x=>x!==st.main);
+  const ys=MEALS.filter(m=>st.meals[m.id]==="yes"), ns=MEALS.filter(m=>st.meals[m.id]==="no");
+  const eq=C.EQUIP.filter(e=>st.equip.has(e.id)).map(e=>e.label);
   card.innerHTML=`<div class="sum"><h1 style="text-align:center">Your picks</h1>
-    <h2>🛒 Stores</h2><p><b>${st.main}</b> (main)${others.length?", also "+others.join(", "):""}</p>
+    <h2>🛒 Stores</h2><p>${st.main?`<b>${esc(st.main)}</b> (main)${others.length?", also "+others.map(esc).join(", "):""}`:"Skipped: using Aldi + Publix"}</p>
     <h2>📸 Photos</h2><p>${["pantry","fridge","freezer"].map(k=>(st.photos[k]?"✓ ":"✗ ")+k).join(" · ")}</p>
-    <h2>🍔 Burger</h2><p>${[...st.toppings].map(x=>`<span class="tag">${x}</span>`).join("")}</p>
-    ${off.length?`<p class="no">No: ${off.join(", ")}</p>`:""}
-    <p><b>Bun:</b> ${[...st.bun].join(", ")}${st.cheese.size?` · <b>Cheese:</b> ${[...st.cheese].join(", ")}`:""}</p>
+    <h2>🍳 Gear</h2><p>${eq.length?eq.map(x=>`<span class="tag">${esc(x)}</span>`).join(""):"None picked: assuming Foreman + microwave"}</p>
+    <h2>🥩 Meals</h2><p>${ys.length||st.mealCustom.length?[...ys.map(m=>`<span class="tag y">✓ ${esc(m.v?mv(m.id)+" · ":"")}${esc(m.name)}</span>`),...st.mealCustom.map(x=>`<span class="tag y">✓ ${esc(x)}</span>`)].join(""):"Skipped: I'll pick grill favorites"}</p>
+    ${ns.length?`<p class="no">No: ${ns.map(m=>esc(m.name)).join(", ")}</p>`:""}
+    ${st.meals.burger==="no"?"":`<h2>🍔 Burger</h2><p>${on.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</p>${off.length?`<p class="no">No: ${off.join(", ")}</p>`:""}`}
     <h2>🍽️ Sides</h2>${sideLines||"<p>None</p>"}
-    <p class="muted">In the real version, the chef bot does this for about 20 meals. It reads your photos to see what's already there, then builds a cheap weekly plan and a grocery list sorted by aisle with prices from ${st.main} first, plus freezer notes.</p>
-    <button class="next" id="rs" style="margin-top:14px;background:var(--chip)">Start over</button></div>`;
-  document.getElementById("rs").onclick=()=>{reset();render()};
+    <button class="next build" id="bw">📅 Build my week</button>
+    <p class="muted">Turns your picks into a 7-day Foreman plan + a priced Aldi/Publix shopping list. All on this page.</p>
+    <button class="next" id="rs" style="margin-top:6px;background:var(--chip)">Start over</button></div>`;
+  $("rs").onclick=()=>{reset();render()};
+  $("bw").onclick=()=>{buildWeek();document.body.classList.add("light");window.scrollTo(0,0)};
+}
+/* ================= WEEK PLANNER ================= */
+const yes=id=>st.meals[id]==="yes";
+let W=null; // {days, items, have:Set, ck:Set}
+function sidesFor(){
+  const lunch=[],dinner=[];
+  const pk=k=>[...(st.picks[k]||[])];
+  if(st.sides.has("Potato chips"))pk("Potato chips").forEach(b=>{const f=pk("Potato chips › "+b);lunch.push(f.length?`${f[0]} ${b}`:b)});
+  if(st.sides.has("Fruit"))pk("Fruit").forEach(f=>lunch.push(f.replace(/s$/,"").replace(/ie$/,"y")));
+  if(st.sides.has("Yogurt"))pk("Yogurt").forEach(b=>{const f=pk("Yogurt › "+b);lunch.push(`${b} yogurt${f.length?" ("+f[0]+")":""}`)});
+  if(st.sides.has("Fries"))pk("Fries").forEach(f=>dinner.push(`${f} fries${st.equip.has("airfryer")?" (air fryer)":(st.equip.has("oven")||st.equip.has("sheet"))?" (oven)":""}`));
+  if(st.sides.has("Salad"))pk("Salad").forEach(s=>{const d=pk("Salad › then");dinner.push(`${s} salad${d.length?" w/ "+d[0]:""}`)});
+  if(yes("veg"))dinner.push("grilled "+mv("veg").toLowerCase());
+  allSides().filter(s=>!DRILL[s]&&st.sides.has(s)).forEach(s=>{lunch.push(s);dinner.push(s)});
+  if(!lunch.length)lunch.push("a banana");
+  if(!dinner.length)dinner.push("garden salad");
+  return {lunch,dinner};
+}
+function buildWeek(){
+  const fm=st.equip.has("foreman")||st.equip.size===0;
+  const cut=mv("steak"), patty=topLabel("patty")||"Beef patty (80/20)";
+  const pattyShort=patty.replace(/ \(80\/20\)/,"").replace(/ patty/,"").toLowerCase();
+  const bun=topLabel("bun"), cheese=topLabel("cheese");
+  const G={
+    chicken:{name:"chicken",frozen:"chicken breasts",lunch:yes("bowl")?`${mv("bowl")} chicken rice bowl`:"Sliced grilled chicken + rice",
+      cook:()=>yes("chicken")||!yes("bowl")?{id:"chicken",e:"🍗",t:"Grilled chicken breast"}:{id:"bowl",e:"🍚",t:`${mv("bowl")} chicken rice bowl`},
+      left:()=>yes("chixq")?{id:"chixq",e:"🫓",t:`Chicken ${mv("chixq").toLowerCase()}`}:{id:"bowl",e:"🍚",t:`${yes("bowl")?mv("bowl"):"Teriyaki"} chicken rice bowl`},
+      note:n=>`Cook night: grill ${n+1} chicken breasts. Eat 1, fridge ${n}. The rest of the family pack went in the freezer raw on shop day.`},
+    burger:{name:"burgers",frozen:"burger patties",lunch:`${pattyShort[0].toUpperCase()+pattyShort.slice(1)} burger${bun&&bun!=="Lettuce wrap"?" on a "+bun.toLowerCase():""}`,
+      cook:()=>({id:"burger",e:"🍔",t:`Burgers: ${pattyShort}${bun?", "+bun.toLowerCase():""}${cheese?", "+cheese.replace(" cheese","")+" cheese":""}`}),
+      left:()=>({id:"burger",e:"🍔",t:"Burger round 2 (patty from the fridge)"}),
+      note:n=>`Cook night: make 6 patties from the pack. Grill ${n+1}: eat 1, fridge ${n}. Freeze ${5-n} raw with paper between.`},
+    steak:{name:"steak",lunch:`Sliced ${cut.toLowerCase()} steak + rice`,
+      cook:()=>({id:"steak",e:"🥩",t:`${cut} steak night`}),
+      left:()=>yes("steakq")?{id:"steakq",e:"🌮",t:"Steak quesadilla"}:yes("stkegg")?{id:"stkegg",e:"🍳",t:"Steak & eggs"}:{id:"bowl",e:"🍚",t:"Steak rice bowl"},
+      note:n=>`Cook night: grill 2 ${cut.toLowerCase()} steaks (~1.5 lb). Eat 1, slice the other into the fridge for tomorrow's lunch + dinner.`},
+    pork:{name:"pork",frozen:"pork chops",lunch:"Sliced pork + rice",
+      cook:()=>({id:"pork",e:"🐖",t:mv("pork")}),left:()=>({id:"bowl",e:"🍚",t:"BBQ pork rice bowl"}),
+      note:n=>`Cook night: grill ${n+1} ${mv("pork").toLowerCase().includes("rib")?"ribs":"chops"}. Eat 1, fridge ${n}, freeze the rest raw.`},
+    brats:{name:"brats",frozen:"brats",lunch:`${mv("brats").replace(/ \(.*\)/,"")} on a bun`,
+      cook:()=>({id:"brats",e:"🌭",t:`${mv("brats").replace(/ \(.*\)/,"")} + peppers & onions`}),left:()=>({id:"brats",e:"🌭",t:`${mv("brats").replace(/ \(.*\)/,"")} round 2`}),
+      note:n=>`Cook night: grill ${n+1} ${mv("brats").replace(/ \(.*\)/,"").toLowerCase()}. Eat 1, fridge ${n}, freeze the rest.`}
+  };
+  // which proteins: yes'd ones, priority steak > burger > chicken > pork > brats; fill to 3
+  const want={steak:yes("steak")||yes("steakq")||yes("stkegg"),burger:yes("burger"),chicken:yes("chicken")||yes("chixq")||yes("bowl"),pork:yes("pork"),brats:yes("brats")};
+  let groups=["steak","burger","chicken","pork","brats"].filter(g=>want[g]);
+  const extra=groups.slice(3);groups=groups.slice(0,3);
+  for(const g of ["steak","chicken","burger"]) if(groups.length<3&&!groups.includes(g)&&st.meals[g==="steak"?"steak":g]!=="no")groups.push(g);
+  for(const g of ["chicken","pork","brats","burger","steak"]) if(groups.length<3&&!groups.includes(g))groups.push(g);
+  const order=["chicken","burger","pork","brats","steak"];groups.sort((a,b)=>order.indexOf(a)-order.indexOf(b));
+  const F=["burger","chicken","brats","pork"].find(g=>groups.includes(g));
+  const S=sidesFor();let li=0,di=0;const ls=()=>S.lunch[li++%S.lunch.length], ds=()=>S.dinner[di++%S.dinner.length];
+  const breakfasts=["2 scrambled eggs + toast"];
+  if(st.sides.has("Yogurt"))breakfasts.push("Yogurt + fruit");if(st.sides.has("Fruit"))breakfasts.push("Toast + "+(S.lunch.find(x=>/banana|apple|orange/i.test(x))||"fruit").toLowerCase());
+  if(breakfasts.length<2)breakfasts.push("Egg sandwich on toast");
+  const start=new Date();start.setHours(0,0,0,0);start.setDate(start.getDate()-((start.getDay()+6)%7)); // Monday
+  const dn=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"], icons=["🛒","🔁","🔥","🔁","🥩","🔁","🧊"];
+  const days=[];
+  const mk=(i,o)=>{const d=new Date(start);d.setDate(d.getDate()+i);days.push({short:`${dn[i]} ${d.getMonth()+1}/${d.getDate()}`,icon:icons[i],...o,bf:i%2===0||i===6?breakfasts[(i/2|0)%breakfasts.length]:null})};
+  const custom=st.mealCustom.slice();
+  [0,1,2].forEach(k=>{
+    const g=G[groups[k]], c=g.cook(), l=g.left(), n=k<2?3:2, i=k*2;
+    mk(i,{cook:true,meal:c.id,e:c.e,dinner:`${c.t} + ${ds()}`,note:(i===0?"🛒 Shop day: split meat into single portions in freezer bags + date them. ":"")+g.note(n),
+      lunch:i===0?"Shop-day lunch: whatever's in the fridge (your photos would tell me)":`${G[groups[k-1]].lunch} + ${ls()}`});
+    let note=n===3?`Leftover night: just reheat (165°F). ${g.name[0].toUpperCase()+g.name.slice(1)} from ${dn[i]} keeps thru ${dn[i+3]}; freeze anything left by then.`:`Leftover night: reheat to 165°F. Fridge should be almost empty after tonight.`;
+    if(i+1===5&&F)note+=` 🧊 Tonight: move 2 frozen ${G[F].frozen} to the fridge to thaw for tomorrow.`;
+    const lt=custom.length&&k===1?{id:null,e:"⭐",t:custom.shift()+" (your pick)"}:l;
+    mk(i+1,{cook:false,meal:lt.id,e:lt.e,dinner:lt.t,note,lunch:`${g.lunch} + ${ls()}`});
+    if(groups[k]==="steak"&&yes("stkegg")&&lt.id!=="stkegg")days[days.length-1].bf="Steak & eggs (a few slices of last night's steak)";
+  });
+  if(F){const g=G[F],c=g.cook();
+    mk(6,{cook:true,meal:c.id,e:c.e,dinner:`${custom.length?custom.shift()+" (your pick) or ":""}${c.t} (from the freezer) + ${ds()}`,
+      note:`Freezer day: grill the 2 thawed ${g.frozen} at once: 1 for lunch, 1 for dinner. Fridge is empty-ish: snap new photos and build next week.`,lunch:`${g.lunch} (just grilled) + ${ls()}`});}
+  W={days,groups,extra,F,have:new Set(),ck:new Set(),open:null,items:buildList(groups)};
+  renderWeek();
+}
+function buildList(groups){
+  const P=C.PRICES, out=[], seen={};
+  const add=(key,o={})=>{const base=P[key]||{n:key,q:"",aisle:"other",a:null,p:null};
+    if(o.brand){o.al=base.a;o.a=null;o.hint=`Aldi usually doesn't carry ${o.brand}; Aldi look-alike ~$${base.a.toFixed(2)} est. (used in the All-Aldi total)`+(base.aisle==="snacks"?" · Publix often runs chips BOGO":"")}const id=o.id||key;if(seen[id]){if(o.why)seen[id].why+=", "+o.why;return}
+    const it={id,...base,...o,why:o.why||""};seen[id]=it;out.push(it)};
+  const inPlan=g=>groups.includes(g);
+  if(inPlan("chicken"))add("chicken",{why:"cook night"});
+  if(inPlan("steak"))add("steak:"+mv("steak"),{id:"steak",why:"steak night"});
+  if(inPlan("pork"))add("pork:"+mv("pork"),{id:"pork",why:"cook night"});
+  if(inPlan("brats")){add("brats:"+mv("brats"),{id:"brats",why:"cook night"});add("hotdogbun",{why:"brats"});add("veg:Onions & peppers",{id:"bratveg",why:"brat peppers & onions"})}
+  if(inPlan("burger")){
+    const pt=topLabel("patty")||"Beef patty (80/20)";
+    add(/Turkey/.test(pt)?"turkey":/Chicken/.test(pt)?"chickgr":/sirloin/.test(pt)?"sirloingr":"beef",{id:"patty",why:"burgers (6 patties)"});
+    const T=id=>topLabel(id);
+    const bn=T("bun");if(bn&&bn!=="Lettuce wrap")add(/Sesame|Plain/.test(bn)?"bun:plain":"bun:fancy",{id:"bun",n:bn+"s",why:"burgers"});
+    if(bn==="Lettuce wrap")add("lettuce",{n:"Iceberg lettuce (for wraps)",why:"lettuce-wrap burgers"});
+    if(T("cheese"))add("cheeseslice",{id:"cheese",n:"Sliced "+T("cheese").replace(" cheese","")+" cheese",why:"burgers"});
+    if(T("lettuce"))add("lettuce",{n:T("lettuce"),why:"burgers"});
+    if(T("tomato"))add("tomato",{why:"burgers"});
+    if(T("onion"))add("onion",{n:T("onion")==="Red onion"?"Red onions":"White onions",why:T("onion").toLowerCase()});
+    if(T("pickles"))add("pickles",{n:T("pickles")+" (jar)",why:"burgers"});
+    if(T("ketchup"))add("ketchup",{why:"burgers"});
+    if(T("mustard"))add("mustard",{n:T("mustard"),why:"burgers"});
+    if(T("mayo"))add("mayo",{n:T("mayo"),why:"burgers"});
+    if(T("bacon"))add(T("bacon")==="Turkey bacon"?"tbacon":"bacon",{id:"bacon",why:"burgers"});
+    if(T("avocado"))add(T("avocado")==="Guacamole"?"guac":"avocado",{id:"avo",why:"burgers"});
+    if(T("jalapeno"))add(/Fresh/.test(T("jalapeno"))?"jalfresh":"jalpickled",{id:"jal",why:"burgers"});
+    if(T("mushroom"))add("mushroom",{why:"burgers"});
+    if(T("bbq"))add("bbq",{n:T("bbq")+" sauce",brand:/Ray/.test(T("bbq"))?"Sweet Baby Ray's":null,why:"burgers"});
+    if(T("egg"))add("eggs",{why:"fried-egg burgers"});
+    if(T("hot"))add("hot",{n:T("hot")+" hot sauce",brand:T("hot"),why:"burgers"});
+    st.topCustom.filter(c=>c.on).forEach(c=>add("custom:"+c.label,{n:c.label,q:"",aisle:"other",a:null,p:null,custom:true,why:"your burger add"}));
+  }
+  const usesQ=(inPlan("chicken")&&yes("chixq")&&mv("chixq")==="Quesadilla")||(inPlan("steak")&&yes("steakq"));
+  if(usesQ){add("tortilla",{why:"quesadillas"});add("shred",{why:"quesadillas"});add("salsa",{why:"quesadillas"})}
+  if(inPlan("chicken")&&yes("chixq")&&mv("chixq")==="Panini"){add("cheeseslice",{id:"cheese",n:"Sliced provolone",why:"paninis"})}
+  const needRice=inPlan("chicken")||inPlan("steak")||inPlan("pork");
+  if(needRice)add(st.equip.has("rice")?"ricebag":"ricepouch",{q:st.equip.has("rice")?"2 lb bag":"4 pouches",a:st.equip.has("rice")?1.79:5.16,p:st.equip.has("rice")?2.49:7.96,why:"bowls + lunches"});
+  if(inPlan("chicken")){const bv=yes("bowl")?mv("bowl"):"Teriyaki";if(bv==="Teriyaki")add("teriyaki",{why:"rice bowls"});else if(bv==="BBQ")add("bbq",{why:"rice bowls"});else if(/Salsa/.test(bv)){add("salsa",{why:"rice bowls"});add("shred",{why:"rice bowls"})}}
+  if(inPlan("pork"))add("bbq",{why:"pork"});
+  if(inPlan("steak")&&yes("stkegg"))add("eggs",{why:"steak & eggs"});
+  if(yes("veg"))add("veg:"+mv("veg"),{id:"veg",why:"grilled veggie sides"});
+  // breakfast + staples
+  add("eggs",{why:"breakfast"});add("bread",{why:"toast"+(yes("chixq")&&mv("chixq")==="Panini"?" + paninis":"")});
+  add("season",{why:"steak & chicken"});add("spray",{why:"Foreman + pans"});add("bags",{why:"freezer portions"});
+  // sides
+  const pk=k=>[...(st.picks[k]||[])];
+  if(st.sides.has("Potato chips"))pk("Potato chips").slice(0,3).forEach(b=>{const f=pk("Potato chips › "+b);const k=P["chips:"+b]?"chips:"+b:"chips";add(k,{id:"chips:"+b,brand:k==="chips:Kettle Brand"?null:b,n:`${b}${f.length?" ("+f.slice(0,2).join(", ")+")":""}`,why:"lunch side"})});
+  if(st.sides.has("Fries"))pk("Fries").slice(0,2).forEach(f=>add("fries",{id:"fries:"+f,n:`Frozen ${f.toLowerCase()} fries`,why:"dinner side",...(f==="Sweet potato"?{a:2.99,p:4.99}:{})}));
+  if(st.sides.has("Fruit"))pk("Fruit").filter(f=>P["Fruit:"+f]).slice(0,4).forEach(f=>add("Fruit:"+f,{why:"lunch side"}));
+  if(st.sides.has("Yogurt"))pk("Yogurt").slice(0,2).forEach(b=>{const f=pk("Yogurt › "+b);add("yogurt",{id:"yog:"+b,brand:b==="Store brand"?null:b,n:`${b} yogurt${f.length?" ("+f.slice(0,3).join(", ")+")":""}`,why:"lunch/breakfast"})});
+  if(st.sides.has("Salad")){pk("Salad").filter(s=>P["Salad:"+s]).slice(0,2).forEach(s=>add("Salad:"+s,{why:"dinner side"}));pk("Salad › then").slice(0,2).forEach(d=>add("dressing",{id:"dr:"+d,n:d+" dressing",why:"salad"}))}
+  if(!st.sides.size){add("Fruit:Bananas",{why:"default lunch side"});if(!yes("veg"))add("Salad:Garden",{why:"default dinner side"})}
+  // custom side / drill items
+  Object.entries(st.custom).forEach(([k,arr])=>{if(!["sides","Fruit","Salad"].includes(k))return;arr.forEach(v=>{const isSel=k==="sides"?st.sides.has(v):(st.picks[k]&&st.picks[k].has(v));if(isSel)add("custom:"+k+v,{n:k==="sides"?v:`${v} (${k.replace(" › then"," dressing")})`,q:"",aisle:"other",a:null,p:null,custom:true,why:"your custom pick"})})});
+  st.mealCustom.forEach(v=>add("custom:meal"+v,{n:`Stuff for: ${v}`,q:"",aisle:"other",a:null,p:null,custom:true,why:"your custom meal"}));
+  return out;
+}
+const AISLES=[["meat","🥩 Meat"],["produce","🥬 Produce"],["dairy","🧀 Dairy & eggs"],["bread","🍞 Bread"],["pantry","🥫 Pantry"],["frozen","❄️ Frozen"],["snacks","🍿 Snacks"],["other","⭐ Your custom adds"]];
+const $$=n=>n==null?"?":"$"+n.toFixed(2);
+function totals(){let a=0,p=0,b=0,na=0,np=0,cu=0;W.items.forEach(it=>{if(W.have.has(it.id))return;if(it.a==null&&it.p==null){cu++;return}
+  if(it.a!=null)a+=it.a;else a+=(it.al!=null?it.al:it.p); if(it.p!=null)p+=it.p;else p+=it.a;
+  const aw=it.p==null||(it.a!=null&&it.a<=it.p);b+=aw?it.a:it.p;aw?na++:np++});return {a,p,b,na,np,cu}}
+function renderWeek(){
+  const t=totals();
+  const fm=st.equip.has("foreman")||st.equip.size===0;
+  const start=W.days[0].short.split(" ")[1], end=W.days[6].short.split(" ")[1];
+  const mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const s0=new Date();s0.setDate(s0.getDate()-((s0.getDay()+6)%7));const s6=new Date(s0);s6.setDate(s6.getDate()+6);
+  const wl=`${mo[s0.getMonth()]} ${s0.getDate()}–${s0.getMonth()===s6.getMonth()?"":mo[s6.getMonth()]+" "}${s6.getDate()}, ${s6.getFullYear()}`;
+  const otherStores=[...st.stores].filter(x=>x!=="Aldi"&&x!=="Publix");
+  const main=st.main==="Aldi"||st.main==="Publix"?st.main:"";
+  const byA={};W.items.forEach(it=>{(byA[it.aisle]=byA[it.aisle]||[]).push(it)});
+  const nCk=W.ck.size;
+  const MN=id=>id&&M(id);
+  $("week").innerHTML=`
+  <header class="wk-h"><p class="kick">Kitchen HQ · Cameron</p><h1 class="brand">Cameron's Grill Week</h1>
+    <div class="wlabel">${wl}</div>
+    <p class="tagline">Cooking for 1 · ${fm?"Foreman grill":"stovetop"} first · cook once, eat 2–3 times · lunch packed for Woody's</p>
+    <div class="pills"><span class="pill t">3 cook nights + freezer day</span><span class="pill c">Best split ~$${t.b.toFixed(0)} est.</span></div></header>
+  <aside class="rules"><h2>Cameron's kitchen rules</h2><ul>
+    <li><b>Cook nights</b> make 3–4 portions: eat 1, fridge the rest for lunch + the next dinner.</li>
+    <li><b>Fridge:</b> cooked leftovers last 3–4 days. Not eaten by day 4 → freezer.</li>
+    <li><b>Freezer:</b> split family packs into single bags the day you shop. Date them. Thaw overnight in the fridge.</li>
+    <li><b>Temps:</b> steak & pork 145°F + 3 min rest · burgers 160°F · chicken 165°F · leftovers 165°F.</li>
+    <li><b>Lunch</b> = leftovers in a container for Woody's. Breakfast is optional.</li></ul></aside>
+  <details class="lt"><summary>💰 Meat money tips</summary><ul>${C.TIPS.meat.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>
+  <div class="stitle"><h2>This week</h2><span>7 days · tap a day for how-to</span></div>
+  ${W.days.map((d,i)=>{const m=MN(d.meal);return `<div class="day${d.cook?" cook":""}" data-d="${i}" style="animation-delay:${i*.04}s">
+    <div class="dh"><span>${d.short}${d.cook?" · cook":""}</span><span>${d.icon}</span></div>
+    <div class="db"><span class="memo">${d.e}</span><p class="dinner">${esc(d.dinner)}</p><p class="dnote">${esc(d.note)}</p>
+    <p class="dl">🎒 Lunch at Woody's: ${esc(d.lunch)}</p>${d.bf?`<p class="dl b">☀️ Breakfast (optional): ${esc(d.bf)}</p>`:""}
+    ${W.open===i&&m?`<div class="rec"><h4>${m.emoji} ${esc(m.name)}</h4>${tipHTML(m).replace('class="tip"','')}</div>`:""}
+    <p class="hint">${W.open===i?"▾ tap to close":"▸ tap for how-to + temps"}</p></div></div>`}).join("")}
+  ${W.extra.length?`<div class="nextwk">🔄 Next week rotation: ${W.extra.map(g=>({pork:mv("pork"),brats:mv("brats"),chicken:"chicken",burger:"burgers",steak:"steak"}[g])).join(", ")} (you said yes; saved for next week so this week stays cheap).</div>`:""}
+  <section class="gpanel"><div class="stitle" style="margin-top:0"><h2>Shopping list</h2><span>${nCk} checked</span></div>
+    <div class="tot"><div class="${main==="Aldi"?"main":""}">${main==="Aldi"?"⭐ ":""}All Aldi<b>$${t.a.toFixed(2)}</b>est.</div><div class="${main==="Publix"?"main":""}">${main==="Publix"?"⭐ ":""}All Publix<b>$${t.p.toFixed(2)}</b>est.</div><div class="best">Best split<b>$${t.b.toFixed(2)}</b>est.</div></div>
+    <p class="gnote">Best split = Aldi for ${t.na} items, Publix for ${t.np} (your exact name brands). All-Aldi swaps in Aldi look-alikes.${t.cu?` + ${t.cu} custom item${t.cu>1?"s":""} (check price).`:""} ${otherStores.length?`Also on your list: ${otherStores.map(esc).join(", ")}; compare there too (secondary).`:""}</p>
+    <p class="gnote" style="background:#d4efef">📸 ${Object.keys(st.photos).length?`You sent ${Object.keys(st.photos).length} photo(s).`:"No photos yet."} The real bot reads your pantry/fridge/freezer photos and skips what you already have. Here: tap <b>Have it</b> to drop an item and update totals.</p>
+    ${AISLES.filter(([k])=>byA[k]).map(([k,lab])=>`<h3 class="aisle">${lab}<small>${byA[k].length} items</small></h3>
+      ${byA[k].map(it=>{const gone=W.have.has(it.id),ck=W.ck.has(it.id);const aw=it.a!=null&&(it.p==null||it.a<=it.p),pw=it.p!=null&&!aw;
+        return `<div class="it${ck?" ck":""}${gone?" gone":""}"><div class="cb" data-ck="${esc(it.id)}">${ck?"✓":""}</div>
+        <div class="nm" data-ck="${esc(it.id)}">${esc(it.n)}<small>${esc(it.q)}${it.q?" · ":""}for ${esc(it.why)}</small>
+          ${it.src?`<small class="src">✓ from store online listing: ${esc(it.hint||"")}</small>`:it.hint?`<small>${esc(it.hint)}</small>`:""}
+          <div class="pr"><span class="${aw?"win":""}">Aldi ${it.a==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.a)}</span><span class="${pw?"win":""}">Publix ${it.p==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.p)}</span>${it.custom?`<span>check price</span>`:aw||pw?`<span class="win">${aw?"Aldi":"Publix"} cheaper</span>`:""}</div></div>
+        <button class="have" data-have="${esc(it.id)}">${gone?"↩ Need it":"Have it"}</button></div>`}).join("")}`).join("")}
+    <p class="gnote" style="margin-top:12px">🌡 One-time buy: a cheap instant-read meat thermometer (~$10–15 at Walmart/Target/Amazon; not in totals).</p>
+  </section>
+  <a class="gh" href="${C.REPO.url}" target="_blank" rel="noopener"><b>🛠️ Your own repo, cameron-meals</b><span>Menu items, toppings, and prices live in meals.js. Edit it on GitHub to change your menu. github.com/Burnsted/cameron-meals</span></a>
+  <button class="wbtn p" id="bk">← Back to my picks</button><button class="wbtn g" id="rs2">Start over</button>
+  <div class="foot">All prices are <b>estimates</b> for St. Pete-area Aldi &amp; Publix as of Oct 2026. Check in-store; sales and BOGOs change weekly. Items marked ✓ came from the store's own online listing (Instacart-powered, can differ from the shelf price); everything else is a rough estimate.<br>
+   <details style="margin-top:6px"><summary>Price sources</summary>${C.SOURCES.map(([l,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(l)}</a>`).join("<br>")}</details>
+   Cook times are approximate; use a thermometer. Safe temps per USDA.<br>Cameron-owned planner · no account · no APIs · photos never leave your phone</div>`;
+  const wk=$("week");
+  wk.querySelectorAll(".day").forEach(d=>d.onclick=()=>{const i=+d.dataset.d;W.open=W.open===i?null:i;renderWeek()});
+  wk.querySelectorAll("[data-ck]").forEach(b=>b.onclick=()=>{const k=b.dataset.ck;W.ck.has(k)?W.ck.delete(k):W.ck.add(k);renderWeek()});
+  wk.querySelectorAll("[data-have]").forEach(b=>b.onclick=()=>{const k=b.dataset.have;W.have.has(k)?W.have.delete(k):W.have.add(k);renderWeek()});
+  $("bk").onclick=()=>{document.body.classList.remove("light");window.scrollTo(0,0)};
+  $("rs2").onclick=()=>{reset();render();window.scrollTo(0,0)};
 }
 reset();render();
 </script>
