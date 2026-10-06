@@ -162,7 +162,7 @@
 
   /* ===== v3: receipt button, calendar, budget, week customizer, build extras, prep badges ===== */
   .rcpt-btn{border:0;border-radius:999px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#111;font:inherit;font-weight:800;font-size:15px;padding:10px 16px;min-height:44px;cursor:pointer;box-shadow:0 4px 0 rgba(146,64,14,.45)}
-  .rcpt-top{display:flex;justify-content:center;margin:0 0 12px}
+  .rcpt-top{display:flex;justify-content:center;align-items:center;gap:8px;margin:0 0 12px;flex-wrap:wrap}
   body.light .rcpt-btn{background:linear-gradient(135deg,var(--coral),var(--coralD));color:#fff;box-shadow:0 4px 0 rgba(185,68,28,.3)}
   .wl-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0 4px}
   .wl-row .wlabel{margin:0}
@@ -220,8 +220,9 @@
   .edited{display:inline-block;margin-left:6px;background:var(--coral);color:#fff;border-radius:999px;padding:2px 8px;font-size:11px;letter-spacing:.04em;vertical-align:middle}
   .emo-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
   .emo-row .memo{margin:0}
-  .pc{display:flex;flex-direction:column;gap:2px;font-size:12px;font-weight:800;color:var(--wsoft);background:var(--wbg);border-radius:10px;padding:4px 8px;line-height:1.25}
-  .pc.dk{background:#0b1222;color:var(--mut);border:1px solid var(--chip)}
+  .pc{display:flex;flex-direction:column;gap:2px;font-size:12px;font-weight:800;color:var(--wsoft);background:transparent;border:0;border-radius:0;padding:0;line-height:1.25}
+  .pc.dk{background:transparent;color:var(--mut);border:0}
+  .pc .emo{font-size:20px;line-height:1;margin-right:4px;vertical-align:-2px}
   .mtop{display:flex;align-items:center;gap:8px}
   .meal .mrow{flex-wrap:wrap}.meal .yn{margin-left:auto}.meal .mt{order:3;flex-basis:100%;margin-top:6px}
   .xtra-btn{display:inline-block;border:2px dashed var(--gold);color:var(--gold);background:transparent;border-radius:999px;padding:10px 16px;font-size:16px;cursor:pointer;margin:0 0 14px}
@@ -251,9 +252,20 @@
   .nut{margin:6px 0 0;font-size:12px;font-weight:800;color:var(--tealD)}
 
   .rate{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px;font-size:12px;font-weight:800;color:var(--wsoft)}
-  .rate button{min-width:46px;min-height:40px;border-radius:12px;border:2px solid rgba(15,110,110,.25);background:var(--wbg);font-size:16px;cursor:pointer}
-  .rate button[aria-pressed="true"]{background:var(--tealS);border-color:var(--teal)}
-  .favb{display:inline-block;font-size:12px;font-weight:800;background:#fff3c4;color:#8a5a00;border-radius:999px;padding:2px 8px;vertical-align:middle}
+  .rate button{min-width:44px;min-height:44px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;font-size:20px;line-height:1;cursor:pointer;opacity:.4;transition:opacity .12s}
+  .rate button[aria-pressed="true"]{opacity:1;background:transparent;border:0;box-shadow:none}
+  .rate button:hover,.rate button:active{background:transparent;border:0;box-shadow:none}
+  .rate .rate-del{min-width:44px;min-height:44px;padding:4px;margin-left:auto;border:0;border-radius:0;background:transparent;box-shadow:none;color:var(--wsoft);flex-shrink:0;opacity:1;font-size:inherit}
+  .rate .rate-del:hover,.rate .rate-del:active,.rate .rate-del[aria-pressed]{background:transparent;border:0;box-shadow:none;opacity:1}
+  .rate .rate-del .ico{display:block}
+  .favb{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:800;color:var(--wsoft);vertical-align:middle;background:transparent;border:0;padding:0;border-radius:0}
+  .favb .emo,.emo{font-size:20px;line-height:1;display:inline-block;background:transparent;border:0;padding:0;border-radius:0;box-shadow:none}
+  .chip-row{display:inline-flex;align-items:center;gap:6px;margin:0 4px 8px 0}
+  .chip-row .chip{margin:0}
+  .lr button[data-ls]{min-width:44px;min-height:44px;padding:0 4px;border:0;border-radius:0;background:transparent;box-shadow:none;font-size:13px;font-weight:800;color:var(--wsoft);opacity:.4;gap:4px;display:inline-flex;align-items:center}
+  .lr button[data-ls] .emo{font-size:20px;line-height:1}
+  .lr button[data-ls][aria-pressed="true"]{opacity:1;background:transparent;border:0;color:var(--wink)}
+  .sheet .lr button[data-ls]{background:transparent;color:#3d5566}.sheet .lr button[data-ls][aria-pressed="true"]{background:transparent;border:0;color:#173042;opacity:1}
   .rpanel ul{list-style:none;margin:0;padding:0}.rpanel li{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed rgba(23,48,66,.12);font-weight:800}
   .rpanel li span{flex:1}.rpanel li small{color:var(--wsoft);font-weight:650}
   .etm{display:inline-block;margin-top:6px;font-size:13px;font-weight:800;color:var(--teal)}
@@ -261,8 +273,8 @@
   .nextwk{background:var(--white);border-radius:14px;padding:10px 14px;font-weight:700;font-size:14px;color:var(--wsoft);box-shadow:0 8px 22px rgba(23,48,66,.1);margin-bottom:12px}
   /* v4 */
   .dha{display:flex;align-items:center;gap:6px}
-  .dact{min-height:32px;min-width:40px;padding:3px 10px;border-radius:999px;border:1.5px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);color:#fff;font:inherit;font-size:11px;font-weight:800;letter-spacing:.04em;cursor:pointer}
-  .dact.del{font-size:14px;padding:3px 8px;letter-spacing:0}
+  .swap-link{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:44px;min-width:44px;padding:0 4px;border:0;border-radius:0;background:transparent;box-shadow:none;color:#fff;font:inherit;font-size:13px;font-weight:800;letter-spacing:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;opacity:.95}
+  .swap-link .ico{display:block;opacity:.95}
   .log{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(23,48,66,.14)}
   .lr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:4px 0;font-size:12px;font-weight:800;color:var(--wsoft)}
   .lr button{min-height:36px;min-width:40px;padding:4px 10px;border-radius:999px;border:2px solid rgba(15,110,110,.22);background:var(--wbg);font:inherit;font-size:12px;font-weight:800;color:var(--wink);cursor:pointer}
@@ -284,11 +296,65 @@
   .toast2{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;background:#173042;color:#fff;border-radius:14px;padding:12px 14px;font-weight:800;font-size:14px;display:flex;align-items:center;gap:12px;max-width:92vw;z-index:80;transition:.2s;box-shadow:0 8px 24px rgba(0,0,0,.25)}
   .toast2.show{opacity:1;transform:translateX(-50%);pointer-events:auto}.toast2 button{background:#fff;color:#0a5555;border:0;border-radius:10px;padding:8px 12px;font:inherit;font-weight:900;cursor:pointer}
   .cofbox{background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.4);border-radius:14px;padding:12px;margin:14px 0 4px;font-size:14px;font-weight:700;line-height:1.4}.cofbox small{color:var(--mut);font-weight:600}
+
+  /* ===== v5: hero card, settings, holidays, multi-protein, grab & go, store locs ===== */
+  .hero{background:var(--white);border-radius:22px;padding:16px 14px 14px;margin:0 0 14px;box-shadow:0 10px 28px rgba(23,48,66,.12);position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 12% 0%,rgba(15,110,110,.14),transparent 42%),radial-gradient(circle at 100% 20%,rgba(212,87,42,.10),transparent 40%);pointer-events:none}
+  .hero > *{position:relative}
+  .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+  .hero .kick{margin:0}.hero .brand{margin:2px 0 0;font-size:30px}
+  .gear{width:44px;height:44px;border-radius:14px;border:2px solid rgba(15,110,110,.35);background:var(--white);font-size:20px;cursor:pointer;flex-shrink:0;box-shadow:0 3px 0 rgba(15,110,110,.12)}
+  .hero .wl-row{margin:12px 0 8px}
+  .hero .tagline{margin:0 0 10px}
+  .budline{margin:8px 0 6px;font-weight:800;font-size:14px;color:var(--wink);line-height:1.35;text-align:left}
+  .budline.over{color:#991b1b}.budline.amber{color:#92400e}.budline.under{color:#065f46}
+  .bbar{height:10px;border-radius:999px;background:#e5ebe8;overflow:hidden;margin:0 0 4px}
+  .bbar i{display:block;height:100%;border-radius:999px;transition:width .3s}
+  .bbar.green i{background:#059669}.bbar.amber i{background:#d97706}.bbar.red i{background:#dc2626}
+  .hero .pills{justify-content:flex-start;margin-top:8px}
+  .day.hol{opacity:.72;cursor:default}.day.hol .dh{background:linear-gradient(135deg,#9aa7b0,#7d8a94)}.day.hol .db{background:#f1f3f4}
+  .day.grab .dh{background:linear-gradient(135deg,#0e7490,#155e75)}
+  .gtag{display:inline-flex;align-items:center;gap:4px;margin:0 0 4px;background:transparent;color:var(--wsoft);border:0;border-radius:0;padding:0;font-size:12px;font-weight:800}
+  .gtag .emo{font-size:20px;line-height:1}
+  .popt.chk{position:relative;padding-left:32px}.popt.chk::before{content:"☐";position:absolute;left:10px;top:50%;transform:translateY(-50%)}.popt.chk.sel::before{content:"☑"}
+  .popt.other{border-style:dashed}
+  .vchip.multi{max-width:100%;white-space:normal;line-height:1.3}
+  .sloc{margin:8px 0 0;text-align:left}.sloc label{display:block;font-size:13px;color:var(--mut);font-weight:700;margin:8px 0 4px}
+  .sloc input{width:100%;border-radius:12px;border:2px solid var(--chip);background:#0b1222;color:var(--ink);padding:10px 12px;font-size:15px}
+  .store-h{margin:14px 0 4px;padding:8px 10px;background:var(--tealS);border-radius:12px;color:var(--tealD);font-weight:800;font-size:15px}
+  .store-h small{display:block;font-weight:650;font-size:12px;color:var(--wsoft)}
+  .rules-ed{width:100%;min-height:140px;font:inherit;font-size:14px;font-weight:650;border:2px solid rgba(15,110,110,.3);border-radius:12px;padding:10px;background:#fff;color:#173042;resize:vertical}
+  .hol-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px dashed rgba(23,48,66,.12);font-weight:700;font-size:14px}
+  .hol-row span{flex:1}.set-sec{margin:14px 0 6px;font-family:Fraunces,Georgia,serif;font-size:18px}
+  .est-fb{color:#92400e;font-weight:800}
+
+  .calb{display:inline-block;font-weight:800;font-size:12px;color:#b45309}
+  .pc .calb,.pc span:last-child{color:inherit}
+  .mtot{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:rgba(14,165,233,.14);border:2px solid rgba(14,165,233,.45);font-weight:800;font-size:16px;color:#e0f2fe}
+  body.light .mtot{background:#ecfeff;border-color:#0e7490;color:#155e75}
+  .shopjump{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;color:#fff;font:inherit;cursor:pointer}
+  .shopjump .ico{display:block}
+  .byday{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .byday button{min-height:36px;padding:4px 10px;border-radius:999px;border:2px solid rgba(15,110,110,.28);background:#fff;font:inherit;font-weight:800;font-size:12px;color:var(--tealD);cursor:pointer}
+  .byday button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .it.hi{background:#fff3c4;box-shadow:inset 0 0 0 2px #d97706;border-radius:10px;animation:pulsehi .8s ease 2}
+  @keyframes pulsehi{0%,100%{background:#fff3c4}50%{background:#fde68a}}
+  .daytag{display:inline-block;margin:2px 4px 0 0;padding:1px 7px;border-radius:999px;background:var(--tealS);color:var(--tealD);font-size:11px;font-weight:800}
+
+  .ico-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;background:transparent;padding:4px;cursor:pointer;color:inherit;font:inherit;font-weight:800}
+  .ico-btn .ico{display:block}
+  .rcpt-btn.ico-btn,.cpb.ico-btn{width:auto;flex:1 1 auto}
+  .gear.ico-btn{width:44px;height:44px;border-radius:14px;border:2px solid rgba(15,110,110,.35);background:var(--white);box-shadow:0 3px 0 rgba(15,110,110,.12)}
+  .cal-btn.ico-btn{min-width:44px;min-height:44px;border-radius:14px;border:2px solid rgba(15,110,110,.35);background:var(--white)}
+  .memo-sm{font-size:20px;line-height:1}
+  .sheet .sw.sm{display:inline-flex;align-items:center;width:52px;height:30px}
+  .freezer-tip{margin:6px 0 8px;font-size:13px;font-weight:700;color:var(--wsoft);background:var(--wbg);border-radius:10px;padding:8px 10px}
+
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="rcpt-top"><button class="rcpt-btn" data-rcpt="1">📷 Upload receipt</button></div>
+  <div class="rcpt-top"><span class="emo" aria-hidden="true">📷</span><button class="rcpt-btn" data-rcpt="1">Upload receipt</button></div>
   <div class="top"><span>Cameron's Meal Picker</span><span id="count"></span></div>
   <div class="bar"><i id="prog" style="width:0"></i></div>
   <div class="card" id="card"></div>
@@ -299,15 +365,182 @@
 <div class="sheet-bg" id="sheet" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" id="sheetIn"></div></div>
 <script src="meals.js"></script>
 <script>
-const C=window.CAM, STORES=C.STORES, BUILDS=C.BUILDS, SIDES=C.SIDES, DRILL=C.DRILL, MEALS=C.MEALS;
+const C=window.CAM, STORES=C.STORES, BUILDS=C.BUILDS, SIDES=C.SIDES, SIDE_GROUPS=C.SIDE_GROUPS||[], DRILL=C.DRILL||{}, MEALS=C.MEALS;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const $=id=>document.getElementById(id);
 const M=id=>MEALS.find(m=>m.id===id);
+const ICO=(p)=>`<svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const icons={
+  cal:ICO(`<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`),
+  gear:ICO(`<circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>`),
+  repeat:ICO(`<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>`),
+  swap:ICO(`<polyline points="16 3 21 3 21 8"/><line x1="21" y1="3" x2="14" y2="10"/><polyline points="8 21 3 21 3 16"/><line x1="3" y1="21" x2="10" y2="14"/>`),
+  del:ICO(`<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>`),
+  cart:ICO(`<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>`),
+  cam:ICO(`<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>`),
+  copy:ICO(`<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>`),
+  rcpt:ICO(`<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>`),
+  close:ICO(`<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>`),
+  back:ICO(`<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>`)
+};
+const icoBtn=(name,label,cls="ico-btn")=>`<button type="button" class="${cls}" aria-label="${esc(label)}">${icons[name]||""}</button>`;
+
+const BF_CFG=C.BREAKFAST||{weekdayDefault:"oatmeal",weekdayAlt:"bagel",weekend:"bec",altEveryWeeks:1.5,items:{}};
+function getSettings(){try{const j=JSON.parse(localStorage.getItem(SET_KEY)||"{}");
+  return {grabNights:j.grabNights==null?2:Math.max(0,Math.min(3,+(j.grabNights)||0)),
+    bfWeekday:j.bfWeekday||BF_CFG.weekdayDefault||"oatmeal",
+    bfAlt:j.bfAlt||BF_CFG.weekdayAlt||"bagel",
+    bfWeekend:j.bfWeekend||BF_CFG.weekend||"bec",
+    bfAltWeeks:j.bfAltWeeks==null?BF_CFG.altEveryWeeks||1.5:+(j.bfAltWeeks)||1.5}}catch(_){return {grabNights:2,bfWeekday:"oatmeal",bfAlt:"bagel",bfWeekend:"bec",bfAltWeeks:1.5}}}
+function setSettings(s){try{localStorage.setItem(SET_KEY,JSON.stringify(s))}catch(_){}}
+
+function rulesHTML(){return getRules().map(t=>`<li>${esc(t)}</li>`).join("")}
+function openSettings(){const rules=getRules().join("\n"), set=getSettings(), hol=getHolCook();
+  const hols=holidaysInWeek(weekStartDate());
+  const inn=openSheet("", "Settings");
+  const draw=()=>{
+    inn.innerHTML=shTop("Settings")+`
+      <p class="set-sec">Kitchen rules</p>
+      <textarea class="rules-ed" id="rEd" rows="6" placeholder="One rule per line">${esc(rules)}</textarea>
+      <p class="set-sec">Grab & go nights / week</p>
+      <div class="dchips">${[0,1,2,3].map(n=>`<button type="button" data-gn="${n}" class="${set.grabNights===n?"on":""}">${n}</button>`).join("")}</div>
+      <p class="set-sec">Breakfast defaults</p>
+      <p class="muted2" style="margin:0 0 6px">Mon–Fri: mostly oatmeal; bagel+cream cheese about 1 weekday every 1–2 weeks. Sat–Sun: bacon egg cheese bagel.</p>
+      <label class="fld">Weekday default</label>
+      <div class="dchips">${["oatmeal","bagel"].map(k=>`<button type="button" data-bfw="${k}" class="${set.bfWeekday===k?"on":""}">${esc((BF_CFG.items[k]||{}).label||k)}</button>`).join("")}</div>
+      <label class="fld">Weekday alt (every ~1–2 wks)</label>
+      <div class="dchips">${["bagel","oatmeal"].map(k=>`<button type="button" data-bfa="${k}" class="${set.bfAlt===k?"on":""}">${esc((BF_CFG.items[k]||{}).label||k)}</button>`).join("")}</div>
+      <label class="fld">Weekend</label>
+      <div class="dchips"><button type="button" data-bfe="bec" class="on">${esc((BF_CFG.items.bec||{}).label||"BEC bagel")}</button></div>
+      <p class="set-sec">Holidays this week</p>
+      <p class="muted2" style="margin:0 0 6px">Grey days = no plan/list/budget unless you cook normally.</p>
+      ${hols.length?hols.map(h=>`<div class="hol-row"><span>${esc(h.name)}</span><div class="sw sm" role="switch" tabindex="0" aria-checked="${!!hol[h.id]}" data-hid="${h.id}"><span class="tg"></span></div><small>Cook normally</small></div>`).join(""):`<p class="muted2">No major holidays in this week.</p>`}
+      <div class="sh-row2"><button type="button" class="sh-btn p" id="setSave">Save</button></div>`;
+    inn.querySelectorAll("[data-gn]").forEach(b=>b.onclick=()=>{set.grabNights=+b.dataset.gn;draw()});
+    inn.querySelectorAll("[data-bfw]").forEach(b=>b.onclick=()=>{set.bfWeekday=b.dataset.bfw;draw()});
+    inn.querySelectorAll("[data-bfa]").forEach(b=>b.onclick=()=>{set.bfAlt=b.dataset.bfa;draw()});
+    inn.querySelectorAll(".sw[data-hid]").forEach(sw=>{const flip=()=>{const id=sw.dataset.hid;const o=getHolCook();o[id]=!o[id];setHolCook(o);draw()};
+      sw.onclick=flip;sw.onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}}});
+    inn.querySelector("#setSave").onclick=()=>{const lines=inn.querySelector("#rEd").value.split("\n").map(s=>s.trim()).filter(Boolean);
+      setRules(lines.length?lines:getRules());setSettings(set);closeSheet();if(W)renderWeek();toast("Settings saved")};
+  };
+  draw();
+}
+
+function resolvePriceStores(){
+  const chains={Aldi:"aldi",Publix:"publix"};
+  const meta=PRICE_META.storeMap||{};
+  const pick=(chain,store)=>{
+    const slug=locSlug(store,st.storeLoc&&st.storeLoc[store]||"");
+    if(meta[slug])return slug;
+    const pref=chain==="aldi"?"aldi-stpete":"publix-stpete";
+    return meta[pref]?pref:slug;
+  };
+  return {aldi:pick("aldi","Aldi"),publix:pick("publix","Publix")};
+}
+function storeHasPrices(id){return !!(PRICE_META.storeMap&&PRICE_META.storeMap[id])}
+function estStoreNote(chain){
+  const id=chain==="Aldi"?resolvePriceStores().aldi:resolvePriceStores().publix;
+  return storeHasPrices(id)?"":" <span class=\"est-fb\">est. (not this store yet)</span>";
+}
+
+function rotatePool(arr,seed,n){if(!arr.length)return [];const out=[];for(let i=0;i<n;i++)out.push(arr[(seed+i)%arr.length]);return out}
+function proteinCuts(id){
+  if(id==="burger")return pattyAll();
+  const m=M(id); if(!m||!m.protein)return [];
+  return mvAll(id).filter(Boolean);
+}
+
+function fixNextCut(id,used,pool){pool=pool||proteinCuts(id); if(!pool.length)return null;
+  const k="_"+id; if(used[k]==null)used[k]=0; const c=pool[used[k]%pool.length]; used[k]++; return c;}
+
+function sidesPool(){return allSides().filter(s=>st.sides.has(s))}
+function assignSides(mon,n){
+  const pool=sidesPool(); const out=[], cnt={}; const seed=Math.floor(mon.getTime()/86400000);
+  if(!pool.length){for(let i=0;i<n;i++)out.push("Caesar salad kit");return out}
+  let pi=0;
+  for(let d=0;d<n;d++){let picked=null,tries=0;
+    while(tries<pool.length*2){const s=pool[(seed+d+pi+tries)%pool.length];cnt[s]=cnt[s]||0;
+      if(cnt[s]<2){cnt[s]++;picked=s;break}tries++}
+    if(!picked)picked=pool[(d+seed)%pool.length];
+    out.push(picked);pi++}
+  return out;
+}
+
+function planBreakfast(mon){
+  const set=getSettings(), items=BF_CFG.items||{}, days=[];
+  const wk=Math.floor(mon.getTime()/604800000);
+  const altPeriod=Math.max(1,Math.round(set.bfAltWeeks||1.5));
+  const showAlt=Math.floor(wk/altPeriod)%2===0;
+  const altDay=1+(wk%4);
+  for(let i=0;i<7;i++){
+    let key;
+    if(i>=5)key=set.bfWeekend||"bec";
+    else if(showAlt&&i===altDay)key=set.bfAlt||"bagel";
+    else key=set.bfWeekday||"oatmeal";
+    const it=items[key]||{id:key,label:key,kcal:null,keys:[]};
+    days.push({...it,day:i});
+  }
+  return days;
+}
+function bfLine(bf){if(!bf)return "";
+  const pr=bfPrice(bf); return `Breakfast: ${esc(bf.label)} · ${calTxt(bf.kcal)}${pr?` · ~${pr}`:""}`}
+function bfPrice(bf){if(!bf)return "";const a=bf.a!=null?bf.a:0,p=bf.p!=null?bf.p:0;const v=Math.min(a||p||0,p||a||0)||a||p;
+  return v?`$${v.toFixed(2)}`:""}
+
+function mealTitle(id,cut){
+  const m=M(id); if(!m)return "";
+  if(m.grab)return m.name;
+  if(id==="burger"){const p=cut||pattyAll()[0];return `Burgers: ${(p||"").replace(/ patty/i,"").toLowerCase()}`}
+  if(m.protein&&cut)return `${cut} ${m.name.replace(/ night$/,"").toLowerCase()}`;
+  if(m.v&&mv(id))return `${mv(id)} ${m.name.toLowerCase()}`;
+  return m.name;
+}
+
+function budHero(total){
+  const b=getBud(); if(!b.on||b.amt==null)return {line:"",bar:"",cls:""};
+  const budget=Math.round(b.amt*7/b.days*100)/100, diff=budget-total, pct=Math.min(100,Math.max(0,total/budget*100));
+  const cls=diff<0?"over":diff<budget*0.15?"under":"amber";
+  const barCls=diff<0?"red":diff<budget*0.15?"green":"amber";
+  const line=diff>=0?`Groceries this week: about $${total.toFixed(0)} of your $${budget.toFixed(0)} budget, $${diff.toFixed(0)} to spare`
+    :`Groceries this week: about $${total.toFixed(0)} of your $${budget.toFixed(0)} budget, $${(-diff).toFixed(0)} over`;
+  const bar=`<div class="bbar ${barCls}" aria-hidden="true"><i style="width:${pct.toFixed(0)}%"></i></div>`;
+  return {line,bar,cls,barCls};
+}
+function budCmp(total,days){
+  const h=budHero(total); if(!h.line)return "";
+  return `<p class="budline ${h.cls}">${h.line}</p>${h.bar}`;
+}
+
+
+function dayNut(d){
+  if(d.kind==="hol"||d.kind==="rm"||d.kind==="out")return "";
+  return dayCalHTML(d);
+}
+
+
+function listByStore(){
+  const groups={}, other=[];
+  W.items.forEach(it=>{
+    if(W.have.has(it.id))return;
+    const st=it.listStore||it.store;
+    if(st){(groups[st]=groups[st]||[]).push(it)}else other.push(it);
+  });
+  return {groups,other};
+}
+
+function sidesFor(){return {lunch:[],dinner:[]};}
+
+
 let st, queue, pos;
 function reset(){
   const build={};Object.keys(BUILDS).forEach(k=>{const b=BUILDS[k],o={};b.core.forEach(t=>o[t.id]={on:true,v:t.v?t.v[0]:t.label});b.extras.forEach(t=>o[t.id]={on:false,v:t.label});build[k]={top:o,custom:[]}});
-  st={stores:new Set(),extra:[],main:"",photos:{},equip:new Set(["foreman","espresso"]),coffee:{drinks:new Set(["latte","iced"]),milk:"2%",syrup:"None",perWeek:7},meals:{},mealV:{},tip:null,
-      build,xOpen:null,weekStart:null,about:getAbout(),aboutReturn:false,sides:new Set(),picks:{},custom:{},open:null,cOpen:null,mealCustom:[],kitPhotos:[]};
+  // migrate saved burger patty: turkey/chicken → 80/20 beef
+  const rawPatty=build.burger&&build.burger.top.patty?build.burger.top.patty.v:"";
+  const migPatty=/Turkey|Chicken/i.test(rawPatty)?"80/20 beef patty":(rawPatty==="Beef patty (80/20)"?"80/20 beef patty":(rawPatty||"80/20 beef patty"));
+  if(build.burger&&build.burger.top.patty)build.burger.top.patty.v=migPatty;
+  st={stores:new Set(),extra:[],storeLoc:loadStoreLoc(),main:"",photos:{},equip:new Set(["foreman","lavazza","nespresso"]),coffee:{brand:"Lavazza Qualità Oro",brandOther:"",machines:new Set(["lavazza","nespresso"]),drinks:new Set(["shot","americano"]),milk:"No milk",perWeek:7},meals:{},mealV:{},mealVs:{},pattyVs:[migPatty],tip:null,
+      build,xOpen:null,weekStart:null,about:getAbout(),aboutReturn:false,sides:new Set(),picks:{},custom:{},open:null,cOpen:null,mealCustom:[],kitPhotos:[],sidePick:null};
   queue=["photos","stores","main","about","equip","coffee","meals","MEALB","sides","BUILD","summary"]; pos=0;
   document.body.classList.remove("light");
 }
@@ -315,7 +548,7 @@ const card=$("card");
 function go(n=1){pos+=n;
   for(let g=0;g<50;g++){const s=queue[pos];
     if(s==="main"&&st.stores.size<2){if(st.stores.size===1)st.main=[...st.stores][0];pos+=n>0?1:-1;continue}
-    if(s==="coffee"&&!st.equip.has("espresso")){pos+=n>0?1:-1;continue}
+    if(s==="coffee"&&!(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))){pos+=n>0?1:-1;continue}
     if(s==="MEALB"){buildMealSteps();continue}
     if(s==="BUILD"){buildDrill();continue}
     break}
@@ -330,6 +563,14 @@ function buildDrill(){
   allSides().filter(s=>st.sides.has(s)&&DRILL[s]).forEach(s=>steps.push({side:s,level:"top"}));
   queue.splice(pos,1,...steps);
 }
+const sideMeta=n=>{for(const g of SIDE_GROUPS){const it=g.items.find(i=>i.n===n);if(it)return it}return {n,prep:5,a:null,p:null,aisle:"other",custom:true}};
+const allCatalogSides=()=>SIDE_GROUPS.length?SIDE_GROUPS.flatMap(g=>g.items.map(i=>i.n)):SIDES;
+const SLOC_KEY="cameron-meals-storeloc-v1";
+function loadStoreLoc(){try{const j=JSON.parse(localStorage.getItem(SLOC_KEY)||"{}");return j&&typeof j==="object"?j:{}}catch(_){return {}}}
+function saveStoreLoc(){try{localStorage.setItem(SLOC_KEY,JSON.stringify(st.storeLoc||{}))}catch(_){}}
+function locSlug(store,loc){const s=String(store||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  const l=String(loc||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");return l?s+"-"+l:s+"-general"}
+function storeLocLabel(store){const loc=(st.storeLoc&&st.storeLoc[store])||"";return loc?`${store}, ${loc}`:store}
 const allSides=()=>[...SIDES,...(st.custom.sides||[])];
 function progress(){
   const total=queue.length-1;
@@ -362,21 +603,123 @@ function tipHTML(m){
    ${t==="grill"?`<div class="t1">⏱ Approx. ${esc(m.time)}</div>`:""}<div class="t2">🌡 Check ${esc(m.temp)}</div>
    <div class="t3">Times are approximate; grills vary. A cheap instant-read thermometer (~$10–15) is the real test. Leftovers: reheat to 165°F.</div></div>`}
 const tipsBox=()=>`<details class="box"><summary>💰 Meat money tips (tap)</summary><ul>${C.TIPS.meat.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></details>`;
-const mv=id=>st.mealV[id]||(M(id).v?M(id).v[0]:"");
+const PATTY_MIG={"Turkey patty":"80/20 beef patty","Chicken patty":"80/20 beef patty","Beef patty (80/20)":"80/20 beef patty"};
+function migratePatty(v){return PATTY_MIG[v]||v}
+function mvAll(id){
+  const m=M(id); if(!m||!m.v) return [];
+  let arr=st.mealVs[id];
+  if(!arr){const old=st.mealV[id]; arr=Array.isArray(old)?old.slice():(old?[old]:[m.v[0]]); st.mealVs[id]=arr}
+  if(!arr.length){arr=[m.v[0]]; st.mealVs[id]=arr}
+  return arr;
+}
+const mv=id=>mvAll(id)[0]||"";
+const mvLabel=id=>{const a=mvAll(id);return a.length<=1?(a[0]||""):a.join(" · ")};
+function pattyAll(){
+  let arr=st.pattyVs;
+  if(!arr||!arr.length){const old=topLabel("patty")||"80/20 beef patty";arr=[migratePatty(old)];st.pattyVs=arr}
+  arr=arr.map(migratePatty); st.pattyVs=[...new Set(arr)]; if(!st.pattyVs.length)st.pattyVs=["80/20 beef patty"];
+  if(st.build.burger&&st.build.burger.top.patty)st.build.burger.top.patty.v=st.pattyVs[0];
+  return st.pattyVs;
+}
+function proteinPop(id,title,opts,selected,multi){
+  const sel=new Set(selected);
+  return `<div class="pop"><p class="ph2">${title}${multi?" · tap all you want":""}</p><div class="opts">${opts.map(v=>`<button class="popt chk${sel.has(v)?" sel":""}" data-v="${esc(v)}">${esc(v)}</button>`).join("")}
+    <button class="popt other" data-other="1">Other (type it)</button></div>
+    ${st.cOpen==="prot:"+id?`<div class="addrow cust"><input id="cin" placeholder="Your protein…" maxlength="30" autocomplete="off"><button id="cadd">Add</button></div>`:""}
+    ${multi?`<button class="next" id="protDone" style="margin-top:10px">Done</button>`:""}</div>`;
+}
+/* ---- calories (USDA-based est., round to 10; Other → ?) ---- */
+const PROTEIN_CAL=C.PROTEIN_CAL||{};
+const round10=n=>n==null||!isFinite(n)?null:Math.round(n/10)*10;
+const calTxt=n=>n==null?"cal: ?":`🔥 ~${round10(n)} cal`;
+function proteinCal(name){if(!name)return null;return PROTEIN_CAL[name]!=null?PROTEIN_CAL[name]:null}
+function mealBaseCal(id,cut){const m=M(id);if(!m)return null;if(m.grab)return m.nut&&m.nut.kcal!=null?m.nut.kcal:null;
+  if(id==="burger"){const p=cut||pattyAll()[0];const pc=proteinCal(p);return pc!=null?pc:(m.nut&&m.nut.kcal)}
+  if(m.protein){const c=cut||mv(id);const pc=proteinCal(c);return pc!=null?pc:(m.nut&&m.nut.kcal)}
+  return m.nut&&m.nut.kcal!=null?m.nut.kcal:null}
+function buildExtrasCal(mid){
+  const ADD={cheese:70,cheeseslice:70,bacon:60,avocado:80,bun:120,egg:70,mayo:50,bbq:30,sauce:30,butter:50,sour:50,shred:70,lettuce:5,tomato:10,onion:10,pickles:5,ketchup:15,mustard:10,hot:5,salsa:15,rice:210,wrap:140,tortilla:140,bread:80,op:40,gonion:30,mushroom:20,jal:5,jalapeno:5,avo:80,guac:80,beans:110,corn:70,broccoli:50,top:20,veg:60,blue:70,horse:10,relish:15,kraut:20,pick:5};
+  const B=BUILDS[mid]; if(!B||!st.build[mid]) return {cal:0,unk:false};
+  let cal=0, unk=false; const T=st.build[mid].top;
+  [...B.core,...B.extras].forEach(t=>{if(!T[t.id]||!T[t.id].on)return;
+    if(t.protein||t.id==="patty"||t.id==="meat"||t.id==="done"||t.id==="season"||t.id==="marinade"||t.id==="eggs")return;
+    if(ADD[t.id]!=null)cal+=ADD[t.id]; else if(t.k&&ADD[t.k]!=null)cal+=ADD[t.k];});
+  (st.build[mid].custom||[]).forEach(()=>{unk=true});
+  return {cal,unk};
+}
+function sideCal(name){const m=sideMeta(name);if(m.custom&&m.kcal==null)return null;return m.kcal!=null?m.kcal:null}
+function mealTotalCal(mid, cutOverride){
+  const m=M(mid); if(!m)return {cal:null,unk:true,label:"This meal: cal: ?"};
+  if(m.grab){const c=m.nut&&m.nut.kcal;return {cal:c,unk:false,label:c==null?"This meal: cal: ?":`This meal: ~${round10(c)} cal`}}
+  let base=mealBaseCal(mid, cutOverride), unk=false;
+  if(base==null)unk=true;
+  const ex=buildExtrasCal(mid); if(ex.unk)unk=true;
+  if(base==null&&!ex.cal)return {cal:null,unk:true,label:"This meal: cal: ?"};
+  const total=(base||0)+ex.cal;
+  return {cal:total,unk,label:`This meal: ~${round10(total)} cal${unk?" · some cal: ?":""}`};
+}
+function dayCalTotal(d){
+  if(d.kind==="hol"||d.kind==="rm"||d.kind==="out")return null;
+  let total=0, unk=false;
+  if(d.meal){const t=mealTotalCal(d.meal, d.cut); if(t.cal==null)unk=true; else total+=t.cal; if(t.unk)unk=true}
+  else unk=true;
+  if(d.sideName){const sc=sideCal(d.sideName);if(sc==null)unk=true;else total+=sc}
+  if(d.bf){if(d.bf.kcal==null)unk=true;else total+=d.bf.kcal}
+  if(unk&&!total)return {cal:null,unk:true};
+  return {cal:total,unk};
+}
+function dayCalHTML(d){
+  const t=dayCalTotal(d); if(!t)return "";
+  const g=guideFor(st.about||{});
+  let line=t.cal==null?`🍽 Dinner est. cal: ?`:`🍽 Dinner est. ~${round10(t.cal)} cal`;
+  if(g&&t.cal!=null){const pct=Math.round(t.cal/g.mid*100);line+=` · ~${pct}% of your ~${g.lo.toLocaleString()}–${g.hi.toLocaleString()} guide`}
+  return `<p class="nut">${line}${t.unk?" · some cal: ?":""}</p>`;
+}
+const mealTotalHTML=mid=>`<div class="mtot">${esc(mealTotalCal(mid).label)}</div>`;
+
+/* ---- settings: kitchen rules, holidays, grab nights ---- */
+const RULES_KEY="cameron-meals-rules-v1", SET_KEY="cameron-meals-settings-v1", HOL_KEY="cameron-meals-holidays-v1";
+function getRules(){try{const j=JSON.parse(localStorage.getItem(RULES_KEY)||"null");if(Array.isArray(j)&&j.length)return j}catch(_){}
+  return (C.DEFAULT_RULES||[]).slice()}
+function setRules(arr){try{localStorage.setItem(RULES_KEY,JSON.stringify(arr))}catch(_){}}
+function getHolCook(){try{const j=JSON.parse(localStorage.getItem(HOL_KEY)||"{}");return j&&typeof j==="object"?j:{}}catch(_){return {}}}
+function setHolCook(o){try{localStorage.setItem(HOL_KEY,JSON.stringify(o))}catch(_){}}
+function easterDate(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),
+  h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),
+  month=Math.floor((h+l-7*m+114)/31)-1,day=((h+l-7*m+114)%31)+1;return new Date(y,month,day)}
+function nthWeekday(y,month,weekday,n){
+  if(n>0){const d=new Date(y,month,1);let c=0;while(d.getMonth()===month){if(d.getDay()===weekday){c++;if(c===n)return new Date(d)}d.setDate(d.getDate()+1)}}
+  else{const d=new Date(y,month+1,0);while(d.getMonth()===month){if(d.getDay()===weekday)return new Date(d);d.setDate(d.getDate()-1)}}
+  return null}
+function holidaysInWeek(mon){
+  const y=mon.getFullYear(), list=[], add=(dt,id,name)=>{if(dt&&dt>=mon&&dt<addDays(mon,7))list.push({date:new Date(dt.getFullYear(),dt.getMonth(),dt.getDate()),id,name})};
+  add(new Date(y,0,1),"nyd","New Year's Day"); add(new Date(y,6,4),"july4","July 4");
+  add(new Date(y,11,24),"xmasEve","Christmas Eve"); add(new Date(y,11,25),"xmas","Christmas Day");
+  add(nthWeekday(y,10,4,4),"thanks","Thanksgiving"); add(nthWeekday(y,4,1,-1),"mem","Memorial Day");
+  add(nthWeekday(y,8,1,1),"labor","Labor Day"); add(easterDate(y),"easter","Easter");
+  if(mon.getMonth()===11)add(new Date(y+1,0,1),"nyd","New Year's Day");
+  return list;
+}
+function holidayOn(date){return holidaysInWeek(mondayOf(date)).find(h=>sameDay(h.date,date))||null}
+function isHolidayOff(date){const h=holidayOn(date);if(!h)return null;return getHolCook()[h.id]?null:h}
+
 /* ---- render ---- */
 function render(){
   progress();setTimeout(()=>{const p=card.querySelector(".pop,.addrow.cust");if(p&&p.scrollIntoView)p.scrollIntoView({block:"nearest",behavior:"smooth"})},0);
   const s=queue[pos];
   if(typeof s==="object") return s.build?buildScreen(s.build):drill(s);
   if(s==="stores"){
-    card.innerHTML=`<div class="emoji">🛒</div><h1>Where do you shop?</h1><p class="sub">Tap every store you use.</p>
+    const picked=[...st.stores];
+    card.innerHTML=`<div class="emoji">🛒</div><h1>Where do you shop?</h1><p class="sub">Tap every store you use. Add a location for each (shown on your list).</p>
       ${chipList([...STORES,...st.extra],st.stores)}
       <div class="addrow"><input id="own" placeholder="Other store…" maxlength="30"><button id="add">Add</button></div>
+      ${picked.length?`<div class="sloc">${picked.map(s=>`<label>${esc(s)} location<input data-sloc="${esc(s)}" placeholder="e.g. 34th St N, St. Pete" maxlength="60" value="${esc(st.storeLoc[s]||"")}"></label>`).join("")}</div>`:""}
       ${btns("Next →",!st.stores.size)}`;
     bindChips(st.stores);
+    card.querySelectorAll("[data-sloc]").forEach(inp=>{inp.oninput=()=>{st.storeLoc[inp.dataset.sloc]=inp.value.trim();saveStoreLoc()};inp.onclick=e=>e.stopPropagation()});
     const add=()=>{const v=$("own").value.trim();if(v&&!STORES.includes(v)&&!st.extra.includes(v)){st.extra.push(v);st.stores.add(v)}render()};
     $("add").onclick=add;$("own").onkeydown=e=>{if(e.key==="Enter")add()};
-    $("nx").onclick=()=>st.stores.size&&go();
+    $("nx").onclick=()=>{if(!st.stores.size)return;card.querySelectorAll("[data-sloc]").forEach(inp=>{st.storeLoc[inp.dataset.sloc]=inp.value.trim()});saveStoreLoc();go()};
   } else if(s==="main"){
     card.innerHTML=`<div class="emoji">⭐</div><h1>Which store most?</h1><p class="sub">Prices and the grocery list lean toward this one.</p>
       <div class="chips">${[...st.stores].map(x=>`<span class="chip${st.main===x?" main":" off"}" data-x="${esc(x)}">${esc(x)}</span>`).join("")}</div>${btns("Next →",!st.main)}`;
@@ -398,11 +741,11 @@ function render(){
       <div class="feat${fm?" on":""}" id="fm"><div class="fe">🔥</div><div><b>George Foreman grill</b><div class="dad">🎁 Dad got you this. Still your go-to?</div></div><div class="ck">${fm?"✓":""}</div></div>
       <p class="fnote">${fm?"✓ Yep. Meals and cook times are built around the Foreman.":"Tap the card if you still use it."}</p>
       <p class="lbl">Also have</p>
-      <div class="chips">${rest.map(e=>`<span class="chip${st.equip.has(e.id)?"":" off"}" data-e="${e.id}">${e.emoji} ${e.label}</span>`).join("")}${(st.custom.equip||[]).map(v=>`<span class="chip cust${st.equip.has("c:"+v)?"":" off"}" data-e="c:${esc(v)}">🔧 ${esc(v)}</span>`).join("")}${customChip("equip")}</div>${customRow("equip")}
-      <p class="fnote">${st.equip.has("espresso")?"☕ Espresso machine is on. Next step: your coffee (drinks, milk, how many).":"No espresso machine? Fine, the coffee step is skipped."}</p>
+      <div class="chips">${rest.map(e=>`<span class="chip-row"><span class="emo">${e.emoji}</span><span class="chip${st.equip.has(e.id)?"":" off"}" data-e="${e.id}">${esc(e.label)}</span></span>`).join("")}${(st.custom.equip||[]).map(v=>`<span class="chip-row"><span class="emo">🔧</span><span class="chip cust${st.equip.has("c:"+v)?"":" off"}" data-e="c:${esc(v)}">${esc(v)}</span></span>`).join("")}${customChip("equip")}</div>${customRow("equip")}
+      <p class="fnote">${(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))?"☕ Coffee machines are on. Next: Lavazza Oro, drinks per week, optional milk.":"No coffee machine? Fine — the coffee step is skipped."}</p>
       <div class="snap"><p class="lbl" style="margin-top:0">Anything else in your kitchen?</p>
         <p>Not sure if you have something? 📸 Snap a photo of your counters/cabinets and send it to your chef bot. It'll tell you what you've got.</p>
-        <button class="sbtn" id="kitSnap">📸 Snap a photo</button><input type="file" accept="image/*" capture="environment" id="kitIn" hidden>
+        <span class="emo">📸</span> <button class="sbtn" id="kitSnap">Snap a photo</button><input type="file" accept="image/*" capture="environment" id="kitIn" hidden>
         <div class="thumbs" id="kitThumbs"></div><div id="kitAct"></div>
         <p class="muted" style="margin-top:6px">This page can't see what's in the photo. Your chef bot reads it. Photos stay on your phone unless you share them.</p></div>
       ${btns("Next →")}`;
@@ -417,24 +760,41 @@ function render(){
   else if(s==="meals") meals();
   else if(s==="sides"){
     const nb=st.meals.burger==="no";
-    card.innerHTML=`<div class="emoji">🍽️</div><h1>${nb?"What sides do you like?":"What goes with it?"}</h1><p class="sub">Pick any sides you like.</p>
-      ${chipList(SIDES,st.sides,"","sides")}${btns(st.sides.size?"Next →":"No sides →")}`;
-    bindChips(st.sides);bindCustom(addCustomTo(st.sides));$("nx").onclick=()=>go();
+    const groups=SIDE_GROUPS.length?SIDE_GROUPS:[{id:"all",label:"Sides",emoji:"🍽️",items:SIDES.map(n=>({n,prep:5}))}];
+    const cust=st.custom.sides||[];
+    card.innerHTML=`<div class="emoji">🍽️</div><h1>${nb?"What sides do you like?":"What goes with it?"}</h1><p class="sub">Pick a mix. The week rotates them so the same side shows up at most twice.</p>
+      ${groups.map(g=>`<p class="lbl">${g.emoji} ${esc(g.label)}</p><div class="chips">${g.items.map(it=>`<span class="chip${st.sides.has(it.n)?"":" off"}" data-x="${esc(it.n)}">${esc(it.n)}${it.prep!=null?` · ~${it.prep} min`:""}${it.kcal!=null?` · ~${round10(it.kcal)} cal`:" · cal: ?"}</span>`).join("")}</div>`).join("")}
+      ${cust.length?`<p class="lbl">Your custom</p><div class="chips">${cust.map(x=>`<span class="chip cust${st.sides.has(x)?"":" off"}" data-x="${esc(x)}">${esc(x)}</span>`).join("")}</div>`:""}
+      <span class="chip addc" data-c="sides">+ Custom</span>
+      ${st.cOpen==="sides"?`<div class="pop"><p class="ph2">Pick a suggested side, or type your own</p><div class="opts">${allCatalogSides().filter(n=>!st.sides.has(n)).map(n=>`<button class="popt" data-spick="${esc(n)}">${esc(n)}</button>`).join("")}
+        <button class="popt other" data-sother="1">Other (type it)</button></div>
+        ${st.sidePick==="type"?`<div class="addrow cust"><input id="cin" placeholder="Type your own side…" maxlength="40" autocomplete="off"><button id="cadd">Add</button></div>`:""}</div>`:""}
+      ${btns(st.sides.size?"Next →":"No sides →")}`;
+    card.querySelectorAll(".chip[data-x]").forEach(c=>c.onclick=()=>{const x=c.dataset.x;st.sides.has(x)?st.sides.delete(x):st.sides.add(x);render()});
+    card.querySelectorAll(".chip.addc").forEach(c=>c.onclick=()=>{st.cOpen=st.cOpen==="sides"?null:"sides";st.sidePick=null;render()});
+    card.querySelectorAll("[data-spick]").forEach(b=>b.onclick=()=>{st.custom.sides=st.custom.sides||[];const v=b.dataset.spick;if(!st.custom.sides.includes(v)&&!allCatalogSides().includes(v))st.custom.sides.push(v);st.sides.add(v);st.cOpen=null;st.sidePick=null;render()});
+    const so=card.querySelector("[data-sother]");if(so)so.onclick=()=>{st.sidePick="type";render();const i=$("cin");if(i)i.focus()};
+    const cb=$("cadd");if(cb){const add=()=>{const v=$("cin").value.trim().slice(0,40);if(!v)return;st.custom.sides=st.custom.sides||[];if(!st.custom.sides.includes(v))st.custom.sides.push(v);st.sides.add(v);st.cOpen=null;st.sidePick=null;render()};cb.onclick=add;$("cin").onkeydown=e=>{if(e.key==="Enter")add()}}
+    $("nx").onclick=()=>go();
   } else if(s==="summary") summary();
 }
 function meals(){
   const fm=st.equip.has("foreman");
-  const list=[...MEALS].filter(m=>rateOf(m.id)!==-1).sort((a,b)=>(rateOf(b.id)===2)-(rateOf(a.id)===2)||(fm?(b.grill-a.grill):0));
+  const list=[...MEALS].filter(m=>rateOf(m.id)!==-1).sort((a,b)=>(!!b.grab-!!a.grab)||(rateOf(b.id)===2)-(rateOf(a.id)===2)||(fm?((b.grill||0)-(a.grill||0)):0));
   const removed=MEALS.filter(m=>rateOf(m.id)===-1);
   const yesN=Object.values(st.meals).filter(x=>x==="yes").length+st.mealCustom.length;
-  card.innerHTML=`<div class="emoji">🥩</div><h1>What sounds good?</h1><p class="sub">Tap Yes or No on each.${fm?" 🔥 = great on your Foreman.":""}</p>
-   <div class="meals">${list.map(m=>{const a=st.meals[m.id]||"";const op=st.tip===m.id;const po=st.open==="m:"+m.id;
-     return `<div class="meal ${a}"><div class="mrow"><div class="mtop"><span class="me">${m.emoji}</span>${pcBadge(m.prep,m.cook,true)}</div><div class="mt"><b>${rateOf(m.id)===2?"⭐ ":""}${esc(m.name)}</b><br>
-       ${m.v?`<span class="vchip" data-mv="${m.id}">${esc(mv(m.id))} ▾</span> `:""}${fm&&m.grill?`<span class="fb">🔥 ${esc(m.time.split(" (")[0])}</span>`:""}</div>
+  const cooked=list.filter(m=>!m.grab), grabs=list.filter(m=>m.grab);
+  const row=m=>{const a=st.meals[m.id]||"";const op=st.tip===m.id;const po=st.open==="m:"+m.id;const multi=!!m.protein;
+     const opts=[...(m.v||[]),...(st.custom["prot:"+m.id]||[])];
+     return `<div class="meal ${a}"><div class="mrow"><div class="mtop"><span class="me">${m.emoji}</span>${pcBadge(m.prep,m.cook||0,true,false,mealBaseCal(m.id))}</div><div class="mt"><b>${rateOf(m.id)===2?"❤️ ":""}${esc(m.name)}</b><br>
+       ${m.grab?`<span class="gtag"><span class="emo">🛍</span> Grab & go</span> `:""}${m.v?`<span class="vchip${multi?" multi":""}" data-mv="${m.id}">${esc(multi?mvLabel(m.id):mv(m.id))} ▾</span> `:""}${!m.grab&&fm&&m.grill?`<span class="fb">🔥 ${esc((m.time||"").split(" (")[0])}</span>`:m.grab?`<span class="fb">⏱ ${esc(m.time||"0–5 min")}</span>`:""}</div>
        <div class="yn"><button class="y${a==="yes"?" sel":""}" data-m="${m.id}" data-a="yes">Yes</button><button class="n${a==="no"?" sel":""}" data-m="${m.id}" data-a="no">No</button></div></div>
-       ${po?popHTML(m.id==="steak"?"Which cut?":"Which kind?",m.v,mv(m.id),false):""}
-       <button class="tipbtn" data-tip="${m.id}">${op?"▾":"▸"} How to cook it</button>${op?tipHTML(m):""}</div>`}).join("")}</div>
-   ${removed.length?`<details class="box"><summary>🗑 Removed meals (${removed.length})</summary><p class="no" style="margin:6px 0">Rated 👎 or removed from the menu for good. Hidden from suggestions and Swap. Tap Restore to bring one back.</p>${removed.map(m=>`<div class="mrow" style="margin-top:6px"><span>${m.emoji} ${esc(m.name)}</span><button class="popt" style="margin-left:auto" data-restore="${m.id}">Restore</button></div>`).join("")}</details>`:""}
+       ${po?(multi?proteinPop(m.id,m.id==="steak"?"Which cuts? (pick several)":"Which kinds? (pick several)",opts,mvAll(m.id),true):popHTML(m.id==="steak"?"Which cut?":"Which kind?",opts,mv(m.id),false)):""}
+       <button class="tipbtn" data-tip="${m.id}">${op?"▾":"▸"} ${m.grab?"How it works":"How to cook it"}</button>${op?tipHTML(m):""}</div>`};
+  card.innerHTML=`<div class="emoji">🥩</div><h1>What sounds good?</h1><p class="sub">Tap Yes or No on each.${fm?" 🔥 = great on your Foreman.":""} Protein chips let you pick several cuts.</p>
+   <div class="meals">${cooked.map(row).join("")}</div>
+   ${grabs.length?`<p class="lbl">🛍 Grab & go (0–5 min · no real cooking)</p><div class="meals">${grabs.map(row).join("")}</div>`:""}
+   ${removed.length?`<details class="box"><summary>Removed meals (${removed.length})</summary><p class="no" style="margin:6px 0">👎 = never suggest again. Hidden from suggestions and Swap. Tap Restore to bring one back.</p>${removed.map(m=>`<div class="mrow" style="margin-top:6px"><span>${m.emoji} ${esc(m.name)}</span><button class="popt" style="margin-left:auto" data-restore="${m.id}">Restore</button></div>`).join("")}</details>`:""}
    <p class="lbl">Something else you like?</p>
    <div class="chips">${st.mealCustom.map(x=>`<span class="chip cust" data-mc="${esc(x)}">${esc(x)}</span>`).join("")}${customChip("meals")}</div>${customRow("meals")}
    ${tipsBox()}
@@ -442,8 +802,17 @@ function meals(){
   card.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const id=b.dataset.m;st.meals[id]=st.meals[id]===b.dataset.a?undefined:b.dataset.a;if(!st.meals[id])delete st.meals[id];render()});
   card.querySelectorAll("[data-restore]").forEach(b=>b.onclick=()=>{setRate(b.dataset.restore,0);render()});
   card.querySelectorAll("[data-tip]").forEach(b=>b.onclick=()=>{st.tip=st.tip===b.dataset.tip?null:b.dataset.tip;render()});
-  card.querySelectorAll("[data-mv]").forEach(b=>b.onclick=()=>{const k="m:"+b.dataset.mv;st.open=st.open===k?null:k;render()});
-  card.querySelectorAll(".pop .popt").forEach(b=>b.onclick=()=>{const id=st.open.slice(2);st.mealV[id]=b.dataset.v;st.meals[id]="yes";st.open=null;render()});
+  card.querySelectorAll("[data-mv]").forEach(b=>b.onclick=()=>{const k="m:"+b.dataset.mv;st.open=st.open===k?null:k;st.cOpen=null;render()});
+  card.querySelectorAll(".pop .popt[data-v]").forEach(b=>b.onclick=()=>{const id=st.open.slice(2);const m=M(id);
+    if(m&&m.protein){const set=new Set(mvAll(id));set.has(b.dataset.v)?set.delete(b.dataset.v):set.add(b.dataset.v);if(!set.size)set.add(b.dataset.v);st.mealVs[id]=[...set];st.mealV[id]=st.mealVs[id][0]}
+    else{st.mealV[id]=b.dataset.v;st.mealVs[id]=[b.dataset.v];st.open=null}
+    st.meals[id]="yes";render()});
+  card.querySelectorAll(".pop [data-other]").forEach(b=>b.onclick=()=>{const id=st.open.slice(2);st.cOpen="prot:"+id;render();const i=$("cin");if(i)i.focus()});
+  const pd=$("protDone");if(pd)pd.onclick=()=>{st.open=null;st.cOpen=null;render()};
+  const ca=$("cadd");if(ca&&st.cOpen&&String(st.cOpen).startsWith("prot:")){const add=()=>{const id=st.cOpen.slice(5);const v=$("cin").value.trim().slice(0,30);if(!v)return;
+    st.custom["prot:"+id]=st.custom["prot:"+id]||[];if(!st.custom["prot:"+id].includes(v))st.custom["prot:"+id].push(v);
+    const set=new Set(mvAll(id));set.add(v);st.mealVs[id]=[...set];st.mealV[id]=v;st.meals[id]="yes";st.cOpen=null;render()};
+    ca.onclick=add;$("cin").onkeydown=e=>{if(e.key==="Enter")add()}}
   card.querySelectorAll("[data-mc]").forEach(b=>b.onclick=()=>{st.mealCustom=st.mealCustom.filter(x=>x!==b.dataset.mc);render()});
   bindCustom((k,v)=>{if(!st.mealCustom.includes(v))st.mealCustom.push(v)});
   $("nx").onclick=()=>go();const sk=$("sk");if(sk)sk.onclick=()=>go();
@@ -453,23 +822,41 @@ function buildScreen(mid){
   const open=B.core.find(t=>t.id===st.open);
   const xOn=B.extras.filter(x=>T[x.id].on), xOff=B.extras.filter(x=>!T[x.id].on);
   const xo=st.xOpen===mid;
+  const pattyBlock=mid==="burger"?(()=>{
+    const po=st.open==="patty";
+    const opts=[...(BUILDS.burger.core.find(t=>t.id==="patty").v||[]),...(st.custom["patty"]||[])];
+    const sel=pattyAll();
+    return `<p class="lbl">Patties (pick several)</p><div class="chips">${sel.map(p=>`<span class="chip">${esc(p)}</span>`).join("")}
+      <span class="vchip multi" data-patty="1">${esc(pattyAll().join(" · "))} ▾</span></div>
+      ${po?proteinPop("patty","Which patties? (pick several)",opts,pattyAll(),true):""}`;
+  })():"";
   card.innerHTML=`<div class="emoji">${B.emoji}</div><h1>${esc(B.title)}</h1><p class="sub">The usual stuff is on. Tap ▾ to swap, tap to turn off.</p>
-    <div class="chips">${B.core.map(t=>{const s=T[t.id];return `<span class="chip drop${s.on?"":" off"}${st.open===t.id?" open":""}" data-t="${t.id}">${esc(t.v?s.v:t.label)}${t.v?" ▾":""}</span>`}).join("")}</div>
+    ${pattyBlock}
+    <div class="chips">${B.core.filter(t=>mid!=="burger"||t.id!=="patty").map(t=>{const s=T[t.id];return `<span class="chip drop${s.on?"":" off"}${st.open===t.id?" open":""}" data-t="${t.id}">${esc(t.v?s.v:t.label)}${t.v?" ▾":""}</span>`}).join("")}</div>
     ${open?popHTML(`Swap ${esc(open.label.toLowerCase())} for…`,open.v,T[open.id].v,T[open.id].on):""}
+    ${mealTotalHTML(mid)}
     ${xOn.length||bs.custom.length?`<p class="lbl">Your extras (tap to remove)</p><div class="xsel" style="margin:0 0 14px">${xOn.map(x=>`<span class="chip x" data-xr="${x.id}">${esc(x.label)} ✕</span>`).join("")}${bs.custom.map(c=>`<span class="chip cust" data-cr="${esc(c)}">${esc(c)} ✕</span>`).join("")}</div>`:""}
     <button class="xtra-btn" id="xb">${xo?"▾ Hide extras":"+ Add extras"}</button>
     ${xo?`<div class="xlist"><p class="ph2">Tap to add</p><div class="opts">${xOff.map(x=>`<button class="popt" data-xa="${x.id}">+ ${esc(x.label)}</button>`).join("")}<button class="popt" data-c="b:${mid}" id="xc">+ Custom</button></div>${customRow("b:"+mid)}</div>`:""}
     ${btns("Looks good →")}`;
-  card.querySelectorAll("[data-t]").forEach(c=>c.onclick=()=>{const t=B.core.find(x=>x.id===c.dataset.t);if(t.v){st.open=st.open===t.id?null:t.id;st.cOpen=null}else{T[t.id].on=!T[t.id].on}render()});
-  card.querySelectorAll(".pop .popt").forEach(b=>b.onclick=()=>{const s=T[st.open];if(b.dataset.rm)s.on=false;else{s.v=b.dataset.v;s.on=true}st.open=null;render()});
+  card.querySelectorAll("[data-patty]").forEach(b=>b.onclick=()=>{st.open=st.open==="patty"?null:"patty";st.cOpen=null;render()});
+  card.querySelectorAll("[data-t]").forEach(c=>c.onclick=()=>{const t=B.core.find(x=>x.id===c.dataset.t);if(t&&t.v){st.open=st.open===t.id?null:t.id;st.cOpen=null}else if(t)T[t.id].on=!T[t.id].on;render()});
+  card.querySelectorAll(".pop .popt[data-v]").forEach(b=>b.onclick=()=>{
+    if(st.open==="patty"){const set=new Set(pattyAll());set.has(b.dataset.v)?set.delete(b.dataset.v):set.add(b.dataset.v);if(!set.size)set.add("80/20 beef patty");st.pattyVs=[...set];if(T.patty)T.patty.v=st.pattyVs[0];st.open=null}
+    else{const s=T[st.open];if(b.dataset.rm)s.on=false;else{s.v=b.dataset.v;s.on=true}st.open=null}render()});
+  card.querySelectorAll(".pop [data-other]").forEach(b=>b.onclick=()=>{st.cOpen="patty";render();const i=$("cin");if(i)i.focus()});
+  const pd=$("protDone");if(pd)pd.onclick=()=>{st.open=null;st.cOpen=null;render()};
+  const ca=$("cadd");if(ca&&st.cOpen==="patty"){const add=()=>{const v=$("cin").value.trim().slice(0,30);if(!v)return;st.custom.patty=st.custom.patty||[];if(!st.custom.patty.includes(v))st.custom.patty.push(v);const set=new Set(pattyAll());set.add(v);st.pattyVs=[...set];st.cOpen=null;render()};ca.onclick=add;$("cin").onkeydown=e=>{if(e.key==="Enter")add()}}
+  card.querySelectorAll(".pop .popt").forEach(b=>{if(b.dataset.v||b.dataset.rm)return;});
   card.querySelectorAll("[data-xa]").forEach(b=>b.onclick=()=>{T[b.dataset.xa].on=true;render()});
   card.querySelectorAll("[data-xr]").forEach(b=>b.onclick=()=>{T[b.dataset.xr].on=false;render()});
   card.querySelectorAll("[data-cr]").forEach(b=>b.onclick=()=>{bs.custom=bs.custom.filter(x=>x!==b.dataset.cr);render()});
   $("xb").onclick=()=>{st.xOpen=xo?null:mid;st.cOpen=null;st.open=null;render()};
   const xc=$("xc");if(xc)xc.onclick=()=>{st.cOpen=st.cOpen==="b:"+mid?null:"b:"+mid;render();const i=$("cin");if(i)i.focus()};
-  const cb=$("cadd");if(cb){const add=()=>{const v=$("cin").value.trim().slice(0,30);if(v&&!bs.custom.includes(v))bs.custom.push(v);st.cOpen=null;render()};cb.onclick=add;$("cin").onkeydown=e=>{if(e.key==="Enter")add()}}
+  const cb=$("cadd");if(cb&&st.cOpen&&st.cOpen.startsWith("b:")){const add=()=>{const v=$("cin").value.trim().slice(0,30);if(v&&!bs.custom.includes(v))bs.custom.push(v);st.cOpen=null;render()};cb.onclick=add;$("cin").onkeydown=e=>{if(e.key==="Enter")add()}}
   $("nx").onclick=()=>{st.xOpen=null;go()};
 }
+
 function drill(step){
   const d=DRILL[step.side];
   const key=step.level==="top"?step.side:step.side+" › "+step.level;
@@ -510,10 +897,10 @@ function summary(){
     <h2>🛒 Stores</h2><p>${st.main?`<b>${esc(st.main)}</b> (main)${others.length?", also "+others.map(esc).join(", "):""}`:"Skipped: using Aldi + Publix"}</p>
     <h2>📸 Photos</h2><p>${["pantry","fridge","freezer"].map(k=>(st.photos[k]?"✓ ":"✗ ")+k).join(" · ")}</p>
     <h2>🍳 Gear</h2><p>${eq.length?eq.map(x=>`<span class="tag">${esc(x)}</span>`).join(""):"None picked: assuming Foreman + microwave"}</p>
-    ${st.equip.has("espresso")?`<h2>☕ Coffee</h2><p>${coffeeDesc()}</p><p class="no">${coffeeLine(true)}</p>`:""}
+    ${(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))?`<h2>☕ Coffee</h2><p>${coffeeDesc()}</p><p class="no">${coffeeLine(true)}</p>`:""}
     <h2>🥩 Meals</h2><p>${ys.length||st.mealCustom.length?[...ys.map(m=>`<span class="tag y">✓ ${esc(m.v?mv(m.id)+" · ":"")}${esc(m.name)}</span>`),...st.mealCustom.map(x=>`<span class="tag y">✓ ${esc(x)}</span>`)].join(""):"Skipped: I'll pick grill favorites"}</p>
     ${ns.length?`<p class="no">No: ${ns.map(m=>esc(m.name)).join(", ")}</p>`:""}
-    ${built.map(k=>{const bp=buildPicks(k);return `<h2>${BUILDS[k].emoji} ${esc(BUILDS[k].title.replace(/^(Build your|Your) /,"").replace(/^./,c=>c.toUpperCase()))}</h2><p>${bp.on.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</p>${bp.off.length?`<p class="no">No: ${bp.off.map(esc).join(", ")}</p>`:""}`}).join("")}
+    ${built.map(k=>{const bp=buildPicks(k);return `<h2>${BUILDS[k].emoji} ${esc(BUILDS[k].title.replace(/^(Build your|Your) /,"").replace(/^./,c=>c.toUpperCase()))}</h2><p>${bp.on.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</p>${bp.off.length?`<p class="no">No: ${bp.off.map(esc).join(", ")}</p>`:""}${mealTotalHTML(k)}`}).join("")}
     <h2>🍽️ Sides</h2>${sideLines||"<p>None</p>"}
     <h2>🧍 About me</h2>${aboutSummary()}<button class="next ghost" id="abE" style="margin-top:0;padding:6px 0;text-align:left;width:auto">✎ Edit about me</button>
     <button class="next build" id="bw">📅 Build my week</button>
@@ -542,30 +929,9 @@ function sidesFor(){
 }
 function buildWeek(){
   const fm=st.equip.has("foreman")||st.equip.size===0;
-  const cut=mv("steak"), patty=topLabel("patty")||"Beef patty (80/20)";
-  const pattyShort=patty.replace(/ \(80\/20\)/,"").replace(/ patty/,"").toLowerCase();
-  const bun=topLabel("bun"), cheese=topLabel("cheese");
-  const G={
-    chicken:{name:"chicken",frozen:"chicken breasts",lunch:yes("bowl")?`${mv("bowl")} chicken rice bowl`:"Sliced grilled chicken + rice",
-      cook:()=>yes("chicken")||!yes("bowl")?{id:"chicken",e:"🍗",t:"Grilled chicken breast"}:{id:"bowl",e:"🍚",t:`${mv("bowl")} chicken rice bowl`},
-      left:()=>yes("chixq")?{id:"chixq",e:"🫓",t:`Chicken ${mv("chixq").toLowerCase()}`}:{id:"bowl",e:"🍚",t:`${yes("bowl")?mv("bowl"):"Teriyaki"} chicken rice bowl`},
-      note:n=>`Cook night: grill ${n+1} chicken breasts. Eat 1, fridge ${n}. The rest of the family pack went in the freezer raw on shop day.`},
-    burger:{name:"burgers",frozen:"burger patties",lunch:`${pattyShort[0].toUpperCase()+pattyShort.slice(1)} burger${bun&&bun!=="Lettuce wrap"?" on a "+bun.toLowerCase():""}`,
-      cook:()=>({id:"burger",e:"🍔",t:`Burgers: ${pattyShort}${bun?", "+bun.toLowerCase():""}${cheese?", "+cheese.replace(" cheese","")+" cheese":""}`}),
-      left:()=>({id:"burger",e:"🍔",t:"Burger round 2 (patty from the fridge)"}),
-      note:n=>`Cook night: make 6 patties from the pack. Grill ${n+1}: eat 1, fridge ${n}. Freeze ${5-n} raw with paper between.`},
-    steak:{name:"steak",lunch:`Sliced ${cut.toLowerCase()} steak + rice`,
-      cook:()=>({id:"steak",e:"🥩",t:`${cut} steak night`}),
-      left:()=>yes("steakq")?{id:"steakq",e:"🌮",t:"Steak quesadilla"}:yes("stkegg")?{id:"stkegg",e:"🍳",t:"Steak & eggs"}:{id:"bowl",e:"🍚",t:"Steak rice bowl"},
-      note:n=>`Cook night: grill 2 ${cut.toLowerCase()} steaks (~1.5 lb). Eat 1, slice the other into the fridge for tomorrow's lunch + dinner.`},
-    pork:{name:"pork",frozen:"pork chops",lunch:"Sliced pork + rice",
-      cook:()=>({id:"pork",e:"🐖",t:mv("pork")}),left:()=>({id:"bowl",e:"🍚",t:"BBQ pork rice bowl"}),
-      note:n=>`Cook night: grill ${n+1} ${mv("pork").toLowerCase().includes("rib")?"ribs":"chops"}. Eat 1, fridge ${n}, freeze the rest raw.`},
-    brats:{name:"brats",frozen:"brats",lunch:`${mv("brats").replace(/ \(.*\)/,"")} on a bun`,
-      cook:()=>({id:"brats",e:"🌭",t:`${mv("brats").replace(/ \(.*\)/,"")} + peppers & onions`}),left:()=>({id:"brats",e:"🌭",t:`${mv("brats").replace(/ \(.*\)/,"")} round 2`}),
-      note:n=>`Cook night: grill ${n+1} ${mv("brats").replace(/ \(.*\)/,"").toLowerCase()}. Eat 1, fridge ${n}, freeze the rest.`}
-  };
-  // which proteins: yes'd ones, priority steak > burger > chicken > pork > brats; fill to 3
+  const start=weekStartDate();
+  const sideSlots=assignSides(start,7);
+  const breakfasts=planBreakfast(start);
   const ok=id=>rateOf(id)!==-1, Y=id=>(yes(id)||rateOf(id)===2)&&ok(id);
   const want={steak:Y("steak")||Y("steakq")||Y("stkegg"),burger:Y("burger"),chicken:Y("chicken")||Y("chixq")||Y("bowl"),pork:Y("pork"),brats:Y("brats")};
   const favN=g=>Object.keys(MG).filter(id=>MG[id]===g&&rateOf(id)===2).length;
@@ -573,102 +939,150 @@ function buildWeek(){
   const extra=groups.slice(3);groups=groups.slice(0,3);
   for(const g of ["steak","chicken","burger"]) if(groups.length<3&&!groups.includes(g)&&st.meals[g==="steak"?"steak":g]!=="no"&&ok(g))groups.push(g);
   for(const g of ["chicken","pork","brats","burger","steak"]) if(groups.length<3&&!groups.includes(g)&&ok(g))groups.push(g);
-  for(const g of ["chicken","pork","brats","burger","steak"]) if(groups.length<3&&!groups.includes(g))groups.push(g);
   const order=["chicken","burger","pork","brats","steak"];groups.sort((a,b)=>order.indexOf(a)-order.indexOf(b));
   const F=["burger","chicken","brats","pork"].find(g=>groups.includes(g));
-  const S=sidesFor();let li=0,di=0;const ls=()=>S.lunch[li++%S.lunch.length], ds=()=>S.dinner[di++%S.dinner.length];
-  const breakfasts=["2 scrambled eggs + toast"];
-  if(st.sides.has("Yogurt"))breakfasts.push("Yogurt + fruit");if(st.sides.has("Fruit"))breakfasts.push("Toast + "+(S.lunch.find(x=>/banana|apple|orange/i.test(x))||"fruit").toLowerCase());
-  if(breakfasts.length<2)breakfasts.push("Egg sandwich on toast");
-  const start=weekStartDate(); // Monday of the chosen week (default: this week)
-  const dn=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"], icons=["🛒","🔁","🔥","🔁","🥩","🔁","🧊"];
-  const days=[];
-  const mk=(i,o)=>{const d=new Date(start);d.setDate(d.getDate()+i);days.push({short:`${dn[i]} ${d.getMonth()+1}/${d.getDate()}`,icon:icons[i],...o,bf:i%2===0||i===6?breakfasts[(i/2|0)%breakfasts.length]:null})};
-  const custom=st.mealCustom.slice();
+  const bun=topLabel("bun"), cheese=topLabel("cheese");
+  const cutUsed={};
+  const cookMeal=g=>{
+    if(g==="burger"){const cut=fixNextCut("burger",cutUsed);return {id:"burger",e:"🍔",t:mealTitle("burger",cut),cut}};
+    if(g==="steak"){const cut=fixNextCut("steak",cutUsed);return {id:"steak",e:"🥩",t:mealTitle("steak",cut),cut}};
+    if(g==="chicken"){const cut=fixNextCut("chicken",cutUsed);return {id:"chicken",e:"🍗",t:mealTitle("chicken",cut),cut}};
+    if(g==="pork"){const cut=fixNextCut("pork",cutUsed);return {id:"pork",e:"🐖",t:mealTitle("pork",cut),cut}};
+    const cut=fixNextCut("brats",cutUsed);return {id:"brats",e:"🌭",t:mealTitle("brats",cut),cut}};
+  const leftMeal=g=>{
+    if(g==="chicken")return yes("chixq")?{id:"chixq",e:"🫓",t:`Chicken ${mv("chixq").toLowerCase()}`}:yes("bowl")?{id:"bowl",e:"🍚",t:`${mv("bowl")} chicken rice bowl`}:{id:"chicken",e:"🍗",t:"Grilled chicken round 2"};
+    if(g==="steak")return yes("steakq")?{id:"steakq",e:"🌮",t:"Steak quesadilla"}:yes("stkegg")?{id:"stkegg",e:"🍳",t:"Steak & eggs"}:{id:"bowl",e:"🍚",t:"Steak rice bowl"};
+    if(g==="burger")return {id:"burger",e:"🍔",t:"Burger round 2"};
+    if(g==="pork")return {id:"bowl",e:"🍚",t:"BBQ pork rice bowl"};
+    return {id:"brats",e:"🌭",t:`${mv("brats").replace(/ \(.*\)/,"")} round 2`};
+  };
+  const lunchFor=(g,prev)=>prev?`Leftovers + ${sideSlots[prev].toLowerCase()}`:`Quick lunch + ${sideSlots[0].toLowerCase()}`;
+  const dn=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  const icons=["🛒","🔥","🍽","🔥","🥩","🍽","🧊"];
+  const days=[]; const custom=st.mealCustom.slice();
+  const mk=(i,o)=>{const d=new Date(start);d.setDate(d.getDate()+i);
+    const hol=isHolidayOff(d);
+    days.push({short:`${dn[i]} ${d.getMonth()+1}/${d.getDate()}`,date:d.getTime(),icon:icons[i]||"🍽",bf:breakfasts[i],sideName:sideSlots[i],...o,
+      kind:hol?"hol":o.kind||null,hol:hol?hol.name:null})};
   [0,1,2].forEach(k=>{
-    const g=G[groups[k]], c=g.cook(), l=g.left(), n=k<2?3:2, i=k*2;
-    mk(i,{g:groups[k],cook:true,meal:c.id,e:c.e,dinner:`${c.t} + ${ds()}`,note:(i===0?"🛒 Shop day: split meat into single portions in freezer bags + date them. ":"")+g.note(n),
-      lunch:i===0?"Shop-day lunch: whatever's in the fridge (your photos would tell me)":`${G[groups[k-1]].lunch} + ${ls()}`});
-    let note=n===3?`Leftover night: just reheat (165°F). ${g.name[0].toUpperCase()+g.name.slice(1)} from ${dn[i]} keeps thru ${dn[i+3]}; freeze anything left by then.`:`Leftover night: reheat to 165°F. Fridge should be almost empty after tonight.`;
-    if(i+1===5&&F)note+=` 🧊 Tonight: move 2 frozen ${G[F].frozen} to the fridge to thaw for tomorrow.`;
-    const lt=custom.length&&k===1?{id:null,e:"⭐",t:custom.shift()+" (your pick)"}:l;
-    mk(i+1,{g:lt.id?groups[k]:null,cook:false,meal:lt.id,e:lt.e,dinner:lt.t,note,lunch:`${g.lunch} + ${ls()}`});
-    if(groups[k]==="steak"&&yes("stkegg")&&lt.id!=="stkegg")days[days.length-1].bf="Steak & eggs (a few slices of last night's steak)";
+    const g=groups[k]; if(!g)return;
+    const c=cookMeal(g), l=leftMeal(g), n=k<2?3:2, i=k*2, side=sideSlots[i];
+    mk(i,{g,cook:true,meal:c.id,e:c.e,dinner:`${c.t} + ${side}`,cut:c.cut,note:`Cook night: make extra for lunch tomorrow. Fridge leftovers 3–4 days; freeze what you won't eat.`,
+      lunch:i===0?"Use what's in the fridge for lunch":lunchFor(g,i-1)});
+    const lt=custom.length&&k===1?{id:null,e:"🍽️",t:custom.shift()+" (your pick)"}:l;
+    mk(i+1,{g:lt.id?g:null,cook:false,meal:lt.id,e:lt.e,dinner:lt.t,cut:lt.id?null:c.cut,
+      note:"Leftover night: reheat to 165°F.",lunch:lunchFor(g,i),sideName:sideSlots[i+1]});
+    if(groups[k]==="steak"&&yes("stkegg")&&lt.id!=="stkegg"&&days[days.length-1].bf)days[days.length-1].bf={...breakfasts[i+1],label:"Steak & eggs (a few slices of last night's steak)",kcal:460};
   });
-  if(F){const g=G[F],c=g.cook();
-    mk(6,{g:F,cook:true,meal:c.id,e:c.e,dinner:`${custom.length?custom.shift()+" (your pick) or ":""}${c.t} (from the freezer) + ${ds()}`,
-      note:`Freezer day: grill the 2 thawed ${g.frozen} at once: 1 for lunch, 1 for dinner. Fridge is empty-ish: snap new photos and build next week.`,lunch:`${g.lunch} (just grilled) + ${ls()}`});}
-  W={base:days,ov:{},groups,extra,F,have:new Set(),ck:new Set(),open:null,items:[]};
+  if(F&&groups.length){const g=F,c=cookMeal(g);
+    mk(6,{g:F,cook:true,meal:c.id,e:c.e,dinner:`${custom.length?custom.shift()+" (your pick) or ":""}${c.t} (from the freezer) + ${sideSlots[6]}`,
+      cut:c.cut,note:"Freezer day: grill thawed portions; eat one for lunch, one for dinner.",lunch:`${c.t} (just grilled) + ${sideSlots[6].toLowerCase()}`});}
+  while(days.length<7){const i=days.length;mk(i,{cook:false,meal:null,e:"🍽",dinner:"Easy night",note:"",lunch:"Lunch on your own"});}
+  const grabs=MEALS.filter(m=>m.grab&&yes(m.id));
+  const gn=Math.min(getSettings().grabNights||0,grabs.length,2);
+  if(grabs.length&&gn>0){
+    const slots=days.map((d,i)=>i).filter(i=>!days[i].cook&&days[i].kind!=="hol"&&!days[i].grab);
+    const seed=Math.floor(start.getTime()/86400000);
+    for(let n=0;n<gn&&slots.length;n++){
+      const idx=slots.splice((seed+n*3)%slots.length,1)[0];
+      const gm=grabs[(seed+n)%grabs.length];
+      days[idx]={...days[idx],grab:true,meal:gm.id,e:gm.emoji,dinner:gm.name+(gm.tag?` · ${gm.tag}`:""),
+        note:gm.time?`⏱ ${gm.time}`:"Grab & go night.",cook:false,kind:"grab"};
+    }
+  }
+  days.forEach((d,i)=>{if(d.kind==="hol"){d.dinner=d.hol;d.e="🎉";d.note="Holiday — no plan unless you turned on Cook normally in Settings.";d.cook=false;d.meal=null;d.grab=false}});
+  W={base:days,ov:{},groups,extra,F,have:new Set(),ck:new Set(),open:null,items:[],listFilter:null,shopHi:null};
   recomputeList();
   renderWeek();
 }
+
 function buildList(groups,mealIds){
   const P=C.PRICES, out=[], seen={};
+  const days=W?W.base:[];
   const add=(key,o={})=>{const base=P[key]||{n:key,q:"",aisle:"other",a:null,p:null};
-    if(o.brand){o.al=base.a;o.a=null;o.hint=`Aldi usually doesn't carry ${o.brand}; Aldi look-alike ~$${base.a.toFixed(2)} est. (used in the All-Aldi total)`+(base.aisle==="snacks"?" · Publix often runs chips BOGO":"")}const id=o.id||key;if(seen[id]){if(o.why)seen[id].why+=", "+o.why;return}
+    if(o.brand){o.al=base.a;o.a=null;o.hint=`Aldi usually doesn't carry ${o.brand}; Aldi look-alike ~$${base.a!=null?base.a.toFixed(2):"?"}`+(base.aisle==="snacks"?" · Publix often runs chips BOGO":"")}
+    const id=o.id||key;if(seen[id]){if(o.why)seen[id].why+=", "+o.why;return}
     const it={id,...base,...o,why:o.why||""};seen[id]=it;out.push(it)};
   const inPlan=g=>groups.includes(g);
-  if(inPlan("chicken"))add("chicken",{why:"cook night"});
-  if(inPlan("steak"))add("steak:"+mv("steak"),{id:"steak",why:"steak night"});
-  if(inPlan("pork"))add("pork:"+mv("pork"),{id:"pork",why:"cook night"});
-  if(inPlan("brats")){add("brats:"+mv("brats"),{id:"brats",why:"cook night"});add("hotdogbun",{why:"brats"});add("veg:Onions & peppers",{id:"bratveg",why:"brat peppers & onions"})}
+  const cutsUsed={};
+  days.forEach(d=>{if(d.cut&&d.meal)cutsUsed[d.meal]=cutsUsed[d.meal]||new Set();if(d.cut&&d.meal)cutsUsed[d.meal].add(d.cut)});
+  const addProtein=(mid)=>{
+    const pool=proteinCuts(mid);
+    const used=cutsUsed[mid]||new Set(pool);
+    used.forEach(cut=>{
+      if(mid==="burger"){
+        const pt=cut||pattyAll()[0];
+        add(/sirloin/i.test(pt)?"sirloingr":"beef",{id:"patty:"+pt,n:pt,q:"for burgers",why:"burgers"});
+        return;
+      }
+      const key=mid+":"+cut;
+      if(P[key])add(key,{id:"prot:"+key,why:M(mid).name});
+      else add("custom:"+cut,{id:"prot:"+key,n:cut,q:"",aisle:"meat",a:null,p:null,custom:true,why:M(mid).name+" (add price from receipt)"});
+    });
+  };
+  if(inPlan("chicken"))addProtein("chicken");
+  if(inPlan("steak"))addProtein("steak");
+  if(inPlan("pork"))addProtein("pork");
+  if(inPlan("brats")){addProtein("brats");add("hotdogbun",{why:"brats"});add("veg:Onions & peppers",{id:"bratveg",why:"brat peppers & onions"})}
   if(inPlan("burger")){
-    const pt=topLabel("patty")||"Beef patty (80/20)";
-    add(/Turkey/.test(pt)?"turkey":/Chicken/.test(pt)?"chickgr":/sirloin/.test(pt)?"sirloingr":"beef",{id:"patty",why:"burgers (6 patties)"});
+    addProtein("burger");
     const T=id=>topLabel(id);
     const bn=T("bun");if(bn&&bn!=="Lettuce wrap")add(/Sesame|Plain/.test(bn)?"bun:plain":"bun:fancy",{id:"bun",n:bn+"s",why:"burgers"});
     if(bn==="Lettuce wrap")add("lettuce",{n:"Iceberg lettuce (for wraps)",why:"lettuce-wrap burgers"});
     if(T("cheese"))add("cheeseslice",{id:"cheese",n:"Sliced "+T("cheese").replace(" cheese","")+" cheese",why:"burgers"});
-    if(T("lettuce"))add("lettuce",{n:T("lettuce"),why:"burgers"});
-    if(T("tomato"))add("tomato",{why:"burgers"});
-    if(T("onion"))add("onion",{n:T("onion")+"s",why:T("onion").toLowerCase()});
-    if(T("gonion"))add("onion",{why:"grilled onions"});
-    if(T("pickles"))add("pickles",{n:T("pickles")+" (jar)",why:"burgers"});
-    if(T("ketchup"))add("ketchup",{why:"burgers"});
-    if(T("mustard"))add("mustard",{n:T("mustard"),why:"burgers"});
-    if(T("mayo"))add("mayo",{n:T("mayo"),why:"burgers"});
-    if(T("bacon"))add(T("bacon")==="Turkey bacon"?"tbacon":"bacon",{id:"bacon",why:"burgers"});
-    if(T("avocado"))add(T("avocado")==="Guacamole"?"guac":"avocado",{id:"avo",why:"burgers"});
-    if(T("jalapeno"))add(/Fresh/.test(T("jalapeno"))?"jalfresh":"jalpickled",{id:"jal",why:"burgers"});
-    if(T("mushroom"))add("mushroom",{why:"burgers"});
-    if(T("bbq"))add("bbq",{why:"burgers"});
-    if(T("egg"))add("eggs",{why:"fried-egg burgers"});
-    if(T("hot"))add("hot",{why:"burgers"});
+    ["lettuce","tomato","onion","gonion","pickles","ketchup","mustard","mayo","bacon","avocado","jalapeno","mushroom","bbq","egg","hot"].forEach(fid=>{
+      const v=T(fid); if(!v)return;
+      const map={lettuce:"lettuce",tomato:"tomato",onion:"onion",gonion:"onion",pickles:"pickles",ketchup:"ketchup",mustard:"mustard",mayo:"mayo",
+        bacon:T("bacon")==="Turkey bacon"?"tbacon":"bacon",avocado:T("avocado")==="Guacamole"?"guac":"avocado",
+        jalapeno:/Fresh/.test(v)?"jalfresh":"jalpickled",mushroom:"mushroom",bbq:"bbq",egg:"eggs",hot:"hot"};
+      if(map[fid])add(map[fid],{why:"burgers"});
+    });
     st.build.burger.custom.forEach(c=>add("custom:"+c,{n:c,q:"",aisle:"other",a:null,p:null,custom:true,why:"your burger add"}));
   }
   const usesQ=(inPlan("chicken")&&yes("chixq")&&mv("chixq")==="Quesadilla")||(inPlan("steak")&&yes("steakq"));
   if(usesQ){add("tortilla",{why:"quesadillas"});add("shred",{why:"quesadillas"});add("salsa",{why:"quesadillas"})}
-  if(inPlan("chicken")&&yes("chixq")&&mv("chixq")==="Panini"){add("cheeseslice",{id:"cheese",n:"Sliced provolone",why:"paninis"})}
+  if(inPlan("chicken")&&yes("chixq")&&mv("chixq")==="Panini")add("cheeseslice",{id:"cheese",n:"Sliced provolone",why:"paninis"});
   const needRice=inPlan("chicken")||inPlan("steak")||inPlan("pork");
-  if(needRice)add(st.equip.has("rice")?"ricebag":"ricepouch",{q:st.equip.has("rice")?"2 lb bag":"4 pouches",a:st.equip.has("rice")?1.79:5.16,p:st.equip.has("rice")?2.49:7.96,why:"bowls + lunches"});
+  if(needRice)add(st.equip.has("rice")?"ricebag":"ricepouch",{q:st.equip.has("rice")?"2 lb bag":"4 pouches",why:"bowls + lunches"});
   if(inPlan("chicken")){const bv=yes("bowl")?mv("bowl"):"Teriyaki";if(bv==="Teriyaki")add("teriyaki",{why:"rice bowls"});else if(bv==="BBQ")add("bbq",{why:"rice bowls"});else if(/Salsa/.test(bv)){add("salsa",{why:"rice bowls"});add("shred",{why:"rice bowls"})}}
   if(inPlan("pork"))add("bbq",{why:"pork"});
   if(inPlan("steak")&&yes("stkegg"))add("eggs",{why:"steak & eggs"});
   if(yes("veg"))add("veg:"+mv("veg"),{id:"veg",why:"grilled veggie sides"});
-  // breakfast + staples
-  add("eggs",{why:"breakfast"});add("bread",{why:"toast"+(yes("chixq")&&mv("chixq")==="Panini"?" + paninis":"")});
-  add("season",{why:"steak & chicken"});add("spray",{why:"Foreman + pans"});add("bags",{why:"freezer portions"});
-  // sides
-  const pk=k=>[...(st.picks[k]||[])];
-  if(st.sides.has("Potato chips"))pk("Potato chips").slice(0,3).forEach(b=>{const f=pk("Potato chips › "+b);const k=P["chips:"+b]?"chips:"+b:"chips";add(k,{id:"chips:"+b,brand:k==="chips:Kettle Brand"?null:b,n:`${b}${f.length?" ("+f.slice(0,2).join(", ")+")":""}`,why:"lunch side"})});
-  if(st.sides.has("Fries"))pk("Fries").slice(0,2).forEach(f=>add("fries",{id:"fries:"+f,n:`Frozen ${f.toLowerCase()} fries`,why:"dinner side",...(f==="Sweet potato"?{a:2.99,p:4.99}:{})}));
-  if(st.sides.has("Fruit"))pk("Fruit").filter(f=>P["Fruit:"+f]).slice(0,4).forEach(f=>add("Fruit:"+f,{why:"lunch side"}));
-  if(st.sides.has("Yogurt"))pk("Yogurt").slice(0,2).forEach(b=>{const f=pk("Yogurt › "+b);add("yogurt",{id:"yog:"+b,brand:b==="Store brand"?null:b,n:`${b} yogurt${f.length?" ("+f.slice(0,3).join(", ")+")":""}`,why:"lunch/breakfast"})});
-  if(st.sides.has("Salad")){pk("Salad").filter(s=>P["Salad:"+s]).slice(0,2).forEach(s=>add("Salad:"+s,{why:"dinner side"}));pk("Salad › then").slice(0,2).forEach(d=>add("dressing",{id:"dr:"+d,n:d+" dressing",why:"salad"}))}
-  if(!st.sides.size){add("Fruit:Bananas",{why:"default lunch side"});if(!yes("veg"))add("Salad:Garden",{why:"default dinner side"})}
-  // custom side / drill items
-  Object.entries(st.custom).forEach(([k,arr])=>{if(!["sides","Fruit","Salad"].includes(k))return;arr.forEach(v=>{const isSel=k==="sides"?st.sides.has(v):(st.picks[k]&&st.picks[k].has(v));if(isSel)add("custom:"+k+v,{n:k==="sides"?v:`${v} (${k.replace(" › then"," dressing")})`,q:"",aisle:"other",a:null,p:null,custom:true,why:"your custom pick"})})});
-  // ingredient picks from the other meals' build screens (only meals that are on this week's plan)
-  (mealIds||[]).forEach(mid=>{if(mid==="burger"||!BUILDS[mid]||!st.build[mid])return;const B=BUILDS[mid],T=st.build[mid].top,why=M(mid).name.toLowerCase();
-    [...B.core,...B.extras].forEach(t=>{if(!T[t.id].on)return;const k=t.kv?t.kv[T[t.id].v]:t.k;if(k&&P[k])add(k,{why})});
-    st.build[mid].custom.forEach(v=>add("custom:b"+mid+v,{n:v,q:"",aisle:"other",a:null,p:null,custom:true,why:"your "+why+" add"}))});
-  if(st.equip.has("espresso")){const k=coffeeCalc();
-    add("coffee:beans",{q:`${k.bags} × 12 oz bag (${k.bags>1?"":"~"+Math.max(1,Math.floor(C.COFFEE.bagG/k.g))+" wk supply at "+st.coffee.perWeek+"/wk"})`,a:P["coffee:beans"].a*k.bags,p:P["coffee:beans"].p*k.bags,why:"your coffee"});
-    if(k.milkKey)add(k.milkKey,{q:`${k.halfGal} × ½ gallon`,a:P[k.milkKey].a*k.halfGal,p:P[k.milkKey].p*k.halfGal,why:`${k.milkOz} oz/wk for your drinks`});
-    if(k.syrup)add("coffee:syrup",{n:`${st.coffee.syrup} coffee syrup`,why:"flavored drinks"});}
+  days.forEach(d=>{const b=d.bf; if(!b)return; const cfg=BF_CFG.items[b.id]||b; (cfg.keys||[]).forEach(()=>{});});
+  const oatsWk=days.filter(d=>d.bf&&d.bf.id==="oatmeal").length;
+  const bagelWk=days.filter(d=>d.bf&&(d.bf.id==="bagel"||d.bf.id==="bec")).length;
+  const becWk=days.filter(d=>d.bf&&d.bf.id==="bec").length;
+  if(oatsWk)add("oats",{n:"Oats",q:`${oatsWk} breakfasts`,a:(P.oats?.a||0.45)*Math.max(1,oatsWk/5),p:(P.oats?.p||0.70)*Math.max(1,oatsWk/5),why:"breakfast"});
+  if(bagelWk)add("bagels",{n:"Bagels",q:`${bagelWk}`,a:(P.bagels?.a||0.45)*bagelWk,p:(P.bagels?.p||0.70)*bagelWk,why:"breakfast"});
+  if(days.some(d=>d.bf&&(d.bf.id==="bagel"||d.bf.id==="bec")))add("creamcheese",{n:"Cream cheese",q:"1 tub",a:2.49,p:3.79,why:"breakfast"});
+  if(becWk){add("bacon",{q:`${becWk} weekend breakfasts`,why:"breakfast"});add("eggs",{why:"breakfast"});add("cheeseslice",{why:"breakfast"})}
+  add("bread",{why:"toast"});add("season",{why:"steak & chicken"});add("spray",{why:"Foreman + pans"});add("bags",{why:"freezer portions"});
+  const sideNames=new Set(days.filter(d=>d.kind!=="hol").map(d=>d.sideName).filter(Boolean));
+  sideNames.forEach(name=>{
+    const meta=sideMeta(name), pr=meta.a!=null||meta.p!=null;
+    const key=meta.custom?null:Object.keys(P).find(k=>P[k].n===name);
+    if(key)add(key,{why:"dinner side",prep:meta.prep,kcal:meta.kcal});
+    else add("custom:side:"+name,{id:"side:"+name,n:name,q:"",aisle:meta.aisle||"produce",a:meta.a||null,p:meta.p||null,custom:!pr,why:`side · ~${meta.prep||5} min prep · ${calTxt(meta.kcal)}`});
+  });
+  if(st.sides.has("Potato chips")){const pk=k=>[...(st.picks[k]||[])];pk("Potato chips").slice(0,2).forEach(b=>{const f=pk("Potato chips › "+b);const k=P["chips:"+b]?"chips:"+b:"chips";add(k,{id:"chips:"+b,brand:k==="chips:Kettle Brand"?null:b,n:`${b}${f.length?" ("+f.slice(0,2).join(", ")+")":""}`,why:"lunch side"})})}
+  Object.entries(st.custom).forEach(([k,arr])=>{if(k!=="sides")return;arr.forEach(v=>{if(st.sides.has(v)&&!sideNames.has(v))add("custom:"+v,{n:v,q:"",aisle:"other",a:null,p:null,custom:true,why:"your custom side"})})});
+  (mealIds||[]).forEach(mid=>{
+    if(mid==="burger"||!BUILDS[mid]||!st.build[mid])return;
+    const B=BUILDS[mid],T=st.build[mid].top,why=(M(mid)||{}).name?.toLowerCase()||mid;
+    [...B.core,...B.extras].forEach(t=>{if(!T[t.id]||!T[t.id].on)return;const k=t.kv?t.kv[T[t.id].v]:t.k;if(k&&P[k])add(k,{why})});
+    st.build[mid].custom.forEach(v=>add("custom:b"+mid+v,{n:v,q:"",aisle:"other",a:null,p:null,custom:true,why:"your "+why+" add"}));
+  });
+  days.filter(d=>d.grab&&d.meal).forEach(d=>{const m=M(d.meal); if(!m) return;
+    const k=d.meal; if(P[k])add(k,{id:"gg:"+k,listStore:m.store||st.main,why:"grab & go dinner"});
+    else add("custom:"+k,{id:"gg:"+k,n:m.name,q:"1",aisle:"grab",a:null,p:null,custom:true,listStore:m.store,why:"grab & go"})});
+  if(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso")){const k=coffeeCalc();
+    add("coffee:oro",{n:k.brandName+" (large can/bag)",q:k.bagLine,a:null,p:null,custom:true,hint:"price: add from receipt · est. only",why:`${k.n} drinks/wk · ~${k.gPerShot} g/shot · ${k.g} g/wk`});
+    if(k.needLids)add("coffee:lids",{why:`refillable capsule seals · restock every ~${C.COFFEE.lidsEveryWeeks} weeks`});
+    if(k.milkKey)add(k.milkKey,{q:`${k.halfGal} × ½ gallon`,a:P[k.milkKey].a*k.halfGal,p:P[k.milkKey].p*k.halfGal,why:`optional milk · ${k.milkOz} oz/wk`});}
   st.mealCustom.forEach(v=>add("custom:meal"+v,{n:`Stuff for: ${v}`,q:"",aisle:"other",a:null,p:null,custom:true,why:"your custom meal"}));
   return out;
 }
+
 const AISLES=[["coffee","☕ Coffee"],["meat","🥩 Meat"],["produce","🥬 Produce"],["dairy","🧀 Dairy & eggs"],["bread","🍞 Bread"],["pantry","🥫 Pantry"],["frozen","❄️ Frozen"],["snacks","🍿 Snacks"],["other","⭐ Your custom adds"]];
 const $$=n=>n==null?"?":"$"+n.toFixed(2);
 function totals(){let a=0,p=0,b=0,na=0,np=0,cu=0;W.items.forEach(it=>{if(W.have.has(it.id))return;if(it.a==null&&it.p==null){cu++;return}
@@ -677,83 +1091,136 @@ function totals(){let a=0,p=0,b=0,na=0,np=0,cu=0;W.items.forEach(it=>{if(W.have.
 function renderWeek(){
   const t=totals();
   const fm=st.equip.has("foreman")||st.equip.size===0;
-  const days=effDays(W.ov);
-  const mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const wl=fmtWeek(weekStartDate());
-  const bud=getBud(), edited=Object.keys(W.ov).length>0;
+  let days=effDays(W.ov);
+  const s0=weekStartDate();
+  days=days.map((d,i)=>{const dt=addDays(s0,i);const hol=isHolidayOff(dt);
+    if(hol&&!getHolCook()[hol.id])return {...d,kind:"hol",hol:hol.name,dinner:hol.name,e:"🎉",note:"Holiday — no groceries unless Cook normally in Settings.",cook:false,meal:null,grab:false};
+    return d});
+  const wl=fmtWeek(s0), bud=getBud(), edited=Object.keys(W.ov).length>0;
+  const bh=budHero(t.b);
   const otherStores=[...st.stores].filter(x=>x!=="Aldi"&&x!=="Publix");
   const main=st.main==="Aldi"||st.main==="Publix"?st.main:"";
   const byA={};W.items.forEach(it=>{(byA[it.aisle]=byA[it.aisle]||[]).push(it)});
-  const nCk=W.ck.size;
+  const nCk=W.ck.size, filt=W.listFilter;
   const MN=id=>id&&M(id);
+  const dayCls=d=>`${d.cook?" cook":""}${d.grab?" grab":""}${d.kind==="hol"?" hol":""}`;
+  const cutTag=d=>d.cut?`<span class="daytag">${esc(d.cut)}</span>`:"";
+  const shopBtn=i=>`<button type="button" class="shopjump" data-shop="${i}" aria-label="Jump to ${days[i].short} on shopping list">${icons.cart}</button>`;
   $("week").innerHTML=`
-  <header class="wk-h"><div class="rcpt-top"><button class="rcpt-btn" data-rcpt="1">📷 Upload receipt</button></div><p class="kick">Kitchen HQ · Cameron</p><h1 class="brand">Cameron's Grill Week</h1>
-    <div class="wl-row"><div class="wlabel" id="wlab">${wl}</div><button class="cal-btn" id="calB" aria-label="Pick a week on a calendar">📅</button></div>
+  <section class="hero">
+    <div class="hero-top">
+      <div><p class="kick">Kitchen HQ · Cameron</p><h1 class="brand">Cameron's Grill Week</h1></div>
+      <button type="button" class="gear ico-btn" id="setBtn" aria-label="Settings">${icons.gear}</button>
+    </div>
+    <div class="wl-row">
+      <div class="wlabel" id="wlab">${wl}</div>
+      <button type="button" class="cal-btn ico-btn" id="calB" aria-label="Pick a week on a calendar">${icons.cal}</button>
+      <button type="button" class="cal-btn ico-btn" id="custB" aria-label="Customize week / leftovers">${icons.repeat}</button>
+    </div>
     <p class="tagline">Cooking for 1 · ${fm?"Foreman grill":"stovetop"} first · cook once, eat 2–3 times · lunch packed for Woody's</p>
-    <div class="pills"><span class="pill t">3 cook nights + freezer day</span><button class="pill c btn" id="bsP" aria-label="Best split estimate. Tap to set a budget">Best split ~$${t.b.toFixed(0)} est.</button><button class="pill btn bud${bud.on?"":" off"}" id="budP">${!bud.on?"Budget off":bud.amt==null?"💵 Set budget":`Budget $${fmtAmt(bud.amt)} / ${bud.days} day${bud.days>1?"s":""}`}</button></div>${budCmp(t.b,7)}</header>
-  <aside class="rules"><h2>Cameron's kitchen rules</h2><ul>
-    <li><b>Cook nights</b> make 3–4 portions: eat 1, fridge the rest for lunch + the next dinner.</li>
-    <li><b>Fridge:</b> cooked leftovers last 3–4 days. Not eaten by day 4 → freezer.</li>
-    <li><b>Freezer:</b> split family packs into single bags the day you shop. Date them. Thaw overnight in the fridge.</li>
-    <li><b>Temps:</b> steak & pork 145°F + 3 min rest · burgers 160°F · chicken 165°F · leftovers 165°F.</li>
-    <li><b>Lunch</b> = leftovers in a container for Woody's. Breakfast is optional.</li></ul></aside>
+    ${bh.line?`<p class="budline ${bh.cls}">${bh.line}</p>${bh.bar}`:""}
+    <div class="pills">
+      <span class="pill t">3 cook nights + grab & freezer</span>
+      <button type="button" class="pill c btn" id="bsP" aria-label="Best split estimate">Best split ~$${t.b.toFixed(0)} est.</button>
+      <button type="button" class="pill btn bud${bud.on?"":" off"}" id="budP">${!bud.on?"Budget off":bud.amt==null?"Set budget":`Budget $${fmtAmt(bud.amt)} / ${bud.days}d`}</button>
+    </div>
+    <div class="rcpt-top" style="margin-top:10px">${icons.rcpt}<button type="button" class="rcpt-btn" data-rcpt="1">Upload receipt</button></div>
+  </section>
   ${guideBox()}
   <details class="lt"><summary>💰 Meat money tips</summary><ul>${C.TIPS.meat.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>
   ${logBanner(days)}
   <div class="stitle" id="thisWk"><h2>This week${edited?'<span class="edited">edited</span>':""}</h2><span>7 days · tap a day for how-to</span></div>
-  <p class="lp-tip">Tip: press and hold a week to customize it.</p>
-  ${days.map((d,i)=>{const m=MN(d.meal);return `<div class="day${d.cook?" cook":""}" data-d="${i}" style="animation-delay:${i*.04}s">
-    <div class="dh"><span>${d.short}${d.cook?" · cook":""}</span><span class="dha"><button class="dact" data-swapd="${i}" aria-label="Swap ${d.short} dinner">Swap</button><button class="dact del" data-del="${i}" aria-label="Delete ${d.short} dinner">🗑</button><span>${d.icon}</span></span></div>
-    <div class="db"><div class="emo-row"><span class="memo">${d.e}</span>${dayBadge(d)}</div><p class="dinner">${d.meal&&rateOf(d.meal)===2?'<span class="favb">⭐ favorite</span> ':""}${esc(d.dinner)}</p>${dayNut(d)}<p class="dnote">${esc(d.note)}</p>
-    <p class="dl">🎒 Lunch at Woody's: ${esc(d.lunch)}</p>${d.bf?`<p class="dl b">☀️ Breakfast (optional): ${esc(d.bf)}</p>`:""}
+  <p class="lp-tip">Tip: press and hold a week to customize it, or tap ${icons.repeat} above.</p>
+  ${days.map((d,i)=>{const m=MN(d.meal);const cut=d.cut?` · ${esc(d.cut)}`:"";
+    return `<div class="day${dayCls(d)}" data-d="${i}" style="animation-delay:${i*.04}s">
+    <div class="dh"><span>${d.short}${d.cook?" · cook":""}${d.grab?" · grab":""}</span><span class="dha">${d.kind!=="hol"?shopBtn(i):""}
+      <button type="button" class="swap-link" data-swapd="${i}" aria-label="Swap ${d.short} dinner">${icons.swap} Swap</button>
+      <span class="memo-sm">${d.e}</span></span></div>
+    <div class="db"><div class="emo-row"><span class="memo">${d.e}</span>${dayBadge(d)}</div>
+    <p class="dinner">${d.meal&&rateOf(d.meal)===2?'<span class="favb"><span class="emo">❤️</span> favorite</span> ':""}${cutTag(d)}${esc(d.dinner)}</p>${dayNut(d)}
+    ${d.note?`<p class="dnote">${esc(d.note)}</p>`:""}
+    <p class="dl">Lunch at Woody's: ${esc(d.lunch||"—")}</p>
+    ${d.bf?`<p class="dl b">${bfLine(d.bf)}</p>`:""}
     ${W.open===i&&m?`<div class="rec"><h4>${m.emoji} ${esc(m.name)}</h4>${tipHTML(m).replace('class="tip"','')}</div>`:""}
-    <p class="hint">${W.open===i?"▾ tap to close":"▸ tap for how-to + temps"}</p>${d.meal&&M(d.meal)?rateRow(d.meal):""}${d.kind==="rm"?"":logRow(i,d)}</div></div>`}).join("")}
+    <p class="hint">${W.open===i?"▾ tap to close":"▸ tap for how-to + temps"}</p>${rateRow(d.meal&&M(d.meal)?d.meal:null,i,d.short)}${d.kind==="rm"||d.kind==="hol"?"":logRow(i,d)}</div></div>`}).join("")}
   ${weekReview(days)}
   ${ratingsPanel()}
-  ${W.extra.length?`<div class="nextwk">🔄 Next week rotation: ${W.extra.map(g=>({pork:mv("pork"),brats:mv("brats"),chicken:"chicken",burger:"burgers",steak:"steak"}[g])).join(", ")} (you said yes; saved for next week so this week stays cheap).</div>`:""}
+  ${W.extra.length?`<div class="nextwk">🔄 Next week rotation: ${W.extra.map(g=>({pork:mv("pork"),brats:mv("brats"),chicken:"chicken",burger:"burgers",steak:"steak"}[g])).join(", ")}</div>`:""}
   <section class="gpanel"><div class="stitle" style="margin-top:0"><h2>Shopping list</h2><span>${nCk} checked</span></div>
-    <div class="tot"><div class="${main==="Aldi"?"main":""}">${main==="Aldi"?"⭐ ":""}All Aldi<b>$${t.a.toFixed(2)}</b>est.</div><div class="${main==="Publix"?"main":""}">${main==="Publix"?"⭐ ":""}All Publix<b>$${t.p.toFixed(2)}</b>est.</div><div class="best">Best split<b>$${t.b.toFixed(2)}</b>est.</div></div>
-    <div class="cpy"><button class="cpb p" data-copy="all">📋 Copy whole list</button><button class="cpb" data-copy="Aldi">Copy Aldi list</button><button class="cpb" data-copy="Publix">Copy Publix list</button></div>
-    ${W.cph?`<div class="cph" id="cphBox"><p class="cph-t">✓ Copied. Want to send a photo with it?</p><button class="cpb p" id="cphB">📷 Take a photo</button><input type="file" accept="image/*" capture="environment" hidden id="cphIn"><div class="thumbs" id="cphTh"></div><div id="cphAct"></div><p class="muted2">Opens your camera. Snap the fridge, pantry or a receipt, then tap Share. Nothing is uploaded; Share just opens your phone's share sheet.</p></div>`:""}
-    ${st.equip.has("espresso")?`<p class="gnote cof">☕ ${coffeeLine(false)}</p>`:""}
-    <p class="pchk">Prices last checked ${fmtDateLong(PRICE_META.updated)}${PRICE_META.loaded?"":" (built-in estimates)"} · grey = older than 60 days</p>
+    <div class="byday" id="byDay">${["All",...DN].map((lab,ix)=>`<button type="button" data-fd="${ix===0?"":ix-1}" class="${(filt==null&&ix===0)||filt===ix-1?"on":""}">${lab}</button>`).join("")}</div>
+    <div class="tot"><div class="${main==="Aldi"?"main":""}">${main==="Aldi"?"⭐ ":""}All Aldi<b>$${t.a.toFixed(2)}</b>est.${estStoreNote("Aldi")}</div>
+      <div class="${main==="Publix"?"main":""}">${main==="Publix"?"⭐ ":""}All Publix<b>$${t.p.toFixed(2)}</b>est.${estStoreNote("Publix")}</div>
+      <div class="best">Best split<b>$${t.b.toFixed(2)}</b>est.</div></div>
+    <div class="cpy"><button type="button" class="cpb p ico-btn" data-copy="all">${icons.copy} Copy whole list</button>
+      <button type="button" class="cpb ico-btn" data-copy="Aldi">${icons.copy} Aldi</button>
+      <button type="button" class="cpb ico-btn" data-copy="Publix">${icons.copy} Publix</button></div>
+    ${W.cph?`<div class="cph" id="cphBox"><p class="cph-t">✓ Copied. Want to send a photo with it?</p><button type="button" class="cpb p ico-btn" id="cphB">${icons.cam} Take a photo</button><input type="file" accept="image/*" capture="environment" hidden id="cphIn"><div class="thumbs" id="cphTh"></div><div id="cphAct"></div></div>`:""}
+    ${(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))?`<p class="emo" style="margin:8px 0 2px">☕</p><p class="gnote cof">${coffeeLine(false)}</p>`:""}
+    <p class="pchk">Prices last checked ${fmtDateLong(PRICE_META.updated)}${PRICE_META.loaded?"":" (built-in estimates)"}</p>
     ${budCmp(t.b,7)}
-    <p class="gnote">Best split = Aldi for ${t.na} items, Publix for ${t.np} (your exact name brands). All-Aldi swaps in Aldi look-alikes.${t.cu?` + ${t.cu} custom item${t.cu>1?"s":""} (check price).`:""} ${otherStores.length?`Also on your list: ${otherStores.map(esc).join(", ")}; compare there too (secondary).`:""}</p>
-    <p class="gnote" style="background:#d4efef">📸 ${Object.keys(st.photos).length?`You sent ${Object.keys(st.photos).length} photo(s).`:"No photos yet."} The real bot reads your pantry/fridge/freezer photos and skips what you already have. Here: tap <b>Have it</b> to drop an item and update totals.</p>
-    <p class="gnote" style="background:#fff3c4">🧾 Send a receipt photo or Publix app Purchases screenshot to update prices.</p>
-    ${AISLES.filter(([k])=>byA[k]).map(([k,lab])=>`<h3 class="aisle">${lab}<small>${byA[k].length} items</small></h3>
-      ${byA[k].map(it=>{const gone=W.have.has(it.id),ck=W.ck.has(it.id);const aw=it.a!=null&&(it.p==null||it.a<=it.p),pw=it.p!=null&&!aw;
-        return `<div class="it${ck?" ck":""}${gone?" gone":""}"><div class="cb" data-ck="${esc(it.id)}">${ck?"✓":""}</div>
-        <div class="nm" data-ck="${esc(it.id)}">${esc(it.n)}<small>${esc(it.q)}${it.q?" · ":""}for ${esc(it.why)}</small>
-          ${it.src?`<small class="src">✓ from store online listing: ${esc(it.hint||"")}</small>`:it.hint?`<small>${esc(it.hint)}</small>`:""}
-          <div class="pr"><span class="${aw?"win":""}${isStale(it.sA)?" stale":""}">Aldi ${it.a==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.a)}</span><span class="${pw?"win":""}${isStale(it.sP)?" stale":""}">Publix ${it.p==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.p)}</span>${it.custom?"":`<span class="src-l">${esc(srcPair(it))}</span>`}${it.custom?`<span>check price</span>`:aw||pw?`<span class="win">${aw?"Aldi":"Publix"} cheaper</span>`:""}</div></div>
-        <button class="have" data-have="${esc(it.id)}">${gone?"↩ Need it":"Have it"}</button></div>`}).join("")}`).join("")}
-    <p class="gnote" style="margin-top:12px">🌡 One-time buy: a cheap instant-read meat thermometer (~$10–15 at Walmart/Target/Amazon; not in totals).</p>
+    <p class="emo" style="margin:8px 0 2px">🧊</p><p class="gnote freezer-tip">Freezer tip: split family packs into single bags when you get home; date each bag.</p>
+    ${renderListItems(byA,filt,days)}
+    <p class="emo" style="margin:12px 0 2px">🌡</p><p class="gnote">One-time buy: instant-read thermometer (~$10–15; not in totals).</p>
   </section>
-  <a class="gh" href="${C.REPO.url}" target="_blank" rel="noopener"><b>🛠️ Your own repo, cameron-meals</b><span>Menu items, toppings, and prices live in meals.js. Edit it on GitHub to change your menu. github.com/Burnsted/cameron-meals</span></a>
-  <button class="wbtn p" id="bk">← Back to my picks</button><button class="wbtn g" id="rs2">Start over</button>
-  <div class="foot">All prices are <b>estimates</b> for St. Pete-area Aldi &amp; Publix as of Oct 2026 (from prices.json when it loads). Check in-store; sales and BOGOs change weekly. Items marked ✓ came from the store's own online listing (Instacart-powered, can differ from the shelf price); everything else is a rough estimate.<br>
-   <details style="margin-top:6px"><summary>Price sources</summary>${C.SOURCES.map(([l,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(l)}</a>`).join("<br>")}</details>
-   Cook times are approximate; use a thermometer. Safe temps per USDA.<br>Cameron-owned planner · no account · no APIs · photos stay on your phone unless you share them</div>`;
+  <a class="gh" href="${C.REPO.url}" target="_blank" rel="noopener"><b>🛠️ Your own repo, cameron-meals</b><span>Edit meals.js on GitHub to change your menu.</span></a>
+  <button type="button" class="wbtn p ico-btn" id="bk">${icons.back} Back to my picks</button><button type="button" class="wbtn g" id="rs2">Start over</button>
+  <div class="foot">All prices are <b>estimates</b> (prices.json when it loads). ${otherStores.length?`Also shop: ${otherStores.map(esc).join(", ")}.`:""}</div>`;
   const wk=$("week");
-  wk.querySelectorAll(".day").forEach(d=>d.onclick=()=>{const i=+d.dataset.d;W.open=W.open===i?null:i;renderWeek()});
+  wk.querySelectorAll(".day").forEach(el=>{if(el.classList.contains("hol"))return;el.onclick=()=>{const i=+el.dataset.d;W.open=W.open===i?null:i;renderWeek()}});
   wk.querySelectorAll("[data-ck]").forEach(b=>b.onclick=()=>{const k=b.dataset.ck;W.ck.has(k)?W.ck.delete(k):W.ck.add(k);renderWeek()});
   wk.querySelectorAll("[data-rate]").forEach(b=>b.onclick=e=>{e.stopPropagation();setRate(b.dataset.m,+b.dataset.rate);renderWeek()});
   wk.querySelectorAll("[data-unrate]").forEach(b=>b.onclick=e=>{e.stopPropagation();setRate(b.dataset.unrate,0);renderWeek()});
   wk.querySelectorAll("[data-have]").forEach(b=>b.onclick=()=>{const k=b.dataset.have;W.have.has(k)?W.have.delete(k):W.have.add(k);renderWeek()});
   wk.querySelectorAll("[data-swapd]").forEach(b=>b.onclick=e=>{e.stopPropagation();openDaySwap(+b.dataset.swapd)});
   wk.querySelectorAll("[data-del]").forEach(b=>b.onclick=e=>{e.stopPropagation();openDelete(+b.dataset.del)});
-  wk.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>{const t=listText(b.dataset.copy);W.cph=true;W.cphText=t;renderWeek();copyTxt(t,b.dataset.copy==="all"?"Whole list copied":`${b.dataset.copy} list copied`)});
-  if(W.cph&&$("cphB")){W.cphFiles=W.cphFiles||[];photoShare({btn:$("cphB"),input:$("cphIn"),thumbs:$("cphTh"),act:$("cphAct"),store:W.cphFiles,shareLabel:"Share",title:"My shopping list",text:W.cphText||"",
-    fallback:"Your browser can't open the share sheet here. Save the photo (long-press → Save) and send it with your list."})}
+  wk.querySelectorAll("[data-shop]").forEach(b=>b.onclick=e=>{e.stopPropagation();const i=+b.dataset.shop;W.shopHi=i;W.listFilter=i;renderWeek();const el=wk.querySelector(`[data-li="${i}"]`);if(el)el.scrollIntoView({behavior:"smooth",block:"center"})});
+  wk.querySelectorAll("#byDay [data-fd]").forEach(b=>b.onclick=()=>{const v=b.dataset.fd;W.listFilter=v===""?null:+v;renderWeek()});
+  wk.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>{const tx=listText(b.dataset.copy);W.cph=true;W.cphText=tx;renderWeek();copyTxt(tx,b.dataset.copy==="all"?"Whole list copied":`${b.dataset.copy} list copied`)});
+  if(W.cph&&$("cphB")){W.cphFiles=W.cphFiles||[];photoShare({btn:$("cphB"),input:$("cphIn"),thumbs:$("cphTh"),act:$("cphAct"),store:W.cphFiles,shareLabel:"Share",title:"My shopping list",text:W.cphText||"",fallback:"Save the photo and send with your list."})}
   bindLog(wk,days);
   $("bk").onclick=()=>{document.body.classList.remove("light");window.scrollTo(0,0)};
   $("rs2").onclick=()=>{reset();render();window.scrollTo(0,0)};
-  $("calB").onclick=()=>openCal({sel:weekStartDate(),onPick:(mon)=>{st.weekStart=mon.getTime();renderWeek()}});
-  $("bsP").onclick=openBudget;$("budP").onclick=openBudget;
-  longPress($("thisWk"),openCustom);longPress($("wlab"),openCustom);
+  $("calB").onclick=()=>openCal({sel:s0,onPick:(mon)=>{st.weekStart=mon.getTime();buildWeek()}});
+  $("custB").onclick=openCustom;longPress($("thisWk"),openCustom);longPress($("wlab"),openCustom);
+  $("bsP").onclick=openBudget;$("budP").onclick=openBudget;$("setBtn").onclick=openSettings;
   bindReceipt(wk);
 }
+function renderListItems(byA,filt,days){
+  const showFor=(it,dayIdx)=>{
+    if(filt==null)return true;
+    const d=days[dayIdx]; if(!d||d.kind==="hol")return false;
+    const w=(it.why||"").toLowerCase();
+    if(it.id&&it.id.startsWith("gg:")&&d.grab&&d.meal&&it.id.slice(3)===d.meal)return true;
+    if(d.sideName&&w.includes(d.sideName.toLowerCase()))return true;
+    if(d.meal&&w.includes((M(d.meal)||{}).name?.toLowerCase()||""))return true;
+    if(d.bf&&w.includes("breakfast"))return dayIdx===filt;
+    return dayIdx===filt&&d.cook;
+  };
+  const grabGroups=listByStore().groups;
+  let html="";
+  Object.keys(grabGroups).sort().forEach(store=>{
+    const loc=storeLocLabel(store);
+    html+=`<div class="store-h">${esc(store)}<small>${esc(loc)}</small></div>`;
+    grabGroups[store].filter(it=>!W.have.has(it.id)&&(filt==null||days.some((d,i)=>showFor(it,i)))).forEach(it=>{html+=listItemRow(it,filt,days)});
+  });
+  AISLES.filter(([k])=>byA[k]).forEach(([k,lab])=>{
+    html+=`<h3 class="aisle">${lab}<small>${byA[k].length} items</small></h3>`;
+    byA[k].filter(it=>!it.listStore&&!W.have.has(it.id)&&(filt==null||days.some((d,i)=>showFor(it,i)))).forEach(it=>{html+=listItemRow(it,filt,days)});
+  });
+  return html;
+}
+function listItemRow(it,filt,days){
+  const aw=it.a!=null&&(it.p==null||it.a<=it.p),pw=it.p!=null&&!aw;
+  const hi=days&&W.shopHi!=null&&days.some((d,i)=>{if(i!==W.shopHi)return false;const w=(it.why||"").toLowerCase();return w.includes((d.sideName||"").toLowerCase())||(d.meal&&w.includes(((M(d.meal)||{}).name||"").toLowerCase()))});
+  const tags=it.prep!=null||it.kcal!=null?`<small> ~${it.prep||"?"} min prep · ${calTxt(it.kcal)}</small>`:"";
+  return `<div class="it${W.ck.has(it.id)?" ck":""}${W.have.has(it.id)?" gone":""}${hi?" hi":""}" ${hi?`data-li="${W.shopHi}"`:""}>
+    <div class="cb" data-ck="${esc(it.id)}">${W.ck.has(it.id)?"✓":""}</div>
+    <div class="nm" data-ck="${esc(it.id)}">${esc(it.n)}<small>${esc(it.q)}${it.q?" · ":""}for ${esc(it.why)}</small>${tags}
+      <div class="pr"><span class="${aw?"win":""}${isStale(it.sA)?" stale":""}">Aldi ${it.a==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.a)}</span>
+      <span class="${pw?"win":""}${isStale(it.sP)?" stale":""}">Publix ${it.p==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.p)}</span>${it.custom?"":`<span class="src-l">${esc(srcPair(it))}</span>`}</div></div>
+    <button type="button" class="have" data-have="${esc(it.id)}">${W.have.has(it.id)?"↩ Need it":"Have it"}</button></div>`;
+}
+
 /* ---- shared v3 helpers: sheet, week calendar, long-press, photo share ---- */
 const MO3=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const MOFULL=["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -772,7 +1239,7 @@ function sheetOpen(){const bg=shEl();return bg&&bg.classList.contains("open")}
 function initSheet(){const bg=shEl();if(!bg||bg._init)return;bg._init=1;
   bg.addEventListener("click",e=>{if(e.target===bg||e.target.closest("[data-x]"))closeSheet()});
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&sheetOpen()){e.stopPropagation();closeSheet()}},true)}
-const shTop=(t)=>`<div class="sh-top"><h3>${t}</h3><button class="sh-x" data-x="1" aria-label="Close">✕</button></div>`;
+const shTop=(t)=>`<div class="sh-top"><h3>${t}</h3><button type="button" class="sh-x ico-btn" data-x="1" aria-label="Close">${icons.close}</button></div>`;
 /* Week calendar. opts: sel (Monday Date or null), onPick(monday, keepOpen) */
 function openCal(opts){
   const today=new Date();today.setHours(0,0,0,0);
@@ -825,7 +1292,7 @@ function attachShare(o){
 function openReceipt(){
   const inn=openSheet(shTop("📷 Upload receipt")+`
     <p style="margin:0 0 10px;font-weight:700;font-size:15px">Snap your receipt (or a Publix app Purchases screenshot), then send it to Jarvis.</p>
-    <div class="sh-row2" style="margin-top:0"><button class="sh-btn p" data-pick="cam">📷 Take photo</button><button class="sh-btn" data-pick="lib">🖼 Choose photos</button></div>
+    <div class="sh-row2" style="margin-top:0;align-items:center"><span class="emo">📷</span><button class="sh-btn p" data-pick="cam">Take photo</button><span class="emo">🖼</span><button class="sh-btn" data-pick="lib">Choose photos</button></div>
     <input type="file" accept="image/*" capture="environment" hidden data-in="cam"><input type="file" accept="image/*" multiple hidden data-in="lib">
     <div class="thumbs" data-th></div><div data-act></div>
     <p class="muted2"><b>Prices update after Jarvis reads it.</b> This page is a static site: nothing is uploaded from here. "Send to Jarvis" just opens your phone's share sheet so you can send the photo into the chat.</p>`,"Upload receipt");
@@ -850,15 +1317,15 @@ const MG={steak:"steak",steakq:"steak",stkegg:"steak",burger:"burger",chicken:"c
 function weekStartDate(){return st&&st.weekStart?new Date(st.weekStart):mondayOf(new Date())}
 function effDays(ov){const s0=weekStartDate();return W.base.map((b,i)=>{const d=addDays(s0,i);const short=`${DN[i]} ${d.getMonth()+1}/${d.getDate()}`;
   const o=ov[i]||{t:"day",j:i};let c;
-  if(o.t==="day"){const src=W.base[o.j];c={cook:src.cook,meal:src.meal,e:src.e,dinner:src.dinner,note:o.j===i?src.note:`Moved from ${DN[o.j]}. ${src.note}`,g:src.g,ch:o.j!==i}}
+  if(o.t==="day"){const src=W.base[o.j];c={cook:src.cook,meal:src.meal,e:src.e,dinner:src.dinner,note:o.j===i?src.note:`Moved from ${DN[o.j]}. ${src.note}`,g:src.g,ch:o.j!==i,cut:src.cut,sideName:src.sideName,bf:src.bf,grab:src.grab,kind:src.kind,hol:src.hol}}
   else if(o.t==="meal"){const m=M(o.id);c={cook:true,meal:o.id,e:m.emoji,dinner:`${m.name}${m.v?" ("+mv(o.id)+")":""}`,note:"Your swap. Cook 1 portion, or 2 and keep one for tomorrow's lunch.",g:MG[o.id]||null,ch:true}}
   else if(o.t==="rm")c={cook:false,meal:null,e:"🚫",dinner:"Removed from this week",note:"Free night: no cooking, no groceries for this one. Tap Swap to pick something.",g:null,ch:true,kind:"rm"};
   else if(o.t==="left")c={cook:false,meal:null,e:"🔁",dinner:"Leftovers night",note:"Reheat whatever's in the fridge to 165°F.",g:null,ch:true,kind:"left"};
   else c={cook:false,meal:null,e:"🥡",dinner:"Eat out / takeout",note:"Night off. No cooking, no groceries.",g:null,ch:true,kind:"out"};
   return {...b,short,...c}})}
-function recomputeList(){const days=effDays(W.ov);const gs=[...new Set(days.map(d=>d.g).filter(Boolean))];
+function recomputeList(){const days=effDays(W.ov).filter(d=>d.kind!=="hol");const gs=[...new Set(days.map(d=>d.g).filter(Boolean))];
   W.items=buildList(gs,[...new Set(days.map(d=>d.meal).filter(Boolean))])}
-function pcBadge(prep,cook,dark,reheat){return `<span class="pc${dark?" dk":""}"><span>🔪 Prep ~${prep} min</span><span>🔥 ${reheat?"Reheat":"Cook"} ~${cook} min</span></span>`}
+function pcBadge(prep,cook,dark,reheat){return `<span class="pc${dark?" dk":""}"><span><span class="emo">🔪</span> Prep ~${prep} min</span><span><span class="emo">🔥</span> ${reheat?"Reheat":"Cook"} ~${cook} min</span></span>`}
 function dayBadge(d){if(d.kind==="out"||d.kind==="rm")return "";if(d.kind==="left")return pcBadge(2,3,false,true);const m=d.meal&&M(d.meal);if(!m)return "";
   if(d.cook||["chixq","steakq","stkegg"].includes(d.meal))return pcBadge(m.prep,m.cook);return pcBadge(2,3,false,true)}
 /* budget (saved on this phone) */
@@ -896,7 +1363,7 @@ function openCustom(){if(!W)return;let draft=JSON.parse(JSON.stringify(W.ov)),mo
     ${days.map((d,i)=>{const o=draft[i];const t=o?o.t:"keep";return `<div class="cz${moveFrom===i?" mv":""}${o?" ch":""}"><div class="cz-h"><span>${d.short}</span><span>${o?"changed":""}</span></div>
       <div class="cz-d">${d.e} ${esc(d.dinner)}</div>
       <div class="cz-o"><button data-a="keep" data-i="${i}" class="${!o?"on":""}">Keep</button><button data-a="swap" data-i="${i}" class="${t==="meal"||swapOpen===i?"on":""}">Swap ▾</button><button data-a="left" data-i="${i}" class="${t==="left"?"on":""}">Leftovers</button><button data-a="out" data-i="${i}" class="${t==="out"?"on":""}">Eat out</button><button data-a="move" data-i="${i}" class="mvb${moveFrom===i?" on":""}">${moveFrom===null?"⇅ Move":moveFrom===i?"Cancel move":"⇅ Swap with "+DN[moveFrom]}</button></div>
-      ${swapOpen===i?`<div class="cz-list">${opts.map(m=>`<button data-pick="${m.id}" data-i="${i}">${rateOf(m.id)===2?"⭐ ":""}${m.emoji} ${esc(m.name)}${m.v?" ("+esc(mv(m.id))+")":""}</button>`).join("")}</div>`:""}</div>`}).join("")}
+      ${swapOpen===i?`<div class="cz-list">${opts.map(m=>`<button data-pick="${m.id}" data-i="${i}">${rateOf(m.id)===2?"❤️ ":""}${m.emoji} ${esc(m.name)}${m.v?" ("+esc(mv(m.id))+")":""}</button>`).join("")}</div>`:""}</div>`}).join("")}
     <div class="sh-row2"><button class="sh-btn" id="czR">Reset this week</button><button class="sh-btn p" id="czS">Save</button></div>`;
     inn.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const i=+b.dataset.i,a=b.dataset.a;
       if(a==="keep"){delete draft[i];swapOpen=null}else if(a==="left")draft[i]={t:"left"};else if(a==="out")draft[i]={t:"out"};
@@ -912,10 +1379,10 @@ function openCustom(){if(!W)return;let draft=JSON.parse(JSON.stringify(W.ov)),mo
 
 /* ---- About me (saved on this phone only) + general daily guide ---- */
 const AKEY="cameron-meals-about-v1";
-const ACT=[["none","None",1.375],["30","30 min a day",1.55],["60","1 hour a day",1.725]]; // daily exercise (None = still on his feet at a watersports job)
-const ACT_MIG={sit:"none",feet:"30",active:"60"};
-const actOf=a=>ACT.find(x=>x[0]===a.act)||ACT[0];
-function getAbout(){try{const j=JSON.parse(localStorage.getItem(AKEY)||"null");if(j&&typeof j==="object"){if(ACT_MIG[j.act]){j.act=ACT_MIG[j.act];setAbout(j)}return j}}catch(_){}return {}}
+const ACT=[["30","30 min",1.55],["60","1 hour",1.725],["90","1+ hours",1.9]]; // Daily exercise — no "None", no "a day" on chips
+const ACT_MIG={sit:"30",feet:"30",active:"60",none:"30"}; // saved "none" → 30 min
+const actOf=a=>ACT.find(x=>x[0]===a.act)||ACT[0]; // default 30 min
+function getAbout(){try{const j=JSON.parse(localStorage.getItem(AKEY)||"null");if(j&&typeof j==="object"){if(ACT_MIG[j.act]||j.act==="none"){j.act=ACT_MIG[j.act]||"30";setAbout(j)}if(!j.act){j.act="30";setAbout(j)}return j}}catch(_){}return {act:"30"}}
 function setAbout(a){try{localStorage.setItem(AKEY,JSON.stringify(a))}catch(_){}}
 function guideFor(a){const age=+a.age,ft=+a.ft,inch=+(a.inch||0),lb=+a.lb;
   if(!(age>=13&&age<=100&&ft>=3&&ft<=8&&lb>=60&&lb<=700))return null;
@@ -952,26 +1419,31 @@ function dayNut(d){const g=guideFor(st.about||{});const m=d.meal&&M(d.meal);if(!
 
 /* ---- meal ratings: 👎 tried it, no · 👍 good · ❤️ favorite (saved on this phone) ---- */
 const RKEY="cameron-meals-ratings-v1";
-function getRates(){try{const j=JSON.parse(localStorage.getItem(RKEY)||"{}");return j&&typeof j==="object"?j:{}}catch(_){return {}}}
+function getRates(){try{const j=JSON.parse(localStorage.getItem(RKEY)||"{}");if(!j||typeof j!=="object")return {};
+  // migrate old "remove for good" (x:1) into Removed meals as plain 👎
+  let changed=false;Object.keys(j).forEach(id=>{if(j[id]&&j[id].x){j[id]={r:-1,d:j[id].d||isoD(new Date())};changed=true}});
+  if(changed)try{localStorage.setItem(RKEY,JSON.stringify(j))}catch(_){ }return j}catch(_){return {}}}
 function rateOf(id){const r=getRates()[id];return r?r.r:0}
-function setRate(id,r,forGood){const all=getRates();if(!r||(all[id]&&all[id].r===r&&!forGood))delete all[id];else{all[id]={r,d:isoD(new Date())};if(forGood)all[id].x=1}
+function setRate(id,r){const all=getRates();if(!r||(all[id]&&all[id].r===r))delete all[id];else all[id]={r,d:isoD(new Date())};
   try{localStorage.setItem(RKEY,JSON.stringify(all))}catch(_){}}
-function rateRow(id){const r=rateOf(id);return `<div class="rate" onclick="event.stopPropagation()"><span>Made it? Rate it:</span>${[[-1,"👎","Tried it, no"],[1,"👍","Good"],[2,"❤️","Favorite"]].map(([v,e,t])=>`<button data-rate="${v}" data-m="${id}" aria-pressed="${r===v}" title="${t}">${e}</button>`).join("")}</div>`}
+function rateRow(id,i,short){const del=`<button type="button" class="rate-del ico-btn" data-del="${i}" aria-label="Delete ${esc(short||"")} dinner">${icons.del}</button>`;
+  if(!id)return `<div class="rate" onclick="event.stopPropagation()">${del}</div>`;
+  const r=rateOf(id);return `<div class="rate" onclick="event.stopPropagation()" role="group" aria-label="Rate this meal">${[[-1,"👎","Tried it, no — never suggest again"],[1,"👍","Good"],[2,"❤️","Favorite"]].map(([v,e,t])=>`<button type="button" data-rate="${v}" data-m="${id}" aria-pressed="${r===v}" aria-label="${t}" title="${t}">${e}</button>`).join("")}${del}</div>`}
 function ratingsPanel(){const all=getRates();const ids=Object.keys(all).filter(id=>M(id));
-  const row=(id,restore)=>`<li><span>${M(id).emoji} ${esc(M(id).name)}${restore?` <small>${all[id].x?"🗑 removed for good":"👎 tried it, no"}</small>`:""}${timesMade(id)?` <small>· made ${timesMade(id)}×</small>`:""}</span><small>${esc(all[id].d||"")}</small><button class="have" data-unrate="${id}">${restore?"Restore":"Clear"}</button></li>`;
+  const row=(id,restore)=>`<li><span>${M(id).emoji} ${esc(M(id).name)}${restore?` <small>👎 never suggest</small>`:""}${timesMade(id)?` <small>· made ${timesMade(id)}×</small>`:""}</span><small>${esc(all[id].d||"")}</small><button class="have" data-unrate="${id}">${restore?"Restore":"Clear"}</button></li>`;
   const g=r=>ids.filter(id=>all[id].r===r);
-  return `<section class="gpanel rpanel"><div class="stitle" style="margin-top:0"><h2>My ratings</h2><span>👎 hides · ❤️ = ⭐ favorite</span></div>
-    ${ids.length?`${g(2).length?`<h3 class="aisle">⭐ Favorites (❤️)</h3><ul>${g(2).map(id=>row(id)).join("")}</ul>`:""}${g(1).length?`<h3 class="aisle">👍 Good</h3><ul>${g(1).map(id=>row(id)).join("")}</ul>`:""}${g(-1).length?`<h3 class="aisle">🗑 Removed meals</h3><p class="hint" style="margin:0 0 4px">Rated 👎 or removed from the menu for good. Hidden from suggestions and Swap. Tap Restore to bring one back.</p><ul>${g(-1).map(id=>row(id,true)).join("")}</ul>`:""}`
-      :`<p class="hint">No ratings yet. After you make a meal, tap 👎 / 👍 / ❤️ on its day. ❤️ = ⭐ favorite, picked more; 👎 meals stop showing up.</p>`}</section>`}
+  return `<section class="gpanel rpanel"><div class="stitle" style="margin-top:0"><h2>My ratings</h2><span>👎 hides · ❤️ = favorite</span></div>
+    ${ids.length?`${g(2).length?`<h3 class="aisle">❤️ Favorites</h3><ul>${g(2).map(id=>row(id)).join("")}</ul>`:""}${g(1).length?`<h3 class="aisle">👍 Good</h3><ul>${g(1).map(id=>row(id)).join("")}</ul>`:""}${g(-1).length?`<h3 class="aisle">Removed meals</h3><p class="hint" style="margin:0 0 4px">👎 means never suggest again. Hidden from suggestions and Swap. Tap Restore to bring one back.</p><ul>${g(-1).map(id=>row(id,true)).join("")}</ul>`:""}`
+      :`<p class="hint">No ratings yet. After you make a meal, tap 👎 / 👍 / ❤️ on its day. ❤️ = favorite; 👎 = never suggest again (Removed meals).</p>`}</section>`}
 /* receipt button */
 function bindReceipt(root){root.querySelectorAll("[data-rcpt]").forEach(b=>b.onclick=openReceipt)}
 function photoShare(o){o.btn.onclick=()=>o.input.click();attachShare({inputs:[o.input],thumbs:o.thumbs,act:o.act,files:o.store,shareLabel:o.shareLabel,title:o.title,text:o.text,fallback:o.fallback})}
 /* prices.json (same folder). Falls back to the built-in estimates in meals.js. */
-const PRICE_META={updated:"2026-10-05",loaded:false,stores:["aldi-stpete","publix-stpete"]};
+const PRICE_META={updated:"2026-10-05",loaded:false,stores:["aldi-stpete","publix-stpete"],storeMap:{}};
 Object.values(C.PRICES).forEach(v=>{v.sA=v.sA||{source:"estimate",checked:"2026-10-05"};v.sP=v.sP||{source:"estimate",checked:"2026-10-05"}});
 function srcPair(it){const a=srcLabel(it.sA),p=srcLabel(it.sP);return a===p?a:`Aldi ${a} · Publix ${p}`}
 fetch("prices.json",{cache:"no-cache"}).then(r=>r.ok?r.json():Promise.reject(r.status)).then(j=>{
-  if(!j||!j.items)return;const [sa,sp]=PRICE_META.stores;
+  if(!j||!j.items)return;if(j.stores)PRICE_META.storeMap=j.stores;const rs=resolvePriceStores();const sa=rs.aldi,sp=rs.publix;PRICE_META.stores=[sa,sp];
   Object.entries(j.items).forEach(([k,it])=>{const P=C.PRICES[k];if(!P||!Array.isArray(it.prices))return;
     it.prices.forEach(e=>{if(e.store===sa&&e.price!==undefined){P.a=e.price;P.sA=e}else if(e.store===sp&&e.price!==undefined){P.p=e.price;P.sP=e}})});
   if(j.updated)PRICE_META.updated=j.updated;PRICE_META.loaded=true;
@@ -979,29 +1451,56 @@ fetch("prices.json",{cache:"no-cache"}).then(r=>r.ok?r.json():Promise.reject(r.s
 }).catch(()=>{});
 /* ---- v4: coffee, copy list, toast, per-day Swap + 🗑 Delete, meal log + week review ---- */
 function isoD(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
-function coffeeCalc(){const K=C.COFFEE,c=st.coffee,P=C.PRICES;const ds=K.drinks.filter(d=>c.drinks.has(d.id));const list=ds.length?ds:[K.drinks[0]];
-  const n=c.perWeek;const avgMilk=c.milk==="No milk"?0:list.reduce((a,d)=>a+d.milk,0)/list.length;
-  const milkOz=Math.round(n*avgMilk),g=n*K.gPerDrink,bags=Math.max(1,Math.ceil(g/K.bagG));
-  const milkKey=milkOz>0&&P["coffee:"+c.milk]?"coffee:"+c.milk:null,halfGal=milkKey?Math.max(1,Math.ceil(milkOz/K.milkOz)):0,syrup=c.syrup!=="None";
-  const bp=x=>Math.min(x.a,x.p);
-  const home=g/K.bagG*bp(P["coffee:beans"])+(milkKey?milkOz/K.milkOz*bp(P[milkKey]):0)+(syrup?n/12*bp(P["coffee:syrup"]):0);
-  const out=n*K.outPrice;return {n,g,bags,milkOz,milkKey,halfGal,syrup,home,out,save:out-home}}
+function hasCoffeeGear(){return st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso")}
+function coffeeBrandName(){const c=st.coffee;return c.brand==="Other"?(c.brandOther||"Other coffee"):(c.brand||"Lavazza Qualità Oro")}
+function coffeeCalc(){
+  const K=C.COFFEE,c=st.coffee,P=C.PRICES;
+  const ds=K.drinks.filter(d=>c.drinks.has(d.id));const list=ds.length?ds:[K.drinks[0]];
+  const n=c.perWeek||7, gPerShot=K.gPerShot||7, g=n*gPerShot, bags=Math.max(1,Math.ceil(g/(K.bagG||250)));
+  const avgMilk=c.milk==="No milk"?0:list.reduce((a,d)=>a+(d.milk||0),0)/list.length;
+  const milkOz=Math.round(n*avgMilk), milkKey=milkOz>0&&P["coffee:"+c.milk]?"coffee:"+c.milk:null;
+  const halfGal=milkKey?Math.max(1,Math.ceil(milkOz/K.milkOz)):0;
+  const bagLine=`${bags} × ${K.bagLabel||"large can/bag"} (~${g} g/wk at ${gPerShot} g/shot)`;
+  // Per-cup cost only if we have a receipt/est price; otherwise prompt add-from-receipt
+  const bagPrice=P["coffee:oro"]&&(P["coffee:oro"].p!=null||P["coffee:oro"].a!=null)?Math.min(P["coffee:oro"].p??1e9,P["coffee:oro"].a??1e9):null;
+  const cupsPerBag=bagPrice!=null?Math.max(1,Math.floor((K.bagG||250)/gPerShot)):null;
+  const perCup=bagPrice!=null&&cupsPerBag?bagPrice/cupsPerBag:null;
+  const milkCost=milkKey?milkOz/K.milkOz*Math.min(P[milkKey].a,P[milkKey].p):0;
+  const home=perCup!=null?perCup*n+milkCost:null;
+  const out=n*K.outPrice;
+  const needLids=st.equip.has("nespresso"); // periodic restock always offered when Nespresso is on
+  return {n,g,gPerShot,bags,bagLine,brandName:coffeeBrandName(),milkOz,milkKey,halfGal,perCup,home,out,save:home!=null?out-home:null,needLids,cupsPerBag,bagPrice};
+}
 function coffeeDesc(){const K=C.COFFEE,c=st.coffee;const ds=K.drinks.filter(d=>c.drinks.has(d.id)).map(d=>d.label);
-  return `${esc(ds.join(", ")||"Latte")} · ${esc(c.milk)}${c.syrup!=="None"?" · "+esc(c.syrup)+" syrup":""} · ${c.perWeek} drinks/week`}
-function coffeeLine(short){const k=coffeeCalc();const base=`Coffee at home ~$${k.home.toFixed(2)}/week vs ~$${k.out.toFixed(2)} buying out (${k.n} drinks × ~$${C.COFFEE.outPrice.toFixed(2)}) · est. Saves ~$${Math.max(0,k.save).toFixed(0)}/week.`;
-  if(short||!W)return base;const ci=W.items.filter(it=>it.aisle==="coffee"&&!W.have.has(it.id));const tot=ci.reduce((a,it)=>a+Math.min(it.a==null?1e9:it.a,it.p==null?1e9:it.p),0);
-  return `${base} Coffee groceries on this list: ~$${tot.toFixed(2)} est., counted in the totals and your budget.`}
+  const ms=[...c.machines||st.equip].filter(id=>id==="lavazza"||id==="nespresso").map(id=>(K.machines.find(m=>m.id===id)||{}).label||id);
+  const gear=ms.length?ms.join(" · "):[...st.equip].filter(id=>id==="lavazza"||id==="nespresso").map(id=>(K.machines.find(m=>m.id===id)||{label:id}).label).join(" · ");
+  return `${esc(coffeeBrandName())} · ${esc(gear||"espresso")} · ${esc(ds.join(", ")||"Espresso")}${c.milk&&c.milk!=="No milk"?" · "+esc(c.milk):""} · ${c.perWeek} drinks/week`}
+function coffeeLine(short){
+  const k=coffeeCalc();const outCup=C.COFFEE.outPrice;
+  const per=k.perCup!=null?`~$${k.perCup.toFixed(2)}/cup at home (bag ÷ cups)`:`at-home $/cup: add bag price from receipt`;
+  const base=`${per} vs ~$${outCup.toFixed(2)} buying out · ${k.n} drinks/week${k.home!=null?` · home ~$${k.home.toFixed(2)}/wk vs out ~$${k.out.toFixed(2)}`:""} · est.`;
+  if(short||!W)return base;
+  return `${base} List: ${k.brandName} sized to ~${k.g} g/week${k.needLids?" + capsule foil lids (periodic)":""}.`;
+}
 function coffeeStep(){const K=C.COFFEE,c=st.coffee;
-  card.innerHTML=`<div class="emoji">☕</div><h1>Your coffee</h1><p class="sub">You've got an espresso machine. What do you make with it?</p>
-    <p class="lbl">Drinks (tap all you make)</p><div class="chips">${K.drinks.map(d=>`<span class="chip${c.drinks.has(d.id)?"":" off"}" data-cd="${d.id}">${d.emoji} ${d.label}</span>`).join("")}</div>
-    <p class="lbl">Milk</p><div class="chips">${K.milks.map(m=>`<span class="chip${c.milk===m?"":" off"}" data-cmk="${esc(m)}">${esc(m)}</span>`).join("")}</div>
-    <p class="lbl">Syrup</p><div class="chips">${K.syrups.map(m=>`<span class="chip${c.syrup===m?"":" off"}" data-csy="${esc(m)}">${esc(m)}</span>`).join("")}</div>
-    <p class="lbl">How many drinks a week?</p><div class="chips">${K.perWeek.map(n=>`<span class="chip${c.perWeek===n?"":" off"}" data-cw="${n}">${n}</span>`).join("")}</div>
-    <div class="cofbox">☕ ${coffeeLine(true)}<br><small>Beans, milk and syrup go on your shopping list (Coffee section) and count in your budget. Café price ~$5.50/drink is a rough estimate.</small></div>
+  if(!c.machines||!(c.machines instanceof Set))c.machines=new Set(["lavazza","nespresso"].filter(id=>st.equip.has(id)));
+  // keep machines in sync with gear chips
+  K.machines.forEach(m=>{if(st.equip.has(m.id))c.machines.add(m.id)});
+  const brands=K.brands||["Lavazza Qualità Oro","Other"];
+  card.innerHTML=`<div class="emoji">☕</div><h1>Your coffee</h1><p class="sub">Lavazza Oro into refillable capsules for the Nespresso, plus the Lavazza maker. Change anything below.</p>
+    <p class="lbl">Coffee (default Oro)</p><div class="chips">${brands.map(b=>`<span class="chip${c.brand===b?"":" off"}" data-br="${esc(b)}">${esc(b)}</span>`).join("")}</div>
+    ${c.brand==="Other"?`<div class="addrow cust"><input id="cbrand" placeholder="Type your coffee…" maxlength="40" value="${esc(c.brandOther||"")}"><button id="cbrandOk">Save</button></div>`:""}
+    <p class="lbl">Machines</p><div class="chips">${K.machines.map(m=>`<span class="chip${(c.machines.has(m.id)||st.equip.has(m.id))?"":" off"}" data-cm="${m.id}">${esc(m.label)}</span>`).join("")}</div>
+    <p class="lbl">Drinks (tap all you make)</p><div class="chips">${K.drinks.map(d=>`<span class="chip-row"><span class="emo">${d.emoji}</span><span class="chip${c.drinks.has(d.id)?"":" off"}" data-cd="${d.id}">${esc(d.label)}</span></span>`).join("")}</div>
+    <p class="lbl">Milk (optional)</p><div class="chips">${K.milks.map(m=>`<span class="chip${c.milk===m?"":" off"}" data-cmk="${esc(m)}">${esc(m)}</span>`).join("")}</div>
+    <p class="lbl">Drinks per week</p><div class="chips">${K.perWeek.map(n=>`<span class="chip${c.perWeek===n?"":" off"}" data-cw="${n}">${n}</span>`).join("")}</div>
+    <p class="emo" style="margin:14px 0 4px">☕</p><div class="cofbox">${coffeeLine(true)}<br><small>He reseals Oro into small refillable tin capsules (~${K.gPerShot} g each). Shopping list gets a Coffee section: large Oro can/bag sized to your drinks, plus capsule foil lids as a periodic restock. Prices are est. / add from receipt — no made-up shelf price.</small></div>
     ${btns("Next →")}`;
+  card.querySelectorAll("[data-br]").forEach(b=>b.onclick=()=>{c.brand=b.dataset.br;render()});
+  const bok=$("cbrandOk");if(bok){const save=()=>{c.brandOther=$("cbrand").value.trim().slice(0,40);render()};bok.onclick=save;$("cbrand").onkeydown=e=>{if(e.key==="Enter")save()}}
+  card.querySelectorAll("[data-cm]").forEach(b=>b.onclick=()=>{const id=b.dataset.cm;if(c.machines.has(id)){c.machines.delete(id);st.equip.delete(id)}else{c.machines.add(id);st.equip.add(id)}render()});
   card.querySelectorAll("[data-cd]").forEach(b=>b.onclick=()=>{const k=b.dataset.cd;c.drinks.has(k)?c.drinks.delete(k):c.drinks.add(k);render()});
   card.querySelectorAll("[data-cmk]").forEach(b=>b.onclick=()=>{c.milk=b.dataset.cmk;render()});
-  card.querySelectorAll("[data-csy]").forEach(b=>b.onclick=()=>{c.syrup=b.dataset.csy;render()});
   card.querySelectorAll("[data-cw]").forEach(b=>b.onclick=()=>{c.perWeek=+b.dataset.cw;render()});
   $("nx").onclick=()=>go()}
 function toast(msg,undo){const t=$("toast2");clearTimeout(toast._t);t.innerHTML=`<span>${esc(msg)}</span>${undo?'<button id="t2u">Undo</button>':""}`;t.classList.add("show");
@@ -1012,7 +1511,7 @@ async function copyTxt(text,msg){try{if(navigator.clipboard&&window.isSecureCont
 function listText(which){const t=totals(),wl=fmtWeek(weekStartDate()),items=W.items.filter(it=>!W.have.has(it.id));
   const aw=it=>it.a!=null&&(it.p==null||it.a<=it.p),pw=it=>it.p!=null&&!aw(it);
   const pr=it=>`Aldi ${it.a==null?"n/a":"est. "+$$(it.a)} / Publix ${it.p==null?"n/a":"est. "+$$(it.p)}`;const L=[];
-  if(which==="all"){L.push(`My shopping list: ${wl}`,`Est. totals: All Aldi ${$$(t.a)} · All Publix ${$$(t.p)} · Best split ${$$(t.b)}`);if(st.equip.has("espresso"))L.push(coffeeLine(true));
+  if(which==="all"){L.push(`My shopping list: ${wl}`,`Est. totals: All Aldi ${$$(t.a)} · All Publix ${$$(t.p)} · Best split ${$$(t.b)}`);if(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))L.push(coffeeLine(true));
     AISLES.forEach(([k,lab])=>{const g=items.filter(i=>i.aisle===k);if(!g.length)return;L.push("",lab.toUpperCase());
       g.forEach(it=>L.push(`[ ] ${it.n}${it.q?" ("+it.q+")":""} - ${it.custom?"check price":pr(it)}${aw(it)?" · Aldi cheaper":pw(it)?" · Publix cheaper":""}`))})}
   else{const pick=which==="Aldi"?aw:pw,g=items.filter(pick),sum=g.reduce((a,it)=>a+(which==="Aldi"?it.a:it.p),0);
@@ -1023,37 +1522,28 @@ function openDaySwap(i){const d=effDays(W.ov)[i],o=W.ov[i];
   const opts=MEALS.filter(m=>m.id!=="veg"&&rateOf(m.id)!==-1).sort((a,b)=>(rateOf(b.id)===2)-(rateOf(a.id)===2)||(yes(b.id)-yes(a.id)));
   const inn=openSheet(shTop("Swap "+esc(d.short))+`<p class="muted2" style="margin:0 0 8px">Now: <b>${d.e} ${esc(d.dinner)}</b></p>
     <div class="cz-o">${o?`<button data-o="keep">↩ Original</button>`:""}<button data-o="left">Leftovers</button><button data-o="out">Eat out</button></div>
-    <div class="cz-list">${opts.map(m=>`<button data-pick="${m.id}">${rateOf(m.id)===2?"⭐ ":""}${m.emoji} ${esc(m.name)}${m.v?" ("+esc(mv(m.id))+")":""}</button>`).join("")}</div>
+    <div class="cz-list">${opts.map(m=>`<button data-pick="${m.id}">${rateOf(m.id)===2?"❤️ ":""}${m.emoji} ${esc(m.name)}${m.v?" ("+esc(mv(m.id))+")":""}</button>`).join("")}</div>
     <p class="muted2">👎 and removed meals aren't offered. The shopping list updates right away.</p>`,"Swap dinner");
   const done=(v,msg)=>{if(v)W.ov[i]=v;else delete W.ov[i];recomputeList();closeSheet();renderWeek();toast(msg)};
   inn.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{const a=b.dataset.o;done(a==="keep"?null:{t:a},a==="keep"?"Back to the original dinner":a==="left"?"Swapped to Leftovers":"Swapped to Eat out")});
   inn.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>done({t:"meal",id:b.dataset.pick},"Dinner swapped. List updated"))}
-function openDelete(i){const d=effDays(W.ov)[i],m=d.meal&&M(d.meal);
-  const inn=openSheet(shTop("🗑 Delete "+esc(d.short)+" dinner")+`<p style="margin:0 0 10px;font-weight:800">${d.e} ${esc(d.dinner)}</p>
-    <button class="sh-btn wide" data-rm="week">Remove from this week</button><p class="muted2" style="margin:4px 0 12px">Frees up this night and takes its groceries off the list. You get 5 seconds to Undo.</p>
-    <button class="sh-btn wide danger" data-rm="good" ${m?"":"disabled"}>Remove from menu for good</button><p class="muted2" style="margin:4px 0 0">${m?`Moves ${esc(m.name)} to Removed meals. It won't be suggested or offered in Swap. Tap Restore there anytime.`:"Only menu meals can be removed for good (this night isn't one)."}</p>`,"Delete dinner");
-  inn.querySelector('[data-rm="week"]').onclick=()=>{const prev=W.ov[i];W.ov[i]={t:"rm"};recomputeList();closeSheet();renderWeek();
-    toast(`Removed from this week: ${d.short}`,()=>{if(prev)W.ov[i]=prev;else delete W.ov[i];recomputeList();renderWeek();toast("Undone. It's back on the week")})};
-  if(m)inn.querySelector('[data-rm="good"]').onclick=()=>confirmForGood(m)}
-function confirmForGood(m){const inn=openSheet(shTop("Remove for good?")+`<p style="margin:0 0 8px;font-weight:800">Remove ${m.emoji} ${esc(m.name)} from your menu for good?</p>
-    <p class="muted2" style="margin:0 0 10px">It moves to <b>Removed meals</b> and won't be suggested or offered in Swap. You can tap Restore there anytime.</p>
-    <div class="sh-row2"><button class="sh-btn" data-c="no">Cancel</button><button class="sh-btn danger" data-c="yes">Remove for good</button></div>`,"Confirm remove from menu for good");
-  inn.querySelector('[data-c="no"]').onclick=closeSheet;
-  inn.querySelector('[data-c="yes"]').onclick=()=>{setRate(m.id,-1,true);effDays(W.ov).forEach((x,j)=>{if(x.meal===m.id)W.ov[j]={t:"rm"}});recomputeList();closeSheet();renderWeek();
-    toast(`${m.name} removed from menu for good. Restore it in Removed meals.`)}}
+/* Trash beside Swap: one tap removes from this week only; 5-sec Undo. No sheet / confirm. 👎 = never suggest again. */
+function openDelete(i){const d=effDays(W.ov)[i];const prev=W.ov[i];
+  W.ov[i]={t:"rm"};recomputeList();renderWeek();
+  toast(`Removed from this week: ${d.short}`,()=>{if(prev)W.ov[i]=prev;else delete W.ov[i];recomputeList();renderWeek();toast("Undone. It's back on the week")})}
 /* meal log (saved on this phone) */
 const LKEY="cameron-meals-log-v1";
 function getLog(){try{const j=JSON.parse(localStorage.getItem(LKEY)||"null");if(j&&typeof j==="object"&&j.log)return j}catch(_){}return {log:{},prompt:null,seen:null}}
 function setLog(L){try{localStorage.setItem(LKEY,JSON.stringify(L))}catch(_){}}
-const LS=[["made","✅ Made"],["skip","⏭ Skipped"],["out","🍽 Ate out"]];
+const LS=[["made","✅","Made"],["skip","⏭","Skipped"],["out","🍽","Ate out"]];
 const logKey=e=>e.m||e.n;
 const mealName=k=>{const m=M(k);return m?m.emoji+" "+m.name:k};
 function timesMade(k){return Object.values(getLog().log).filter(e=>e.s==="made"&&logKey(e)===k).length}
 function logCtl(date){const iso=isoD(date),e=getLog().log[iso]||{};
-  return `<div class="lr"><span>Log it:</span>${LS.map(([v,l])=>`<button data-ls="${v}" data-ld="${iso}" aria-pressed="${e.s===v}">${l}</button>`).join("")}</div>
+  return `<div class="lr"><span>Log it:</span>${LS.map(([v,em,l])=>`<button type="button" data-ls="${v}" data-ld="${iso}" aria-pressed="${e.s===v}" aria-label="${l}"><span class="emo" aria-hidden="true">${em}</span> ${l}</button>`).join("")}</div>
   ${e.s==="made"?`<div class="lr"><span>Leftovers:</span>${[0,1,2,3].map(n=>`<button data-llo="${n}" data-ld="${iso}" aria-pressed="${e.lo===n}">${n}</button>`).join("")}</div><div class="lr"><span>Went bad?</span><button data-lbad="0" data-ld="${iso}" aria-pressed="${e.bad===false}">No</button><button data-lbad="1" data-ld="${iso}" aria-pressed="${e.bad===true}">Yes</button></div>`:""}`}
 function logRow(i,d){const date=addDays(weekStartDate(),i),k=d.meal||null,n=k?timesMade(k):0;
-  return `<div class="log" onclick="event.stopPropagation()">${logCtl(date)}${n?`<p class="lct">Made ${n}× all-time${rateOf(k)===2?" · ⭐ favorite":""}</p>`:""}</div>`}
+  return `<div class="log" onclick="event.stopPropagation()">${logCtl(date)}${n?`<p class="lct">Made ${n}× all-time${rateOf(k)===2?" · ❤️ favorite":""}</p>`:""}</div>`}
 function bindLog(root,days,map,after){map=map||{};after=after||renderWeek;
   if(days)days.forEach((d,i)=>{map[isoD(addDays(weekStartDate(),i))]={m:d.meal||null,n:d.dinner}});
   const upd=(iso,f)=>{const L=getLog();const e=L.log[iso]||{m:map[iso]?map[iso].m:null,n:map[iso]?map[iso].n:""};f(e);if(e.s)L.log[iso]=e;else delete L.log[iso];setLog(L);return e};
@@ -1068,7 +1558,7 @@ function last3(days){const t=new Date(),out=[];for(let k=3;k>=1;k--){const d=add
 function logBanner(days){const L=getLog(),today=isoD(new Date());if(!L.seen){L.seen=today;setLog(L)}
   const since=Math.floor((Date.now()-new Date((L.prompt||L.seen)+"T00:00:00").getTime())/864e5);
   if(since<3||!last3(days).some(x=>!L.log[x.iso]))return "";
-  return `<div class="logb"><b>📝 Quick check-in</b><span>How did the last 3 days go? A few taps keeps your suggestions smart.</span><div><button class="lb p" id="lgGo">Log last 3 days</button><button class="lb" id="lgLater">Later</button></div></div>`}
+  return `<p class="emo" style="margin:12px 0 4px">📝</p><div class="logb"><b>Quick check-in</b><span>How did the last 3 days go? A few taps keeps your suggestions smart.</span><div><button class="lb p" id="lgGo">Log last 3 days</button><button class="lb" id="lgLater">Later</button></div></div>`}
 function openLogSheet(days){const items=last3(days),map={};items.forEach(x=>map[x.iso]={m:x.m,n:x.n});const inn=openSheet("","Log the last 3 days");
   const fin=()=>{const L=getLog();L.prompt=isoD(new Date());setLog(L);closeSheet();renderWeek()};
   const draw=()=>{inn.innerHTML=shTop("📝 Log the last 3 days")+`<p class="muted2" style="margin:0 0 8px">Shown: what your plan has for that weekday. Tap what actually happened.</p>`+
@@ -1087,7 +1577,7 @@ function weekReview(days){const L=getLog().log,s0=weekStartDate();
     if(x.skip>=2)sug.push(`<li>⏭ <b>${esc(nm)}</b>: Skipped ${x.skip===2?"twice":x.skip+" times"}: swap it?${di>=0?` <button class="have" data-swapd="${di}">Swap</button>`:""}</li>`);
     if(x.bad)sug.push(`<li>🗑 <b>${esc(nm)}</b>: Leftovers went bad: make a smaller batch.</li>`);
     if(M(x.k)&&x.made>=2&&!rateOf(x.k))sug.push(`<li>👍 <b>${esc(nm)}</b>: Made ${x.made}×: rate it? ❤️ gets it suggested more.</li>`);
-    if(M(x.k)&&x.made&&rateOf(x.k)===2)sug.push(`<li>⭐ <b>${esc(nm)}</b>: ❤️ favorite: keep it in the rotation.</li>`)});
+    if(M(x.k)&&x.made&&rateOf(x.k)===2)sug.push(`<li>❤️ <b>${esc(nm)}</b>: favorite — keep it in the rotation.</li>`)});
   const RE={"-1":"👎","1":"👍","2":"❤️"};
   return `<section class="gpanel wrev"><div class="stitle" style="margin-top:0"><h2>Week review</h2><span>${esc(fmtWeek(s0))}</span></div>
    <div class="wst"><div><b>${c("made")}/${planned}</b>made vs planned</div><div><b>${c("skip")}</b>skipped</div><div><b>${c("out")}</b>ate out</div><div class="${wasted?"bad":""}"><b>${wasted}</b>leftovers wasted</div></div>

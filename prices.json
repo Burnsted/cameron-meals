@@ -1,6 +1,6 @@
 {
  "updated": "2026-10-05",
- "note": "Shared price file for the Burns family planner and Cameron's planner. source: receipt | ad | estimate (also allowed: weekly-ad, shelf-photo, online-listing). price null = not carried. Update from receipts / Publix app Purchases screenshots; no scraping.",
+ "note": "Shared price file for the Burns family planner and Cameron's planner. Match store keys to your saved location (e.g. aldi-stpete, publix-stpete); unknown locations fall back to built-in estimates. source: receipt | ad | estimate (also weekly-ad, shelf-photo, online-listing). price null = not carried.",
  "stores": {
   "aldi-vero": {
    "chain": "Aldi",
