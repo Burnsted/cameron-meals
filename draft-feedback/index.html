@@ -2109,7 +2109,7 @@ function renderWeek(){
   <div class="stitle" id="thisWk"><h2>This week${edited?'<span class="edited">edited</span>':""}</h2><span class="week-actions"><button type="button" class="shuffle-link" id="shuffleBtn" aria-label="Shuffle this week">${icons.shuffle}<span>Shuffle</span></button><button type="button" class="shuffle-link" id="custB" aria-label="Customize week">${icons.repeat}<span>Customize</span></button></span></div>
   ${days.map((d,i)=>{const m=MN(d.meal);const cut=d.cut?` · ${esc(d.cut)}`:"";
     return `<div class="day${dayCls(d)}" data-d="${i}" style="animation-delay:${i*.04}s">
-    <div class="dh"><span>${d.short}${d.cook?" · cook":""}${d.grab?" · grab":""}</span><span class="dha">
+    <div class="dh"><span>${d.short}</span><span class="dha">
       <button type="button" class="swap-link" data-swapd="${i}" aria-label="Swap ${d.short} dinner">Swap</button>
       <span class="memo-sm">${d.e}</span></span></div>
     <div class="db"><div class="emo-row"><span class="memo">${d.e}</span>${dayBadge(d)}</div>
