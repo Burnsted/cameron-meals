@@ -1009,20 +1009,20 @@ const MEAL_PAGE_SIZE=7;
 const SIDE_SLUG={
   "Steamable green beans":"green-beans","Broccoli":"broccoli","Corn on the cob":"corn-cob",
   "Grilled zucchini or peppers":"zucchini-peppers","Caesar salad kit":"caesar-salad",
-  "Baby carrots + ranch":"carrots-ranch","Asparagus":"asparagus","Baked / microwave potato":"baked-potato",
-  "Sweet potato":"sweet-potato","Microwave rice cups / Ready Rice":"rice","Mac & cheese":"mac-cheese",
-  "Garlic bread / Texas toast":"garlic-bread","Baked beans":"baked-beans","Pasta salad (deli)":"pasta-salad",
-  "Tortillas":"tortillas","Potato salad":"potato-salad","Frozen tater tots / air-fryer fries":"fries",
+  "Baby carrots + ranch":"carrots-ranch","Asparagus":"asparagus","Baked or microwave potato":"baked-potato",
+  "Sweet potato":"sweet-potato","Microwave rice cups or Ready Rice":"rice","Mac & cheese":"mac-cheese",
+  "Garlic bread or Texas toast":"garlic-bread","Baked beans":"baked-beans","Pasta salad (deli)":"pasta-salad",
+  "Tortillas":"tortillas","Potato salad":"potato-salad","Frozen tater tots or air-fryer fries":"fries",
   "Cottage cheese":"cottage-cheese","Deli coleslaw":"coleslaw","Chips & salsa":"chips-salsa",
-  "Fruit cup":"fruit-cup","Yogurt":"yogurt","Banana / fruit":"banana-fruit","Potato chips":"potato-chips"
+  "Fruit cup":"fruit-cup","Yogurt":"yogurt","Banana or fruit":"banana-fruit","Potato chips":"potato-chips"
 };
 const SIDE_EMOJI={
   "Steamable green beans":"🫛","Broccoli":"🥦","Corn on the cob":"🌽","Grilled zucchini or peppers":"🥒",
-  "Caesar salad kit":"🥗","Baby carrots + ranch":"🥕","Asparagus":"🌿","Baked / microwave potato":"🥔",
-  "Sweet potato":"🍠","Microwave rice cups / Ready Rice":"🍚","Mac & cheese":"🧀","Garlic bread / Texas toast":"🍞",
+  "Caesar salad kit":"🥗","Baby carrots + ranch":"🥕","Asparagus":"🌿","Baked or microwave potato":"🥔",
+  "Sweet potato":"🍠","Microwave rice cups or Ready Rice":"🍚","Mac & cheese":"🧀","Garlic bread or Texas toast":"🍞",
   "Baked beans":"🫘","Pasta salad (deli)":"🍝","Tortillas":"🫓","Potato salad":"🥔",
-  "Frozen tater tots / air-fryer fries":"🍟","Cottage cheese":"🥛","Deli coleslaw":"🥬","Chips & salsa":"🌮",
-  "Fruit cup":"🍎","Yogurt":"🫙","Banana / fruit":"🍌","Potato chips":"🥔"
+  "Frozen tater tots or air-fryer fries":"🍟","Cottage cheese":"🥛","Deli coleslaw":"🥬","Chips & salsa":"🌮",
+  "Fruit cup":"🍎","Yogurt":"🫙","Banana or fruit":"🍌","Potato chips":"🥔"
 };
 function sideSlug(n){
   if(SIDE_SLUG[n])return SIDE_SLUG[n];
@@ -1064,13 +1064,13 @@ function buildMealFromName(name){
   if(hit){
     return {id,name:q,emoji:hit.emoji||"🍽️",tag:hit.tag||(hit.bf?"Breakfast":hit.grab?"Lunch":"Dinner"),
       prep:hit.prep||10,cook:hit.cook||8,nut:hit.nut?{...hit.nut}:null,grill:!!hit.grill,bf:!!hit.bf,bfKey:hit.bfKey,
-      grab:!!hit.grab,time:hit.time||"about 10–15 min",temp:hit.temp||"cook to safe temp",
+      grab:!!hit.grab,time:hit.time||"about 10 to 15 min",temp:hit.temp||"cook to safe temp",
       grill:hit.grill?hit.grill.slice():["Cook on Foreman or skillet until done."],
       stove:hit.stove?hit.stove.slice():["Cook in a skillet until done."],custom:true,fromId:hit.id};
   }
   const tag=/oat|bagel|egg|breakfast|yogurt|scramble|omelette|toast/i.test(q)?"Breakfast":/salad|sandwich|wrap|melt|taco|lunch/i.test(q)?"Lunch":"Dinner";
   return {id,name:q,emoji:tag==="Breakfast"?"🍳":tag==="Lunch"?"🥪":"🍽️",tag,prep:8,cook:8,nut:null,grill:true,custom:true,
-    time:"about 10–15 min",temp:"165°F poultry · 160°F ground · 145°F steak/pork + rest",
+    time:"about 10 to 15 min",temp:"165°F poultry · 160°F ground · 145°F steak or pork + rest",
     grill:["Season. Cook on your Foreman or skillet to a safe temp.","Rest a few minutes; plate with a side."],
     stove:["Cook in a skillet until done."]};
 }
@@ -1846,10 +1846,10 @@ function openSettings(){const rules=getRules().join("\n"), set=getSettings(), ho
       <p class="set-sec">Grab & go nights / week</p>
       <div class="dchips">${[0,1,2,3].map(n=>`<button type="button" data-gn="${n}" class="${set.grabNights===n?"on":""}">${n}</button>`).join("")}</div>
       <p class="set-sec">Breakfast defaults</p>
-      <p class="muted2" style="margin:0 0 6px">Mon–Fri: mostly cereal + milk; bagel+cream cheese about 1 weekday every 1–2 weeks. Sat–Sun: bacon egg cheese bagel.</p>
+      <p class="muted2" style="margin:0 0 6px">Mon to Fri: mostly cereal + milk; bagel+cream cheese about 1 weekday every 1 to 2 weeks. Sat to Sun: bacon egg cheese bagel.</p>
       <label class="fld">Weekday default</label>
       <div class="dchips">${Object.keys(BF_CFG.items||{}).map(k=>`<button type="button" data-bfw="${k}" class="${set.bfWeekday===k?"on":""}">${esc((BF_CFG.items[k]||{}).label||k)}</button>`).join("")}</div>
-      <label class="fld">Weekday alt (every ~1–2 wks)</label>
+      <label class="fld">Weekday alt (every 1 to 2 wks)</label>
       <div class="dchips">${Object.keys(BF_CFG.items||{}).map(k=>`<button type="button" data-bfa="${k}" class="${set.bfAlt===k?"on":""}">${esc((BF_CFG.items[k]||{}).label||k)}</button>`).join("")}</div>
       <label class="fld">Weekend</label>
       <div class="dchips">${["bec","bagel","cereal","eggs_toast","bf_burrito"].filter(k=>BF_CFG.items[k]).map(k=>`<button type="button" data-bfe="${k}" class="${set.bfWeekend===k?"on":""}">${esc((BF_CFG.items[k]||{}).label||k)}</button>`).join("")}</div>
@@ -1991,7 +1991,7 @@ function reset(){
   const build={};Object.keys(BUILDS).forEach(k=>{const b=BUILDS[k],o={};b.core.forEach(t=>o[t.id]={on:true,v:t.v?t.v[0]:t.label});b.extras.forEach(t=>o[t.id]={on:false,v:t.label});build[k]={top:o,custom:[]}});
   // migrate saved burger patty: turkey/chicken → 80/20 beef
   const rawPatty=build.burger&&build.burger.top.patty?build.burger.top.patty.v:"";
-  const migPatty=/Turkey|Chicken/i.test(rawPatty)?"80/20 beef patty":(rawPatty==="Beef patty (80/20)"?"80/20 beef patty":(rawPatty||"80/20 beef patty"));
+  const migPatty=/Turkey|Chicken/i.test(rawPatty)?"80 or 20 beef patty":(/80\s*\/?\s*20|80 or 20/i.test(rawPatty)?"80 or 20 beef patty":(rawPatty||"80 or 20 beef patty"));
   if(build.burger&&build.burger.top.patty)build.burger.top.patty.v=migPatty;
   st={stores:new Set(),extra:[],storeLoc:loadStoreLoc(),main:"",photos:{},equip:new Set(["foreman","lavazza","nespresso"]),coffee:normalizeCoffee({brand:"Lavazza Qualità Oro",brandOther:"",machines:["lavazza","nespresso"],drinks:["shot","americano"],milk:"No milk",perWeek:7}),meals:{},mealV:{},mealVs:{},pattyVs:[migPatty],tip:null,
       build,xOpen:null,weekStart:null,about:getAbout(),aboutReturn:false,sides:new Set(),picks:{},custom:{},open:null,cOpen:null,mealCustom:[],kitPhotos:[],sidePick:null,pickBackup:null};
@@ -2082,17 +2082,17 @@ function popHTML(title,opts,cur,on,extra={}){
     if(backup&&backup===v)return `${esc(v)}<span class="chip-lab">Backup</span>`;
     return esc(v);
   };
-  return `<div class="pop"><p class="ph2">${title}${pickBk?" — tap a backup cheese":""}</p><div class="opts">${opts.map(v=>`<button class="popt${on&&cur===v?" sel":""}${backup===v?" sel":""}" data-v="${esc(v)}" ${pickBk&&cur===v?"disabled":""}>${lab(v)}</button>`).join("")}${on?`<button class="popt rm" data-rm="1">✕ Remove</button>`:""}${isCheese&&on?`<button class="popt plus-bk" data-bk="1" aria-label="Set backup cheese">${icons.plus}<span>Backup</span></button>`:""}</div></div>`}
+  return `<div class="pop"><p class="ph2">${title}${pickBk?" · tap a backup cheese":""}</p><div class="opts">${opts.map(v=>`<button class="popt${on&&cur===v?" sel":""}${backup===v?" sel":""}" data-v="${esc(v)}" ${pickBk&&cur===v?"disabled":""}>${lab(v)}</button>`).join("")}${on?`<button class="popt rm" data-rm="1">✕ Remove</button>`:""}${isCheese&&on?`<button class="popt plus-bk" data-bk="1" aria-label="Set backup cheese">${icons.plus}<span>Backup</span></button>`:""}</div></div>`}
 const tool=()=>st.equip.has("foreman")?"grill":(st.equip.has("stove")||st.equip.has("skillet"))?"stove":st.equip.has("airfryer")?"air":(st.equip.has("oven")||st.equip.has("sheet"))?"oven":"grill";
 function tipHTML(m){
   const t=tool();let steps=t==="grill"?m.grill:t==="stove"?m.stove:
-    t==="air"?["Air fryer 400°F. Chicken/chops about 10–14 min, burgers/steak about 8–10 min, flip halfway."]:["Oven/broiler: sheet pan, broil about 4–6 min per side for steak/chops; chicken bake 400°F about 20–25 min."];
+    t==="air"?["Air fryer 400°F. Chicken or chops about 10 to 14 min, burgers or steak about 8 to 10 min, flip halfway."]:["Oven or broiler: sheet pan, broil about 4 to 6 min per side for steak or chops; chicken bake 400°F about 20 to 25 min."];
   const tn={grill:"🔥 On your Foreman",stove:"🍳 Stovetop",air:"💨 Air fryer",oven:"♨️ Oven"}[t];
   return `<div class="tip"><b>${tn}</b><ol>${steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol>
-   ${t==="grill"?`<div class="t1">⏱ Approx. ${esc(m.time)}</div>`:""}<div class="t2">🌡 Check ${esc(m.temp)}</div>
-   <div class="t3">Times are approximate; grills vary. A cheap instant-read thermometer (~$10–15) is the real test.</div></div>`}
+   ${t==="grill"?`<div class="t1">⏱ ${esc(cleanCopy(m.time||""))}</div>`:""}<div class="t2">🌡 Check ${esc(cleanCopy(m.temp||""))}</div>
+   <div class="t3">Times vary by grill. A cheap instant-read thermometer ($10 to $15) is the real test.</div></div>`}
 const tipsBox=()=>`<details class="box"><summary>💰 Meat money tips (tap)</summary><ul>${C.TIPS.meat.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></details>`;
-const PATTY_MIG={"Turkey patty":"80/20 beef patty","Chicken patty":"80/20 beef patty","Beef patty (80/20)":"80/20 beef patty"};
+const PATTY_MIG={"Turkey patty":"80 or 20 beef patty","Chicken patty":"80 or 20 beef patty","Beef patty (80/20)":"80 or 20 beef patty","80/20 beef patty":"80 or 20 beef patty","Beef patty (80 or 20)":"80 or 20 beef patty"};
 function migratePatty(v){return PATTY_MIG[v]||v}
 function mvAll(id){
   const m=M(id); if(!m||!m.v) return [];
@@ -2105,8 +2105,8 @@ const mv=id=>mvAll(id)[0]||"";
 const mvLabel=id=>{const a=mvAll(id);return a.length<=1?(a[0]||""):a.join(" · ")};
 function pattyAll(){
   let arr=st.pattyVs;
-  if(!arr||!arr.length){const old=topLabel("patty")||"80/20 beef patty";arr=[migratePatty(old)];st.pattyVs=arr}
-  arr=arr.map(migratePatty); st.pattyVs=[...new Set(arr)]; if(!st.pattyVs.length)st.pattyVs=["80/20 beef patty"];
+  if(!arr||!arr.length){const old=topLabel("patty")||"80 or 20 beef patty";arr=[migratePatty(old)];st.pattyVs=arr}
+  arr=arr.map(migratePatty); st.pattyVs=[...new Set(arr)]; if(!st.pattyVs.length)st.pattyVs=["80 or 20 beef patty"];
   if(st.build.burger&&st.build.burger.top.patty)st.build.burger.top.patty.v=st.pattyVs[0];
   return st.pattyVs;
 }
@@ -2217,8 +2217,8 @@ function dayCalTotal(d){
 function dayCalHTML(d){
   const t=dayCalTotal(d); if(!t)return "";
   const g=guideFor(st.about||{});
-  let line=t.cal==null?`🍽 Dinner est. cal: ?`:`🍽 Dinner est. ~${round10(t.cal)} cal`;
-  if(g&&t.cal!=null){const pct=Math.round(t.cal/g.mid*100);line+=` · ~${pct}% of your ~${g.lo.toLocaleString()}–${g.hi.toLocaleString()} guide`}
+  let line=t.cal==null?`🍽 Dinner cal: ?`:`🍽 Dinner ~${round10(t.cal)} cal`;
+  if(g&&t.cal!=null){const pct=Math.round(t.cal/g.mid*100);line+=` · ~${pct}% of your ~${g.lo.toLocaleString()} to ${g.hi.toLocaleString()} guide`}
   return `<p class="nut">${line}${t.unk?" · some cal: ?":""}</p>`;
 }
 const mealTotalHTML=mid=>`<div class="mtot">${esc(mealTotalCal(mid).label)}</div>`;
@@ -2403,9 +2403,9 @@ function render(){
     const ui=renderStoragePhotosUI({showNew:!!st._phNew});
     const map=ui.map;
     const n=BUILTIN_STORAGE.filter(s=>sectionPhotoCount(map,s.id)>0).length;
-    card.innerHTML=`<div class="emoji">📸</div><h1>Show me what you have</h1><p class="sub">Snap pantry, fridge, and freezer — multiple photos per section are fine.</p>
+    card.innerHTML=`<div class="emoji">📸</div><h1>Show me what you have</h1><p class="sub">Snap pantry, fridge, and freezer. Multiple photos per section are fine.</p>
       ${ui.html}
-      ${btns(n===3?"Next →":`Next → (${n}/3)`,false,n<3?"Skip photos for now":null)}`;
+      ${btns(n===3?"Next →":`Next → (${n} of 3)`,false,n<3?"Skip photos for now":null)}`;
     wireStoragePhotosUI(card,()=>render());
     $("nx").onclick=()=>go();const sk=$("sk");if(sk)sk.onclick=()=>go();
   } else if(s==="equip"){
@@ -2416,7 +2416,7 @@ function render(){
       <p class="fnote">${fm?"✓ Yep. Meals and cook times are built around the Foreman.":"Tap the card if you still use it."}</p>
       <p class="lbl">Also have</p>
       <div class="chips">${rest.map(e=>`<span class="chip-row"><span class="emo">${e.emoji}</span><span class="chip${st.equip.has(e.id)?"":" off"}" data-e="${e.id}">${esc(e.label)}</span></span>`).join("")}${(st.custom.equip||[]).map(v=>`<span class="chip-row"><span class="emo">🔧</span><span class="chip cust${st.equip.has("c:"+v)?"":" off"}" data-e="c:${esc(v)}">${esc(v)}</span></span>`).join("")}${customChip("equip")}</div>${customRow("equip")}
-      <p class="fnote">${(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))?"☕ Coffee machines are on. Next: Lavazza Oro, drinks per week, optional milk.":"No coffee machine? Fine — the coffee step is skipped."}</p>
+      <p class="fnote">${(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))?"☕ Coffee machines are on. Next: Lavazza Oro, drinks per week, optional milk.":"No coffee machine? Fine. The coffee step is skipped."}</p>
       <div class="snap"><p class="lbl" style="margin-top:0">Anything else in your kitchen?</p>
         <p>Not sure if you have something? 📸 Snap a photo of your counters/cabinets and send it to your chef bot. It'll tell you what you've got.</p>
         <span class="emo">📸</span> <button class="sbtn" id="kitSnap">Snap a photo</button><input type="file" accept="image/*" capture="environment" id="kitIn" hidden>
@@ -2636,7 +2636,7 @@ function buildScreen(mid){
   card.querySelectorAll("[data-patty]").forEach(b=>b.onclick=()=>{st.open=st.open==="patty"?null:"patty";st.cOpen=null;st.pickBackup=null;render()});
   card.querySelectorAll("[data-t]").forEach(c=>c.onclick=()=>{const t=B.core.find(x=>x.id===c.dataset.t);if(t&&t.v){st.open=st.open===t.id?null:t.id;st.cOpen=null;if(st.open!=="cheese")st.pickBackup=null}else if(t){T[t.id].on=!T[t.id].on;if(t.id==="cheese"&&!T[t.id].on){/* fully unselected */ if(bs.cheeseBackup){T[t.id].v=bs.cheeseBackup;T[t.id].on=true;bs.cheeseBackup=null;persistBuildCheese()} } }render()});
   card.querySelectorAll(".pop .popt[data-v]").forEach(b=>b.onclick=()=>{
-    if(st.open==="patty"){const set=new Set(pattyAll());set.has(b.dataset.v)?set.delete(b.dataset.v):set.add(b.dataset.v);if(!set.size)set.add("80/20 beef patty");st.pattyVs=[...set];if(T.patty)T.patty.v=st.pattyVs[0];st.open=null}
+    if(st.open==="patty"){const set=new Set(pattyAll());set.has(b.dataset.v)?set.delete(b.dataset.v):set.add(b.dataset.v);if(!set.size)set.add("80 or 20 beef patty");st.pattyVs=[...set];if(T.patty)T.patty.v=st.pattyVs[0];st.open=null}
     else if(st.open==="cheese"&&st.pickBackup===mid){
       const v=b.dataset.v; if(v&&v!==T.cheese.v){bs.cheeseBackup=v;persistBuildCheese()}
       st.pickBackup=null;st.open=null;
@@ -2830,7 +2830,7 @@ function shuffleWeek(){
   const bfs=planBreakfast(weekStartDate());
   [...cookSlots, ...roles.map((r,i)=>r==="left"?i:-1).filter(i=>i>=0)].forEach(i=>{if(W.ov[i])W.ov[i].bf=bfs[i]});
   try{localStorage.setItem(SHUFFLE_PREV_KEY,JSON.stringify(used))}catch(_){}
-  recomputeList();renderWeek();toast("Week shuffled — list & budget updated");
+  recomputeList();renderWeek();toast("Week shuffled. List and budget updated");
 }
 function buildWeek(){
   const fm=st.equip.has("foreman")||st.equip.size===0;
@@ -3023,9 +3023,9 @@ function buildList(groups,mealIds){
     });
   });
   if(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso")){const k=coffeeCalc();
-    add("coffee:oro",{n:k.brandName+" (large can/bag)",q:k.bagLine,a:null,p:null,custom:true,hint:"Add the bag price from your receipt",why:`About ${k.n} drinks a week · about ${k.gPerShot} g per shot · about ${k.g} g a week`});
-    if(k.needLids)add("coffee:lids",{why:`Refillable capsule seals · restock about every ${C.COFFEE.lidsEveryWeeks} weeks`});
-    if(k.milkKey)add(k.milkKey,{q:`${k.halfGal} × ½ gallon`,a:P[k.milkKey].a*k.halfGal,p:P[k.milkKey].p*k.halfGal,why:`Optional milk · about ${k.milkOz} oz a week`});}
+    add("coffee:oro",{n:k.brandName+" (large can or bag)",q:k.bagLine,a:null,p:null,custom:true,hint:"Add the bag price from your receipt",why:`${k.n} drinks a week · ${k.gPerShot} g per shot · ${k.g} g a week`});
+    if(k.needLids)add("coffee:lids",{why:`Refillable capsule seals · restock every ${C.COFFEE.lidsEveryWeeks} weeks`});
+    if(k.milkKey)add(k.milkKey,{q:`${k.halfGal} × ½ gallon`,a:P[k.milkKey].a*k.halfGal,p:P[k.milkKey].p*k.halfGal,why:`Optional milk · ${k.milkOz} oz a week`});}
   st.mealCustom.forEach(v=>add("custom:meal"+v,{n:`Stuff for: ${v}`,q:"",aisle:"other",a:null,p:null,custom:true,why:"your custom meal"}));
   return out;
 }
@@ -3062,11 +3062,17 @@ function weekGroceryEstimate(store){
   return {sum, priced, unpriced, total:all.length, money:sum.toFixed(2)};
 }
 function groceryEstimateHTML(){
-  /* $X.XX only — no Aldi est. / All prices are estimates / about */
+  /* Ted OVERRIDE 1:19: $X.XX or $X.XX at Store. No About / estimate / est. / approx. */
   const main=typeof deriveMainStore==="function"?deriveMainStore():(st&&st.main)||"";
   const store=(main==="Publix"||main==="Aldi")?main:"";
   const e=weekGroceryEstimate(store||null);
-  const line=`$${e.money}`;
+  if(e.priced===0){
+    const bits=[];
+    if(!store) bits.push(`<button type="button" class="g-est-pick" id="gPickStore">Pick a store</button>`);
+    if(e.unpriced>0) bits.push(`<p class="g-est-unpriced">Some items unpriced</p>`);
+    return `<div class="g-est-block" data-g-est="1">${bits.join("")}</div>`;
+  }
+  const line=store?`$${e.money} at ${store}`:`$${e.money}`;
   const bits=[`<p class="g-est-line" id="gEstLine">${esc(line)}</p>`];
   if(!store) bits.push(`<button type="button" class="g-est-pick" id="gPickStore">Pick a store</button>`);
   if(e.unpriced>0) bits.push(`<p class="g-est-unpriced">Some items unpriced</p>`);
@@ -3192,10 +3198,11 @@ function isDayToday(d,i){
 }
 
 function cleanCopy(s){
-  /* Steve copy bar: no slashes, no en/em dashes, no hyphen ranges */
+  /* Steve copy bar: no slashes, no en/em dashes, no hyphen ranges. Apostrophes OK. */
   return String(s||"")
     .replace(/[–—]/g," to ")
     .replace(/(\d)\s*-\s*(\d)/g,"$1 to $2")
+    .replace(/(\d)\s*\/\s*(\d)/g,"$1 or $2")
     .replace(/\s*\/\s*/g," or ")
     .replace(/\s{2,}/g," ")
     .trim();
@@ -3204,14 +3211,15 @@ function boardNote(d){
   if(!d)return "Plan it";
   let n=cleanCopy(d.note||"");
   n=n.replace(/^⏱\s*/,"").replace(/cook night:?\s*/ig,"");
-  n=n.replace(/make extra for leftovers tomorrow\.?/ig,"Make extra for tomorrow");
-  n=n.replace(/make extra for lunch tomorrow\.?/ig,"Make extra for tomorrow");
-  n=n.replace(/Fridge leftovers 3 to 4 days\.?.*/i,"Fridge leftovers");
-  n=n.replace(/Freezer day:?\s*/i,"From the freezer");
-  n=n.replace(/Night off\.?.*/i,"Night off");
-  n=n.replace(/Your swap\.?.*/i,"Your swap");
-  n=n.replace(/Free night\.?.*/i,"Free night");
-  n=n.replace(/Grab & go night\.?.*/i,"Grab and go");
+  /* Prefer short canned one-liners (no slash, no jammed words). */
+  if(/make extra for (leftovers|lunch) tomorrow/i.test(n))return "Make extra for tomorrow";
+  if(/Fridge leftovers/i.test(n)&&!/make extra/i.test(n))return "Fridge leftovers";
+  if(/Freezer day/i.test(n)||/from the freezer/i.test(n))return "From the freezer";
+  if(/Night off/i.test(n))return "Night off";
+  if(/Your swap/i.test(n))return "Your swap";
+  if(/Free night/i.test(n))return "Free night";
+  if(/Grab & go night|Grab and go/i.test(n))return "Grab and go";
+  n=n.replace(/\s+/g," ").trim();
   if(n)n=shortMealWords(n,6);
   if(n&&n.length>2&&n.toLowerCase()!=="meal")return n;
   if(d.kind==="hol")return "Holiday";
@@ -3649,11 +3657,11 @@ const GROCERY_ALT_GROUPS={
 /* Meat alt groups (prior Steve meat bar) — day-card + grocery when mapped */
 const MEAT_ALT_GROUPS={
   bacon:["Regular bacon","Thick-cut bacon","Turkey bacon","Skip meat"],
-  "beef patty":["80/20 beef patty","Ground sirloin patty","Skip meat"],
+  "beef patty":["80 or 20 beef patty","Ground sirloin patty","Skip meat"],
   sirloin:["Sirloin","Filet","Ribeye","NY strip","Flat iron","Chuck eye","Skip meat"],
   "chicken breast":["Chicken breast","Chicken thighs","Chicken tenders","Skip meat"],
   "chicken thighs":["Chicken thighs","Chicken breast","Chicken tenders","Skip meat"],
-  "ground beef":["80/20 ground beef","90/10 ground beef","Ground turkey","Skip meat"]
+  "ground beef":["80 or 20 ground beef","90 or 10 ground beef","Ground turkey","Skip meat"]
 };
 const ADD_ITEM_CATS=[
   {id:"menu_extras",label:"Menu extras"},
@@ -3765,8 +3773,8 @@ function openGroceryAlt(it){
   const g=altGroupForName(it&&it.n);
   if(!g)return;
   const inn=openSheet("","Swap item");
-  inn.innerHTML=shTop("Swap · "+esc(it.n))+`
-    <div class="opts">${g.opts.map(v=>`<button type="button" class="popt" data-altv="${esc(v)}">${esc(v)}</button>`).join("")}</div>`;
+  inn.innerHTML=shTop("Swap · "+esc(cleanCopy(it.n)))+`
+    <div class="opts">${g.opts.map(v=>`<button type="button" class="popt" data-altv="${esc(v)}">${esc(cleanCopy(v))}</button>`).join("")}</div>`;
   inn.querySelectorAll("[data-altv]").forEach(b=>b.onclick=()=>{
     const nv=b.dataset.altv;
     /* Update in standing / customs / week item ov */
@@ -3784,8 +3792,8 @@ function openMeatCutPop(dayIdx){
   const days=effDays(W.ov); const d=days[dayIdx]; if(!d)return;
   const opts=meatDayAltGroup(d); if(!opts||!opts.length)return;
   const inn=openSheet("","Which cut?");
-  inn.innerHTML=shTop("Which cut?")+`<p class="muted2" style="margin:0 0 8px">${esc(d.short)} · ${esc(d.dinner||"")}</p>
-    <div class="opts">${opts.map(v=>`<button type="button" class="popt${d.cut===v?" sel":""}" data-cut="${esc(v)}">${esc(v)}</button>`).join("")}</div>`;
+  inn.innerHTML=shTop("Which cut?")+`<p class="muted2" style="margin:0 0 8px">${esc(cleanCopy(d.short||""))} · ${esc(cleanCopy(d.dinner||""))}</p>
+    <div class="opts">${opts.map(v=>`<button type="button" class="popt${d.cut===v?" sel":""}" data-cut="${esc(v)}">${esc(cleanCopy(v))}</button>`).join("")}</div>`;
   inn.querySelectorAll("[data-cut]").forEach(b=>b.onclick=()=>{
     const cut=b.dataset.cut;
     W.ov=W.ov||{};
@@ -4106,7 +4114,7 @@ function listItemRow(it,filt,days){
   const priceBits=[];
   if(it.a!=null)priceBits.push(`<span class="${aw?"win":""}${isStale(it.sA)?" stale":""}">${$$(it.a)}</span>`);
   if(it.p!=null&&it.p!==it.a)priceBits.push(`<span class="${pw?"win":""}${isStale(it.sP)?" stale":""}">${$$(it.p)}</span>`);
-  if(!priceBits.length&&it.custom)priceBits.push(`<span>—</span>`);
+  if(!priceBits.length&&it.custom)priceBits.push(`<span>n/a</span>`);
   return `<div class="it${W.ck.has(it.id)?" ck":""}${suppressed?" gone have-suppressed":""}${hi?" hi":""}" ${hi?`data-li="${W.shopHi}"`:""}>
     <div class="cb" data-ck="${esc(it.id)}">${W.ck.has(it.id)?"✓":""}</div>
     <div class="nm" data-ck="${esc(it.id)}">${esc(cleanCopy(it.n))}<small>${esc(cleanCopy(it.q||""))}${it.q?" · ":""}for ${esc(cleanCopy(it.why||""))}</small>${tags}${back?`<span class="have-back">${esc(back)}</span>`:""}
@@ -4197,12 +4205,12 @@ function openReceipt(){
     btnClass:"sh-btn p wide",shareLabel:"Send to Jarvis",title:"Receipt",text:"Receipt for the meal-planner prices",
     after:"Prices update after Jarvis reads it.",fallback:"Your browser can't open the share sheet from here. Save the photo (long-press → Save) and send it to Jarvis in chat."});
 }
-function srcLabel(e){if(!e)return "est.";const md=s=>{const d=new Date(s+"T12:00:00");return isNaN(d)?"":MO3[d.getMonth()]+" "+d.getDate()};
+function srcLabel(e){if(!e)return "checked Oct 5";const md=s=>{const d=new Date(s+"T12:00:00");return isNaN(d)?"":MO3[d.getMonth()]+" "+d.getDate()};
   if(e.source==="receipt")return "receipt "+md(e.checked);
   if(e.source==="ad"||e.source==="weekly-ad")return "ad"+(e.sale_ends?" thru "+md(e.sale_ends):"");
   if(e.source==="online-listing")return "online "+md(e.checked);
   if(e.source==="shelf-photo")return "shelf "+md(e.checked);
-  return "est. · checked "+md(e.checked||"2026-10-05")}
+  return "checked "+md(e.checked||"2026-10-05")}
 function isStale(e){if(!e||!e.checked)return false;const d=new Date(e.checked+"T12:00:00");return !isNaN(d)&&(Date.now()-d.getTime())>60*864e5}
 function fmtDateLong(s){const d=new Date(s+"T12:00:00");return isNaN(d)?s:`${MO3[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`}
 
@@ -4210,7 +4218,7 @@ function fmtDateLong(s){const d=new Date(s+"T12:00:00");return isNaN(d)?s:`${MO3
 const DN=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 const MG={steak:"steak",steakq:"steak",stkegg:"steak",burger:"burger",chicken:"chicken",chixq:"chicken",bowl:"chicken",pork:"pork",brats:"brats",x_sirloin_plate:"steak",x_ribeye_simple:"steak",x_strip_onion:"steak",x_flat_iron:"steak",x_chuck_eye:"steak",x_steak_taco:"steak",x_philly:"steak",x_steak_salad:"steak",x_steak_sandwich:"steak",x_smash_burger:"burger",x_cheese_burger:"burger",x_sloppy:"burger",x_chix_lemon:"chicken",x_chix_cajun:"chicken",x_chix_bbq:"chicken",x_chix_thighs:"chicken",x_chix_nugget:"chicken",x_chix_taco:"chicken",x_chix_salad:"chicken",x_garlic_chix:"chicken",x_protein_bowl:"chicken",x_pork_bbq:"pork",x_pork_garlic:"pork",x_pork_rice:"pork",x_italian_sausage:"brats",x_smoked_sausage:"brats",x_brat_mustard:"brats",x_hot_dog:"brats",x_chili_dog:"brats",x_sausage_eggs:"brats"};
 function weekStartDate(){return st&&st.weekStart?new Date(st.weekStart):mondayOf(new Date())}
-function effDays(ov){const s0=weekStartDate();return W.base.map((b,i)=>{const d=addDays(s0,i);const short=`${DN[i]} ${d.getMonth()+1}/${d.getDate()}`;
+function effDays(ov){const s0=weekStartDate();return W.base.map((b,i)=>{const d=addDays(s0,i);const short=`${DN[i]} ${d.getMonth()+1}.${d.getDate()}`;
   const o=ov[i]||{t:"day",j:i};let c;
   if(o.t==="day"){const src=W.base[o.j];c={cook:src.cook,meal:src.meal,e:src.e,dinner:src.dinner,note:o.j===i?src.note:`Moved from ${DN[o.j]}. ${src.note}`,g:src.g,ch:o.j!==i,cut:src.cut,sideName:o.sideName!=null?o.sideName:src.sideName,extraSides:o.extraSides||src.extraSides,bf:src.bf,grab:src.grab,kind:src.kind,hol:src.hol}}
   else if(o.t==="meal"){const m=M(o.id);c={cook:true,meal:o.id,e:m.emoji,dinner:`${m.name}${m.v?" ("+mv(o.id)+")":""}`,note:"Your swap. Cook 1 portion, or 2 and keep one for tomorrow's lunch.",g:MG[o.id]||null,ch:true,sideName:o.sideName!=null?o.sideName:W.base[i].sideName,extraSides:o.extraSides||W.base[i].extraSides}}
@@ -4297,7 +4305,7 @@ function guideFor(a){const age=+a.age,ft=+a.ft,inch=+(a.inch||0),lb=+a.lb;
   const bmr=base+(a.sex==="m"?5:a.sex==="f"?-161:-78);const tdee=bmr*actOf(a)[2];const r=n=>Math.round(n/50)*50;
   return {lo:r(tdee*0.9),hi:r(tdee*1.1),mid:tdee,pLo:Math.round(lb*0.7),pHi:Math.round(lb*1.0)}}
 const NOTMED="General guide, not medical advice; not a diet plan.";
-function guideHTML(g){return g?`Daily guide: <b>about ${g.lo.toLocaleString()} to ${g.hi.toLocaleString()} calories</b> and <b>${g.pLo} to ${g.pHi} g protein</b>.<small>Mifflin-St Jeor estimate, about 10 percent either way. Based on the exercise you picked. Protein 0.7 to 1.0 g per lb. ${NOTMED}</small>`
+function guideHTML(g){return g?`Daily guide: <b>about ${g.lo.toLocaleString()} to ${g.hi.toLocaleString()} calories</b> and <b>${g.pLo} to ${g.pHi} g protein</b>.<small>Mifflin-St Jeor guide, about 10 percent either way. Based on the exercise you picked. Protein 0.7 to 1.0 g per lb. ${NOTMED}</small>`
   :`Fill in age, height and weight to see a general daily guide.<small>${NOTMED}</small>`}
 function aboutStep(){const a=st.about;
   card.innerHTML=`<div class="emoji">🧍</div><h1>About me</h1><p class="sub">Optional. Gives you a general daily guide. Saved on this phone only.</p>
@@ -4324,9 +4332,9 @@ function aboutStep(){const a=st.about;
 function aboutSummary(){const a=st.about,g=guideFor(a);if(!g)return `<p class="no">Not filled in (optional).</p>`;
   return `<p>${esc(a.age)} yrs · ${esc(a.ft)}′${esc(a.inch||0)}″ · ${esc(a.lb)} lb${a.sex?" · "+(a.sex==="m"?"male":"female"):""} · exercise: ${actOf(a)[1].toLowerCase()}</p><div class="guide" style="margin:6px 0 0">${guideHTML(g)}</div>`}
 function guideBox(){const g=guideFor(st.about||{});if(!g)return "";
-  return `<div class="gbox">🧍 Your daily guide: <b>~${g.lo.toLocaleString()}–${g.hi.toLocaleString()} cal</b> · <b>${g.pLo}–${g.pHi} g protein</b><small>${NOTMED} Dinner numbers on each day are rough USDA-based estimates per serving (est.).</small><a class="etm" href="https://www.eatthismuch.com/" target="_blank" rel="noopener">Want more ideas? Try Eat This Much (free) ↗</a></div>`}
+  return `<div class="gbox">🧍 Your daily guide: <b>~${g.lo.toLocaleString()} to ${g.hi.toLocaleString()} cal</b> · <b>${g.pLo} to ${g.pHi} g protein</b><small>${NOTMED} Dinner numbers on each day are rough USDA-based figures per serving.</small><a class="etm" href="https://www.eatthismuch.com/" target="_blank" rel="noopener">Want more ideas? Try Eat This Much (free) ↗</a></div>`}
 function dayNut(d){const g=guideFor(st.about||{});const m=d.meal&&M(d.meal);if(!g||!m||!m.nut||d.kind)return "";
-  return `<p class="nut">🍽 Dinner est. ~${m.nut.kcal} cal · ${m.nut.p} g protein (≈${Math.round(m.nut.kcal/g.mid*100)}% of your daily calories, ${Math.round(m.nut.p/((g.pLo+g.pHi)/2)*100)}% of protein)</p>`}
+  return `<p class="nut">🍽 Dinner ~${m.nut.kcal} cal · ${m.nut.p} g protein (≈${Math.round(m.nut.kcal/g.mid*100)}% of your daily calories, ${Math.round(m.nut.p/((g.pLo+g.pHi)/2)*100)}% of protein)</p>`}
 
 /* ---- meal ratings: 👎 tried it, no · 👍 good · ❤️ favorite (saved on this phone) ---- */
 const RKEY="cameron-meals-ratings-v1";
@@ -4378,7 +4386,7 @@ function coffeeCalc(){
   const avgMilk=c.milk==="No milk"?0:list.reduce((a,d)=>a+(d.milk||0),0)/list.length;
   const milkOz=Math.round(n*avgMilk), milkKey=milkOz>0&&P["coffee:"+c.milk]?"coffee:"+c.milk:null;
   const halfGal=milkKey?Math.max(1,Math.ceil(milkOz/K.milkOz)):0;
-  const bagLine=`${bags} × ${K.bagLabel||"large can/bag"} (about ${g} g a week at ${gPerShot} g per shot)`;
+  const bagLine=`${bags} × ${K.bagLabel||"large can or bag"} (${g} g a week at ${gPerShot} g per shot)`;
   // Per-cup cost only if we have a receipt/est price; otherwise prompt add-from-receipt
   const bagPrice=P["coffee:oro"]&&(P["coffee:oro"].p!=null||P["coffee:oro"].a!=null)?Math.min(P["coffee:oro"].p??1e9,P["coffee:oro"].a??1e9):null;
   const cupsPerBag=bagPrice!=null?Math.max(1,Math.floor((K.bagG||250)/gPerShot)):null;
@@ -4396,16 +4404,16 @@ function coffeeDesc(){const K=C.COFFEE,c=st.coffee;const ds=K.drinks.filter(d=>c
 function coffeeLine(short){
   const k=coffeeCalc();const outCup=C.COFFEE.outPrice;
   if(k.perCup==null){
-    return `Upload a coffee receipt to see your cost per cup. A café drink is about $${outCup.toFixed(2)}.`;
+    return `Upload a coffee receipt to see your cost per cup. A café drink is around $${outCup.toFixed(2)}.`;
   }
-  let s=`Coffee at home costs about $${k.perCup.toFixed(2)} a cup. A café drink is about $${outCup.toFixed(2)}.`;
+  let s=`Coffee at home costs $${k.perCup.toFixed(2)} a cup. A café drink is $${outCup.toFixed(2)}.`;
   if(k.n){
-    s+=` You make about ${k.n} drinks a week`;
-    if(k.home!=null) s+=`, so home coffee is about $${k.home.toFixed(2)} versus about $${k.out.toFixed(2)} buying out`;
+    s+=` You make ${k.n} drinks a week`;
+    if(k.home!=null) s+=`, so home coffee is $${k.home.toFixed(2)} versus $${k.out.toFixed(2)} buying out`;
     s+=".";
   }
   if(!short&&W){
-    s+=` The list includes ${k.brandName} sized for about ${k.g} g a week`;
+    s+=` The list includes ${k.brandName} sized for ${k.g} g a week`;
     if(k.needLids) s+=`, plus capsule foil lids when you need them`;
     s+=".";
   }
@@ -4423,7 +4431,7 @@ function coffeeStep(){st.coffee=normalizeCoffee(st.coffee);const K=C.COFFEE,c=st
     <p class="lbl">Drinks (tap all you make)</p><div class="chips">${K.drinks.map(d=>`<span class="chip-row"><span class="emo">${d.emoji}</span><span class="chip${c.drinks.has(d.id)?"":" off"}" data-cd="${d.id}">${esc(d.label)}</span></span>`).join("")}</div>
     <p class="lbl">Milk (optional)</p><div class="chips">${K.milks.map(m=>`<span class="chip${c.milk===m?"":" off"}" data-cmk="${esc(m)}">${esc(m)}</span>`).join("")}</div>
     <p class="lbl">Drinks per week</p><div class="chips">${K.perWeek.map(n=>`<span class="chip${c.perWeek===n?"":" off"}" data-cw="${n}">${n}</span>`).join("")}</div>
-    <p class="emo" style="margin:14px 0 4px">☕</p><div class="cofbox">${coffeeLine(true)}<br><small>Coffee goes into refillable capsules (about ${K.gPerShot} g each). The shopping list adds a bag sized for your drinks${st.equip.has("nespresso")?", plus foil lids when you need them":""}. Add the bag price from a receipt to see your cost per cup.</small></div>
+    <p class="emo" style="margin:14px 0 4px">☕</p><div class="cofbox">${coffeeLine(true)}<br><small>Coffee goes into refillable capsules (${K.gPerShot} g each). The shopping list adds a bag sized for your drinks${st.equip.has("nespresso")?", plus foil lids when you need them":""}. Add the bag price from a receipt to see your cost per cup.</small></div>
     ${btns("Next →")}`;
   card.querySelectorAll("[data-br]").forEach(b=>b.onclick=()=>{c.brand=b.dataset.br;render()});
   const bok=$("cbrandOk");if(bok){const save=()=>{c.brandOther=$("cbrand").value.trim().slice(0,40);render()};bok.onclick=save;$("cbrand").onkeydown=e=>{if(e.key==="Enter")save()}}
@@ -4439,13 +4447,13 @@ async function copyTxt(text,msg){try{if(navigator.clipboard&&window.isSecureCont
   toast("📋 "+msg)}
 function listText(which){const t=totals(),wl=fmtWeek(weekStartDate()),items=W.items.filter(it=>(typeof itemHaveSuppressed==="function"?!itemHaveSuppressed(it.id):!W.have.has(it.id)));
   const aw=it=>it.a!=null&&(it.p==null||it.a<=it.p),pw=it=>it.p!=null&&!aw(it);
-  const pr=it=>{const v=aw(it)?it.a:(it.p!=null?it.p:it.a);return v==null?"—":$$(v)};const L=[];
+  const pr=it=>{const v=aw(it)?it.a:(it.p!=null?it.p:it.a);return v==null?"n/a":$$(v)};const L=[];
   if(which==="all"){L.push(`My shopping list: ${wl}`,(()=>{const main=typeof deriveMainStore==="function"?deriveMainStore():(st&&st.main)||"Aldi";const v=main==="Publix"?t.p:t.a;return $$(v)})());if(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))L.push(coffeeLine(true));
     AISLES.forEach(([k,lab])=>{const g=items.filter(i=>i.aisle===k);if(!g.length)return;L.push("",lab.toUpperCase());
-      g.forEach(it=>L.push(`[ ] ${it.n}${it.q?" ("+it.q+")":""} - ${it.custom?(it.a!=null?$$(it.a):"check price"):pr(it)}`))})}
+      g.forEach(it=>L.push(`[ ] ${cleanCopy(it.n)}${it.q?" ("+cleanCopy(it.q)+")":""} · ${it.custom?(it.a!=null?$$(it.a):"check price"):pr(it)}`))})}
   else{const pick=which==="Aldi"?aw:pw,g=items.filter(pick),sum=g.reduce((a,it)=>a+(which==="Aldi"?it.a:it.p),0);
     L.push(`${which} list: ${wl}`,`${g.length} items · ${$$(sum)}`);
-    AISLES.forEach(([k,lab])=>{const h=g.filter(i=>i.aisle===k);if(!h.length)return;L.push("",lab.toUpperCase());h.forEach(it=>L.push(`[ ] ${it.n}${it.q?" ("+it.q+")":""} - ${$$(which==="Aldi"?it.a:it.p)}`))})}
+    AISLES.forEach(([k,lab])=>{const h=g.filter(i=>i.aisle===k);if(!h.length)return;L.push("",lab.toUpperCase());h.forEach(it=>L.push(`[ ] ${cleanCopy(it.n)}${it.q?" ("+cleanCopy(it.q)+")":""} · ${$$(which==="Aldi"?it.a:it.p)}`))})}
   return L.join("\n")}
 /* ---- Ted soft-bar: day meal picker max 7 + Regenerate (same spirit as side Regenerate) ---- */
 const DAY_MEAL_OFFER_COUNT=7;
@@ -4569,10 +4577,10 @@ function weekReview(days){const L=getLog().log,s0=weekStartDate();
   const highlights=[];
   if(top.length)highlights.push(`Top: ${top.slice(0,2).map(id=>`${RE[rateOf(id)]} ${esc(M(id).name)}`).join(" · ")}`);
   if(sug[0])highlights.push(sug[0].replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim().slice(0,90));
-  if(madeN>=5)highlights.push("Full week mostly logged — nice.");
+  if(madeN>=5)highlights.push("Full week mostly logged. Nice.");
   const tmTop=tm.slice(0,5);
   return `<section class="gpanel wrev"><div class="stitle" style="margin-top:0"><h2>Week review</h2><span>${esc(fmtWeek(s0))}</span></div>
-   <div class="wst"><div><b>$${est.toFixed(2)}</b>${budget!=null?` / $${budget.toFixed(2)}`:""}<small>${budget!=null?"this week or your budget":"this week"}</small></div><div><b>${avgCal!=null?avgCal:"—"}</b><small>avg cal</small></div><div><b>${madeN}/${skipN}/${outN}</b><small>made or skip or out</small></div></div>
+   <div class="wst"><div><b>$${est.toFixed(2)}</b>${budget!=null?` of $${budget.toFixed(2)}`:""}<small>${budget!=null?"this week of your budget":"this week"}</small></div><div><b>${avgCal!=null?avgCal:"n/a"}</b><small>avg cal</small></div><div><b>${madeN} · ${skipN} · ${outN}</b><small>made · skip · out</small></div></div>
    ${highlights.length?`<ul class="sgl">${highlights.slice(0,3).map(h=>`<li>${h}</li>`).join("")}</ul>`:""}
    ${tmTop.length?`<h3 class="aisle">Times made (all-time)</h3><ul class="tml">${tmTop.map(x=>`<li><span>${esc(mealName(x.k))}</span>${M(x.k)&&rateOf(x.k)?`<small>${RE[rateOf(x.k)]}</small>`:""}<b>×${x.made}</b></li>`).join("")}</ul>${tm.length>5?`<button type="button" class="have" id="tmAll">See all (${tm.length})</button>`:""}`:""}</section>`}
 
@@ -4788,7 +4796,7 @@ function openBadgesSheet(){const x=getXp();const inn=openSheet("","Badges");
   inn.innerHTML=shTop("Badges")+`<p class="muted2" style="margin:0 0 8px">${x.stars} star${x.stars===1?"":"s"} · quiet progress</p><ul class="badge-list">${BADGES.map(b=>{const on=!!x.badges[b.id];return `<li class="${on?"on":""}">${icons.star.replace('class="ico"','class="ico bico"')}<div><b>${esc(b.name)}</b><small>${on?"Earned":esc(b.how)}</small></div></li>`}).join("")}</ul>`}
 function weekLogStrip(days){const L=getLog().log||{},s0=weekStartDate();let made=0,skip=0,out=0;
   const cells=days.map((d,i)=>{const iso=isoD(addDays(s0,i)),e=L[iso]||{},stt=e.s||"";if(stt==="made")made++;else if(stt==="skip")skip++;else if(stt==="out")out++;
-    const mark=stt==="made"?"Made":stt==="skip"?"Skip":stt==="out"?"Out":"—";
+    const mark=stt==="made"?"Made":stt==="skip"?"Skip":stt==="out"?"Out":"n/a";
     return `<button type="button" data-jumplog="${i}" aria-label="${DN[i]} ${mark}"><span class="wls-m">${DN[i].slice(0,1)}</span>${mark}</button>`}).join("");
   return `<div class="week-log-strip" aria-label="Week log summary"><div class="wls-days">${cells}</div><div class="wls-counts">Made ${made} · Skipped ${skip} · Ate out ${out}</div></div>`}
 function getCamCustom(){try{const j=JSON.parse(localStorage.getItem(CG_KEY)||"[]");return Array.isArray(j)?j:[]}catch(_){return[]}}
@@ -4855,7 +4863,7 @@ async function shareThisApp(){
   if(payload.length>6000){tpl=buildShareTemplate(true,false);payload=await compressPayload(tpl)}
   if(payload.length>6000){tpl=buildShareTemplate(true,true);payload=await compressPayload(tpl)}
   const url=CAM_SHARE_BASE+"#t="+payload;
-  const text="Here's my meal planner setup — it's yours to tweak. Your stuff saves on your own phone.";
+  const text="Here's my meal planner setup. It's yours to tweak. Your stuff saves on your own phone.";
   try{if(navigator.share){await navigator.share({title:"Meal Picker",text:text+"\n\n"+url,url});return}}catch(err){if(err&&err.name==="AbortError")return}
   try{await navigator.clipboard.writeText(text+"\n\n"+url);toast("Share link copied")}catch(_){copyTxt(text+"\n\n"+url,"Share link copied")}
 }
@@ -4875,7 +4883,7 @@ function ensureStdEquipOptions(){
     {id:"oven",label:"Oven",emoji:"♨️"},
     {id:"micro",label:"Microwave",emoji:"📟"},
     {id:"toaster",label:"Toaster",emoji:"🍞"},
-    {id:"fridge",label:"Fridge / freezer",emoji:"🧊"}
+    {id:"fridge",label:"Fridge or freezer",emoji:"🧊"}
   ];
   if(!C.EQUIP)C.EQUIP=[];
   need.forEach(n=>{if(!C.EQUIP.some(e=>e.id===n.id))C.EQUIP.push(n)});
@@ -4919,7 +4927,7 @@ async function importTemplate(tpl,replace){
   // clear name / health for friend — empty name → "My Meal Picker" (never Cameron)
   const ab=getAbout()||{};ab.name="";delete ab.exercise;delete ab.ex;delete ab.activity;delete ab.act;setAbout(ab);st.about=ab;
   st._fromTemplate=true;
-  toast("Template loaded — confirm your name & equipment");
+  toast("Template loaded. Confirm your name and equipment");
 }
 async function handleTemplateHash(){
   const m=location.hash.match(/^#t=(.+)$/);
@@ -4972,7 +4980,7 @@ function startTemplateWelcome(){
     const list=labs().join(", ");
     speak("We've set common kitchen appliances: "+list+". Confirm, or open settings to add or remove gear.");
     box.innerHTML=`<p class="welcome-q">Confirm your equipment?</p>
-      <p class="welcome-sub">Pre-set baseline: <b>${esc(list)}</b>. No George Foreman grill or coffee machines — add those in Settings if you have them.</p>
+      <p class="welcome-sub">Pre-set baseline: <b>${esc(list)}</b>. No George Foreman grill or coffee machines. Add those in Settings if you have them.</p>
       <div class="welcome-opts">
         <button type="button" class="welcome-opt primary" data-ok="1">Looks good</button>
         <button type="button" class="welcome-opt" data-set="1">Review settings</button>
