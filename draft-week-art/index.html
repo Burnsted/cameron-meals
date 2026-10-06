@@ -725,9 +725,9 @@
   .meals-head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:0 0 4px}
   .meals-head-row .emoji{margin:4px 0 0}
   .meals-head .gear{margin-top:2px}
-  .meal .vchip{border-color:var(--teal,#2dd4bf);color:var(--tealD,#5eead4)}
+  .meal .vchip{border-color:var(--teal,#2dd4bf);color:var(--tealD,#5eead4);border-style:solid}
   html[data-theme="light"] .meal .vchip{border-color:var(--teal,#0f6e6e);color:var(--teal,#0f6e6e)}
-  .meal .vchip.meat-alt{border-style:dashed}
+  /* Ted: no dotted/dashed outline on meat/cut ▾ pills */
   /* Day meal picker: max 7 + Regenerate (Ted soft-bar) */
   .day-meal-regen{
     display:block;width:100%;margin:10px 0 4px;min-height:44px;padding:10px 12px;
@@ -2468,18 +2468,44 @@ function syncBreakfastFromMeals(){
   }
   if(changed)setSettings(set);
 }
+/* Ted: Cameron meat-forward lead — never open on avocado toast / fancy eggs.
+   Note: many meals overwrite grill:true with grill:[steps], so sort must not coerce those arrays. */
+function isForemanFriendly(m){
+  if(!m)return false;
+  if(m.grill===true||m.foreman===true)return true;
+  return Array.isArray(m.grill)&&m.grill.length>0;
+}
+function camMealLeadRank(m){
+  const id=String(m.id||"");
+  const nm=String(m.name||"").toLowerCase();
+  const blob=id+" "+nm;
+  if(/x_avocado_toast|avocado\s*toast/.test(blob))return 900;
+  if(/x_omelette|x_pb_toast|bf_eggs_toast|eggs?\s*\+\s*toast|cheese omelette|peanut butter toast/.test(blob))return 800;
+  const lead=["steak","burger","chicken","x_smash_burger","x_sirloin_plate","x_cheese_burger","brats","pork","x_steak_taco","x_chix_taco","bf_bec","gg_rotisserie","x_chix_bbq","steakq","chixq","x_brat_mustard","bowl"];
+  const i=lead.indexOf(id);
+  if(i>=0)return i;
+  if(/steak|burger|bacon|rotisserie|taco|brat|pork|chicken|beef|sirloin|ribeye|smash|quesadilla|bec|philly/.test(blob))return 40;
+  if(m.grab)return 55;
+  if(m.bf)return 65;
+  return 100;
+}
 function mealYesNoPool(){
   const fm=st.equip.has("foreman");
-  // Full filtered sorted pool (dinner first). Pagination slices this; answers stay in st.meals.
-  return allMeals().filter(m=>rateOf(m.id)!==-1&&!m.bf&&!m.grab)
-    .sort((a,b)=>(rateOf(b.id)===2)-(rateOf(a.id)===2)||(fm?((b.grill||0)-(a.grill||0)):0)||String(a.name||"").localeCompare(String(b.name||"")));
+  /* Flat list — no breakfast/dinner/grab buckets. Pagination slices this; answers stay in st.meals. */
+  return allMeals().filter(m=>rateOf(m.id)!==-1)
+    .sort((a,b)=>
+      camMealLeadRank(a)-camMealLeadRank(b)
+      ||(rateOf(b.id)===2)-(rateOf(a.id)===2)
+      ||(fm?(Number(isForemanFriendly(b))-Number(isForemanFriendly(a))):0)
+      ||String(a.name||"").localeCompare(String(b.name||""))
+    );
 }
 function appendMoreMeals(){
   const pool=mealYesNoPool();
   if(mealListOffset+MEAL_PAGE_SIZE>=pool.length){
     // Pull a few more from MORE_MEALS into EXTRA if pool exhausted, then continue paging
     const shown=new Set(allMeals().map(m=>m.id));
-    const more=MORE_MEALS.filter(m=>!shown.has(m.id)&&rateOf(m.id)!==-1&&!m.bf&&!m.grab);
+    const more=MORE_MEALS.filter(m=>!shown.has(m.id)&&rateOf(m.id)!==-1);
     if(!more.length){toast("No more meals right now");return}
     EXTRA_MEALS.push(...more.slice(0,MEAL_PAGE_SIZE));
   }
@@ -2491,11 +2517,10 @@ function meals(){
   const pool=mealYesNoPool();
   if(mealListOffset>=pool.length)mealListOffset=Math.max(0,pool.length-MEAL_PAGE_SIZE);
   const page=pool.slice(mealListOffset,mealListOffset+MEAL_PAGE_SIZE);
-  const hasMore=mealListOffset+MEAL_PAGE_SIZE<pool.length || MORE_MEALS.some(m=>!allMeals().find(x=>x.id===m.id)&&rateOf(m.id)!==-1&&!m.bf&&!m.grab);
+  const hasMore=mealListOffset+MEAL_PAGE_SIZE<pool.length || MORE_MEALS.some(m=>!allMeals().find(x=>x.id===m.id)&&rateOf(m.id)!==-1);
   const removed=allMeals().filter(m=>rateOf(m.id)===-1);
-  const list=allMeals().filter(m=>rateOf(m.id)!==-1);
+  const customs=CUSTOM_MEALS.filter(m=>rateOf(m.id)!==-1&&!page.some(p=>p.id===m.id)&&!pool.slice(0,mealListOffset).some(p=>p.id===m.id));
   const yesN=Object.values(st.meals).filter(x=>x==="yes").length;
-  const grabs=list.filter(m=>m.grab), bfs=list.filter(m=>m.bf), customs=CUSTOM_MEALS.filter(m=>rateOf(m.id)!==-1);
   const rateStrip=id=>{const r=rateOf(id);return `<div class="rate" onclick="event.stopPropagation()" role="group" aria-label="Rate this meal">${[[-1,"👎","Tried it, no. Never suggest again"],[1,"👍","Good"],[2,"★","Favorite"]].map(([v,e,t])=>`<button type="button" data-rate="${v}" data-m="${id}" aria-pressed="${r===v}" aria-label="${t}" title="${t}">${e}</button>`).join("")}</div>`};
   const row=m=>{
      const a=st.meals[m.id]||"";
@@ -2504,13 +2529,14 @@ function meals(){
      const alts=mealPickerAlts(m);
      const multi=!!(alts&&alts.multi);
      const opts=alts?alts.opts:[];
-     const tag=m.tag?esc(m.tag):(m.bf?"Breakfast":"");
+     /* Ted: no breakfast/dinner/grab type labels — just the meal + meat/cut ▾ */
      const chip=alts?`<span class="vchip${multi?" multi":""}${alts.mode==="meatAlt"?" meat-alt":""}" data-mv="${m.id}" aria-label="Change ${alts.label||"cut"}">${esc(cleanCopy(mealPickerChipLabel(m,alts)))} ▾</span>`:"";
      const pop=po&&alts?(multi
        ?proteinPop(m.id,m.id==="steak"||alts.label==="cuts"?"Which cuts? (pick several)":"Which kinds? (pick several)",opts,mvAll(m.id),true)
        :popHTML(alts.mode==="meatAlt"?"Swap meat or cut":(m.id==="steak"?"Which cut?":"Which kind?"),opts,mealPickerChipLabel(m,alts),false)):"";
+     const fore=isForemanFriendly(m);
      return `<div class="meal ${a}${m.custom?" custom-m":""}" data-mid="${m.id}"><div class="mrow"><div class="mtop"><span class="me">${m.emoji}</span>${pcBadge(m.prep,m.cook||0,true,false,mealBaseCal(m.id))}</div><div class="mt"><b>${rateOf(m.id)===2?"★ ":""}${esc(cleanCopy(m.name))}</b><br>
-       ${tag&&!m.grab?`<span class="meal-tag">${tag}</span> `:""}${m.grab?`<span class="gtag"><span class="emo">🛍</span> Grab and go</span> `:""}${chip}${!m.grab&&fm&&m.grill?`<span class="fb">🔥 ${esc(cleanCopy((m.time||"").split(" (")[0]))}</span>`:m.grab?`<span class="fb">⏱ ${esc(cleanCopy(m.time||"0 to 5 min"))}</span>`:""}</div>
+       ${chip}${!m.grab&&fm&&fore?`<span class="fb">🔥 ${esc(cleanCopy((m.time||"").split(" (")[0]))}</span>`:m.grab?`<span class="fb">⏱ ${esc(cleanCopy(m.time||"0 to 5 min"))}</span>`:""}</div>
        <div class="yn"><button class="y${a==="yes"?" sel":""}" data-m="${m.id}" data-a="yes">Yes</button><button class="n${a==="no"?" sel":""}" data-m="${m.id}" data-a="no">No</button></div></div>
        ${pop}
        <button class="tipbtn" data-tip="${m.id}">${op?"▾":"▸"} ${m.grab?"How it works":"How to cook it"}</button>${op?tipHTML(m):""}
@@ -2523,8 +2549,6 @@ function meals(){
     <p class="sub">Tap Yes or No on each.${fm?" 🔥 = great on your Foreman.":""} Showing ${from} to ${to} of ${pool.length}. Tap ▾ to swap meat or cut.</p>
    </div>
    <div class="meals">${page.map(row).join("")}</div>
-   ${bfs.length?`<p class="lbl">Breakfast</p><div class="meals">${bfs.map(row).join("")}</div>`:""}
-   ${grabs.length?`<p class="lbl">Grab and go (0 to 5 min · no real cooking)</p><div class="meals">${grabs.map(row).join("")}</div>`:""}
    ${customs.length?`<p class="lbl">Your custom meals</p><div class="meals">${customs.map(row).join("")}</div>`:""}
    ${removed.length?`<details class="box"><summary>Removed meals (${removed.length})</summary><p class="no" style="margin:6px 0">👎 = never suggest again. Hidden from suggestions and Swap. Tap Restore to bring one back.</p>${removed.map(m=>`<div class="mrow" style="margin-top:6px"><span>${m.emoji} ${esc(m.name)}</span><button class="popt" style="margin-left:auto" data-restore="${m.id}">Restore</button></div>`).join("")}</details>`:""}
    <p class="lbl">Something else you like?</p>
