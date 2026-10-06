@@ -642,85 +642,89 @@
     box-shadow:0 10px 28px rgba(23,48,66,.08);
   }
   .wk-board-kicker{
-    margin:0 4px 4px;font-size:12px;font-weight:800;letter-spacing:.12em;
+    margin:0 4px 4px;font-size:11px;font-weight:800;letter-spacing:.12em;
     text-transform:uppercase;color:var(--coral);
   }
   .wk-board-title{
-    margin:0 4px 2px;font-family:Fraunces,Georgia,serif;font-size:clamp(28px,6vw,40px);
+    margin:0 4px 2px;font-family:Fraunces,Georgia,serif;font-size:clamp(26px,6vw,40px);
     font-weight:800;letter-spacing:-.03em;color:var(--wink);line-height:1.05;
   }
   .wk-board-dates{
-    margin:0 4px 14px;font-size:14px;font-weight:700;color:var(--tealD);
+    margin:0 4px 12px;font-size:13px;font-weight:700;color:var(--tealD);
   }
+  /* Ted 2:09: ALL 7 days at 390 — no horizontal scroll. Smaller columns. */
   .wk-strip{
-    display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;
-    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
-    padding:2px 4px 12px;margin:0;scrollbar-width:thin;
+    display:flex;gap:4px;overflow-x:hidden;overflow-y:visible;
+    padding:2px 0 8px;margin:0;width:100%;
   }
-  .wk-strip::-webkit-scrollbar{height:4px}
-  .wk-strip::-webkit-scrollbar-thumb{background:var(--tealS);border-radius:2px}
-  /* 390: scroll columns (~2.2 visible + peek). Burns anatomy: day bar → big art → name → note */
   .wk-col{
-    flex:0 0 min(44vw,176px);
-    min-width:152px;max-width:210px;
-    scroll-snap-align:start;
+    flex:1 1 0;min-width:0;max-width:none;
     appearance:none;border:0;cursor:pointer;text-align:center;
-    font:inherit;display:flex;flex-direction:column;align-items:stretch;gap:10px;
-    padding:0 0 8px;background:transparent;color:var(--wink);
+    font:inherit;display:flex;flex-direction:column;align-items:stretch;gap:6px;
+    padding:0 0 4px;background:transparent;color:var(--wink);
     transition:transform .18s ease;
   }
   .wk-col:active{transform:scale(.98)}
   .wk-col:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
   .wk-col-day{
     display:flex;align-items:center;justify-content:center;width:100%;
-    min-height:34px;padding:8px 6px;font-size:13px;font-weight:900;
-    letter-spacing:.14em;text-transform:uppercase;border-radius:4px;color:#fff;
+    min-height:26px;padding:5px 2px;font-size:11px;font-weight:900;
+    letter-spacing:.08em;text-transform:uppercase;border-radius:4px;color:#fff;
   }
   .wk-col.tone-teal .wk-col-day{background:var(--teal);color:#041016}
   .wk-col.tone-coral .wk-col-day{background:var(--coral);color:#fff}
   .wk-col.tone-slate .wk-col-day{background:#2a3d52;color:#fff}
   html[data-theme="light"] .wk-col.tone-slate .wk-col-day{background:#173042;color:#fff}
   .wk-col.is-today .wk-col-day{box-shadow:0 0 0 2px var(--wgold)}
-  .wk-col.is-open .wk-col-art-wrap{outline:2px solid var(--teal);outline-offset:3px}
+  .wk-col.is-open .wk-col-art-wrap{outline:2px solid var(--teal);outline-offset:2px}
   .wk-col-art-wrap{
     width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;
-    background:transparent;border-radius:4px;overflow:visible;
+    background:rgba(0,0,0,.18);border-radius:4px;overflow:hidden;
   }
+  html[data-theme="light"] .wk-col-art-wrap{background:rgba(23,48,66,.06)}
   .wk-col-art{
-    width:92%;height:92%;max-width:180px;max-height:180px;
-    object-fit:contain;display:block;
-    filter:drop-shadow(0 8px 16px rgba(0,0,0,.28));
+    width:100%;height:100%;max-width:none;max-height:none;
+    object-fit:cover;display:block;
   }
   .wk-col-name{
-    font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:800;line-height:1.12;
+    font-family:Fraunces,Georgia,serif;font-size:11px;font-weight:800;line-height:1.15;
     letter-spacing:-.02em;color:var(--wink);
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-    min-height:2.2em;padding:0 4px;
+    min-height:2.3em;padding:0 1px;
   }
   .wk-col.tone-teal .wk-col-name{color:var(--tealD)}
   .wk-col.tone-coral .wk-col-name{color:var(--coral)}
   .wk-col.tone-slate .wk-col-name{color:#d5dee8}
   html[data-theme="light"] .wk-col.tone-slate .wk-col-name{color:#173042}
   .wk-col-note{
-    font-size:12px;font-weight:700;line-height:1.3;color:var(--wsoft);
+    font-size:10px;font-weight:700;line-height:1.25;color:var(--wsoft);
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-    min-height:2.5em;padding:0 4px;
+    min-height:2.4em;padding:0 1px;
   }
   /* Legacy chip hooks still used in day cards */
   .wk-chip-art{width:40px;height:40px;display:block;object-fit:cover;background:#1a2430;border-radius:4px}
   .wk-chip-role{display:none!important}
-  /* 900+: denser columns; 1440: full week, no scroll */
-  @media (min-width:900px){
-    .wk-col{flex:1 1 0;min-width:0;max-width:none}
-    .wk-col-art{max-width:140px;max-height:140px}
+  @media (min-width:700px){
+    .wk-strip{gap:8px}
+    .wk-col{gap:8px}
+    .wk-col-day{min-height:32px;font-size:12px;letter-spacing:.12em;padding:7px 4px}
+    .wk-col-name{font-size:14px}
+    .wk-col-note{font-size:11px}
   }
-  @media (min-width:1440px){
+  @media (min-width:1100px){
     .wk-board{margin:8px 0 20px;padding:22px 18px 18px}
-    .wk-strip{overflow-x:visible!important;overflow-y:visible;scroll-snap-type:none;padding-bottom:4px;gap:12px}
-    .wk-col{flex:1 1 0;min-width:0;max-width:none}
-    .wk-col-art{max-width:160px;max-height:160px}
-    .wk-col-name{font-size:18px}
+    .wk-strip{gap:12px;padding-bottom:4px}
+    .wk-col-name{font-size:16px}
+    .wk-col-note{font-size:12px}
   }
+  /* Day meal picker: max 7 + Regenerate (Ted soft-bar) */
+  .day-meal-regen{
+    display:block;width:100%;margin:10px 0 4px;min-height:44px;padding:10px 12px;
+    border:2px solid rgba(45,212,191,.35);background:transparent;color:var(--tealD,#5eead4);
+    font:inherit;font-size:15px;font-weight:800;cursor:pointer;border-radius:10px;
+  }
+  .day-meal-regen:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+  .day-meal-cap{margin:4px 0 8px;font-size:12px;font-weight:700;color:var(--wsoft,#9aa8b8)}
 
   /* Lock-in bar: primary full-width below strip, above grocery; clear of FAB */
   .lock-bar{margin:4px 0 16px;padding-bottom:4px}
@@ -876,40 +880,12 @@
   .home-brand{margin:0 0 4px;font-family:Fraunces,Georgia,serif;font-size:clamp(32px,6vw,48px);font-weight:800;letter-spacing:-.03em;line-height:1.05}
   .home-kick{margin:0 0 8px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#1ce8c4}
   html[data-theme="light"] .home-kick{color:#0d8f7a}
-  .home-sub{margin:0 0 20px;font-size:16px;font-weight:700;color:#9aadb8;max-width:36ch;line-height:1.4}
+  .home-sub{margin:0 0 16px;font-size:15px;font-weight:700;color:#9aadb8;max-width:36ch;line-height:1.4}
   html[data-theme="light"] .home-sub{color:#3d5566}
-  .home-mock{
-    margin:0 0 22px;padding:14px 0 10px;
-    background:rgba(21,28,38,.72);border:2px solid rgba(28,232,196,.22);
-    border-radius:4px;
-  }
-  html[data-theme="light"] .home-mock{background:rgba(255,250,246,.9);border-color:rgba(13,143,122,.25)}
-  .home-mock-label{margin:0 14px 10px;font-size:13px;font-weight:800;color:#9aadb8;letter-spacing:.04em;text-transform:uppercase}
-  .home-mock-strip{
-    display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;
-    padding:0 14px 8px;-webkit-overflow-scrolling:touch;
-  }
-  .home-mock-strip::-webkit-scrollbar{height:3px}
-  .home-mock-chip{
-    flex:0 0 calc((100% - 32px) / 5.35); /* 390: Mon-Fri full + peek Sat */
-    min-width:68px;max-width:120px;scroll-snap-align:start;
-    background:#151c26;border:2px solid rgba(28,232,196,.2);border-radius:4px;
-    padding:8px 6px 10px;display:flex;flex-direction:column;align-items:flex-start;gap:5px;
-  }
-  html[data-theme="light"] .home-mock-chip{background:#fff;border-color:rgba(13,143,122,.22)}
-  .home-mock-day{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#9aadb8}
-  .home-mock-art{width:36px;height:36px;display:block;border-radius:4px;background:#1a2430}
-  .home-mock-name{font-size:12px;font-weight:800;line-height:1.2;color:inherit;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.4em}
-  @media (min-width:900px){
-    .home-hero{padding:40px 32px 48px}
-    .home-mock-strip{overflow:visible;scroll-snap-type:none}
-    .home-mock-chip{flex:1 1 0;min-width:0;max-width:none}
-  }
-  @media (min-width:1400px){
-    .home-mock-name{font-size:13px}
-    .home-mock-art{width:40px;height:40px}
-  }
+  /* Homepage = interactive week brochure board (not chip strip) */
+  .home-hero .wk-board{margin:0 0 20px}
+  .home-hero .wk-col{color:inherit}
+  .home-mock{display:none!important}
   .home-cta{display:flex;flex-direction:column;align-items:stretch;gap:12px;max-width:420px}
   .home-primary{
     appearance:none;border:0;min-height:54px;padding:14px 18px;
@@ -926,6 +902,9 @@
   }
   html[data-theme="light"] .home-sec{color:#0d8f7a}
   .home-sec:focus-visible{outline:2px solid #1ce8c4;outline-offset:2px}
+  @media (min-width:900px){
+    .home-hero{padding:40px 32px 48px}
+  }
 
 
   /* Steve auto-expand soft bar: light height open, no bounce */
@@ -1236,7 +1215,8 @@ function wToJSON(){
     gSearch:W.gSearch||"",
     stockOptIn:(W.stockOptIn||[]).slice(),
     munchiesOptIn:(W.munchiesOptIn||[]).slice(),
-    sideOffers:W.sideOffers||{}
+    sideOffers:W.sideOffers||{},
+    dayMealOffers:W.dayMealOffers||{}
   };
 }
 function applyWJSON(j){
@@ -1246,7 +1226,8 @@ function applyWJSON(j){
     have:new Set(j.have||[]),ck:new Set(j.ck||[]),
     open:null,items:[],listFilter:null,shopHi:null,
     daySides:j.daySides||{},gSearch:j.gSearch||"",gCat:j.gCat||null,
-    stockOptIn:j.stockOptIn||[],munchiesOptIn:j.munchiesOptIn||[],sideOffers:j.sideOffers||{}
+    stockOptIn:j.stockOptIn||[],munchiesOptIn:j.munchiesOptIn||[],sideOffers:j.sideOffers||{},
+    dayMealOffers:j.dayMealOffers||{}
   };
   try{recomputeList()}catch(_){}
   return true;
@@ -1963,8 +1944,8 @@ function budHero(total){
   const budget=Math.round(b.amt*7/b.days*100)/100, diff=budget-total, pct=Math.min(100,Math.max(0,total/budget*100));
   const cls=diff<0?"over":diff<budget*0.15?"under":"amber";
   const barCls=diff<0?"red":diff<budget*0.15?"green":"amber";
-  const line=diff>=0?`Groceries this week: about $${total.toFixed(0)} of your $${budget.toFixed(0)} budget, $${diff.toFixed(0)} to spare`
-    :`Groceries this week: about $${total.toFixed(0)} of your $${budget.toFixed(0)} budget, $${(-diff).toFixed(0)} over`;
+  const line=diff>=0?`Groceries this week: $${total.toFixed(2)} of your $${budget.toFixed(2)} budget, $${diff.toFixed(2)} to spare`
+    :`Groceries this week: $${total.toFixed(2)} of your $${budget.toFixed(2)} budget, $${(-diff).toFixed(2)} over`;
   const bar=`<div class="bbar ${barCls}" aria-hidden="true"><i style="width:${pct.toFixed(0)}%"></i></div>`;
   return {line,bar,cls,barCls};
 }
@@ -2201,15 +2182,15 @@ function holidayOn(date){return holidaysInWeek(mondayOf(date)).find(h=>sameDay(h
 function isHolidayOff(date){const h=holidayOn(date);if(!h)return null;return getHolCook()[h.id]?null:h}
 
 
-/* ---- Steve home hero: mock grill-week strip + CTAs ---- */
+/* ---- Steve home: interactive week brochure board (photo-real, fit-all-7) ---- */
 const HOME_MOCK=[
-  {letter:"M",name:"Steak night",art:"steak"},
-  {letter:"T",name:"Steak rice bowl",art:"bowl"},
-  {letter:"W",name:"Smash burgers",art:"burger"},
-  {letter:"T",name:"Burger round 2",art:"leftover"},
-  {letter:"F",name:"Grilled chicken",art:"chicken"},
-  {letter:"S",name:"Chicken quesadilla",art:"quesadilla"},
-  {letter:"S",name:"Brats night",art:"brat"}
+  {letter:"M",name:"Steak night",art:"steak",note:"Grill night"},
+  {letter:"T",name:"Steak rice bowl",art:"bowl",note:"Leftovers"},
+  {letter:"W",name:"Smash burgers",art:"burger",note:"Grill night"},
+  {letter:"T",name:"Burger round 2",art:"leftover",note:"Leftovers"},
+  {letter:"F",name:"Grilled chicken",art:"chicken",note:"Grill night"},
+  {letter:"S",name:"Chicken quesadilla",art:"quesadilla",note:"Leftovers"},
+  {letter:"S",name:"Brats night",art:"brat",note:"Grill night"}
 ];
 function isReturningUser(){
   try{
@@ -2223,17 +2204,31 @@ function isReturningUser(){
   }catch(_){}
   return false;
 }
-function homeMockStripHTML(){
-  const chips=HOME_MOCK.map(d=>`<div class="home-mock-chip" aria-hidden="true">
-    <span class="home-mock-day">${d.letter}</span>
-    <img class="home-mock-art" src="img/meals/${d.art}.svg" alt="" width="40" height="40" loading="lazy" decoding="async">
-    <span class="home-mock-name">${esc(d.name)}</span>
-  </div>`).join("");
-  return `<div class="home-mock" aria-hidden="true">
-    <p class="home-mock-label">Your week</p>
-    <div class="home-mock-strip">${chips}</div>
-  </div>`;
+function homeBrochureBoardHTML(){
+  /* Prefer real mid-flow week when present; else sample brochure. Interactive columns. */
+  try{
+    if(W&&W.base&&W.base.length===7&&typeof weekStripHTML==="function"){
+      return weekStripHTML(typeof effDays==="function"?effDays(W.ov):W.base);
+    }
+  }catch(_){}
+  const tones=["teal","coral","teal","coral","teal","coral","teal"];
+  const cells=HOME_MOCK.map((d,i)=>{
+    const tone=tones[i]||"teal";
+    return `<button type="button" class="wk-col tone-${tone}" data-home-day="${i}" role="listitem" aria-label="${esc(d.letter+" "+d.name)}">
+      <span class="wk-col-day">${esc(d.letter)}</span>
+      <span class="wk-col-art-wrap"><img class="wk-col-art" src="img/meals/${esc(d.art)}.webp" alt="" width="160" height="160" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='img/meals/plate.webp'"></span>
+      <span class="wk-col-name">${esc(d.name)}</span>
+      <span class="wk-col-note">${esc(d.note)}</span>
+    </button>`;
+  }).join("");
+  return `<section class="wk-board" aria-label="Week brochure">
+    <p class="wk-board-kicker">St. Pete grill week</p>
+    <h2 class="wk-board-title">Cameron Meals</h2>
+    <p class="wk-board-dates">Tap a day to open your week</p>
+    <div class="wk-strip" role="list">${cells}</div>
+  </section>`;
 }
+function homeMockStripHTML(){return homeBrochureBoardHTML()}
 function enterSetupFromHome(mode){
   document.body.classList.remove("view-home");
   // mode: photos | questions | build | see
@@ -2286,11 +2281,9 @@ function homeScreen(){
   const primaryMode=returning?"see":"build";
   $("count").textContent="";
   $("prog").style.width="0";
+  /* Homepage = interactive week brochure board (photo-real, fit-all-7). Not a chip strip. */
   card.innerHTML=`<section class="home-hero">
-    <p class="home-kick">St. Pete grill week</p>
-    <h1 class="home-brand">Cameron Meals</h1>
-    <p class="home-sub">A week of Foreman nights, leftovers, and espresso. Build it once. Lock it on this phone.</p>
-    ${homeMockStripHTML()}
+    ${homeBrochureBoardHTML()}
     <div class="home-cta">
       <button type="button" class="home-primary" id="homePrimary">${esc(primary)}</button>
       <div class="home-secs">
@@ -2302,6 +2295,14 @@ function homeScreen(){
   $("homePrimary").onclick=()=>enterSetupFromHome(primaryMode);
   $("homePhotos").onclick=()=>enterSetupFromHome("photos");
   $("homeQuestions").onclick=()=>enterSetupFromHome("questions");
+  card.querySelectorAll("[data-home-day],[data-wkchip]").forEach(b=>{
+    b.onclick=e=>{
+      e.preventDefault();
+      const i=+(b.dataset.homeDay!=null?b.dataset.homeDay:b.dataset.wkchip);
+      try{if(W)W.open=isFinite(i)?i:null}catch(_){}
+      enterSetupFromHome(returning?"see":"build");
+    };
+  });
 }
 
 /* ---- render ---- */
@@ -2777,7 +2778,7 @@ function buildWeek(){
     }
   }
   days.forEach((d,i)=>{if(d.kind==="hol"){d.dinner=d.hol;d.e="🎉";d.note="";d.cook=false;d.meal=null;d.grab=false}});
-  W={base:days,ov:{},groups,extra,F,have:new Set(),ck:new Set(),open:null,items:[],listFilter:null,shopHi:null,daySides:{},sideOffers:{}};
+  W={base:days,ov:{},groups,extra,F,have:new Set(),ck:new Set(),open:null,items:[],listFilter:null,shopHi:null,daySides:{},sideOffers:{},dayMealOffers:{}};
   days.forEach((d,i)=>{const xs=dayActiveSides(d);if(xs.length)W.daySides[i]=xs});
   recomputeList();
   renderWeek();
@@ -2943,13 +2944,11 @@ function weekGroceryEstimate(store){
   return {sum, priced, unpriced, total:all.length, money:sum.toFixed(2)};
 }
 function groceryEstimateHTML(){
-  /* Ted override: end of list ABOVE footer. "$45.17 at Aldi" — cents from prices.json only. No About, no estimate, no disclaimer. */
+  /* $X.XX only — no Aldi est. / All prices are estimates / about */
   const main=typeof deriveMainStore==="function"?deriveMainStore():(st&&st.main)||"";
   const store=(main==="Publix"||main==="Aldi")?main:"";
   const e=weekGroceryEstimate(store||null);
-  let line="";
-  if(store) line=`$${e.money} at ${store}`;
-  else line=`$${e.money}`;
+  const line=`$${e.money}`;
   const bits=[`<p class="g-est-line" id="gEstLine">${esc(line)}</p>`];
   if(!store) bits.push(`<button type="button" class="g-est-pick" id="gPickStore">Pick a store</button>`);
   if(e.unpriced>0) bits.push(`<p class="g-est-unpriced">Some items unpriced</p>`);
@@ -2985,21 +2984,31 @@ function mealArtKey(d){
   if(/coffee/i.test(d.dinner||""))return "coffee";
   return "plate";
 }
-function mealArtSrc(d){return "img/meals/"+mealArtKey(d)+".svg"}
+function mealArtSrc(d){return "img/meals/"+mealArtKey(d)+".webp"}
 function chipMealName(d){
+  /* Full meal names on board — no 3-word truncate (no "Burgers: 80 or"). Main meal only; sides stay off board. */
   if(!d)return "Open night";
-  if(d.kind==="hol")return shortMealWords(cleanCopy(d.hol||d.dinner||"Holiday"),3);
+  if(d.kind==="hol")return cleanCopy(d.hol||d.dinner||"Holiday");
   if(d.kind==="out")return "Eat out";
   if(d.kind==="rm")return "Open night";
   if(d.kind==="left")return "Leftovers";
+  const m=d.meal&&typeof M==="function"?M(d.meal):null;
+  if(m&&m.name){
+    let n=cleanCopy(m.name);
+    if(d.cut){
+      let cut=cleanCopy(String(d.cut).replace(/\s*patty\s*/i," ").trim());
+      if(cut&&!new RegExp(cut.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i").test(n))n=n+" · "+cut;
+    }
+    return n;
+  }
   let n=cleanCopy(String(d.dinner||"").trim());
   n=n.replace(/\s*[·•]\s*.*$/,"");
-  n=n.replace(/\s*\+\s*.*$/,"");
+  n=n.replace(/\s*\+\s*.*$/,""); /* strip sides from dinner string — board is main meal only */
   n=n.replace(/\s*\([^)]*\)/g,"");
   n=n.replace(/\s*from the freezer/i,"");
   n=n.replace(/\s{2,}/g," ").trim();
   if(!n)return "Easy night";
-  return shortMealWords(n,3);
+  return n;
 }
 function shortMealWords(s,max){
   const parts=String(s||"").trim().split(/\s+/).filter(Boolean);
@@ -3027,9 +3036,10 @@ function isDayToday(d,i){
 }
 
 function cleanCopy(s){
-  /* Steve copy bar: no slashes, no en/em dashes */
+  /* Steve copy bar: no slashes, no en/em dashes, no hyphen ranges */
   return String(s||"")
     .replace(/[–—]/g," to ")
+    .replace(/(\d)\s*-\s*(\d)/g,"$1 to $2")
     .replace(/\s*\/\s*/g," or ")
     .replace(/\s{2,}/g," ")
     .trim();
@@ -3056,11 +3066,11 @@ function boardNote(d){
   if(d.cook)return "Grill night";
   return "Easy night";
 }
-const DAY_FULL=["MON","TUE","WED","THU","FRI","SAT","SUN"];
+const DAY_FULL=["M","T","W","T","F","S","S"];
 const DAY_COL_TONE=["teal","coral","teal","coral","teal","coral","teal"];
 function weekStripHTML(days){
-  /* Steve craft: Mon-Sun COLUMNS — big food art + short meal name + one-line note.
-     Tiny chip-strip alone = FAIL. No Tucker lunch band. St. Pete punchy palette. */
+  /* Steve craft: Mon-Sun COLUMNS — photo-real art + full meal name + one-line note.
+     Day only: day letter, one photo, name, note. No prep/emotes/fire/calories. No sides. No Tucker. */
   const s0=weekStartDate();
   const cells=days.map((d,i)=>{
     const today=isDayToday(d,i);
@@ -3070,7 +3080,7 @@ function weekStripHTML(days){
     const note=boardNote(d);
     return `<button type="button" class="${cls}" data-wkchip="${i}" role="listitem" aria-label="${esc(DAY_FULL[i]+" "+label)}${today?" (today)":""}">
       <span class="wk-col-day">${DAY_FULL[i]}</span>
-      <span class="wk-col-art-wrap"><img class="wk-col-art" src="${mealArtSrc(d)}" alt="" width="160" height="160" loading="lazy" decoding="async"></span>
+      <span class="wk-col-art-wrap"><img class="wk-col-art" src="${mealArtSrc(d)}" alt="" width="160" height="160" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='img/meals/plate.webp'"></span>
       <span class="wk-col-name">${esc(label)}</span>
       <span class="wk-col-note">${esc(note)}</span>
     </button>`;
@@ -3162,7 +3172,7 @@ function openLockSummary(){
     const pack=buildWeekLockPackage(days);
     const rows=pack.days.map(d=>`<li class="lock-sum-row">
       <span class="lock-sum-day">${esc(d.letter)}</span>
-      <img class="lock-sum-art" src="img/meals/${esc(d.art||"plate")}.svg" alt="" width="36" height="36">
+      <img class="lock-sum-art" src="img/meals/${esc(d.art||"plate")}.webp" alt="" width="36" height="36" onerror="this.onerror=null;this.src='img/meals/plate.webp'">
       <div class="lock-sum-body">
         <div class="lock-sum-meal">${esc(d.chip||d.dinner||"Meal")}</div>
         <div class="lock-sum-meta">${esc(d.short||"")}${d.sides&&d.sides.length?" · "+esc(d.sides.slice(0,2).join(", ")) : ""}</div>
@@ -3553,7 +3563,7 @@ function openAddItemSheet(defaultCat){
       </label>
       <label class="add-field"><span>Price</span>
         <input id="aiPrice" type="text" maxlength="12" placeholder="0.00" inputmode="decimal" />
-        <small class="muted2">Your approx — counts in $ total. Leave blank if unknown.</small>
+        <small class="muted2">Counts in $ total. Leave blank if unknown.</small>
       </label>
       <label class="add-field"><span>Category</span>
         <select id="aiCat">${ADD_ITEM_CATS.map(c=>`<option value="${c.id}" ${c.id===cat0?"selected":""}>${esc(c.label)}</option>`).join("")}</select>
@@ -3794,7 +3804,7 @@ function renderWeek(){
     <!-- Steve: estimate lives at end of list above footer (groceryEstimateHTML). Mid-list tot removed. -->
     ${W.cph?`<div class="cph" id="cphBox"><p class="cph-t">✓ Copied. Want to send a photo with it?</p><button type="button" class="cpb p ico-btn" id="cphB">${icons.cam} Take a photo</button><input type="file" accept="image/*" capture="environment" hidden id="cphIn"><div class="thumbs" id="cphTh"></div><div id="cphAct"></div></div>`:""}
     ${(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))?`<p class="emo" style="margin:8px 0 2px">☕</p><p class="gnote cof">${coffeeLine(false)}</p>`:""}
-    <p class="pchk">Prices updated ${fmtDateLong(PRICE_META.updated)}${PRICE_META.loaded?"":" · using estimates"}</p>
+    <p class="pchk">Prices updated ${fmtDateLong(PRICE_META.updated)}</p>
     ${budCmp(main==="Publix"?t.p:t.a,7)}
     ${renderListItems(byA,filt,days)}
     ${typeof groceryEstimateHTML==="function"?groceryEstimateHTML():""}${typeof groceryFooterHTML==="function"?groceryFooterHTML():""}
@@ -3802,7 +3812,7 @@ function renderWeek(){
   <a class="gh" href="${C.REPO.url}" target="_blank" rel="noopener"><b>🛠️ Your own repo, cameron-meals</b><span>Edit meals.js on GitHub to change your menu.</span></a>
   <button type="button" class="share-app-quiet" id="shareAppQuiet">Share this app</button>
   <button type="button" class="wbtn p ico-btn" id="bk">${icons.back} Back to my picks</button><button type="button" class="wbtn g" id="rs2">Start over</button>
-  <div class="foot">All prices are <b>estimates</b> (prices.json when it loads). ${otherStores.length?`Also shop: ${otherStores.map(esc).join(", ")}.`:""}</div>`;
+  <div class="foot">${otherStores.length?`Also shop: ${otherStores.map(esc).join(", ")}.`:""}</div>`;
   const wk=$("week");
   wk.querySelectorAll(".day").forEach(el=>{if(el.classList.contains("hol"))return;el.onclick=()=>{
     const i=+el.dataset.d;
@@ -3936,11 +3946,15 @@ function listItemRow(it,filt,days){
   const suppressed=typeof itemHaveSuppressed==="function"&&itemHaveSuppressed(it.id);
   const until=typeof haveUntilOf==="function"?haveUntilOf(it.id):0;
   const back=suppressed&&typeof fmtHaveBack==="function"?fmtHaveBack(until):"";
+  /* Grocery: $X.XX only — no Aldi est. / Publix est. labels */
+  const priceBits=[];
+  if(it.a!=null)priceBits.push(`<span class="${aw?"win":""}${isStale(it.sA)?" stale":""}">${$$(it.a)}</span>`);
+  if(it.p!=null&&it.p!==it.a)priceBits.push(`<span class="${pw?"win":""}${isStale(it.sP)?" stale":""}">${$$(it.p)}</span>`);
+  if(!priceBits.length&&it.custom)priceBits.push(`<span>—</span>`);
   return `<div class="it${W.ck.has(it.id)?" ck":""}${suppressed?" gone have-suppressed":""}${hi?" hi":""}" ${hi?`data-li="${W.shopHi}"`:""}>
     <div class="cb" data-ck="${esc(it.id)}">${W.ck.has(it.id)?"✓":""}</div>
-    <div class="nm" data-ck="${esc(it.id)}">${esc(it.n)}<small>${esc(it.q)}${it.q?" · ":""}for ${esc(it.why)}</small>${tags}${back?`<span class="have-back">${esc(back)}</span>`:""}
-      <div class="pr"><span class="${aw?"win":""}${isStale(it.sA)?" stale":""}">Aldi ${it.a==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.a)}</span>
-      <span class="${pw?"win":""}${isStale(it.sP)?" stale":""}">Publix ${it.p==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.p)}</span>${it.custom?"":`<span class="src-l">${esc(srcPair(it))}</span>`}</div></div>
+    <div class="nm" data-ck="${esc(it.id)}">${esc(cleanCopy(it.n))}<small>${esc(cleanCopy(it.q||""))}${it.q?" · ":""}for ${esc(cleanCopy(it.why||""))}</small>${tags}${back?`<span class="have-back">${esc(back)}</span>`:""}
+      <div class="pr">${priceBits.join(" ")}</div></div>
     ${typeof groceryAltChevronHTML==="function"?groceryAltChevronHTML(it):""}<button type="button" class="have" data-have="${esc(it.id)}">${suppressed?"Still need it":"Have it"}</button>${it.custom||it.standing?`<button type="button" class="have" data-rmcustom="${esc(it.id)}" aria-label="Remove">${icons.del}</button>`:""}</div>`;
 }
 
@@ -4064,8 +4078,8 @@ function setBud(b){try{localStorage.setItem(BKEY,JSON.stringify(b))}catch(_){}}
 const fmtAmt=n=>n%1?n.toFixed(2):String(n);
 function budCmp(total,days){const b=getBud();if(!b.on||b.amt==null)return "";const scaled=b.amt*days/b.days,diff=scaled-total;
   const line=diff>=0
-    ?`Groceries this week: about $${total.toFixed(0)} of your $${scaled.toFixed(0)} budget, $${diff.toFixed(0)} to spare.`
-    :`Groceries this week: about $${total.toFixed(0)} of your $${scaled.toFixed(0)} budget, $${(-diff).toFixed(0)} over.`;
+    ?`Groceries this week: $${total.toFixed(2)} of your $${scaled.toFixed(2)} budget, $${diff.toFixed(2)} to spare.`
+    :`Groceries this week: $${total.toFixed(2)} of your $${scaled.toFixed(2)} budget, $${(-diff).toFixed(2)} over.`;
   return `<div class="bcmp ${diff>=0?"under":"over"}">${line}</div>`}
 function openBudget(){const b=getBud();
   const inn=openSheet(shTop("💵 Budget")+`
@@ -4085,16 +4099,21 @@ function openBudget(){const b=getBud();
 }
 /* week customizer (long-press "This week") */
 function openCustom(){if(!W)return;let draft=JSON.parse(JSON.stringify(W.ov)),moveFrom=null,swapOpen=null;
-  const opts=allMeals().filter(m=>m.id!=="veg"&&!m.bf&&rateOf(m.id)!==-1&&(yes(m.id)||rateOf(m.id)===2||W.base.some(b=>b.meal===m.id))).sort((a,b)=>(rateOf(b.id)===2)-(rateOf(a.id)===2));
+  /* Per-day capped offers (max 7) — never dump whole catalog */
+  const offerMap={};
+  const offersFor=i=>{
+    if(!offerMap[i])offerMap[i]=ensureDayMealOffers(i, (effDays(draft)[i]||{}).meal);
+    return offerMap[i];
+  };
   const desc=i=>draft[i]||{t:"day",j:i};
   const norm=()=>Object.keys(draft).forEach(k=>{const o=draft[k];if(o.t==="day"&&o.j===+k)delete draft[k]});
   const inn=openSheet("","Customize this week");
   function draw(){const days=effDays(draft);
     inn.innerHTML=shTop("Customize "+esc(fmtWeek(weekStartDate())))+`<p class="muted2" style="margin:0 0 8px">Swap a dinner, make it leftovers or eat out, or tap <b>⇅ Move</b> on two days to swap them. Shopping list updates when you save.</p>
-    ${days.map((d,i)=>{const o=draft[i];const t=o?o.t:"keep";return `<div class="cz${moveFrom===i?" mv":""}${o?" ch":""}"><div class="cz-h"><span>${d.short}</span><span>${o?"changed":""}</span></div>
-      <div class="cz-d">${d.e} ${esc(d.dinner)}</div>
+    ${days.map((d,i)=>{const o=draft[i];const t=o?o.t:"keep";const opts=swapOpen===i?offersFor(i):[];return `<div class="cz${moveFrom===i?" mv":""}${o?" ch":""}"><div class="cz-h"><span>${d.short}</span><span>${o?"changed":""}</span></div>
+      <div class="cz-d">${esc(cleanCopy(d.dinner||""))}</div>
       <div class="cz-o"><button data-a="keep" data-i="${i}" class="${!o?"on":""}">Keep</button><button data-a="swap" data-i="${i}" class="${t==="meal"||swapOpen===i?"on":""}">Swap ▾</button><button data-a="left" data-i="${i}" class="${t==="left"?"on":""}">Leftovers</button><button data-a="out" data-i="${i}" class="${t==="out"?"on":""}">Eat out</button><button data-a="move" data-i="${i}" class="mvb${moveFrom===i?" on":""}">${moveFrom===null?"⇅ Move":moveFrom===i?"Cancel move":"⇅ Swap with "+DN[moveFrom]}</button></div>
-      ${swapOpen===i?`<div class="cz-list">${opts.map(m=>`<button data-pick="${m.id}" data-i="${i}">${rateOf(m.id)===2?"❤️ ":""}${m.emoji} ${esc(m.name)}${m.v?" ("+esc(mv(m.id))+")":""}</button>`).join("")}</div>`:""}</div>`}).join("")}
+      ${swapOpen===i?`<p class="day-meal-cap">Pick from ${opts.length} meals. Regenerate for a different set.</p><div class="cz-list">${dayMealPickHTML(opts)}</div><button type="button" class="day-meal-regen" data-regen-day="${i}">Regenerate</button>`:""}</div>`}).join("")}
     <div class="sh-row2"><button class="sh-btn" id="czR">Reset this week</button><button class="sh-btn p" id="czS">Save</button></div>`;
     inn.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const i=+b.dataset.i,a=b.dataset.a;
       if(a==="keep"){delete draft[i];swapOpen=null}else if(a==="left")draft[i]={t:"left"};else if(a==="out")draft[i]={t:"out"};
@@ -4102,8 +4121,9 @@ function openCustom(){if(!W)return;let draft=JSON.parse(JSON.stringify(W.ov)),mo
       else if(a==="move"){if(moveFrom===null)moveFrom=i;else if(moveFrom===i)moveFrom=null;else{const x=desc(moveFrom),y=desc(i);draft[moveFrom]=y;draft[i]=x;moveFrom=null}}
       norm();draw()});
     inn.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{draft[+b.dataset.i]={t:"meal",id:b.dataset.pick};swapOpen=null;draw()});
+    inn.querySelectorAll("[data-regen-day]").forEach(b=>b.onclick=()=>{const i=+b.dataset.regenDay;offerMap[i]=shuffleDayMealOffers(i,(effDays(draft)[i]||{}).meal);draw()});
     inn.querySelector("#czR").onclick=()=>{W.ov={};recomputeList();closeSheet();renderWeek()};
-    inn.querySelector("#czS").onclick=()=>{norm();W.ov=draft;recomputeList();closeSheet();renderWeek()};
+    inn.querySelector("#czS").onclick=()=>{norm();W.ov=draft;try{persistDraft(true)}catch(_){}recomputeList();closeSheet();renderWeek()};
   }
   draw();
 }
@@ -4263,23 +4283,79 @@ async function copyTxt(text,msg){try{if(navigator.clipboard&&window.isSecureCont
   toast("📋 "+msg)}
 function listText(which){const t=totals(),wl=fmtWeek(weekStartDate()),items=W.items.filter(it=>(typeof itemHaveSuppressed==="function"?!itemHaveSuppressed(it.id):!W.have.has(it.id)));
   const aw=it=>it.a!=null&&(it.p==null||it.a<=it.p),pw=it=>it.p!=null&&!aw(it);
-  const pr=it=>`Aldi ${it.a==null?"n/a":"est. "+$$(it.a)} / Publix ${it.p==null?"n/a":"est. "+$$(it.p)}`;const L=[];
-  if(which==="all"){L.push(`My shopping list: ${wl}`,(()=>{const main=typeof deriveMainStore==="function"?deriveMainStore():(st&&st.main)||"Aldi";const v=main==="Publix"?t.p:t.a;return `Est. total (${main==="Publix"?"Publix":"Aldi"}) ${$$(v)}`})());if(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))L.push(coffeeLine(true));
+  const pr=it=>{const v=aw(it)?it.a:(it.p!=null?it.p:it.a);return v==null?"—":$$(v)};const L=[];
+  if(which==="all"){L.push(`My shopping list: ${wl}`,(()=>{const main=typeof deriveMainStore==="function"?deriveMainStore():(st&&st.main)||"Aldi";const v=main==="Publix"?t.p:t.a;return $$(v)})());if(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))L.push(coffeeLine(true));
     AISLES.forEach(([k,lab])=>{const g=items.filter(i=>i.aisle===k);if(!g.length)return;L.push("",lab.toUpperCase());
-      g.forEach(it=>L.push(`[ ] ${it.n}${it.q?" ("+it.q+")":""} - ${it.custom?"check price":pr(it)}${aw(it)?" · Aldi cheaper":pw(it)?" · Publix cheaper":""}`))})}
+      g.forEach(it=>L.push(`[ ] ${it.n}${it.q?" ("+it.q+")":""} - ${it.custom?(it.a!=null?$$(it.a):"check price"):pr(it)}`))})}
   else{const pick=which==="Aldi"?aw:pw,g=items.filter(pick),sum=g.reduce((a,it)=>a+(which==="Aldi"?it.a:it.p),0);
-    L.push(`${which} list (best split): ${wl}`,`${g.length} items · est. ${$$(sum)}`);
-    AISLES.forEach(([k,lab])=>{const h=g.filter(i=>i.aisle===k);if(!h.length)return;L.push("",lab.toUpperCase());h.forEach(it=>L.push(`[ ] ${it.n}${it.q?" ("+it.q+")":""} - est. ${$$(which==="Aldi"?it.a:it.p)}`))})}
-  L.push("","Estimates — check in store.");return L.join("\n")}
+    L.push(`${which} list: ${wl}`,`${g.length} items · ${$$(sum)}`);
+    AISLES.forEach(([k,lab])=>{const h=g.filter(i=>i.aisle===k);if(!h.length)return;L.push("",lab.toUpperCase());h.forEach(it=>L.push(`[ ] ${it.n}${it.q?" ("+it.q+")":""} - ${$$(which==="Aldi"?it.a:it.p)}`))})}
+  return L.join("\n")}
+/* ---- Ted soft-bar: day meal picker max 7 + Regenerate (same spirit as side Regenerate) ---- */
+const DAY_MEAL_OFFER_COUNT=7;
+function dayMealPool(){
+  const pool=typeof allMeals==="function"?allMeals():(MEALS||[]);
+  return pool.filter(m=>m&&m.id&&m.id!=="veg"&&!m.bf&&rateOf(m.id)!==-1)
+    .sort((a,b)=>(rateOf(b.id)===2)-(rateOf(a.id)===2)||((yes(b.id)?1:0)-(yes(a.id)?1:0)));
+}
+function shuffleDayMealOffers(dayIdx, keepId){
+  const pool=dayMealPool();
+  const out=[], seen=new Set();
+  const push=m=>{if(m&&m.id&&!seen.has(m.id)){seen.add(m.id);out.push(m)}};
+  if(keepId){
+    const cur=pool.find(m=>m.id===keepId)||(typeof M==="function"?M(keepId):null);
+    if(cur)push(cur);
+  }
+  const rest=pool.filter(m=>!seen.has(m.id));
+  for(let i=rest.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=rest[i];rest[i]=rest[j];rest[j]=t}
+  for(const m of rest){if(out.length>=DAY_MEAL_OFFER_COUNT)break;push(m)}
+  if(W){W.dayMealOffers=W.dayMealOffers||{};W.dayMealOffers[String(dayIdx)]=out.map(m=>m.id)}
+  return out.slice(0,DAY_MEAL_OFFER_COUNT);
+}
+function ensureDayMealOffers(dayIdx, currentMealId){
+  if(!W)return shuffleDayMealOffers(dayIdx, currentMealId);
+  W.dayMealOffers=W.dayMealOffers||{};
+  const key=String(dayIdx);
+  const ids=W.dayMealOffers[key];
+  if(Array.isArray(ids)&&ids.length){
+    const meals=ids.map(id=>{
+      try{return (typeof M==="function"&&M(id))||dayMealPool().find(m=>m.id===id)||null}catch(_){return null}
+    }).filter(Boolean);
+    if(meals.length){
+      if(currentMealId&&!meals.some(m=>m.id===currentMealId)){
+        const cur=dayMealPool().find(m=>m.id===currentMealId)||(typeof M==="function"?M(currentMealId):null);
+        if(cur){meals.unshift(cur);if(meals.length>DAY_MEAL_OFFER_COUNT)meals.pop()}
+      }
+      return meals.slice(0,DAY_MEAL_OFFER_COUNT);
+    }
+  }
+  return shuffleDayMealOffers(dayIdx, currentMealId);
+}
+function dayMealPickHTML(opts){
+  return opts.map(m=>{
+    const fav=rateOf(m.id)===2?'<span class="favb">★ </span>':"";
+    const cut=m.v?` (${esc(cleanCopy(mv(m.id)))})`:"";
+    return `<button type="button" data-pick="${m.id}">${fav}${esc(cleanCopy(m.name))}${cut}</button>`;
+  }).join("");
+}
 function openDaySwap(i){const d=effDays(W.ov)[i],o=W.ov[i];
-  const opts=allMeals().filter(m=>m.id!=="veg"&&!m.bf&&rateOf(m.id)!==-1).sort((a,b)=>(rateOf(b.id)===2)-(rateOf(a.id)===2)||(yes(b.id)-yes(a.id)));
-  const inn=openSheet(shTop("Swap "+esc(d.short))+`<p class="muted2" style="margin:0 0 8px">Now: <b>${d.e} ${esc(d.dinner)}</b></p>
-    <div class="cz-o">${o?`<button data-o="keep">↩ Original</button>`:""}<button data-o="left">Leftovers</button><button data-o="out">Eat out</button></div>
-    <div class="cz-list">${opts.map(m=>`<button data-pick="${m.id}">${rateOf(m.id)===2?"❤️ ":""}${m.emoji} ${esc(m.name)}${m.v?" ("+esc(mv(m.id))+")":""}</button>`).join("")}</div>
-    <p class="muted2">👎 and removed meals aren't offered. The shopping list updates right away.</p>`,"Swap dinner");
-  const done=(v,msg)=>{if(v)W.ov[i]=v;else delete W.ov[i];recomputeList();closeSheet();renderWeek();toast(msg)};
-  inn.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{const a=b.dataset.o;done(a==="keep"?null:{t:a},a==="keep"?"Back to the original dinner":a==="left"?"Swapped to Leftovers":"Swapped to Eat out")});
-  inn.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>done({t:"meal",id:b.dataset.pick},"Dinner swapped. List updated"))}
+  let opts=ensureDayMealOffers(i, d&&d.meal);
+  const inn=openSheet("","Swap dinner");
+  const done=(v,msg)=>{if(v)W.ov[i]=v;else delete W.ov[i];try{persistDraft(true)}catch(_){}recomputeList();closeSheet();renderWeek();toast(msg)};
+  const draw=()=>{
+    inn.innerHTML=shTop("Swap "+esc(d.short))+`<p class="muted2" style="margin:0 0 8px">Now: <b>${esc(cleanCopy(d.dinner||""))}</b></p>
+      <div class="cz-o">${o?`<button data-o="keep">↩ Original</button>`:""}<button data-o="left">Leftovers</button><button data-o="out">Eat out</button></div>
+      <p class="day-meal-cap">Pick from ${opts.length} meals this round (one week worth). Regenerate for a different set.</p>
+      <div class="cz-list">${dayMealPickHTML(opts)}</div>
+      <button type="button" class="day-meal-regen" id="dayMealRegen">Regenerate</button>
+      <p class="muted2">Removed meals are not offered. The shopping list updates right away.</p>`;
+    inn.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{const a=b.dataset.o;done(a==="keep"?null:{t:a},a==="keep"?"Back to the original dinner":a==="left"?"Swapped to Leftovers":"Swapped to Eat out")});
+    inn.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>done({t:"meal",id:b.dataset.pick},"Dinner swapped. List updated"));
+    const regen=inn.querySelector("#dayMealRegen");
+    if(regen)regen.onclick=()=>{opts=shuffleDayMealOffers(i, d&&d.meal);try{persistDraft(true)}catch(_){}draw();toast("New set of "+opts.length)};
+  };
+  draw();
+}
 /* Trash beside Swap: one tap removes from this week only; 5-sec Undo. No sheet / confirm. 👎 = never suggest again. */
 function openDelete(i){const d=effDays(W.ov)[i];const prev=W.ov[i];
   W.ov[i]={t:"rm"};recomputeList();renderWeek();
@@ -4340,7 +4416,7 @@ function weekReview(days){const L=getLog().log,s0=weekStartDate();
   if(madeN>=5)highlights.push("Full week mostly logged — nice.");
   const tmTop=tm.slice(0,5);
   return `<section class="gpanel wrev"><div class="stitle" style="margin-top:0"><h2>Week review</h2><span>${esc(fmtWeek(s0))}</span></div>
-   <div class="wst"><div><b>$${est.toFixed(0)}</b>${budget!=null?` / $${budget.toFixed(0)}`:""}<small>${budget!=null?"about this week / your budget":"about this week"}</small></div><div><b>${avgCal!=null?avgCal:"—"}</b><small>avg cal</small></div><div><b>${madeN}/${skipN}/${outN}</b><small>made / skip / out</small></div></div>
+   <div class="wst"><div><b>$${est.toFixed(2)}</b>${budget!=null?` / $${budget.toFixed(2)}`:""}<small>${budget!=null?"this week or your budget":"this week"}</small></div><div><b>${avgCal!=null?avgCal:"—"}</b><small>avg cal</small></div><div><b>${madeN}/${skipN}/${outN}</b><small>made or skip or out</small></div></div>
    ${highlights.length?`<ul class="sgl">${highlights.slice(0,3).map(h=>`<li>${h}</li>`).join("")}</ul>`:""}
    ${tmTop.length?`<h3 class="aisle">Times made (all-time)</h3><ul class="tml">${tmTop.map(x=>`<li><span>${esc(mealName(x.k))}</span>${M(x.k)&&rateOf(x.k)?`<small>${RE[rateOf(x.k)]}</small>`:""}<b>×${x.made}</b></li>`).join("")}</ul>${tm.length>5?`<button type="button" class="have" id="tmAll">See all (${tm.length})</button>`:""}`:""}</section>`}
 
@@ -4578,9 +4654,8 @@ async function shareCamList(){
   const all=[...items,...customs];const s0=weekStartDate();const lines=["Shopping list · week of "+fmtWeek(s0)];let total=0;
   const aisleMap={};all.forEach(it=>{const k=it.aisle||"other";(aisleMap[k]=aisleMap[k]||[]).push(it)});
   const labs=Object.fromEntries([...AISLES,...getCamCats().map(c=>[c,c])]);
-  Object.keys(aisleMap).forEach(k=>{lines.push("",String(labs[k]||k).toUpperCase());aisleMap[k].forEach(it=>{const p=it.a!=null&&(it.p==null||it.a<=it.p)?it.a:it.p;if(p!=null)total+=p;lines.push("- "+it.n+(p!=null?" · est. $"+Number(p).toFixed(2):""))})});
-  const estStore=(typeof deriveMainStore==="function"?deriveMainStore():(st&&st.main))||"Aldi";
-  lines.push("","Est. total ("+estStore+"): $"+total.toFixed(2));
+  Object.keys(aisleMap).forEach(k=>{lines.push("",String(labs[k]||k).toUpperCase());aisleMap[k].forEach(it=>{const p=it.a!=null&&(it.p==null||it.a<=it.p)?it.a:it.p;if(p!=null)total+=p;lines.push("- "+cleanCopy(it.n)+(p!=null?" · $"+Number(p).toFixed(2):""))})});
+  lines.push("","$"+total.toFixed(2));
   await shareListText(lines.join("\n"),"Shopping list");
 }
 

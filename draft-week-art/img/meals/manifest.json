@@ -1,0 +1,130 @@
+[
+  {
+    "slug": "steak",
+    "file": "steak.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGrilled_steak_served_on_a_plate_with_avocado_and_sauce.jpg",
+    "author": "Shixart1985",
+    "license": "CC BY 2.0",
+    "bytes": 11332
+  },
+  {
+    "slug": "chicken",
+    "file": "chicken.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGrilled_chicken_breast%2C_Santo_Domingo%2C_La_Palma.jpg",
+    "author": "Gerda Arendt",
+    "license": "CC0",
+    "bytes": 13448
+  },
+  {
+    "slug": "burger",
+    "file": "burger.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3ANCI_Visuals_Food_Hamburger.jpg",
+    "author": "Len Rizzi (photographer)",
+    "license": "Public domain",
+    "bytes": 10452
+  },
+  {
+    "slug": "brat",
+    "file": "brat.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3ABratwurst.jpg",
+    "author": "Kobako",
+    "license": "CC BY-SA 2.5",
+    "bytes": 11278
+  },
+  {
+    "slug": "pork",
+    "file": "pork.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AGrilled_pork_chops.jpg",
+    "author": "Roderick Su\u00f1az Sumalinog",
+    "license": "CC BY-SA 4.0",
+    "bytes": 7928
+  },
+  {
+    "slug": "pizza",
+    "file": "pizza.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AEq_it-na_pizza-margherita_sep2005_sml.jpg",
+    "author": "Valerio Capello at English Wikipedia",
+    "license": "CC BY-SA 3.0",
+    "bytes": 14626
+  },
+  {
+    "slug": "sandwich",
+    "file": "sandwich.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AClub_sandwich.png",
+    "author": "Erik Forsberg",
+    "license": "CC BY-SA 2.0",
+    "bytes": 15192
+  },
+  {
+    "slug": "quesadilla",
+    "file": "quesadilla.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AQuesadilla_2.jpg",
+    "author": "Popo le Chien",
+    "license": "CC BY-SA 3.0",
+    "bytes": 10186
+  },
+  {
+    "slug": "bowl",
+    "file": "bowl.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AOyakodon_003.jpg",
+    "author": "Ocdp",
+    "license": "CC0",
+    "bytes": 9044
+  },
+  {
+    "slug": "eggs",
+    "file": "eggs.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFried_egg%2C_sunny_side_up.jpg",
+    "author": "David Benbennick",
+    "license": "Public domain",
+    "bytes": 2700
+  },
+  {
+    "slug": "plate",
+    "file": "plate.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADinner_plate_with_grilled_meat_avocado_and_red_wine.jpg",
+    "author": "Shixart1985",
+    "license": "CC BY 2.0",
+    "bytes": 6388
+  },
+  {
+    "slug": "leftover",
+    "file": "leftover.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AA_doggy_bag_-_geograph.org.uk_-_6292428.jpg",
+    "author": "Philip Halling",
+    "license": "CC BY-SA 2.0",
+    "bytes": 18490
+  },
+  {
+    "slug": "grab",
+    "file": "grab.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AOyster_pail_takeout_box_%282558467231%29.jpg",
+    "author": "Ginny from USA",
+    "license": "CC BY-SA 2.0",
+    "bytes": 4786
+  },
+  {
+    "slug": "takeout",
+    "file": "takeout.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AOyster_pail_takeout_box_%282558467231%29.jpg",
+    "author": "Ginny from USA",
+    "license": "CC BY-SA 2.0",
+    "bytes": 4786
+  },
+  {
+    "slug": "coffee",
+    "file": "coffee.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AA_small_cup_of_coffee.JPG",
+    "author": "Julius Schorzman",
+    "license": "CC BY-SA 2.0",
+    "bytes": 4648
+  },
+  {
+    "slug": "holiday",
+    "file": "holiday.webp",
+    "source": "https://commons.wikimedia.org/wiki/File%3AThanksgiving_Dinner_Turkey_Drumstick_Leg_On_Paper_Plate_free_creative_commons_%284139402158%29.jpg",
+    "author": "Pink Sherbet Photography from USA",
+    "license": "CC BY 2.0",
+    "bytes": 7504
+  }
+]
