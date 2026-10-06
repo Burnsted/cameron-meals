@@ -6,6 +6,7 @@ STORES:["Aldi","Publix","Walmart","Target","Trader Joe's","Winn-Dixie","Costco",
 
 EQUIP:[
   {id:"foreman",label:"George Foreman grill",emoji:"🔥",featured:true},
+  {id:"espresso",label:"Espresso machine",emoji:"☕"},
   {id:"stove",label:"Stovetop",emoji:"🍳"},
   {id:"oven",label:"Oven",emoji:"♨️"},
   {id:"micro",label:"Microwave",emoji:"📟"},
@@ -155,7 +156,24 @@ TIPS:{
 
 /* Price catalog. a = Aldi est., p = Publix est. (null = not carried there).
    src: "A" Aldi online listing, "P" Publix online listing, "AP" both. aisle: meat, produce, dairy, bread, pantry, frozen, snacks */
+/* Coffee (espresso machine). milk = oz of milk per drink. Out price = rough café price per drink (est.). */
+COFFEE:{
+ drinks:[{id:"latte",label:"Latte",emoji:"🥛",milk:8},{id:"americano",label:"Americano",emoji:"☕",milk:0},{id:"iced",label:"Iced latte",emoji:"🧊",milk:6},
+   {id:"cappuccino",label:"Cappuccino",emoji:"☁️",milk:5},{id:"icedam",label:"Iced americano",emoji:"🧊",milk:0},{id:"shot",label:"Straight espresso",emoji:"⚡",milk:0}],
+ milks:["Whole","2%","Oat","Almond","Skim","No milk"],
+ syrups:["None","Vanilla","Caramel","Hazelnut"],
+ perWeek:[3,5,7,10,14],
+ outPrice:5.50, gPerDrink:16, bagG:340, milkOz:64, syrupOz:12.7
+},
+
 PRICES:{
+ "coffee:beans":{n:"Espresso beans",q:"12 oz bag (~20 double shots)",aisle:"coffee",a:5.49,p:9.99,hint:"Aldi Barissimo espresso est. · Publix Café Bustelo / Lavazza est."},
+ "coffee:Whole":{n:"Whole milk",q:"½ gallon",aisle:"coffee",a:2.29,p:3.69},
+ "coffee:2%":{n:"2% milk",q:"½ gallon",aisle:"coffee",a:2.29,p:3.69},
+ "coffee:Skim":{n:"Skim milk",q:"½ gallon",aisle:"coffee",a:2.29,p:3.69},
+ "coffee:Oat":{n:"Oat milk",q:"½ gallon (64 oz)",aisle:"coffee",a:2.99,p:4.99,hint:"Aldi Friendly Farms oat est. · Publix Oatly / Silk est."},
+ "coffee:Almond":{n:"Almond milk",q:"½ gallon",aisle:"coffee",a:2.49,p:3.79},
+ "coffee:syrup":{n:"Coffee syrup",q:"1 bottle (~12.7 oz, ~12 drinks)",aisle:"coffee",a:3.49,p:6.49,hint:"Aldi Barissimo syrup (seasonal) est. · Publix Torani est."},
  chicken:{n:"Chicken breast, boneless skinless family pack",q:"~4 lb",aisle:"meat",a:9.62,p:22.12,src:"AP",hint:"Aldi listing $2.29/lb (Aldi says $1.99/lb in stores thru Nov 3) · Publix 4 lb+ pack $5.53/lb"},
  beef:{n:"Ground beef 80/20",q:"~2.25 lb pack (6 patties)",aisle:"meat",a:11.90,p:19.91,src:"AP",hint:"Aldi listing $5.29/lb · Publix listing $8.85/lb"},
  turkey:{n:"Ground turkey",q:"~2 lb",aisle:"meat",a:7.98,p:11.98},

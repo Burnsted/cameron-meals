@@ -259,6 +259,31 @@
   .etm{display:inline-block;margin-top:6px;font-size:13px;font-weight:800;color:var(--teal)}
   .etm.dk{color:#38bdf8}
   .nextwk{background:var(--white);border-radius:14px;padding:10px 14px;font-weight:700;font-size:14px;color:var(--wsoft);box-shadow:0 8px 22px rgba(23,48,66,.1);margin-bottom:12px}
+  /* v4 */
+  .dha{display:flex;align-items:center;gap:6px}
+  .dact{min-height:32px;min-width:40px;padding:3px 10px;border-radius:999px;border:1.5px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);color:#fff;font:inherit;font-size:11px;font-weight:800;letter-spacing:.04em;cursor:pointer}
+  .dact.del{font-size:14px;padding:3px 8px;letter-spacing:0}
+  .log{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(23,48,66,.14)}
+  .lr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:4px 0;font-size:12px;font-weight:800;color:var(--wsoft)}
+  .lr button{min-height:36px;min-width:40px;padding:4px 10px;border-radius:999px;border:2px solid rgba(15,110,110,.22);background:var(--wbg);font:inherit;font-size:12px;font-weight:800;color:var(--wink);cursor:pointer}
+  .lr button[aria-pressed="true"]{background:var(--tealS);border-color:var(--teal);color:var(--tealD)}
+  .lct{margin:4px 0 0;font-size:12px;font-weight:800;color:var(--teal)}
+  .logb{background:linear-gradient(135deg,#fff3c4,#ffe3d6);border-radius:16px;padding:12px 14px;margin:12px 0;display:flex;flex-direction:column;gap:6px;color:var(--wink);font-size:14px;box-shadow:0 4px 14px rgba(23,48,66,.08)}
+  .logb div{display:flex;gap:8px}.lb{min-height:42px;padding:0 14px;border-radius:12px;border:2px solid rgba(15,110,110,.3);background:#fff;font:inherit;font-weight:800;color:var(--tealD);cursor:pointer}.lb.p{background:var(--teal);color:#fff;border-color:transparent}
+  .wst{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0 8px}.wst div{background:var(--wbg);border-radius:12px;padding:8px 4px;text-align:center;font-size:11px;font-weight:700;color:var(--wsoft)}
+  .wst b{display:block;font-size:20px;color:var(--wink)}.wst .bad b{color:var(--coral)}
+  .wtop{font-weight:800;font-size:13px;color:var(--wink);margin:4px 0}
+  .tml,.sgl{list-style:none;margin:0;padding:0}.tml li,.sgl li{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed rgba(23,48,66,.12);font-size:13px;font-weight:700;color:var(--wink)}
+  .tml li span{flex:1}.sgl li{display:block}.sgl .have{margin-left:6px}
+  .lgc{background:var(--wbg,#eef6f2);border-radius:14px;padding:10px;margin-bottom:8px}.lgh{font-weight:800;font-size:14px}.lgc .log{border-top:0;margin-top:2px;padding-top:0}
+  .sheet .lr{color:#3d5566}.sheet .lr button{background:#fff;color:#173042}.sheet .lr button[aria-pressed="true"]{background:#d4efef;border-color:#0f6e6e}
+  .cpy{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.cpb{flex:1 1 30%;min-height:44px;border-radius:12px;border:2px solid rgba(15,110,110,.3);background:#fff;font:inherit;font-weight:800;font-size:13px;color:var(--tealD);cursor:pointer}.cpb.p{flex-basis:100%;background:linear-gradient(160deg,var(--teal),var(--tealD));color:#fff;border-color:transparent}
+  .cph{background:#fff;border:2px dashed rgba(15,110,110,.35);border-radius:14px;padding:10px 12px;margin:6px 0 10px}.cph-t{margin:0 0 6px;font-weight:800;color:var(--tealD);font-size:14px}.cph .cpb{width:100%}.cph .thumbs img{max-width:100%;max-height:220px;border-radius:12px;margin-top:8px}
+  .gnote.cof{background:#efe4d6}
+  .sh-btn.wide{width:100%}.sh-btn.danger{background:#b9441c;color:#fff;border-color:transparent}.sh-btn:disabled{opacity:.45}
+  .toast2{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;background:#173042;color:#fff;border-radius:14px;padding:12px 14px;font-weight:800;font-size:14px;display:flex;align-items:center;gap:12px;max-width:92vw;z-index:80;transition:.2s;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .toast2.show{opacity:1;transform:translateX(-50%);pointer-events:auto}.toast2 button{background:#fff;color:#0a5555;border:0;border-radius:10px;padding:8px 12px;font:inherit;font-weight:900;cursor:pointer}
+  .cofbox{background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.4);border-radius:14px;padding:12px;margin:14px 0 4px;font-size:14px;font-weight:700;line-height:1.4}.cofbox small{color:var(--mut);font-weight:600}
 </style>
 </head>
 <body>
@@ -267,9 +292,10 @@
   <div class="top"><span>Cameron's Meal Picker</span><span id="count"></span></div>
   <div class="bar"><i id="prog" style="width:0"></i></div>
   <div class="card" id="card"></div>
-  <p class="muted">Taps only (typing just for "Other store", "+ Custom" and About me). Photos stay on your phone unless you share them. About me, budget and ratings are saved on this phone only; nothing is sent anywhere.</p>
+  <p class="muted">Taps only (typing just for "Other store", "+ Custom" and About me). Photos stay on your phone unless you share them. About me, budget, ratings and your meal log are saved on this phone only; nothing is sent anywhere.</p>
 </div>
 <div id="week"></div>
+<div class="toast2" id="toast2" role="status" aria-live="polite"></div>
 <div class="sheet-bg" id="sheet" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" id="sheetIn"></div></div>
 <script src="meals.js"></script>
 <script>
@@ -280,15 +306,16 @@ const M=id=>MEALS.find(m=>m.id===id);
 let st, queue, pos;
 function reset(){
   const build={};Object.keys(BUILDS).forEach(k=>{const b=BUILDS[k],o={};b.core.forEach(t=>o[t.id]={on:true,v:t.v?t.v[0]:t.label});b.extras.forEach(t=>o[t.id]={on:false,v:t.label});build[k]={top:o,custom:[]}});
-  st={stores:new Set(),extra:[],main:"",photos:{},equip:new Set(["foreman"]),meals:{},mealV:{},tip:null,
+  st={stores:new Set(),extra:[],main:"",photos:{},equip:new Set(["foreman","espresso"]),coffee:{drinks:new Set(["latte","iced"]),milk:"2%",syrup:"None",perWeek:7},meals:{},mealV:{},tip:null,
       build,xOpen:null,weekStart:null,about:getAbout(),aboutReturn:false,sides:new Set(),picks:{},custom:{},open:null,cOpen:null,mealCustom:[],kitPhotos:[]};
-  queue=["stores","main","photos","about","equip","meals","MEALB","sides","BUILD","summary"]; pos=0;
+  queue=["photos","stores","main","about","equip","coffee","meals","MEALB","sides","BUILD","summary"]; pos=0;
   document.body.classList.remove("light");
 }
 const card=$("card");
 function go(n=1){pos+=n;
   for(let g=0;g<50;g++){const s=queue[pos];
     if(s==="main"&&st.stores.size<2){if(st.stores.size===1)st.main=[...st.stores][0];pos+=n>0?1:-1;continue}
+    if(s==="coffee"&&!st.equip.has("espresso")){pos+=n>0?1:-1;continue}
     if(s==="MEALB"){buildMealSteps();continue}
     if(s==="BUILD"){buildDrill();continue}
     break}
@@ -371,7 +398,8 @@ function render(){
       <div class="feat${fm?" on":""}" id="fm"><div class="fe">🔥</div><div><b>George Foreman grill</b><div class="dad">🎁 Dad got you this. Still your go-to?</div></div><div class="ck">${fm?"✓":""}</div></div>
       <p class="fnote">${fm?"✓ Yep. Meals and cook times are built around the Foreman.":"Tap the card if you still use it."}</p>
       <p class="lbl">Also have</p>
-      <div class="chips">${rest.map(e=>`<span class="chip${st.equip.has(e.id)?"":" off"}" data-e="${e.id}">${e.emoji} ${e.label}</span>`).join("")}</div>
+      <div class="chips">${rest.map(e=>`<span class="chip${st.equip.has(e.id)?"":" off"}" data-e="${e.id}">${e.emoji} ${e.label}</span>`).join("")}${(st.custom.equip||[]).map(v=>`<span class="chip cust${st.equip.has("c:"+v)?"":" off"}" data-e="c:${esc(v)}">🔧 ${esc(v)}</span>`).join("")}${customChip("equip")}</div>${customRow("equip")}
+      <p class="fnote">${st.equip.has("espresso")?"☕ Espresso machine is on. Next step: your coffee (drinks, milk, how many).":"No espresso machine? Fine, the coffee step is skipped."}</p>
       <div class="snap"><p class="lbl" style="margin-top:0">Anything else in your kitchen?</p>
         <p>Not sure if you have something? 📸 Snap a photo of your counters/cabinets and send it to your chef bot. It'll tell you what you've got.</p>
         <button class="sbtn" id="kitSnap">📸 Snap a photo</button><input type="file" accept="image/*" capture="environment" id="kitIn" hidden>
@@ -380,11 +408,13 @@ function render(){
       ${btns("Next →")}`;
     $("fm").onclick=()=>{fm?st.equip.delete("foreman"):st.equip.add("foreman");render()};
     card.querySelectorAll(".chip[data-e]").forEach(c=>c.onclick=()=>{const k=c.dataset.e;st.equip.has(k)?st.equip.delete(k):st.equip.add(k);render()});
+    bindCustom((k,v)=>{st.custom.equip=st.custom.equip||[];if(!st.custom.equip.includes(v))st.custom.equip.push(v);st.equip.add("c:"+v)});
     $("nx").onclick=()=>go();
     photoShare({btn:$("kitSnap"),input:$("kitIn"),thumbs:$("kitThumbs"),act:$("kitAct"),store:st.kitPhotos,
       shareLabel:"Send to my chef bot",title:"Kitchen photo",text:"What do I have here? (photo from my meal picker)",
       fallback:"Saved. Send this photo to your chef bot (long-press it → Save, then send it in chat)."});
-  } else if(s==="meals") meals();
+  } else if(s==="coffee") coffeeStep();
+  else if(s==="meals") meals();
   else if(s==="sides"){
     const nb=st.meals.burger==="no";
     card.innerHTML=`<div class="emoji">🍽️</div><h1>${nb?"What sides do you like?":"What goes with it?"}</h1><p class="sub">Pick any sides you like.</p>
@@ -404,7 +434,7 @@ function meals(){
        <div class="yn"><button class="y${a==="yes"?" sel":""}" data-m="${m.id}" data-a="yes">Yes</button><button class="n${a==="no"?" sel":""}" data-m="${m.id}" data-a="no">No</button></div></div>
        ${po?popHTML(m.id==="steak"?"Which cut?":"Which kind?",m.v,mv(m.id),false):""}
        <button class="tipbtn" data-tip="${m.id}">${op?"▾":"▸"} How to cook it</button>${op?tipHTML(m):""}</div>`}).join("")}</div>
-   ${removed.length?`<details class="box"><summary>👎 Removed meals (${removed.length})</summary><p class="no" style="margin:6px 0">You rated these "tried it, no". They're hidden from suggestions and swaps.</p>${removed.map(m=>`<div class="mrow" style="margin-top:6px"><span>${m.emoji} ${esc(m.name)}</span><button class="popt" style="margin-left:auto" data-restore="${m.id}">Restore</button></div>`).join("")}</details>`:""}
+   ${removed.length?`<details class="box"><summary>🗑 Removed meals (${removed.length})</summary><p class="no" style="margin:6px 0">Rated 👎 or removed from the menu for good. Hidden from suggestions and Swap. Tap Restore to bring one back.</p>${removed.map(m=>`<div class="mrow" style="margin-top:6px"><span>${m.emoji} ${esc(m.name)}</span><button class="popt" style="margin-left:auto" data-restore="${m.id}">Restore</button></div>`).join("")}</details>`:""}
    <p class="lbl">Something else you like?</p>
    <div class="chips">${st.mealCustom.map(x=>`<span class="chip cust" data-mc="${esc(x)}">${esc(x)}</span>`).join("")}${customChip("meals")}</div>${customRow("meals")}
    ${tipsBox()}
@@ -475,11 +505,12 @@ function summary(){
   }).join("");
   const others=[...st.stores].filter(x=>x!==st.main);
   const ys=MEALS.filter(m=>st.meals[m.id]==="yes"), ns=MEALS.filter(m=>st.meals[m.id]==="no");
-  const eq=C.EQUIP.filter(e=>st.equip.has(e.id)).map(e=>e.label);
+  const eq=[...C.EQUIP.filter(e=>st.equip.has(e.id)).map(e=>e.label),...(st.custom.equip||[]).filter(v=>st.equip.has("c:"+v))];
   card.innerHTML=`<div class="sum"><h1 style="text-align:center">Your picks</h1>
     <h2>🛒 Stores</h2><p>${st.main?`<b>${esc(st.main)}</b> (main)${others.length?", also "+others.map(esc).join(", "):""}`:"Skipped: using Aldi + Publix"}</p>
     <h2>📸 Photos</h2><p>${["pantry","fridge","freezer"].map(k=>(st.photos[k]?"✓ ":"✗ ")+k).join(" · ")}</p>
     <h2>🍳 Gear</h2><p>${eq.length?eq.map(x=>`<span class="tag">${esc(x)}</span>`).join(""):"None picked: assuming Foreman + microwave"}</p>
+    ${st.equip.has("espresso")?`<h2>☕ Coffee</h2><p>${coffeeDesc()}</p><p class="no">${coffeeLine(true)}</p>`:""}
     <h2>🥩 Meals</h2><p>${ys.length||st.mealCustom.length?[...ys.map(m=>`<span class="tag y">✓ ${esc(m.v?mv(m.id)+" · ":"")}${esc(m.name)}</span>`),...st.mealCustom.map(x=>`<span class="tag y">✓ ${esc(x)}</span>`)].join(""):"Skipped: I'll pick grill favorites"}</p>
     ${ns.length?`<p class="no">No: ${ns.map(m=>esc(m.name)).join(", ")}</p>`:""}
     ${built.map(k=>{const bp=buildPicks(k);return `<h2>${BUILDS[k].emoji} ${esc(BUILDS[k].title.replace(/^(Build your|Your) /,"").replace(/^./,c=>c.toUpperCase()))}</h2><p>${bp.on.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</p>${bp.off.length?`<p class="no">No: ${bp.off.map(esc).join(", ")}</p>`:""}`}).join("")}
@@ -631,10 +662,14 @@ function buildList(groups,mealIds){
   (mealIds||[]).forEach(mid=>{if(mid==="burger"||!BUILDS[mid]||!st.build[mid])return;const B=BUILDS[mid],T=st.build[mid].top,why=M(mid).name.toLowerCase();
     [...B.core,...B.extras].forEach(t=>{if(!T[t.id].on)return;const k=t.kv?t.kv[T[t.id].v]:t.k;if(k&&P[k])add(k,{why})});
     st.build[mid].custom.forEach(v=>add("custom:b"+mid+v,{n:v,q:"",aisle:"other",a:null,p:null,custom:true,why:"your "+why+" add"}))});
+  if(st.equip.has("espresso")){const k=coffeeCalc();
+    add("coffee:beans",{q:`${k.bags} × 12 oz bag (${k.bags>1?"":"~"+Math.max(1,Math.floor(C.COFFEE.bagG/k.g))+" wk supply at "+st.coffee.perWeek+"/wk"})`,a:P["coffee:beans"].a*k.bags,p:P["coffee:beans"].p*k.bags,why:"your coffee"});
+    if(k.milkKey)add(k.milkKey,{q:`${k.halfGal} × ½ gallon`,a:P[k.milkKey].a*k.halfGal,p:P[k.milkKey].p*k.halfGal,why:`${k.milkOz} oz/wk for your drinks`});
+    if(k.syrup)add("coffee:syrup",{n:`${st.coffee.syrup} coffee syrup`,why:"flavored drinks"});}
   st.mealCustom.forEach(v=>add("custom:meal"+v,{n:`Stuff for: ${v}`,q:"",aisle:"other",a:null,p:null,custom:true,why:"your custom meal"}));
   return out;
 }
-const AISLES=[["meat","🥩 Meat"],["produce","🥬 Produce"],["dairy","🧀 Dairy & eggs"],["bread","🍞 Bread"],["pantry","🥫 Pantry"],["frozen","❄️ Frozen"],["snacks","🍿 Snacks"],["other","⭐ Your custom adds"]];
+const AISLES=[["coffee","☕ Coffee"],["meat","🥩 Meat"],["produce","🥬 Produce"],["dairy","🧀 Dairy & eggs"],["bread","🍞 Bread"],["pantry","🥫 Pantry"],["frozen","❄️ Frozen"],["snacks","🍿 Snacks"],["other","⭐ Your custom adds"]];
 const $$=n=>n==null?"?":"$"+n.toFixed(2);
 function totals(){let a=0,p=0,b=0,na=0,np=0,cu=0;W.items.forEach(it=>{if(W.have.has(it.id))return;if(it.a==null&&it.p==null){cu++;return}
   if(it.a!=null)a+=it.a;else a+=(it.al!=null?it.al:it.p); if(it.p!=null)p+=it.p;else p+=it.a;
@@ -664,18 +699,23 @@ function renderWeek(){
     <li><b>Lunch</b> = leftovers in a container for Woody's. Breakfast is optional.</li></ul></aside>
   ${guideBox()}
   <details class="lt"><summary>💰 Meat money tips</summary><ul>${C.TIPS.meat.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>
+  ${logBanner(days)}
   <div class="stitle" id="thisWk"><h2>This week${edited?'<span class="edited">edited</span>':""}</h2><span>7 days · tap a day for how-to</span></div>
   <p class="lp-tip">Tip: press and hold a week to customize it.</p>
   ${days.map((d,i)=>{const m=MN(d.meal);return `<div class="day${d.cook?" cook":""}" data-d="${i}" style="animation-delay:${i*.04}s">
-    <div class="dh"><span>${d.short}${d.cook?" · cook":""}</span><span>${d.icon}</span></div>
+    <div class="dh"><span>${d.short}${d.cook?" · cook":""}</span><span class="dha"><button class="dact" data-swapd="${i}" aria-label="Swap ${d.short} dinner">Swap</button><button class="dact del" data-del="${i}" aria-label="Delete ${d.short} dinner">🗑</button><span>${d.icon}</span></span></div>
     <div class="db"><div class="emo-row"><span class="memo">${d.e}</span>${dayBadge(d)}</div><p class="dinner">${d.meal&&rateOf(d.meal)===2?'<span class="favb">⭐ favorite</span> ':""}${esc(d.dinner)}</p>${dayNut(d)}<p class="dnote">${esc(d.note)}</p>
     <p class="dl">🎒 Lunch at Woody's: ${esc(d.lunch)}</p>${d.bf?`<p class="dl b">☀️ Breakfast (optional): ${esc(d.bf)}</p>`:""}
     ${W.open===i&&m?`<div class="rec"><h4>${m.emoji} ${esc(m.name)}</h4>${tipHTML(m).replace('class="tip"','')}</div>`:""}
-    <p class="hint">${W.open===i?"▾ tap to close":"▸ tap for how-to + temps"}</p>${d.meal&&M(d.meal)?rateRow(d.meal):""}</div></div>`}).join("")}
+    <p class="hint">${W.open===i?"▾ tap to close":"▸ tap for how-to + temps"}</p>${d.meal&&M(d.meal)?rateRow(d.meal):""}${d.kind==="rm"?"":logRow(i,d)}</div></div>`}).join("")}
+  ${weekReview(days)}
   ${ratingsPanel()}
   ${W.extra.length?`<div class="nextwk">🔄 Next week rotation: ${W.extra.map(g=>({pork:mv("pork"),brats:mv("brats"),chicken:"chicken",burger:"burgers",steak:"steak"}[g])).join(", ")} (you said yes; saved for next week so this week stays cheap).</div>`:""}
   <section class="gpanel"><div class="stitle" style="margin-top:0"><h2>Shopping list</h2><span>${nCk} checked</span></div>
     <div class="tot"><div class="${main==="Aldi"?"main":""}">${main==="Aldi"?"⭐ ":""}All Aldi<b>$${t.a.toFixed(2)}</b>est.</div><div class="${main==="Publix"?"main":""}">${main==="Publix"?"⭐ ":""}All Publix<b>$${t.p.toFixed(2)}</b>est.</div><div class="best">Best split<b>$${t.b.toFixed(2)}</b>est.</div></div>
+    <div class="cpy"><button class="cpb p" data-copy="all">📋 Copy whole list</button><button class="cpb" data-copy="Aldi">Copy Aldi list</button><button class="cpb" data-copy="Publix">Copy Publix list</button></div>
+    ${W.cph?`<div class="cph" id="cphBox"><p class="cph-t">✓ Copied. Want to send a photo with it?</p><button class="cpb p" id="cphB">📷 Take a photo</button><input type="file" accept="image/*" capture="environment" hidden id="cphIn"><div class="thumbs" id="cphTh"></div><div id="cphAct"></div><p class="muted2">Opens your camera. Snap the fridge, pantry or a receipt, then tap Share. Nothing is uploaded; Share just opens your phone's share sheet.</p></div>`:""}
+    ${st.equip.has("espresso")?`<p class="gnote cof">☕ ${coffeeLine(false)}</p>`:""}
     <p class="pchk">Prices last checked ${fmtDateLong(PRICE_META.updated)}${PRICE_META.loaded?"":" (built-in estimates)"} · grey = older than 60 days</p>
     ${budCmp(t.b,7)}
     <p class="gnote">Best split = Aldi for ${t.na} items, Publix for ${t.np} (your exact name brands). All-Aldi swaps in Aldi look-alikes.${t.cu?` + ${t.cu} custom item${t.cu>1?"s":""} (check price).`:""} ${otherStores.length?`Also on your list: ${otherStores.map(esc).join(", ")}; compare there too (secondary).`:""}</p>
@@ -701,6 +741,12 @@ function renderWeek(){
   wk.querySelectorAll("[data-rate]").forEach(b=>b.onclick=e=>{e.stopPropagation();setRate(b.dataset.m,+b.dataset.rate);renderWeek()});
   wk.querySelectorAll("[data-unrate]").forEach(b=>b.onclick=e=>{e.stopPropagation();setRate(b.dataset.unrate,0);renderWeek()});
   wk.querySelectorAll("[data-have]").forEach(b=>b.onclick=()=>{const k=b.dataset.have;W.have.has(k)?W.have.delete(k):W.have.add(k);renderWeek()});
+  wk.querySelectorAll("[data-swapd]").forEach(b=>b.onclick=e=>{e.stopPropagation();openDaySwap(+b.dataset.swapd)});
+  wk.querySelectorAll("[data-del]").forEach(b=>b.onclick=e=>{e.stopPropagation();openDelete(+b.dataset.del)});
+  wk.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>{const t=listText(b.dataset.copy);W.cph=true;W.cphText=t;renderWeek();copyTxt(t,b.dataset.copy==="all"?"Whole list copied":`${b.dataset.copy} list copied`)});
+  if(W.cph&&$("cphB")){W.cphFiles=W.cphFiles||[];photoShare({btn:$("cphB"),input:$("cphIn"),thumbs:$("cphTh"),act:$("cphAct"),store:W.cphFiles,shareLabel:"Share",title:"My shopping list",text:W.cphText||"",
+    fallback:"Your browser can't open the share sheet here. Save the photo (long-press → Save) and send it with your list."})}
+  bindLog(wk,days);
   $("bk").onclick=()=>{document.body.classList.remove("light");window.scrollTo(0,0)};
   $("rs2").onclick=()=>{reset();render();window.scrollTo(0,0)};
   $("calB").onclick=()=>openCal({sel:weekStartDate(),onPick:(mon)=>{st.weekStart=mon.getTime();renderWeek()}});
@@ -806,13 +852,14 @@ function effDays(ov){const s0=weekStartDate();return W.base.map((b,i)=>{const d=
   const o=ov[i]||{t:"day",j:i};let c;
   if(o.t==="day"){const src=W.base[o.j];c={cook:src.cook,meal:src.meal,e:src.e,dinner:src.dinner,note:o.j===i?src.note:`Moved from ${DN[o.j]}. ${src.note}`,g:src.g,ch:o.j!==i}}
   else if(o.t==="meal"){const m=M(o.id);c={cook:true,meal:o.id,e:m.emoji,dinner:`${m.name}${m.v?" ("+mv(o.id)+")":""}`,note:"Your swap. Cook 1 portion, or 2 and keep one for tomorrow's lunch.",g:MG[o.id]||null,ch:true}}
+  else if(o.t==="rm")c={cook:false,meal:null,e:"🚫",dinner:"Removed from this week",note:"Free night: no cooking, no groceries for this one. Tap Swap to pick something.",g:null,ch:true,kind:"rm"};
   else if(o.t==="left")c={cook:false,meal:null,e:"🔁",dinner:"Leftovers night",note:"Reheat whatever's in the fridge to 165°F.",g:null,ch:true,kind:"left"};
   else c={cook:false,meal:null,e:"🥡",dinner:"Eat out / takeout",note:"Night off. No cooking, no groceries.",g:null,ch:true,kind:"out"};
   return {...b,short,...c}})}
 function recomputeList(){const days=effDays(W.ov);const gs=[...new Set(days.map(d=>d.g).filter(Boolean))];
   W.items=buildList(gs,[...new Set(days.map(d=>d.meal).filter(Boolean))])}
 function pcBadge(prep,cook,dark,reheat){return `<span class="pc${dark?" dk":""}"><span>🔪 Prep ~${prep} min</span><span>🔥 ${reheat?"Reheat":"Cook"} ~${cook} min</span></span>`}
-function dayBadge(d){if(d.kind==="out")return "";if(d.kind==="left")return pcBadge(2,3,false,true);const m=d.meal&&M(d.meal);if(!m)return "";
+function dayBadge(d){if(d.kind==="out"||d.kind==="rm")return "";if(d.kind==="left")return pcBadge(2,3,false,true);const m=d.meal&&M(d.meal);if(!m)return "";
   if(d.cook||["chixq","steakq","stkegg"].includes(d.meal))return pcBadge(m.prep,m.cook);return pcBadge(2,3,false,true)}
 /* budget (saved on this phone) */
 const BKEY="cameron-meals-budget-v1";
@@ -865,17 +912,19 @@ function openCustom(){if(!W)return;let draft=JSON.parse(JSON.stringify(W.ov)),mo
 
 /* ---- About me (saved on this phone only) + general daily guide ---- */
 const AKEY="cameron-meals-about-v1";
-const ACT=[["sit","Mostly sitting",1.2],["feet","On my feet at work",1.55],["active","Very active",1.725]];
-function getAbout(){try{const j=JSON.parse(localStorage.getItem(AKEY)||"null");if(j&&typeof j==="object")return j}catch(_){}return {}}
+const ACT=[["none","None",1.375],["30","30 min a day",1.55],["60","1 hour a day",1.725]]; // daily exercise (None = still on his feet at a watersports job)
+const ACT_MIG={sit:"none",feet:"30",active:"60"};
+const actOf=a=>ACT.find(x=>x[0]===a.act)||ACT[0];
+function getAbout(){try{const j=JSON.parse(localStorage.getItem(AKEY)||"null");if(j&&typeof j==="object"){if(ACT_MIG[j.act]){j.act=ACT_MIG[j.act];setAbout(j)}return j}}catch(_){}return {}}
 function setAbout(a){try{localStorage.setItem(AKEY,JSON.stringify(a))}catch(_){}}
-function guideFor(a){const age=+a.age,ft=+a.ft,inch=+(a.inch||0),lb=+a.lb,act=ACT.find(x=>x[0]===a.act);
-  if(!(age>=13&&age<=100&&ft>=3&&ft<=8&&lb>=60&&lb<=700&&act))return null;
+function guideFor(a){const age=+a.age,ft=+a.ft,inch=+(a.inch||0),lb=+a.lb;
+  if(!(age>=13&&age<=100&&ft>=3&&ft<=8&&lb>=60&&lb<=700))return null;
   const kg=lb*0.4536,cm=(ft*12+inch)*2.54,base=10*kg+6.25*cm-5*age;
-  const bmr=base+(a.sex==="m"?5:a.sex==="f"?-161:-78);const tdee=bmr*act[2];const r=n=>Math.round(n/50)*50;
+  const bmr=base+(a.sex==="m"?5:a.sex==="f"?-161:-78);const tdee=bmr*actOf(a)[2];const r=n=>Math.round(n/50)*50;
   return {lo:r(tdee*0.9),hi:r(tdee*1.1),mid:tdee,pLo:Math.round(lb*0.7),pHi:Math.round(lb*1.0)}}
 const NOTMED="General guide, not medical advice; not a diet plan.";
-function guideHTML(g){return g?`Daily guide: <b>~${g.lo.toLocaleString()}–${g.hi.toLocaleString()} calories</b> and <b>${g.pLo}–${g.pHi} g protein</b>.<small>Mifflin-St Jeor estimate × your activity level, ±10%. Protein 0.7–1.0 g per lb. ${NOTMED}</small>`
-  :`Fill in age, height, weight and activity to see a general daily guide.<small>${NOTMED}</small>`}
+function guideHTML(g){return g?`Daily guide: <b>~${g.lo.toLocaleString()}–${g.hi.toLocaleString()} calories</b> and <b>${g.pLo}–${g.pHi} g protein</b>.<small>Mifflin-St Jeor estimate, ±10%. Based on the exercise you picked. Protein 0.7–1.0 g per lb. ${NOTMED}</small>`
+  :`Fill in age, height and weight to see a general daily guide.<small>${NOTMED}</small>`}
 function aboutStep(){const a=st.about;
   card.innerHTML=`<div class="emoji">🧍</div><h1>About me</h1><p class="sub">Optional. Gives you a general daily guide. Saved on this phone only.</p>
     <div class="ab-grid"><label>Age<input id="abAge" inputmode="numeric" type="number" min="13" max="100" value="${esc(a.age||"")}" placeholder="e.g. 24"></label>
@@ -883,37 +932,37 @@ function aboutStep(){const a=st.about;
       <label>Height (ft)<input id="abFt" inputmode="numeric" type="number" min="3" max="8" value="${esc(a.ft||"")}" placeholder="5"></label>
       <label>Height (in)<input id="abIn" inputmode="numeric" type="number" min="0" max="11" value="${esc(a.inch||"")}" placeholder="10"></label></div>
     <p class="lbl">Sex (optional)</p><div class="chips">${[["m","Male"],["f","Female"],["","Skip"]].map(([k,l])=>`<span class="chip${(a.sex||"")===k?"":" off"}" data-sx="${k}">${l}</span>`).join("")}</div>
-    <p class="lbl">Activity</p><div class="chips">${ACT.map(([k,l])=>`<span class="chip${a.act===k?"":" off"}" data-ac="${k}">${l}</span>`).join("")}</div>
+    <p class="lbl">Daily exercise</p><div class="chips">${ACT.map(([k,l])=>`<span class="chip${actOf(a)[0]===k?"":" off"}" data-ac="${k}">${l}</span>`).join("")}</div>
     <div class="guide" id="abG">${guideHTML(guideFor(a))}</div>
     <p style="margin:-8px 0 16px;text-align:left"><a class="etm dk" href="https://www.eatthismuch.com/" target="_blank" rel="noopener">Want more ideas? Try Eat This Much (free) ↗</a></p>
     ${btns("Next →",false,"Skip for now")}`;
   const sync=()=>{a.age=$("abAge").value;a.lb=$("abLb").value;a.ft=$("abFt").value;a.inch=$("abIn").value;setAbout(a);$("abG").innerHTML=guideHTML(guideFor(a))};
   ["abAge","abLb","abFt","abIn"].forEach(id=>$(id).oninput=sync);
-  card.querySelectorAll("[data-sx]").forEach(c=>c.onclick=()=>{sync();a.sex=c.dataset.sx;setAbout(a);aboutStep()});
   card.querySelectorAll("[data-ac]").forEach(c=>c.onclick=()=>{sync();a.act=c.dataset.ac;setAbout(a);aboutStep()});
+  card.querySelectorAll("[data-sx]").forEach(c=>c.onclick=()=>{sync();a.sex=c.dataset.sx;setAbout(a);aboutStep()});
   const done=()=>{if(st.aboutReturn){st.aboutReturn=false;pos=queue.indexOf("summary");render();window.scrollTo(0,0)}else go()};
   $("nx").onclick=()=>{sync();done()};$("sk").onclick=done;
 }
 function aboutSummary(){const a=st.about,g=guideFor(a);if(!g)return `<p class="no">Not filled in (optional).</p>`;
-  const act=ACT.find(x=>x[0]===a.act);return `<p>${esc(a.age)} yrs · ${esc(a.ft)}′${esc(a.inch||0)}″ · ${esc(a.lb)} lb${a.sex?" · "+(a.sex==="m"?"male":"female"):""} · ${act[1].toLowerCase()}</p><div class="guide" style="margin:6px 0 0">${guideHTML(g)}</div>`}
+  return `<p>${esc(a.age)} yrs · ${esc(a.ft)}′${esc(a.inch||0)}″ · ${esc(a.lb)} lb${a.sex?" · "+(a.sex==="m"?"male":"female"):""} · exercise: ${actOf(a)[1].toLowerCase()}</p><div class="guide" style="margin:6px 0 0">${guideHTML(g)}</div>`}
 function guideBox(){const g=guideFor(st.about||{});if(!g)return "";
   return `<div class="gbox">🧍 Your daily guide: <b>~${g.lo.toLocaleString()}–${g.hi.toLocaleString()} cal</b> · <b>${g.pLo}–${g.pHi} g protein</b><small>${NOTMED} Dinner numbers on each day are rough USDA-based estimates per serving (est.).</small><a class="etm" href="https://www.eatthismuch.com/" target="_blank" rel="noopener">Want more ideas? Try Eat This Much (free) ↗</a></div>`}
 function dayNut(d){const g=guideFor(st.about||{});const m=d.meal&&M(d.meal);if(!g||!m||!m.nut||d.kind)return "";
   return `<p class="nut">🍽 Dinner est. ~${m.nut.kcal} cal · ${m.nut.p} g protein (≈${Math.round(m.nut.kcal/g.mid*100)}% of your daily calories, ${Math.round(m.nut.p/((g.pLo+g.pHi)/2)*100)}% of protein)</p>`}
 
-/* ---- meal ratings: 👎 tried it, no · 👍 good · 👍👍 favorite (saved on this phone) ---- */
+/* ---- meal ratings: 👎 tried it, no · 👍 good · ❤️ favorite (saved on this phone) ---- */
 const RKEY="cameron-meals-ratings-v1";
 function getRates(){try{const j=JSON.parse(localStorage.getItem(RKEY)||"{}");return j&&typeof j==="object"?j:{}}catch(_){return {}}}
 function rateOf(id){const r=getRates()[id];return r?r.r:0}
-function setRate(id,r){const all=getRates();if(!r||(all[id]&&all[id].r===r))delete all[id];else{const t=new Date();all[id]={r,d:`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`}}
+function setRate(id,r,forGood){const all=getRates();if(!r||(all[id]&&all[id].r===r&&!forGood))delete all[id];else{all[id]={r,d:isoD(new Date())};if(forGood)all[id].x=1}
   try{localStorage.setItem(RKEY,JSON.stringify(all))}catch(_){}}
-function rateRow(id){const r=rateOf(id);return `<div class="rate" onclick="event.stopPropagation()"><span>Made it? Rate it:</span>${[[-1,"👎","Tried it, no"],[1,"👍","Good"],[2,"👍👍","Favorite"]].map(([v,e,t])=>`<button data-rate="${v}" data-m="${id}" aria-pressed="${r===v}" title="${t}">${e}</button>`).join("")}</div>`}
+function rateRow(id){const r=rateOf(id);return `<div class="rate" onclick="event.stopPropagation()"><span>Made it? Rate it:</span>${[[-1,"👎","Tried it, no"],[1,"👍","Good"],[2,"❤️","Favorite"]].map(([v,e,t])=>`<button data-rate="${v}" data-m="${id}" aria-pressed="${r===v}" title="${t}">${e}</button>`).join("")}</div>`}
 function ratingsPanel(){const all=getRates();const ids=Object.keys(all).filter(id=>M(id));
-  const row=(id,restore)=>`<li><span>${M(id).emoji} ${esc(M(id).name)}</span><small>${esc(all[id].d||"")}</small><button class="have" data-unrate="${id}">${restore?"Restore":"Clear"}</button></li>`;
+  const row=(id,restore)=>`<li><span>${M(id).emoji} ${esc(M(id).name)}${restore?` <small>${all[id].x?"🗑 removed for good":"👎 tried it, no"}</small>`:""}${timesMade(id)?` <small>· made ${timesMade(id)}×</small>`:""}</span><small>${esc(all[id].d||"")}</small><button class="have" data-unrate="${id}">${restore?"Restore":"Clear"}</button></li>`;
   const g=r=>ids.filter(id=>all[id].r===r);
-  return `<section class="gpanel rpanel"><div class="stitle" style="margin-top:0"><h2>My ratings</h2><span>👎 hides · 👍👍 = ⭐</span></div>
-    ${ids.length?`${g(2).length?`<h3 class="aisle">⭐ Favorites</h3><ul>${g(2).map(id=>row(id)).join("")}</ul>`:""}${g(1).length?`<h3 class="aisle">👍 Good</h3><ul>${g(1).map(id=>row(id)).join("")}</ul>`:""}${g(-1).length?`<h3 class="aisle">👎 Removed meals</h3><p class="hint" style="margin:0 0 4px">Hidden from suggestions and swaps. Restore to bring one back.</p><ul>${g(-1).map(id=>row(id,true)).join("")}</ul>`:""}`
-      :`<p class="hint">No ratings yet. After you make a meal, tap 👎 / 👍 / 👍👍 on its day. Favorites get picked more; 👎 meals stop showing up.</p>`}</section>`}
+  return `<section class="gpanel rpanel"><div class="stitle" style="margin-top:0"><h2>My ratings</h2><span>👎 hides · ❤️ = ⭐ favorite</span></div>
+    ${ids.length?`${g(2).length?`<h3 class="aisle">⭐ Favorites (❤️)</h3><ul>${g(2).map(id=>row(id)).join("")}</ul>`:""}${g(1).length?`<h3 class="aisle">👍 Good</h3><ul>${g(1).map(id=>row(id)).join("")}</ul>`:""}${g(-1).length?`<h3 class="aisle">🗑 Removed meals</h3><p class="hint" style="margin:0 0 4px">Rated 👎 or removed from the menu for good. Hidden from suggestions and Swap. Tap Restore to bring one back.</p><ul>${g(-1).map(id=>row(id,true)).join("")}</ul>`:""}`
+      :`<p class="hint">No ratings yet. After you make a meal, tap 👎 / 👍 / ❤️ on its day. ❤️ = ⭐ favorite, picked more; 👎 meals stop showing up.</p>`}</section>`}
 /* receipt button */
 function bindReceipt(root){root.querySelectorAll("[data-rcpt]").forEach(b=>b.onclick=openReceipt)}
 function photoShare(o){o.btn.onclick=()=>o.input.click();attachShare({inputs:[o.input],thumbs:o.thumbs,act:o.act,files:o.store,shareLabel:o.shareLabel,title:o.title,text:o.text,fallback:o.fallback})}
@@ -928,6 +977,124 @@ fetch("prices.json",{cache:"no-cache"}).then(r=>r.ok?r.json():Promise.reject(r.s
   if(j.updated)PRICE_META.updated=j.updated;PRICE_META.loaded=true;
   if(W&&document.body.classList.contains("light")){recomputeList();renderWeek()}else if(W)recomputeList();
 }).catch(()=>{});
+/* ---- v4: coffee, copy list, toast, per-day Swap + 🗑 Delete, meal log + week review ---- */
+function isoD(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function coffeeCalc(){const K=C.COFFEE,c=st.coffee,P=C.PRICES;const ds=K.drinks.filter(d=>c.drinks.has(d.id));const list=ds.length?ds:[K.drinks[0]];
+  const n=c.perWeek;const avgMilk=c.milk==="No milk"?0:list.reduce((a,d)=>a+d.milk,0)/list.length;
+  const milkOz=Math.round(n*avgMilk),g=n*K.gPerDrink,bags=Math.max(1,Math.ceil(g/K.bagG));
+  const milkKey=milkOz>0&&P["coffee:"+c.milk]?"coffee:"+c.milk:null,halfGal=milkKey?Math.max(1,Math.ceil(milkOz/K.milkOz)):0,syrup=c.syrup!=="None";
+  const bp=x=>Math.min(x.a,x.p);
+  const home=g/K.bagG*bp(P["coffee:beans"])+(milkKey?milkOz/K.milkOz*bp(P[milkKey]):0)+(syrup?n/12*bp(P["coffee:syrup"]):0);
+  const out=n*K.outPrice;return {n,g,bags,milkOz,milkKey,halfGal,syrup,home,out,save:out-home}}
+function coffeeDesc(){const K=C.COFFEE,c=st.coffee;const ds=K.drinks.filter(d=>c.drinks.has(d.id)).map(d=>d.label);
+  return `${esc(ds.join(", ")||"Latte")} · ${esc(c.milk)}${c.syrup!=="None"?" · "+esc(c.syrup)+" syrup":""} · ${c.perWeek} drinks/week`}
+function coffeeLine(short){const k=coffeeCalc();const base=`Coffee at home ~$${k.home.toFixed(2)}/week vs ~$${k.out.toFixed(2)} buying out (${k.n} drinks × ~$${C.COFFEE.outPrice.toFixed(2)}) · est. Saves ~$${Math.max(0,k.save).toFixed(0)}/week.`;
+  if(short||!W)return base;const ci=W.items.filter(it=>it.aisle==="coffee"&&!W.have.has(it.id));const tot=ci.reduce((a,it)=>a+Math.min(it.a==null?1e9:it.a,it.p==null?1e9:it.p),0);
+  return `${base} Coffee groceries on this list: ~$${tot.toFixed(2)} est., counted in the totals and your budget.`}
+function coffeeStep(){const K=C.COFFEE,c=st.coffee;
+  card.innerHTML=`<div class="emoji">☕</div><h1>Your coffee</h1><p class="sub">You've got an espresso machine. What do you make with it?</p>
+    <p class="lbl">Drinks (tap all you make)</p><div class="chips">${K.drinks.map(d=>`<span class="chip${c.drinks.has(d.id)?"":" off"}" data-cd="${d.id}">${d.emoji} ${d.label}</span>`).join("")}</div>
+    <p class="lbl">Milk</p><div class="chips">${K.milks.map(m=>`<span class="chip${c.milk===m?"":" off"}" data-cmk="${esc(m)}">${esc(m)}</span>`).join("")}</div>
+    <p class="lbl">Syrup</p><div class="chips">${K.syrups.map(m=>`<span class="chip${c.syrup===m?"":" off"}" data-csy="${esc(m)}">${esc(m)}</span>`).join("")}</div>
+    <p class="lbl">How many drinks a week?</p><div class="chips">${K.perWeek.map(n=>`<span class="chip${c.perWeek===n?"":" off"}" data-cw="${n}">${n}</span>`).join("")}</div>
+    <div class="cofbox">☕ ${coffeeLine(true)}<br><small>Beans, milk and syrup go on your shopping list (Coffee section) and count in your budget. Café price ~$5.50/drink is a rough estimate.</small></div>
+    ${btns("Next →")}`;
+  card.querySelectorAll("[data-cd]").forEach(b=>b.onclick=()=>{const k=b.dataset.cd;c.drinks.has(k)?c.drinks.delete(k):c.drinks.add(k);render()});
+  card.querySelectorAll("[data-cmk]").forEach(b=>b.onclick=()=>{c.milk=b.dataset.cmk;render()});
+  card.querySelectorAll("[data-csy]").forEach(b=>b.onclick=()=>{c.syrup=b.dataset.csy;render()});
+  card.querySelectorAll("[data-cw]").forEach(b=>b.onclick=()=>{c.perWeek=+b.dataset.cw;render()});
+  $("nx").onclick=()=>go()}
+function toast(msg,undo){const t=$("toast2");clearTimeout(toast._t);t.innerHTML=`<span>${esc(msg)}</span>${undo?'<button id="t2u">Undo</button>':""}`;t.classList.add("show");
+  if(undo)$("t2u").onclick=()=>{clearTimeout(toast._t);t.classList.remove("show");undo()};toast._t=setTimeout(()=>t.classList.remove("show"),undo?5000:2400)}
+async function copyTxt(text,msg){try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);else throw 0}
+  catch(_){const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}ta.remove()}
+  toast("📋 "+msg)}
+function listText(which){const t=totals(),wl=fmtWeek(weekStartDate()),items=W.items.filter(it=>!W.have.has(it.id));
+  const aw=it=>it.a!=null&&(it.p==null||it.a<=it.p),pw=it=>it.p!=null&&!aw(it);
+  const pr=it=>`Aldi ${it.a==null?"n/a":"est. "+$$(it.a)} / Publix ${it.p==null?"n/a":"est. "+$$(it.p)}`;const L=[];
+  if(which==="all"){L.push(`My shopping list: ${wl}`,`Est. totals: All Aldi ${$$(t.a)} · All Publix ${$$(t.p)} · Best split ${$$(t.b)}`);if(st.equip.has("espresso"))L.push(coffeeLine(true));
+    AISLES.forEach(([k,lab])=>{const g=items.filter(i=>i.aisle===k);if(!g.length)return;L.push("",lab.toUpperCase());
+      g.forEach(it=>L.push(`[ ] ${it.n}${it.q?" ("+it.q+")":""} - ${it.custom?"check price":pr(it)}${aw(it)?" · Aldi cheaper":pw(it)?" · Publix cheaper":""}`))})}
+  else{const pick=which==="Aldi"?aw:pw,g=items.filter(pick),sum=g.reduce((a,it)=>a+(which==="Aldi"?it.a:it.p),0);
+    L.push(`${which} list (best split): ${wl}`,`${g.length} items · est. ${$$(sum)}`);
+    AISLES.forEach(([k,lab])=>{const h=g.filter(i=>i.aisle===k);if(!h.length)return;L.push("",lab.toUpperCase());h.forEach(it=>L.push(`[ ] ${it.n}${it.q?" ("+it.q+")":""} - est. ${$$(which==="Aldi"?it.a:it.p)}`))})}
+  L.push("","Prices are estimates (St. Pete area). Check in store.");return L.join("\n")}
+function openDaySwap(i){const d=effDays(W.ov)[i],o=W.ov[i];
+  const opts=MEALS.filter(m=>m.id!=="veg"&&rateOf(m.id)!==-1).sort((a,b)=>(rateOf(b.id)===2)-(rateOf(a.id)===2)||(yes(b.id)-yes(a.id)));
+  const inn=openSheet(shTop("Swap "+esc(d.short))+`<p class="muted2" style="margin:0 0 8px">Now: <b>${d.e} ${esc(d.dinner)}</b></p>
+    <div class="cz-o">${o?`<button data-o="keep">↩ Original</button>`:""}<button data-o="left">Leftovers</button><button data-o="out">Eat out</button></div>
+    <div class="cz-list">${opts.map(m=>`<button data-pick="${m.id}">${rateOf(m.id)===2?"⭐ ":""}${m.emoji} ${esc(m.name)}${m.v?" ("+esc(mv(m.id))+")":""}</button>`).join("")}</div>
+    <p class="muted2">👎 and removed meals aren't offered. The shopping list updates right away.</p>`,"Swap dinner");
+  const done=(v,msg)=>{if(v)W.ov[i]=v;else delete W.ov[i];recomputeList();closeSheet();renderWeek();toast(msg)};
+  inn.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{const a=b.dataset.o;done(a==="keep"?null:{t:a},a==="keep"?"Back to the original dinner":a==="left"?"Swapped to Leftovers":"Swapped to Eat out")});
+  inn.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>done({t:"meal",id:b.dataset.pick},"Dinner swapped. List updated"))}
+function openDelete(i){const d=effDays(W.ov)[i],m=d.meal&&M(d.meal);
+  const inn=openSheet(shTop("🗑 Delete "+esc(d.short)+" dinner")+`<p style="margin:0 0 10px;font-weight:800">${d.e} ${esc(d.dinner)}</p>
+    <button class="sh-btn wide" data-rm="week">Remove from this week</button><p class="muted2" style="margin:4px 0 12px">Frees up this night and takes its groceries off the list. You get 5 seconds to Undo.</p>
+    <button class="sh-btn wide danger" data-rm="good" ${m?"":"disabled"}>Remove from menu for good</button><p class="muted2" style="margin:4px 0 0">${m?`Moves ${esc(m.name)} to Removed meals. It won't be suggested or offered in Swap. Tap Restore there anytime.`:"Only menu meals can be removed for good (this night isn't one)."}</p>`,"Delete dinner");
+  inn.querySelector('[data-rm="week"]').onclick=()=>{const prev=W.ov[i];W.ov[i]={t:"rm"};recomputeList();closeSheet();renderWeek();
+    toast(`Removed from this week: ${d.short}`,()=>{if(prev)W.ov[i]=prev;else delete W.ov[i];recomputeList();renderWeek();toast("Undone. It's back on the week")})};
+  if(m)inn.querySelector('[data-rm="good"]').onclick=()=>confirmForGood(m)}
+function confirmForGood(m){const inn=openSheet(shTop("Remove for good?")+`<p style="margin:0 0 8px;font-weight:800">Remove ${m.emoji} ${esc(m.name)} from your menu for good?</p>
+    <p class="muted2" style="margin:0 0 10px">It moves to <b>Removed meals</b> and won't be suggested or offered in Swap. You can tap Restore there anytime.</p>
+    <div class="sh-row2"><button class="sh-btn" data-c="no">Cancel</button><button class="sh-btn danger" data-c="yes">Remove for good</button></div>`,"Confirm remove from menu for good");
+  inn.querySelector('[data-c="no"]').onclick=closeSheet;
+  inn.querySelector('[data-c="yes"]').onclick=()=>{setRate(m.id,-1,true);effDays(W.ov).forEach((x,j)=>{if(x.meal===m.id)W.ov[j]={t:"rm"}});recomputeList();closeSheet();renderWeek();
+    toast(`${m.name} removed from menu for good. Restore it in Removed meals.`)}}
+/* meal log (saved on this phone) */
+const LKEY="cameron-meals-log-v1";
+function getLog(){try{const j=JSON.parse(localStorage.getItem(LKEY)||"null");if(j&&typeof j==="object"&&j.log)return j}catch(_){}return {log:{},prompt:null,seen:null}}
+function setLog(L){try{localStorage.setItem(LKEY,JSON.stringify(L))}catch(_){}}
+const LS=[["made","✅ Made"],["skip","⏭ Skipped"],["out","🍽 Ate out"]];
+const logKey=e=>e.m||e.n;
+const mealName=k=>{const m=M(k);return m?m.emoji+" "+m.name:k};
+function timesMade(k){return Object.values(getLog().log).filter(e=>e.s==="made"&&logKey(e)===k).length}
+function logCtl(date){const iso=isoD(date),e=getLog().log[iso]||{};
+  return `<div class="lr"><span>Log it:</span>${LS.map(([v,l])=>`<button data-ls="${v}" data-ld="${iso}" aria-pressed="${e.s===v}">${l}</button>`).join("")}</div>
+  ${e.s==="made"?`<div class="lr"><span>Leftovers:</span>${[0,1,2,3].map(n=>`<button data-llo="${n}" data-ld="${iso}" aria-pressed="${e.lo===n}">${n}</button>`).join("")}</div><div class="lr"><span>Went bad?</span><button data-lbad="0" data-ld="${iso}" aria-pressed="${e.bad===false}">No</button><button data-lbad="1" data-ld="${iso}" aria-pressed="${e.bad===true}">Yes</button></div>`:""}`}
+function logRow(i,d){const date=addDays(weekStartDate(),i),k=d.meal||null,n=k?timesMade(k):0;
+  return `<div class="log" onclick="event.stopPropagation()">${logCtl(date)}${n?`<p class="lct">Made ${n}× all-time${rateOf(k)===2?" · ⭐ favorite":""}</p>`:""}</div>`}
+function bindLog(root,days,map,after){map=map||{};after=after||renderWeek;
+  if(days)days.forEach((d,i)=>{map[isoD(addDays(weekStartDate(),i))]={m:d.meal||null,n:d.dinner}});
+  const upd=(iso,f)=>{const L=getLog();const e=L.log[iso]||{m:map[iso]?map[iso].m:null,n:map[iso]?map[iso].n:""};f(e);if(e.s)L.log[iso]=e;else delete L.log[iso];setLog(L);return e};
+  root.querySelectorAll("[data-ls]").forEach(b=>b.onclick=ev=>{ev.stopPropagation();const v=b.dataset.ls;
+    const e=upd(b.dataset.ld,e=>{if(e.s===v)e.s=null;else{e.s=v;if(v!=="made"){delete e.lo;delete e.bad}}});after();
+    if(e.s==="made")toast(e.m&&!rateOf(e.m)?"✅ Logged as made. How was it? Rate it 👎 / 👍 / ❤️":"✅ Logged as made");else if(e.s)toast(e.s==="skip"?"⏭ Logged as skipped":"🍽 Logged as ate out")});
+  root.querySelectorAll("[data-llo]").forEach(b=>b.onclick=ev=>{ev.stopPropagation();upd(b.dataset.ld,e=>{e.lo=+b.dataset.llo});after()});
+  root.querySelectorAll("[data-lbad]").forEach(b=>b.onclick=ev=>{ev.stopPropagation();upd(b.dataset.ld,e=>{e.bad=b.dataset.lbad==="1"});after()});
+  const go3=root.querySelector("#lgGo");if(go3){go3.onclick=()=>openLogSheet(days);root.querySelector("#lgLater").onclick=()=>{const L=getLog();L.prompt=isoD(new Date());setLog(L);renderWeek()}}}
+function last3(days){const t=new Date(),out=[];for(let k=3;k>=1;k--){const d=addDays(t,-k),idx=(d.getDay()+6)%7,p=days[idx];
+  out.push({date:d,iso:isoD(d),m:p.meal||null,n:p.dinner,e:p.e,label:`${DN[idx]} ${d.getMonth()+1}/${d.getDate()}`})}return out}
+function logBanner(days){const L=getLog(),today=isoD(new Date());if(!L.seen){L.seen=today;setLog(L)}
+  const since=Math.floor((Date.now()-new Date((L.prompt||L.seen)+"T00:00:00").getTime())/864e5);
+  if(since<3||!last3(days).some(x=>!L.log[x.iso]))return "";
+  return `<div class="logb"><b>📝 Quick check-in</b><span>How did the last 3 days go? A few taps keeps your suggestions smart.</span><div><button class="lb p" id="lgGo">Log last 3 days</button><button class="lb" id="lgLater">Later</button></div></div>`}
+function openLogSheet(days){const items=last3(days),map={};items.forEach(x=>map[x.iso]={m:x.m,n:x.n});const inn=openSheet("","Log the last 3 days");
+  const fin=()=>{const L=getLog();L.prompt=isoD(new Date());setLog(L);closeSheet();renderWeek()};
+  const draw=()=>{inn.innerHTML=shTop("📝 Log the last 3 days")+`<p class="muted2" style="margin:0 0 8px">Shown: what your plan has for that weekday. Tap what actually happened.</p>`+
+    items.map(x=>`<div class="lgc"><div class="lgh">${x.label} · ${x.e} ${esc(x.n)}</div><div class="log">${logCtl(x.date)}</div></div>`).join("")+
+    `<div class="sh-row2"><button class="sh-btn" id="lgL">Later</button><button class="sh-btn p" id="lgD">Done</button></div>`;
+    bindLog(inn,null,map,draw);inn.querySelector("#lgD").onclick=fin;inn.querySelector("#lgL").onclick=fin};draw()}
+function weekReview(days){const L=getLog().log,s0=weekStartDate();
+  const wk=days.map((d,i)=>({d,e:L[isoD(addDays(s0,i))]}));
+  const planned=wk.filter(x=>x.d.kind!=="rm"&&x.d.kind!=="out").length,c=v=>wk.filter(x=>x.e&&x.e.s===v).length;
+  const wasted=wk.reduce((a,x)=>a+(x.e&&x.e.bad?(x.e.lo||1):0),0);
+  const top=[...new Set(wk.filter(x=>x.e&&x.e.s==="made"&&x.e.m).map(x=>x.e.m))].filter(id=>rateOf(id)>0).sort((a,b)=>rateOf(b)-rateOf(a));
+  const all=Object.values(L),keys=[...new Set(all.map(logKey).filter(Boolean))];
+  const S=keys.map(k=>{const es=all.filter(e=>logKey(e)===k);return {k,made:es.filter(e=>e.s==="made").length,skip:es.filter(e=>e.s==="skip").length,bad:es.filter(e=>e.bad).length}});
+  const tm=S.filter(x=>x.made).sort((a,b)=>b.made-a.made),sug=[];
+  S.forEach(x=>{const nm=mealName(x.k),di=days.findIndex(d=>d.meal===x.k);
+    if(x.skip>=2)sug.push(`<li>⏭ <b>${esc(nm)}</b>: Skipped ${x.skip===2?"twice":x.skip+" times"}: swap it?${di>=0?` <button class="have" data-swapd="${di}">Swap</button>`:""}</li>`);
+    if(x.bad)sug.push(`<li>🗑 <b>${esc(nm)}</b>: Leftovers went bad: make a smaller batch.</li>`);
+    if(M(x.k)&&x.made>=2&&!rateOf(x.k))sug.push(`<li>👍 <b>${esc(nm)}</b>: Made ${x.made}×: rate it? ❤️ gets it suggested more.</li>`);
+    if(M(x.k)&&x.made&&rateOf(x.k)===2)sug.push(`<li>⭐ <b>${esc(nm)}</b>: ❤️ favorite: keep it in the rotation.</li>`)});
+  const RE={"-1":"👎","1":"👍","2":"❤️"};
+  return `<section class="gpanel wrev"><div class="stitle" style="margin-top:0"><h2>Week review</h2><span>${esc(fmtWeek(s0))}</span></div>
+   <div class="wst"><div><b>${c("made")}/${planned}</b>made vs planned</div><div><b>${c("skip")}</b>skipped</div><div><b>${c("out")}</b>ate out</div><div class="${wasted?"bad":""}"><b>${wasted}</b>leftovers wasted</div></div>
+   <p class="wtop">${top.length?`Top-rated this week: ${top.map(id=>`${RE[rateOf(id)]} ${esc(M(id).name)}`).join(" · ")}`:"Top-rated this week: rate the meals you made (👎 / 👍 / ❤️) and they show up here."}</p>
+   <h3 class="aisle">Times made (all-time)</h3>${tm.length?`<ul class="tml">${tm.map(x=>`<li><span>${esc(mealName(x.k))}</span>${M(x.k)&&rateOf(x.k)?`<small>${RE[rateOf(x.k)]}</small>`:""}<b>×${x.made}</b></li>`).join("")}</ul>`:`<p class="hint">Nothing logged yet. Tap ✅ Made on a day after you cook it.</p>`}
+   <h3 class="aisle">Suggestions</h3>${sug.length?`<ul class="sgl">${sug.join("")}</ul>`:`<p class="hint">Log a few days and simple tips show up here (like "Skipped twice: swap it?").</p>`}</section>`}
+
 initSheet();bindReceipt(document);
 reset();render();
 </script>
