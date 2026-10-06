@@ -701,6 +701,34 @@
 
 
 
+
+  .have-hidden-toggle{
+    appearance:none;border:2px solid rgba(28,232,196,.35);background:transparent;color:var(--teal);
+    font:inherit;font-size:12px;font-weight:800;min-height:40px;padding:6px 10px;cursor:pointer;
+    border-radius:var(--cam-r,4px)!important;margin:0 0 8px;
+  }
+  .have-hidden-toggle.is-on{background:var(--tealS);border-color:var(--teal)}
+  .have-hidden-toggle:disabled{opacity:.4;cursor:default}
+  .have-back{display:block;margin-top:4px;font-size:11px;font-weight:700;color:var(--wsoft)}
+  .it.have-suppressed{opacity:.72}
+  .g-add-sticky .have-hidden-wrap{flex:1 1 100%;display:flex;justify-content:flex-end;order:10}
+  .add-item-sheet .add-field{display:flex;flex-direction:column;gap:4px;margin:0 0 12px}
+  .add-item-sheet .add-field>span{font-size:12px;font-weight:800;color:var(--wsoft)}
+  .add-item-sheet input,.add-item-sheet select{
+    font:inherit;font-size:16px;padding:10px 12px;border-radius:var(--cam-r,4px)!important;
+    border:2px solid rgba(45,212,191,.35);background:var(--wbg,#0f1a2a);color:var(--wink,#e8eef6);
+  }
+  .g-alt-chev,.meat-cut-chev{
+    appearance:none;border:0;background:transparent;color:var(--tealD,#5eead4);
+    font-size:16px;font-weight:900;cursor:pointer;min-width:36px;min-height:36px;padding:4px;
+  }
+  .dinner .meat-cut-chev{margin-left:4px;vertical-align:middle}
+  .it .g-alt-chev{flex:0 0 auto;align-self:center}
+  .g-sec-head{font-size:13px;font-weight:900;letter-spacing:.02em;color:var(--tealD);margin:14px 0 6px;text-transform:none}
+  .standing-pick{margin:8px 0 12px}
+  .standing-pick .chips{display:flex;flex-wrap:wrap;gap:6px}
+
+
   .g-add-sticky{
     position:sticky;top:0;z-index:5;
     display:flex;flex-wrap:wrap;gap:8px;align-items:center;
@@ -1044,58 +1072,247 @@ function normalizeCoffee(c){
     perWeek:Number(c.perWeek)>0?Number(c.perWeek):7
   };
 }
-const CM_WEEK_SNAP="cm-week-snap-v1";
+const CM_WEEK_SNAP="cm-week-snap-v1"; /* legacy session key — migrated into draft */
+const CM_DRAFT_KEY="cm-week-draft-v1"; /* mid-flow autosave (localStorage). Lock-in is separate. */
 function isWeekView(){return document.body.classList.contains("view-week")}
-function saveWeekSnap(){
-  if(!W||!st)return;
+
+function stToJSON(){
+  if(!st)return null;
+  const picks={};
+  Object.keys(st.picks||{}).forEach(k=>{const v=st.picks[k];picks[k]=v instanceof Set?[...v]:(Array.isArray(v)?v.slice():[])});
+  return {
+    stores:[...(st.stores||[])],
+    extra:(st.extra||[]).slice(),
+    storeLoc:st.storeLoc||{},
+    main:st.main||"",
+    photos:st.photos||{},
+    equip:[...(st.equip||[])],
+    coffee:typeof coffeeToJSON==="function"?coffeeToJSON(st.coffee):st.coffee,
+    meals:st.meals||{},
+    mealV:st.mealV||{},
+    mealVs:st.mealVs||{},
+    pattyVs:(st.pattyVs||[]).slice(),
+    tip:null,
+    build:st.build||null,
+    weekStart:st.weekStart||null,
+    about:st.about||null,
+    aboutReturn:!!st.aboutReturn,
+    sides:[...(st.sides||[])],
+    picks,
+    custom:st.custom||{},
+    mealCustom:(st.mealCustom||[]).slice(),
+    sidePick:st.sidePick||null,
+    pickBackup:st.pickBackup||null,
+    _fromTemplate:!!st._fromTemplate
+  };
+}
+function applyStJSON(j){
+  if(!j||!st)return;
+  if(j.stores)st.stores=new Set(j.stores);
+  if(j.extra)st.extra=j.extra.slice();
+  if(j.storeLoc)st.storeLoc=j.storeLoc;
+  if(j.main!=null)st.main=j.main;
+  if(j.photos)st.photos=j.photos;
+  if(j.equip)st.equip=new Set(j.equip);
+  if(j.coffee)st.coffee=normalizeCoffee(j.coffee);
+  if(j.meals)st.meals=j.meals;
+  if(j.mealV)st.mealV=j.mealV;
+  if(j.mealVs)st.mealVs=j.mealVs;
+  if(j.pattyVs)st.pattyVs=j.pattyVs.slice();
+  if(j.build)st.build=j.build;
+  if(j.weekStart!=null)st.weekStart=j.weekStart;
+  if(j.about)st.about=j.about;
+  st.aboutReturn=!!j.aboutReturn;
+  if(j.sides)st.sides=new Set(j.sides);
+  st.picks={}; Object.keys(j.picks||{}).forEach(k=>st.picks[k]=new Set(j.picks[k]||[]));
+  if(j.custom)st.custom=j.custom;
+  if(j.mealCustom)st.mealCustom=j.mealCustom.slice();
+  st.sidePick=j.sidePick||null;
+  st.pickBackup=j.pickBackup||null;
+  st._fromTemplate=!!j._fromTemplate;
+  st.open=null;st.cOpen=null;st.xOpen=null;st.tip=null;
+}
+function wToJSON(){
+  if(!W)return null;
+  return {
+    base:W.base||[],
+    ov:W.ov||{},
+    groups:(W.groups||[]).slice(),
+    extra:(W.extra||[]).slice(),
+    F:W.F||null,
+    have:[...(W.have||[])],
+    ck:[...(W.ck||[])],
+    daySides:W.daySides||{},
+    gCat:W.gCat||null,
+    gSearch:W.gSearch||"",
+    stockOptIn:(W.stockOptIn||[]).slice(),
+    munchiesOptIn:(W.munchiesOptIn||[]).slice()
+  };
+}
+function applyWJSON(j){
+  if(!j||!j.base)return false;
+  W={
+    base:j.base,ov:j.ov||{},groups:j.groups||[],extra:j.extra||[],F:j.F||null,
+    have:new Set(j.have||[]),ck:new Set(j.ck||[]),
+    open:null,items:[],listFilter:null,shopHi:null,
+    daySides:j.daySides||{},gSearch:j.gSearch||"",gCat:j.gCat||null,
+    stockOptIn:j.stockOptIn||[],munchiesOptIn:j.munchiesOptIn||[]
+  };
+  try{recomputeList()}catch(_){}
+  return true;
+}
+function queueStepId(){
+  const s=queue&&queue[pos];
+  if(s==null)return "home";
+  if(typeof s==="object")return s.build?("build:"+s.build):(s.side?("side:"+s.side):JSON.stringify(s));
+  return String(s);
+}
+function findQueuePos(stepId){
+  if(!queue||!stepId)return 0;
+  if(String(stepId).startsWith("build:")){
+    const id=String(stepId).slice(6);
+    const i=queue.findIndex(s=>s&&typeof s==="object"&&s.build===id);
+    return i>=0?i:queue.indexOf("meals");
+  }
+  if(String(stepId).startsWith("side:")){
+    const id=String(stepId).slice(5);
+    const i=queue.findIndex(s=>s&&typeof s==="object"&&s.side===id);
+    return i>=0?i:queue.indexOf("sides");
+  }
+  const i=queue.indexOf(stepId);
+  return i>=0?i:0;
+}
+function draftView(){
+  if(isWeekView())return "week";
+  const s=queue&&queue[pos];
+  if(s==="home")return "home";
+  return "setup";
+}
+function persistDraft(force){
+  /* Autosave mid-flow to localStorage after every meaningful change.
+     Lock in (cm-week-lock-v1) is a separate committed mark — both coexist. */
+  if(!st)return;
   try{
-    sessionStorage.setItem(CM_VIEW_KEY,"1");
-    sessionStorage.setItem(CM_WEEK_SNAP,JSON.stringify({
-      base:W.base,ov:W.ov,groups:W.groups,extra:W.extra,F:W.F,
-      have:[...W.have],ck:[...W.ck],daySides:W.daySides||{},
-      st:{stores:[...st.stores],equip:[...st.equip],meals:st.meals,sides:[...st.sides],main:st.main||"",weekStart:st.weekStart||null,about:st.about||null,coffee:coffeeToJSON(st.coffee)}
-    }));
+    const pack={
+      v:1,
+      savedAt:Date.now(),
+      view:draftView(),
+      pos:pos|0,
+      step:queueStepId(),
+      mealListOffset:typeof mealListOffset==="number"?mealListOffset:0,
+      st:stToJSON(),
+      W:wToJSON()
+    };
+    localStorage.setItem(CM_DRAFT_KEY,JSON.stringify(pack));
+    /* Keep session mirror for same-tab Back/forward without wiping */
+    if(W&&W.base){
+      sessionStorage.setItem(CM_VIEW_KEY,isWeekView()?"1":"0");
+      sessionStorage.setItem(CM_WEEK_SNAP,JSON.stringify({base:W.base,ov:W.ov,groups:W.groups,extra:W.extra,F:W.F,have:[...W.have],ck:[...W.ck],daySides:W.daySides||{},st:stToJSON()}));
+    }
   }catch(_){}
 }
-function clearWeekSnap(){try{sessionStorage.removeItem(CM_VIEW_KEY);sessionStorage.removeItem(CM_WEEK_SNAP)}catch(_){}}
+function saveWeekSnap(){persistDraft(true)}
+function clearWeekSnap(){
+  /* LEGACY name — do NOT wipe mid-flow draft on route change.
+     Only clear session view flag. Draft cleared only by explicit Start over. */
+  try{sessionStorage.removeItem(CM_VIEW_KEY)}catch(_){}
+}
+function clearMidFlowDraft(){
+  try{localStorage.removeItem(CM_DRAFT_KEY)}catch(_){}
+  try{sessionStorage.removeItem(CM_VIEW_KEY);sessionStorage.removeItem(CM_WEEK_SNAP)}catch(_){}
+}
+function loadDraft(){
+  try{
+    const raw=localStorage.getItem(CM_DRAFT_KEY);
+    if(raw){const j=JSON.parse(raw);if(j&&j.v===1&&j.st)return j}
+  }catch(_){}
+  /* Migrate legacy session snap once */
+  try{
+    const raw=sessionStorage.getItem(CM_WEEK_SNAP);
+    if(!raw)return null;
+    const j=JSON.parse(raw);
+    if(!j)return null;
+    return {v:1,savedAt:Date.now(),view:sessionStorage.getItem(CM_VIEW_KEY)==="1"?"week":"setup",pos:0,step:"home",mealListOffset:0,st:j.st||null,W:j.base?{base:j.base,ov:j.ov,groups:j.groups,extra:j.extra,F:j.F,have:j.have,ck:j.ck,daySides:j.daySides}:{}};
+  }catch(_){return null}
+}
+function hasMidFlowDraft(){
+  const d=loadDraft();
+  if(!d||!d.st)return false;
+  const meals=d.st.meals||{};
+  if(Object.keys(meals).length)return true;
+  if(d.W&&d.W.base&&d.W.base.length)return true;
+  if((d.st.sides||[]).length)return true;
+  if(d.view==="week"||d.view==="setup")return d.step&&d.step!=="home";
+  return false;
+}
+function restoreDraft(){
+  const j=loadDraft();
+  if(!j||!j.st)return false;
+  try{
+    if(!st)reset();
+    applyStJSON(j.st);
+    if(typeof mealListOffset!=="undefined")mealListOffset=j.mealListOffset|0;
+    /* Rebuild queue so MEALB/BUILD steps match restored meals/sides */
+    queue=["home","photos","stores","about","equip","coffee","meals","MEALB","sides","BUILD","summary"];
+    pos=0;
+    /* Advance through builders so object steps exist, then jump to saved step */
+    try{
+      const want=j.step||"home";
+      for(let guard=0;guard<80;guard++){
+        const s=queue[pos];
+        if(s==="coffee"&&!(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))){pos++;continue}
+        if(s==="MEALB"){buildMealSteps();continue}
+        if(s==="BUILD"){buildDrill();continue}
+        if(queueStepId()===want)break;
+        if(pos>=queue.length-1)break;
+        pos++;
+      }
+      const p2=findQueuePos(j.step);
+      if(p2>=0)pos=p2;
+    }catch(_){pos=typeof j.pos==="number"?j.pos:0}
+
+    const wantWeek=j.view==="week"||(j.W&&j.W.base&&j.W.base.length&&sessionStorage.getItem(CM_VIEW_KEY)==="1");
+    if(j.W&&j.W.base&&j.W.base.length){
+      applyWJSON(j.W);
+      if(wantWeek||j.view==="week"){
+        document.body.classList.add("view-week");
+        document.body.classList.remove("light","view-home");
+        applyCamTheme(getCamTheme());
+        renderWeek();
+        updateBackBtn();
+        return true;
+      }
+    }
+    /* Mid-setup restore — stay on saved step, never wipe back to meal-picker empty */
+    document.body.classList.remove("view-week");
+    if(j.view==="home"||queue[pos]==="home")document.body.classList.add("view-home");
+    else document.body.classList.remove("view-home");
+    applyCamTheme(getCamTheme());
+    updateBackBtn();
+    return true;
+  }catch(e){console.warn("[cam draft] restore failed",e);return false}
+}
+function restoreWeekSnap(){
+  /* Prefer durable localStorage draft; fall back to legacy session snap */
+  if(restoreDraft())return isWeekView();
+  return false;
+}
 function showWeekView(){
   document.body.classList.add("view-week");
-  document.body.classList.remove("light");
+  document.body.classList.remove("light","view-home");
   applyCamTheme(getCamTheme());
-  saveWeekSnap();
+  persistDraft(true);
   updateBackBtn();
 }
 function hideWeekView(){
+  /* CRITICAL FIX: do NOT wipe mid-flow draft on Back / route change.
+     Only leave week view UI. Autosave keeps week + setup intact. */
   document.body.classList.remove("view-week");
   document.body.classList.remove("light");
   if(typeof teardownDayExpandIO==="function")teardownDayExpandIO();
-  clearWeekSnap();
+  try{sessionStorage.setItem(CM_VIEW_KEY,"0")}catch(_){}
+  persistDraft(true);
   updateBackBtn();
-}
-function restoreWeekSnap(){
-  try{
-    if(sessionStorage.getItem(CM_VIEW_KEY)!=="1")return false;
-    const raw=sessionStorage.getItem(CM_WEEK_SNAP); if(!raw)return false;
-    const j=JSON.parse(raw); if(!j||!j.base)return false;
-    if(j.st){
-      st.stores=new Set(j.st.stores||[]);
-      st.equip=new Set(j.st.equip||[]);
-      st.meals=j.st.meals||{};
-      st.sides=new Set(j.st.sides||[]);
-      st.main=j.st.main||"";
-      st.weekStart=j.st.weekStart||null;
-      if(j.st.about)st.about=j.st.about;
-      st.coffee=normalizeCoffee(j.st.coffee||st.coffee);
-    }
-    W={base:j.base,ov:j.ov||{},groups:j.groups||[],extra:j.extra||[],F:j.F,have:new Set(j.have||[]),ck:new Set(j.ck||[]),open:null,items:[],listFilter:null,shopHi:null,daySides:j.daySides||{},gSearch:""};
-    recomputeList();
-    document.body.classList.add("view-week");
-    document.body.classList.remove("light");
-    applyCamTheme(getCamTheme());
-    renderWeek();
-    updateBackBtn();
-    return true;
-  }catch(_){return false}
 }
 
 /* ---- Food autocomplete (local) ---- */
@@ -1258,11 +1475,15 @@ function goBackApp(){
   if(sheetOpen()){closeSheet();updateBackBtn();return}
   if(isWeekView()){
     hideWeekView();
+    /* Restore setup/home UI from mid-flow draft — do not wipe */
+    try{persistDraft(true)}catch(_){}
+    try{render()}catch(_){}
     window.scrollTo(0,0);
     updateBackBtn();
     return;
   }
   if(pos>0)go(-1);
+  try{persistDraft()}catch(_){}
   updateBackBtn();
 }
 
@@ -1603,7 +1824,8 @@ function reset(){
   queue=["home","photos","stores","about","equip","coffee","meals","MEALB","sides","BUILD","summary"]; pos=0;
   document.body.classList.remove("light");
   document.body.classList.remove("view-week");
-  // Do not clearWeekSnap here — init calls reset() then restoreWeekSnap().
+  // Do not clear mid-flow draft here — boot calls reset() then restoreDraft().
+  // Explicit Start over calls clearMidFlowDraft() before reset().
 }
 /** Item 44: no primary-store question — derive silently (cheapest selected store est., else first). */
 function deriveMainStore(){
@@ -1809,6 +2031,7 @@ function isReturningUser(){
   try{
     if(typeof isWeekLocked==="function"&&isWeekLocked())return true;
     if(typeof getWeekLock==="function"&&getWeekLock()&&getWeekLock().locked)return true;
+    if(typeof hasMidFlowDraft==="function"&&hasMidFlowDraft())return true;
     if(sessionStorage.getItem(CM_VIEW_KEY)==="1")return true;
     if(sessionStorage.getItem(CM_WEEK_SNAP))return true;
     if(st&&st.meals&&Object.values(st.meals).some(v=>v==="yes"))return true;
@@ -1832,13 +2055,28 @@ function enterSetupFromHome(mode){
   // mode: photos | questions | build | see
   if(mode==="see"){
     try{
-      if(typeof restoreWeekSnap==="function"&&restoreWeekSnap()){renderWeek();window.scrollTo(0,0);return}
+      /* Restore mid-flow / locked week — never wipe to empty meal picker */
+      if(typeof restoreDraft==="function"&&restoreDraft()&&isWeekView()){window.scrollTo(0,0);return}
+      if(typeof restoreWeekSnap==="function"&&restoreWeekSnap()){window.scrollTo(0,0);return}
       if(W&&W.base&&W.base.length){showWeekView();renderWeek();window.scrollTo(0,0);return}
+      if(typeof isWeekLocked==="function"&&isWeekLocked()){
+        const L=getWeekLock();
+        if(L&&L.base){applyWJSON({base:L.base,ov:L.ov||{},groups:L.groups||[],extra:L.extra||[],F:L.F,have:[],ck:[],daySides:L.daySides||{}});showWeekView();renderWeek();window.scrollTo(0,0);return}
+      }
       if(st&&st.meals&&Object.values(st.meals).some(v=>v==="yes")){goBuildWeek();return}
     }catch(_){}
     mode="build";
   }
   if(mode==="build"){
+    /* Resume mid-setup draft if present instead of jumping to empty meals */
+    try{
+      const d=typeof loadDraft==="function"?loadDraft():null;
+      if(d&&d.st&&d.step&&d.step!=="home"&&d.view!=="week"){
+        if(typeof restoreDraft==="function")restoreDraft();
+        render();window.scrollTo(0,0);return;
+      }
+      if(W&&W.base&&W.base.length){showWeekView();renderWeek();window.scrollTo(0,0);return}
+    }catch(_){}
     const i=queue.indexOf("meals");
     pos=i>=0?i:1;
     render();window.scrollTo(0,0);return;
@@ -2174,7 +2412,7 @@ function summary(){
     <button class="next build" id="bw">📅 Build my week</button>
     
     <button class="next" id="rs" style="margin-top:6px;background:var(--chip)">Start over</button></div>`;
-  $("rs").onclick=()=>{reset();render()};
+  $("rs").onclick=()=>{if(typeof clearMidFlowDraft==="function")clearMidFlowDraft();if(typeof clearWeekLock==="function")clearWeekLock();reset();render()};
   $("abE").onclick=()=>{st.aboutReturn=true;pos=queue.indexOf("about");render();window.scrollTo(0,0)};
   $("bw").onclick=()=>goBuildWeek();
 }
@@ -2506,10 +2744,12 @@ function weekGroceryEstimate(store){
   /* Sum priced items only (incl. customs with a/p from prices.json). Unpriced omitted + counted. Cents kept. */
   const items=(W&&W.items)||[];
   const customs=(typeof getCamCustom==="function"?getCamCustom():[])||[];
+  const stock=(typeof getStandingStock==="function"?getStandingStock():[])||[];
+  const munch=(typeof getStandingMunchies==="function"?getStandingMunchies():[])||[];
   const all=[];
   const seen=new Set();
-  items.forEach(it=>{if(!it||W.have.has(it.id))return;const id=it.id||it.n;if(seen.has(id))return;seen.add(id);all.push(it)});
-  customs.forEach(it=>{if(!it||W.have.has(it.id))return;const id=it.id||it.n;if(seen.has(id))return;seen.add(id);all.push(it)});
+  const push=it=>{if(!it||(typeof itemHaveSuppressed==="function"?itemHaveSuppressed(it.id):(W&&W.have&&W.have.has(it.id))))return;const id=it.id||it.n;if(seen.has(id))return;seen.add(id);all.push(it)};
+  items.forEach(push);customs.forEach(push);stock.forEach(push);munch.forEach(push);
   let sum=0, priced=0, unpriced=0;
   all.forEach(it=>{
     const v=storePriceOf(it, store);
@@ -2532,7 +2772,7 @@ function groceryEstimateHTML(){
   return `<div class="g-est-block" data-g-est="1">${bits.join("")}</div>`;
 }
 
-function totals(){let a=0,p=0,b=0,na=0,np=0,cu=0;W.items.forEach(it=>{if(W.have.has(it.id))return;if(it.a==null&&it.p==null){cu++;return}
+function totals(){let a=0,p=0,b=0,na=0,np=0,cu=0;W.items.forEach(it=>{if(typeof itemHaveSuppressed==="function"?itemHaveSuppressed(it.id):W.have.has(it.id))return;if(it.a==null&&it.p==null){cu++;return}
   if(it.a!=null)a+=it.a;else a+=(it.al!=null?it.al:it.p); if(it.p!=null)p+=it.p;else p+=it.a;
   const aw=it.p==null||(it.a!=null&&it.a<=it.p);b+=aw?it.a:it.p;aw?na++:np++});return {a,p,b,na,np,cu}}
 
@@ -2713,12 +2953,15 @@ function openLockSummary(){
     closeSheet();
     document.body.classList.add("week-locked");
     try{recomputeList()}catch(_){}
+    try{persistDraft(true)}catch(_){} /* Lock marks committed; mid-flow draft still kept */
     renderWeek();
     toast(CM_LOCK_LABEL.locked);
   };
 }
 function unlockWeekEdit(){
   clearWeekLock();
+  /* Edit week resumes saved week draft — never empty picker */
+  try{persistDraft(true)}catch(_){}
   renderWeek();
   toast("Editing unlocked");
 }
@@ -2834,6 +3077,324 @@ function bindWeekStrip(wk){
 }
 
 
+
+/* ---- Steve Have it bar: timed suppress (local haveItUntil), same spirit as Burns ---- */
+const CM_HAVE_UNTIL_KEY="cm-have-until-v1";
+const CM_SHOW_HIDDEN_HAVE="cm-show-hidden-have-v1";
+/* Duration defaults (days) until Steve issues a finer map. Scale by qty, cap 180d. */
+const HAVE_DUR={
+  produce:5, meat:5,
+  bread:7, milk:7, eggs:7, dairy:7,
+  snacks:14, deli:14, grab:14,
+  condiments:45,
+  foil:60, lids:60, spices:60, oils:60,
+  bulk:90, pantry:90, coffee:90, frozen:30, other:14
+};
+function loadHaveUntil(){
+  try{const j=JSON.parse(localStorage.getItem(CM_HAVE_UNTIL_KEY)||"{}");return j&&typeof j==="object"?j:{}}catch(_){return{}}
+}
+function saveHaveUntil(map){try{localStorage.setItem(CM_HAVE_UNTIL_KEY,JSON.stringify(map||{}))}catch(_){}}
+function getShowHiddenHave(){try{return localStorage.getItem(CM_SHOW_HIDDEN_HAVE)==="1"}catch(_){return false}}
+function setShowHiddenHave(on){try{localStorage.setItem(CM_SHOW_HIDDEN_HAVE,on?"1":"0")}catch(_){}}
+function sweepHaveUntil(map){
+  const now=Date.now(); let dirty=false;
+  Object.keys(map||{}).forEach(id=>{if(!map[id]||map[id]<=now){delete map[id];dirty=true}});
+  if(dirty)saveHaveUntil(map);
+  return map;
+}
+function parseQtyFactor(q){
+  /* Scale duration by rough quantity. 1x default; more qty lasts longer, max handled by cap. */
+  const s=String(q||"").toLowerCase();
+  let n=1;
+  const m=s.match(/(\d+(?:\.\d+)?)/);
+  if(m)n=Math.max(1,parseFloat(m[1])||1);
+  if(/lb\b|pound/.test(s)&&n>=2)n=Math.min(n,4);
+  if(/gal|gallon/.test(s))n=Math.max(n,1.5);
+  if(/box|bag|pack|case/.test(s)&&!m)n=1.5;
+  if(/½|1\/2|0\.5/.test(s))n=0.75;
+  return Math.min(Math.max(n,0.5),6);
+}
+function haveDurationDays(it){
+  const aisle=String(it&&it.aisle||"").toLowerCase();
+  const name=String(it&&it.n||it&&it.id||"").toLowerCase();
+  const id=String(it&&it.id||"").toLowerCase();
+  let base=HAVE_DUR.other;
+  if(aisle==="produce"||/lettuce|tomato|onion|pepper|broccoli|fruit|banana|avocado|cilantro|lime|lemon|potato|asparagus|zucchini|salad|carrot|corn|cucumber|herb/.test(name))base=HAVE_DUR.produce;
+  else if(aisle==="meat"||/beef|chicken|steak|pork|brat|sausage|bacon|turkey|sirloin|patty|rotisserie/.test(name))base=HAVE_DUR.meat;
+  else if(aisle==="bread"||/bun|bagel|bread|tortilla|roll|toast/.test(name))base=HAVE_DUR.bread;
+  else if(/milk|cream|half.?gal/.test(name)||id.includes("milk"))base=HAVE_DUR.milk;
+  else if(/^eggs?\b|\beggs?\b/.test(name)||id==="eggs")base=HAVE_DUR.eggs;
+  else if(aisle==="dairy")base=HAVE_DUR.dairy;
+  else if(aisle==="snacks"||/chip|pretzel|cracker|popcorn/.test(name))base=HAVE_DUR.snacks;
+  else if(/deli|lunch meat|pub sub|sushi|protein box/.test(name)||aisle==="grab")base=HAVE_DUR.deli;
+  else if(/ketchup|mustard|mayo|sauce|salsa|dressing|hot sauce|bbq|soy|vinegar|relish|pickle/.test(name))base=HAVE_DUR.condiments;
+  else if(/foil|wrap|parchment|bag|bags|lid|lids|seal/.test(name)||id.includes("lids")||id.includes("bags"))base=HAVE_DUR.foil;
+  else if(/spice|season|pepper|salt|cumin|paprika|garlic powder|chili powder/.test(name)||id==="season")base=HAVE_DUR.spices;
+  else if(/oil|spray|olive|canola/.test(name)||id==="spray")base=HAVE_DUR.oils;
+  else if(aisle==="coffee"||/coffee|lavazza|capsule|oro/.test(name))base=HAVE_DUR.coffee;
+  else if(aisle==="frozen")base=HAVE_DUR.frozen;
+  else if(aisle==="pantry"||/rice|pasta|bean|cereal|flour|sugar|broth|stock|oat/.test(name))base=HAVE_DUR.bulk;
+  const days=Math.min(180, Math.round(base*parseQtyFactor(it&&it.q)));
+  return Math.max(1,days);
+}
+function haveUntilOf(id){
+  const map=sweepHaveUntil(loadHaveUntil());
+  return map[id]||0;
+}
+function itemHaveSuppressed(id){
+  const until=haveUntilOf(id);
+  return !!(until&&until>Date.now());
+}
+function markHaveIt(it){
+  if(!it||!it.id)return;
+  const days=haveDurationDays(it);
+  const map=sweepHaveUntil(loadHaveUntil());
+  map[it.id]=Date.now()+days*864e5;
+  saveHaveUntil(map);
+  return map[it.id];
+}
+function clearHaveIt(id){
+  const map=sweepHaveUntil(loadHaveUntil());
+  delete map[id];
+  saveHaveUntil(map);
+}
+function countHiddenHave(){
+  const map=sweepHaveUntil(loadHaveUntil());
+  const now=Date.now();
+  return Object.keys(map).filter(k=>map[k]>now).length;
+}
+function fmtHaveBack(until){
+  if(!until||until<=Date.now())return "";
+  const ms=until-Date.now();
+  const days=Math.max(1,Math.ceil(ms/864e5));
+  const d=new Date(until);
+  const dateStr=MO3[d.getMonth()]+" "+d.getDate();
+  if(days>=14){
+    const w=Math.round(days/7);
+    return "Back in "+w+" week"+(w===1?"":"s")+" · Back "+dateStr;
+  }
+  if(days===1)return "Back tomorrow · Back "+dateStr;
+  return "Back in "+days+" days · Back "+dateStr;
+}
+function findGroceryItemById(id){
+  if(!id)return null;
+  const fromW=((W&&W.items)||[]).find(it=>it.id===id);
+  if(fromW)return fromW;
+  const customs=(typeof getCamCustom==="function"?getCamCustom():[])||[];
+  const hit=customs.find(it=>it.id===id); if(hit)return hit;
+  const stock=(typeof getStandingStock==="function"?getStandingStock():[])||[];
+  const hs=stock.find(it=>it.id===id); if(hs)return hs;
+  const munch=(typeof getStandingMunchies==="function"?getStandingMunchies():[])||[];
+  const hm=munch.find(it=>it.id===id); if(hm)return hm;
+  return {id,n:id,q:"",aisle:"other"};
+}
+function haveHiddenToggleHTML(){
+  const n=countHiddenHave();
+  const on=getShowHiddenHave();
+  return `<button type="button" class="have-hidden-toggle${on?" is-on":""}" id="haveHiddenToggle" aria-pressed="${on}" ${n?"":"disabled"}>
+    ${on?"Hide Have it items":"Show hidden"}${n?` (${n})`:""}
+  </button>`;
+}
+
+
+/* ---- Steve SCAFFOLD LISTS LOCKED: Stock produce, Munchies, alt groups ---- */
+const STOCK_PRODUCE_LIST=[
+  "Bananas","Apples","Grapes","Berries","Oranges","Lemons","Limes",
+  "Avocados","Tomatoes","Onions","Garlic","Potatoes","Sweet potatoes",
+  "Salad greens","Romaine","Spinach","Broccoli","Bell peppers","Cucumbers",
+  "Carrots","Celery","Zucchini","Corn","Cilantro","Parsley"
+];
+const MUNCHIES_LIST=[
+  "Potato chips","Tortilla chips","Pretzels","Popcorn","Crackers",
+  "Chocolate bars","Chocolate chips","Candy","Trail mix","Nuts",
+  "Granola bars","Cookies","Ice cream","Fruit snacks"
+];
+/* Non-meat alt groups (MEAL-APPS-ART-BAR). Unmapped = no chevron. */
+const GROCERY_ALT_GROUPS={
+  milk:["Whole milk","2% milk","Skim milk","Almond milk","Oat milk","Lactose-free milk"],
+  eggs:["Large eggs","Extra-large eggs","Egg whites","Cage-free eggs"],
+  butter:["Salted butter","Unsalted butter","Plant butter","Ghee"],
+  cheese:["Cheddar","American","Pepper jack","Swiss","Provolone","Mexican blend","Mozzarella"],
+  yogurt:["Plain yogurt","Greek yogurt","Vanilla yogurt","Low-fat yogurt"],
+  bread:["White bread","Wheat bread","Sourdough","Brioche","Texas toast"],
+  rice:["White rice","Brown rice","Microwave rice","Jasmine rice","Basmati rice"],
+  pasta:["Spaghetti","Penne","Macaroni","Rotini","Gluten-free pasta"],
+  "salad greens":["Romaine","Iceberg","Spinach","Spring mix","Arugula","Kale"],
+  tomato:["Roma tomatoes","Cherry tomatoes","Vine tomatoes","Canned diced tomatoes"],
+  onion:["Yellow onion","White onion","Red onion","Green onion","Shallot"],
+  potato:["Russet potatoes","Red potatoes","Yukon gold","Sweet potatoes","Baby potatoes"],
+  chips:["Potato chips","Tortilla chips","Pita chips","Veggie chips","Pretzels"],
+  chocolate:["Milk chocolate","Dark chocolate","Chocolate chips","Cocoa powder","Candy bars"]
+};
+/* Meat alt groups (prior Steve meat bar) — day-card + grocery when mapped */
+const MEAT_ALT_GROUPS={
+  bacon:["Regular bacon","Thick-cut bacon","Turkey bacon","Skip meat"],
+  "beef patty":["80/20 beef patty","Ground sirloin patty","Skip meat"],
+  sirloin:["Sirloin","Filet","Ribeye","NY strip","Flat iron","Chuck eye","Skip meat"],
+  "chicken breast":["Chicken breast","Chicken thighs","Chicken tenders","Skip meat"],
+  "chicken thighs":["Chicken thighs","Chicken breast","Chicken tenders","Skip meat"],
+  "ground beef":["80/20 ground beef","90/10 ground beef","Ground turkey","Skip meat"]
+};
+const ADD_ITEM_CATS=[
+  {id:"menu_extras",label:"Menu extras"},
+  {id:"stock_produce",label:"Stock produce"},
+  {id:"munchies",label:"Miscellaneous munchies"}
+];
+function aisleForAddCat(cat){
+  if(cat==="stock_produce")return "stock_produce";
+  if(cat==="munchies")return "munchies";
+  return "menu_extras"; /* customs / menu extras */
+}
+function altGroupForName(name){
+  const n=String(name||"").toLowerCase();
+  if(!n)return null;
+  for(const [k,opts] of Object.entries(MEAT_ALT_GROUPS)){
+    if(n.includes(k)||opts.some(o=>n.includes(String(o).toLowerCase())))return {key:k,opts,kind:"meat"};
+  }
+  for(const [k,opts] of Object.entries(GROCERY_ALT_GROUPS)){
+    if(n===k||n.includes(k)||opts.some(o=>n===String(o).toLowerCase()||n.includes(String(o).toLowerCase())))return {key:k,opts,kind:"grocery"};
+  }
+  return null;
+}
+function meatDayAltGroup(d){
+  if(!d||!d.meal)return null;
+  const mid=d.meal; const cut=String(d.cut||mv(mid)||"").toLowerCase();
+  const m=M(mid);
+  if(mid==="burger"||/patty|burger/.test(cut))return MEAT_ALT_GROUPS["beef patty"];
+  if(mid==="steak"||/sirloin|filet|ribeye|strip|flat iron|chuck/.test(cut))return MEAT_ALT_GROUPS.sirloin;
+  if(mid==="chicken"||/breast|thigh|tender/.test(cut)){
+    if(/thigh/.test(cut))return MEAT_ALT_GROUPS["chicken thighs"];
+    return MEAT_ALT_GROUPS["chicken breast"];
+  }
+  if(/bacon/.test(cut)||mid==="bacon")return MEAT_ALT_GROUPS.bacon;
+  if(/ground/.test(cut))return MEAT_ALT_GROUPS["ground beef"];
+  if(m&&m.protein&&(m.v||[]).length)return [...(m.v||[]),"Skip meat"];
+  return null;
+}
+function getStandingStock(){
+  try{const j=JSON.parse(localStorage.getItem("cm-stock-produce-v1")||"[]");return Array.isArray(j)?j:[]}catch(_){return[]}
+}
+function setStandingStock(arr){try{localStorage.setItem("cm-stock-produce-v1",JSON.stringify(arr||[]))}catch(_){}}
+function getStandingMunchies(){
+  try{const j=JSON.parse(localStorage.getItem("cm-munchies-v1")||"[]");return Array.isArray(j)?j:[]}catch(_){return[]}
+}
+function setStandingMunchies(arr){try{localStorage.setItem("cm-munchies-v1",JSON.stringify(arr||[]))}catch(_){}}
+function parseUserPrice(raw){
+  /* User-entered only — never invent. Empty → null (omitted from total). */
+  const s=String(raw||"").trim().replace(/^\$/,"");
+  if(!s)return null;
+  const n=Number(s);
+  if(!isFinite(n)||n<0)return null;
+  return Math.round(n*100)/100;
+}
+function openAddItemSheet(defaultCat){
+  const cat0=defaultCat||"munchies";
+  const inn=openSheet("","Add item");
+  inn.innerHTML=shTop("Add item")+`
+    <div class="add-item-sheet">
+      <label class="add-field"><span>Name</span>
+        <input id="aiName" type="text" maxlength="80" placeholder="e.g. Lemonheads" autocomplete="off" />
+      </label>
+      <label class="add-field"><span>Quantity</span>
+        <input id="aiQty" type="text" maxlength="20" value="1" inputmode="decimal" />
+      </label>
+      <label class="add-field"><span>Price</span>
+        <input id="aiPrice" type="text" maxlength="12" placeholder="0.00" inputmode="decimal" />
+        <small class="muted2">Your approx — counts in $ total. Leave blank if unknown.</small>
+      </label>
+      <label class="add-field"><span>Category</span>
+        <select id="aiCat">${ADD_ITEM_CATS.map(c=>`<option value="${c.id}" ${c.id===cat0?"selected":""}>${esc(c.label)}</option>`).join("")}</select>
+      </label>
+      <div class="sh-row2" style="margin-top:14px">
+        <button type="button" class="sh-btn" id="aiCancel">Cancel</button>
+        <button type="button" class="sh-btn p" id="aiAdd">Add</button>
+      </div>
+    </div>`;
+  const nameEl=inn.querySelector("#aiName");
+  if(nameEl){nameEl.focus();try{wireAllAutocomplete(inn)}catch(_){}}
+  inn.querySelector("#aiCancel").onclick=()=>closeSheet();
+  inn.querySelector("#aiAdd").onclick=()=>{
+    const name=(inn.querySelector("#aiName").value||"").trim().slice(0,80);
+    if(!name){toast("Name required");return}
+    const qty=((inn.querySelector("#aiQty").value||"1").trim()||"1").slice(0,20);
+    const price=parseUserPrice(inn.querySelector("#aiPrice").value);
+    const cat=inn.querySelector("#aiCat").value||"munchies";
+    const aisle=aisleForAddCat(cat);
+    const id="cg:"+Date.now().toString(36);
+    const item={id,n:name,q:qty,aisle,a:price,p:price,custom:true,standing:cat!=="menu_extras",section:cat,why:cat==="stock_produce"?"Stock produce":(cat==="munchies"?"Miscellaneous munchies":"Menu extras")};
+    if(cat==="stock_produce"){
+      const arr=getStandingStock();arr.push(item);setStandingStock(arr);
+    }else if(cat==="munchies"){
+      const arr=getStandingMunchies();arr.push(item);setStandingMunchies(arr);
+    }else{
+      const items=getCamCustom();items.push(item);setCamCustom(items);
+    }
+    try{awardCustomItem(id)}catch(_){}
+    try{persistDraft(true)}catch(_){}
+    closeSheet();
+    if(typeof renderWeek==="function"&&isWeekView())renderWeek();
+    toast(price!=null?("Added · $"+price.toFixed(2)):"Added");
+  };
+}
+function groceryAltChevronHTML(it){
+  const g=altGroupForName(it&&it.n);
+  if(!g||!g.opts||g.opts.length<2)return "";
+  return `<button type="button" class="g-alt-chev" data-galt="${esc(it.id)}" aria-label="Alternatives for ${esc(it.n)}">▾</button>`;
+}
+function openGroceryAlt(it){
+  const g=altGroupForName(it&&it.n);
+  if(!g)return;
+  const inn=openSheet("","Swap item");
+  inn.innerHTML=shTop("Swap · "+esc(it.n))+`
+    <div class="opts">${g.opts.map(v=>`<button type="button" class="popt" data-altv="${esc(v)}">${esc(v)}</button>`).join("")}</div>`;
+  inn.querySelectorAll("[data-altv]").forEach(b=>b.onclick=()=>{
+    const nv=b.dataset.altv;
+    /* Update in standing / customs / week item ov */
+    const patch=arr=>{const i=arr.findIndex(x=>x.id===it.id);if(i>=0){arr[i]={...arr[i],n:nv};return true}return false};
+    let stock=getStandingStock(), mun=getStandingMunchies(), cus=getCamCustom();
+    if(patch(stock))setStandingStock(stock);
+    else if(patch(mun))setStandingMunchies(mun);
+    else if(patch(cus))setCamCustom(cus);
+    else if(W&&W.items){const x=W.items.find(x=>x.id===it.id);if(x)x.n=nv}
+    try{persistDraft(true)}catch(_){}
+    closeSheet();renderWeek();toast("Swapped → "+nv);
+  });
+}
+function openMeatCutPop(dayIdx){
+  const days=effDays(W.ov); const d=days[dayIdx]; if(!d)return;
+  const opts=meatDayAltGroup(d); if(!opts||!opts.length)return;
+  const inn=openSheet("","Which cut?");
+  inn.innerHTML=shTop("Which cut?")+`<p class="muted2" style="margin:0 0 8px">${esc(d.short)} · ${esc(d.dinner||"")}</p>
+    <div class="opts">${opts.map(v=>`<button type="button" class="popt${d.cut===v?" sel":""}" data-cut="${esc(v)}">${esc(v)}</button>`).join("")}</div>`;
+  inn.querySelectorAll("[data-cut]").forEach(b=>b.onclick=()=>{
+    const cut=b.dataset.cut;
+    W.ov=W.ov||{};
+    W.ov[dayIdx]=Object.assign({},W.ov[dayIdx]||{},{cut:cut==="Skip meat"?null:cut});
+    if(cut==="Skip meat"){/* keep meal, clear cut */}
+    try{recomputeList()}catch(_){}
+    try{persistDraft(true)}catch(_){}
+    closeSheet();renderWeek();toast(cut);
+  });
+}
+function standingSectionsHTML(){
+  /* Order locked: Menu for this week → Stock produce → Miscellaneous munchies → customs (menu extras) */
+  return ""; /* rendered inside renderListItems rewrite */
+}
+function stockProducePickerHTML(){
+  const have=new Set(getStandingStock().map(x=>x.n));
+  return `<div class="standing-pick" id="stockPick">
+    <p class="lbl">Stock produce (opt-in staples)</p>
+    <div class="chips">${STOCK_PRODUCE_LIST.map(n=>`<span class="chip${have.has(n)?"":" off"}" data-stock="${esc(n)}">${esc(n)}</span>`).join("")}</div>
+  </div>`;
+}
+function munchiesPickerHTML(){
+  const have=new Set(getStandingMunchies().map(x=>x.n));
+  return `<div class="standing-pick" id="munchPick">
+    <p class="lbl">Miscellaneous munchies</p>
+    <div class="chips">${MUNCHIES_LIST.map(n=>`<span class="chip${have.has(n)?"":" off"}" data-munch="${esc(n)}">${esc(n)}</span>`).join("")}</div>
+  </div>`;
+}
+
 function utilitiesUnderLockHTML(){
   /* Steve bar: Lock in → Grocery list → Copy/Share grocery → Share this plan. NO Generate here. */
   return `<div class="wk-utils" data-wk-utils="1">
@@ -2861,7 +3422,7 @@ function generateGroceryFromWeek(){
     if(L&&L.daySides)W.daySides=JSON.parse(JSON.stringify(L.daySides));
     if(L&&L.base&&(!W.base||!W.base.length))W.base=JSON.parse(JSON.stringify(L.base));
   }
-  recomputeList(); // week-only meals + swaps + sides; sticky Add item customs kept separately
+  recomputeList(); // Menu block only from week meals/swaps/sides. Stock produce + Munchies + customs + Have-it NEVER wiped.
   const after=(W.items||[]);
   const afterIds=new Set(after.map(it=>it.id));
   const kept=[...beforeIds].filter(id=>afterIds.has(id)).length;
@@ -2919,6 +3480,7 @@ function shareWeekPlan(){
 
 
 function renderWeek(){
+  try{sweepHaveUntil(loadHaveUntil())}catch(_){}
   try{if(isWeekView())saveWeekSnap()}catch(_){}
   const t=totals();
   const fm=st.equip.has("foreman")||st.equip.size===0;
@@ -2960,7 +3522,7 @@ function renderWeek(){
       ${locked?"":`<button type="button" class="swap-link" data-swapd="${i}" aria-label="Swap ${d.short} dinner">Swap</button>`}
       <span class="memo-sm">${d.e}</span></span></div>
     <div class="db"><div class="emo-row"><img class="wk-chip-art" src="${mealArtSrc(d)}" alt="" width="40" height="40" loading="lazy" decoding="async" style="margin-bottom:6px">${dayBadge(d)}</div>
-    <p class="dinner">${d.meal&&rateOf(d.meal)===2?'<span class="favb">favorite</span> ':""}${cutTag(d)}${esc(d.dinner)}</p>${dayNut(d)}
+    <p class="dinner">${d.meal&&rateOf(d.meal)===2?'<span class="favb">favorite</span> ':""}${cutTag(d)}${esc(d.dinner)}${(typeof meatDayAltGroup==="function"&&meatDayAltGroup(d)&&!locked)?`<button type="button" class="meat-cut-chev" data-meatcut="${i}" aria-label="Change cut">▾</button>`:""}</p>${dayNut(d)}
     ${d.note?`<p class="dnote">${esc(d.note)}</p>`:""}
     <p class="dl">Lunch at Woody's: ${esc(d.lunch||"-")}</p>
     ${d.bf?`<p class="dl b">${bfLine(d.bf)}</p>`:""}
@@ -2972,11 +3534,8 @@ function renderWeek(){
   ${W.extra.length?`<div class="nextwk">Next up: ${W.extra.map(g=>({pork:mv("pork"),brats:mv("brats"),chicken:"chicken",burger:"burgers",steak:"steak"}[g])).join(", ")}</div>`:""}
   <section class="gpanel" id="gpanel"><div class="stitle" style="margin-top:0"><h2>Shopping list · week of ${esc(wl.split(",")[0]||wl)}</h2><span>${nCk} checked</span></div>
     <div class="g-add-sticky" id="gCustomAdd">
-      <select id="gCat" aria-label="Category">${[...AISLES.map(([k,lab])=>[k,lab]),...(typeof getCamCats==="function"?getCamCats():[]).map(c=>[c,c]),["__new__","+ New category…"]].map(([k,lab])=>`<option value="${esc(k)}" ${(W.gCat||"other")===k?"selected":""}>${esc(String(lab).replace(/^[^\w]+/," ").trim()||lab)}</option>`).join("")}</select>
-      <input id="gNewCat" type="text" maxlength="40" placeholder="Name the new category…" hidden />
-      <input id="gName" type="text" maxlength="80" placeholder="Item name" />
-      <input id="gQty" type="text" maxlength="20" placeholder="Qty" style="flex:0 0 64px" />
       <button type="button" class="sbtn" id="gAdd">+ Add item</button>
+      <div class="have-hidden-wrap">${typeof haveHiddenToggleHTML==="function"?haveHiddenToggleHTML():""}</div>
     </div>
     <div class="grocery-tools"><label class="visually-hidden" for="grocery-search">Search list</label><input type="search" id="grocery-search" class="grocery-search" placeholder="Search list" value="${esc(W.gSearch||"")}" autocomplete="off" /></div>
     <!-- Steve: estimate lives at end of list above footer (groceryEstimateHTML). Mid-list tot removed. -->
@@ -3003,7 +3562,23 @@ function renderWeek(){
   wk.querySelectorAll("[data-ck]").forEach(b=>b.onclick=()=>{const k=b.dataset.ck;W.ck.has(k)?W.ck.delete(k):W.ck.add(k);renderWeek()});
   wk.querySelectorAll("[data-rate]").forEach(b=>b.onclick=e=>{e.stopPropagation();setRate(b.dataset.m,+b.dataset.rate);renderWeek()});
   wk.querySelectorAll("[data-unrate]").forEach(b=>b.onclick=e=>{e.stopPropagation();setRate(b.dataset.unrate,0);renderWeek()});
-  wk.querySelectorAll("[data-have]").forEach(b=>b.onclick=()=>{const k=b.dataset.have;W.have.has(k)?W.have.delete(k):W.have.add(k);renderWeek()});
+  wk.querySelectorAll("[data-have]").forEach(b=>b.onclick=()=>{
+    const k=b.dataset.have;
+    if(typeof itemHaveSuppressed==="function"&&itemHaveSuppressed(k)){
+      clearHaveIt(k); // Still need it
+      if(W&&W.have)W.have.delete(k);
+      toast("Back on the list");
+    }else{
+      const it=typeof findGroceryItemById==="function"?findGroceryItemById(k):{id:k};
+      const until=markHaveIt(it); // Have it again resets timer
+      if(W&&W.have)W.have.add(k);
+      const hint=typeof fmtHaveBack==="function"?fmtHaveBack(until):"";
+      toast(hint?("Have it · "+hint):"Have it · hidden for a while");
+    }
+    renderWeek();
+  });
+  const hht=wk.querySelector("#haveHiddenToggle");
+  if(hht)hht.onclick=e=>{e.stopPropagation();setShowHiddenHave(!getShowHiddenHave());renderWeek()};
   wk.querySelectorAll("[data-swapd]").forEach(b=>b.onclick=e=>{e.stopPropagation();openDaySwap(+b.dataset.swapd)});
   wk.querySelectorAll("[data-addside]").forEach(b=>b.onclick=e=>{e.stopPropagation();applySideToDay(+b.dataset.day,b.dataset.addside)});
   const bbw=$("backBtnWeek");if(bbw)bbw.onclick=e=>{e.stopPropagation();goBackApp()};
@@ -3012,9 +3587,9 @@ function renderWeek(){
     wk.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>{shareListText(listText(b.dataset.copy),"Shopping list")});
   if(W.cph&&$("cphB")){W.cphFiles=W.cphFiles||[];photoShare({btn:$("cphB"),input:$("cphIn"),thumbs:$("cphTh"),act:$("cphAct"),store:W.cphFiles,shareLabel:"Share",title:"My shopping list",text:W.cphText||"",fallback:"Save the photo and send with your list."})}
   bindLog(wk,days);
-  $("bk").onclick=()=>{hideWeekView();window.scrollTo(0,0);updateBackBtn()};
+  $("bk").onclick=()=>{hideWeekView();try{persistDraft(true)}catch(_){};try{render()}catch(_){};window.scrollTo(0,0);updateBackBtn()};
   updateBackBtn();
-  $("rs2").onclick=()=>{reset();render();window.scrollTo(0,0)};
+  $("rs2").onclick=()=>{if(typeof clearMidFlowDraft==="function")clearMidFlowDraft();if(typeof clearWeekLock==="function")clearWeekLock();reset();render();window.scrollTo(0,0)};
   $("calB").onclick=()=>openCal({sel:s0,onPick:(mon)=>{st.weekStart=mon.getTime();buildWeek()}});
   $("custB").onclick=openCustom;longPress($("thisWk"),openCustom);longPress($("wlab"),openCustom);const sh=$("shuffleBtn");if(sh)sh.onclick=e=>{e.stopPropagation();if(typeof isWeekLocked==="function"&&isWeekLocked()){toast("Unlock with Edit week first");return}shuffleWeek()};
   const rnd=$("randomMealBtn");if(rnd)rnd.onclick=e=>{e.stopPropagation();randomMealForDay()};
@@ -3029,17 +3604,21 @@ function renderWeek(){
   const gs=$("grocery-search");if(gs){gs.addEventListener("input",()=>{W.gSearch=gs.value;renderWeek();const el=$("grocery-search");if(el){el.focus();try{el.setSelectionRange(el.value.length,el.value.length)}catch(_){}}})}
   const gshare=$("grocery-share");if(gshare)gshare.onclick=()=>shareCamList();
   const sab=$("shareAppQuiet");if(sab)sab.onclick=()=>shareThisApp();
-  wk.querySelectorAll("[data-rmcustom]").forEach(b=>b.onclick=e=>{e.stopPropagation();setCamCustom(getCamCustom().filter(x=>x.id!==b.dataset.rmcustom));W.ck.delete(b.dataset.rmcustom);renderWeek();toast("Removed")});
-  const gCat=$("gCat"),gNew=$("gNewCat"),gName=$("gName"),gQty=$("gQty"),gAdd=$("gAdd");
-  if(gCat){gCat.onchange=()=>{W.gCat=gCat.value;if(gNew)gNew.hidden=gCat.value!=="__new__"};if(gNew)gNew.hidden=gCat.value!=="__new__"}
-  if(gAdd)gAdd.onclick=()=>{
-    const name=(gName&&gName.value||"").trim().slice(0,80);if(!name){toast("Type an item");return}
-    let aisle=gCat?gCat.value:"other";
-    if(aisle==="__new__"){const n=(gNew&&gNew.value||"").trim().slice(0,40);if(!n){toast("Name the category");return}const cats=getCamCats();if(!cats.includes(n)){cats.push(n);setCamCats(cats);awardCustomCat(n)}aisle=n}
-    const id="cg:"+Date.now().toString(36);const qty=(gQty&&gQty.value||"").trim().slice(0,20);
-    const items=getCamCustom();items.push({id,n:name,q:qty,aisle,a:null,p:null,custom:true,why:"custom add"});setCamCustom(items);
-    awardCustomItem(id);if(gName)gName.value="";if(gQty)gQty.value="";if(gNew)gNew.value="";W.gCat=aisle;renderWeek();toast("Added")
-  };
+  wk.querySelectorAll("[data-rmcustom]").forEach(b=>b.onclick=e=>{e.stopPropagation();const id=b.dataset.rmcustom;
+    setCamCustom(getCamCustom().filter(x=>x.id!==id));
+    setStandingStock(getStandingStock().filter(x=>x.id!==id));
+    setStandingMunchies(getStandingMunchies().filter(x=>x.id!==id));
+    if(W&&W.ck)W.ck.delete(id);persistDraft();renderWeek();toast("Removed")});
+  const gAdd=$("gAdd");
+  if(gAdd)gAdd.onclick=e=>{e.stopPropagation();openAddItemSheet(W&&W.gCat==="stock_produce"?"stock_produce":(W&&W.gCat==="munchies"?"munchies":"munchies"))};
+  wk.querySelectorAll("[data-galt]").forEach(b=>b.onclick=e=>{e.stopPropagation();const it=findGroceryItemById(b.dataset.galt)||{id:b.dataset.galt,n:b.dataset.galt};openGroceryAlt(it)});
+  wk.querySelectorAll("[data-meatcut]").forEach(b=>b.onclick=e=>{e.stopPropagation();openMeatCutPop(+b.dataset.meatcut)});
+  wk.querySelectorAll("[data-stock]").forEach(c=>c.onclick=e=>{e.stopPropagation();const n=c.dataset.stock;let arr=getStandingStock();
+    if(arr.some(x=>x.n===n))arr=arr.filter(x=>x.n!==n);else arr.push({id:"sp:"+n.toLowerCase().replace(/\W+/g,"-"),n,q:"1",aisle:"stock_produce",a:null,p:null,custom:true,standing:true,section:"stock_produce",why:"Stock produce"});
+    setStandingStock(arr);persistDraft();renderWeek()});
+  wk.querySelectorAll("[data-munch]").forEach(c=>c.onclick=e=>{e.stopPropagation();const n=c.dataset.munch;let arr=getStandingMunchies();
+    if(arr.some(x=>x.n===n))arr=arr.filter(x=>x.n!==n);else arr.push({id:"mu:"+n.toLowerCase().replace(/\W+/g,"-"),n,q:"1",aisle:"munchies",a:null,p:null,custom:true,standing:true,section:"munchies",why:"Miscellaneous munchies"});
+    setStandingMunchies(arr);persistDraft();renderWeek()});
   try{const bud=getBud();if(bud&&bud.on&&bud.amt!=null&&t.b<=bud.amt)awardBudgetOk(isoD(s0))}catch(_){}
   bindReceipt(wk);
 }
@@ -3056,40 +3635,59 @@ function renderListItems(byA,filt,days){
     return dayIdx===filt&&d.cook;
   };
   const match=it=>!q||String(it.n||"").toLowerCase().includes(q)||String(it.why||"").toLowerCase().includes(q)||String(it.aisle||"").toLowerCase().includes(q);
-  const openMap=typeof camAisleOpen==="function"?camAisleOpen():{};
-  const fold=(id,lab,count,body,store)=>{
-    if(!count)return "";
-    const open=q?true:!!openMap[id];
-    return `<details class="aisle-fold${store?" store-fold":""}" data-aisle="${esc(id)}" ${open?"open":""}><summary><span class="aisle-sum-lab">${lab} · ${count}</span>${CAM_AISLE_CHEV}</summary>${body}</details>`;
+  const suppressed=it=>typeof itemHaveSuppressed==="function"&&itemHaveSuppressed(it.id)&&!getShowHiddenHave();
+  const uniq=(items)=>{const seen=new Set();return items.filter(it=>{const id=it.id||it.n;if(seen.has(id))return false;seen.add(id);return true})};
+  const section=(title,items)=>{
+    const list=uniq(items.filter(it=>it&&!suppressed(it)&&match(it)&&(it.custom||it.standing||filt==null||days.some((d,i)=>showFor(it,i)))));
+    if(!list.length)return "";
+    return `<p class="g-sec-head">${esc(title)} · ${list.length}</p>${list.map(it=>listItemRow(it,filt,days)).join("")}`;
   };
-  const grabGroups=listByStore().groups;
+
+  /* Steve lock order: Menu for this week → Stock produce → Miscellaneous munchies → customs */
   let html="";
+  /* Menu = week-generated items (not standing / not menu_extras customs) */
+  const menuItems=[];
+  Object.keys(byA||{}).forEach(k=>{(byA[k]||[]).forEach(it=>{
+    if(it.standing||it.section==="stock_produce"||it.section==="munchies"||it.aisle==="stock_produce"||it.aisle==="munchies")return;
+    if(it.custom&&(it.section==="menu_extras"||it.aisle==="menu_extras"||it.aisle==="other"||(it.why||"").toLowerCase().includes("custom")))return;
+    if(it.listStore)return;
+    menuItems.push(it);
+  })});
+  /* Grab-and-go by store still under Menu */
+  const grabGroups=typeof listByStore==="function"?listByStore().groups:{};
   Object.keys(grabGroups).sort().forEach(store=>{
-    const loc=storeLocLabel(store);
-    const items=grabGroups[store].filter(it=>!W.have.has(it.id)&&(filt==null||days.some((d,i)=>showFor(it,i)))&&match(it));
-    html+=fold("store:"+store,`${esc(store)}${loc?" · "+esc(loc):""}`,items.length,items.map(it=>listItemRow(it,filt,days)).join(""),true);
+    (grabGroups[store]||[]).forEach(it=>menuItems.push(it));
   });
-  const customs=(typeof getCamCustom==="function"?getCamCustom():[]).filter(c=>!W.have.has(c.id)&&match(c));
-  customs.forEach(c=>{const k=c.aisle||"other";(byA[k]=byA[k]||[]).push(c)});
-  const aisleList=AISLES.slice();
-  (typeof getCamCats==="function"?getCamCats():[]).forEach(c=>{if(!aisleList.some(([k])=>k===c))aisleList.push([c,c])});
-  aisleList.filter(([k])=>byA[k]&&byA[k].length).forEach(([k,lab])=>{
-    const items=byA[k].filter(it=>!it.listStore&&!W.have.has(it.id)&&(it.custom||filt==null||days.some((d,i)=>showFor(it,i)))&&match(it));
-    const seen=new Set();const uniq=items.filter(it=>{const id=it.id||it.n;if(seen.has(id))return false;seen.add(id);return true});
-    html+=fold(k,lab,uniq.length,uniq.map(it=>listItemRow(it,filt,days)).join(""),false);
-  });
-  return html;
+  html+=section("Menu for this week", menuItems);
+
+  const stock=typeof getStandingStock==="function"?getStandingStock():[];
+  html+=section("Stock produce", stock);
+  if(typeof stockProducePickerHTML==="function")html+=stockProducePickerHTML();
+
+  const munch=typeof getStandingMunchies==="function"?getStandingMunchies():[];
+  html+=section("Miscellaneous munchies", munch);
+  if(typeof munchiesPickerHTML==="function")html+=munchiesPickerHTML();
+
+  const customs=(typeof getCamCustom==="function"?getCamCustom():[]).filter(c=>!c.standing&&c.section!=="stock_produce"&&c.section!=="munchies"&&c.aisle!=="stock_produce"&&c.aisle!=="munchies");
+  html+=section("Menu extras", customs);
+
+  /* Remove custom from aisle folds handled above — also allow remove standing via data-rmcustom */
+  return html||`<p class="gnote">No items yet. Generate list from this week, or Add item.</p>`;
 }
+
 function listItemRow(it,filt,days){
   const aw=it.a!=null&&(it.p==null||it.a<=it.p),pw=it.p!=null&&!aw;
   const hi=days&&W.shopHi!=null&&days.some((d,i)=>{if(i!==W.shopHi)return false;const w=(it.why||"").toLowerCase();return w.includes((d.sideName||"").toLowerCase())||(d.meal&&w.includes(((M(d.meal)||{}).name||"").toLowerCase()))});
   const tags=it.prep!=null||it.kcal!=null?`<small> ~${it.prep||"?"} min prep · ${calTxt(it.kcal)}</small>`:"";
-  return `<div class="it${W.ck.has(it.id)?" ck":""}${W.have.has(it.id)?" gone":""}${hi?" hi":""}" ${hi?`data-li="${W.shopHi}"`:""}>
+  const suppressed=typeof itemHaveSuppressed==="function"&&itemHaveSuppressed(it.id);
+  const until=typeof haveUntilOf==="function"?haveUntilOf(it.id):0;
+  const back=suppressed&&typeof fmtHaveBack==="function"?fmtHaveBack(until):"";
+  return `<div class="it${W.ck.has(it.id)?" ck":""}${suppressed?" gone have-suppressed":""}${hi?" hi":""}" ${hi?`data-li="${W.shopHi}"`:""}>
     <div class="cb" data-ck="${esc(it.id)}">${W.ck.has(it.id)?"✓":""}</div>
-    <div class="nm" data-ck="${esc(it.id)}">${esc(it.n)}<small>${esc(it.q)}${it.q?" · ":""}for ${esc(it.why)}</small>${tags}
+    <div class="nm" data-ck="${esc(it.id)}">${esc(it.n)}<small>${esc(it.q)}${it.q?" · ":""}for ${esc(it.why)}</small>${tags}${back?`<span class="have-back">${esc(back)}</span>`:""}
       <div class="pr"><span class="${aw?"win":""}${isStale(it.sA)?" stale":""}">Aldi ${it.a==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.a)}</span>
       <span class="${pw?"win":""}${isStale(it.sP)?" stale":""}">Publix ${it.p==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.p)}</span>${it.custom?"":`<span class="src-l">${esc(srcPair(it))}</span>`}</div></div>
-    <button type="button" class="have" data-have="${esc(it.id)}">${W.have.has(it.id)?"↩ Need it":"Have it"}</button>${it.custom?`<button type="button" class="have" data-rmcustom="${esc(it.id)}" aria-label="Remove">${icons.del}</button>`:""}</div>`;
+    ${typeof groceryAltChevronHTML==="function"?groceryAltChevronHTML(it):""}<button type="button" class="have" data-have="${esc(it.id)}">${suppressed?"Still need it":"Have it"}</button>${it.custom||it.standing?`<button type="button" class="have" data-rmcustom="${esc(it.id)}" aria-label="Remove">${icons.del}</button>`:""}</div>`;
 }
 
 /* ---- shared v3 helpers: sheet, week calendar, long-press, photo share ---- */
@@ -3409,7 +4007,7 @@ function toast(msg,undo){const t=$("toast2");clearTimeout(toast._t);t.innerHTML=
 async function copyTxt(text,msg){try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);else throw 0}
   catch(_){const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}ta.remove()}
   toast("📋 "+msg)}
-function listText(which){const t=totals(),wl=fmtWeek(weekStartDate()),items=W.items.filter(it=>!W.have.has(it.id));
+function listText(which){const t=totals(),wl=fmtWeek(weekStartDate()),items=W.items.filter(it=>(typeof itemHaveSuppressed==="function"?!itemHaveSuppressed(it.id):!W.have.has(it.id)));
   const aw=it=>it.a!=null&&(it.p==null||it.a<=it.p),pw=it=>it.p!=null&&!aw(it);
   const pr=it=>`Aldi ${it.a==null?"n/a":"est. "+$$(it.a)} / Publix ${it.p==null?"n/a":"est. "+$$(it.p)}`;const L=[];
   if(which==="all"){L.push(`My shopping list: ${wl}`,(()=>{const main=typeof deriveMainStore==="function"?deriveMainStore():(st&&st.main)||"Aldi";const v=main==="Publix"?t.p:t.a;return `Est. total (${main==="Publix"?"Publix":"Aldi"}) ${$$(v)}`})());if(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))L.push(coffeeLine(true));
@@ -3721,8 +4319,8 @@ async function shareListText(text,title){
   toast("Copied")
 }
 async function shareCamList(){
-  const items=(W&&W.items?W.items:[]).filter(it=>!W.have.has(it.id)&&!W.ck.has(it.id));
-  const customs=getCamCustom().filter(c=>!W.have.has(c.id)&&!W.ck.has(c.id));
+  const items=(W&&W.items?W.items:[]).filter(it=>(typeof itemHaveSuppressed==="function"?!itemHaveSuppressed(it.id):!W.have.has(it.id))&&!W.ck.has(it.id));
+  const customs=getCamCustom().filter(c=>(typeof itemHaveSuppressed==="function"?!itemHaveSuppressed(c.id):!W.have.has(c.id))&&!W.ck.has(c.id));
   const all=[...items,...customs];const s0=weekStartDate();const lines=["Shopping list · week of "+fmtWeek(s0)];let total=0;
   const aisleMap={};all.forEach(it=>{const k=it.aisle||"other";(aisleMap[k]=aisleMap[k]||[]).push(it)});
   const labs=Object.fromEntries([...AISLES,...getCamCats().map(c=>[c,c])]);
@@ -3903,12 +4501,16 @@ function startTemplateWelcome(){
 
 initSheet();bindReceipt(document);
 reset();try{applyCamTheme(getCamTheme())}catch(_){};refreshTitles();
-try{restoreWeekSnap()}catch(_){}
+let _draftRestored=false;
+try{_draftRestored=!!restoreDraft()}catch(_){try{restoreWeekSnap()}catch(_2){}}
 const b0=$("backBtn");if(b0){b0.innerHTML=icons.backSm+'<span>Back</span>';b0.onclick=goBackApp}
 const bwTop=$("bwTop");if(bwTop){bwTop.innerHTML=icons.cal+'<span>Build my week</span>';bwTop.onclick=goBuildWeek}
 const _render=render;
-render=function(){_render();updateBackBtn();wireAllAutocomplete(card);refreshTitles()};
-render();
+render=function(){_render();updateBackBtn();wireAllAutocomplete(card);refreshTitles();try{persistDraft()}catch(_){}};
+const _renderWeek=typeof renderWeek==="function"?renderWeek:null;
+if(_renderWeek){renderWeek=function(){_renderWeek.apply(this,arguments);try{persistDraft()}catch(_){}}}
+if(!_draftRestored||!isWeekView())render();
+else updateBackBtn();
 setTimeout(()=>{
   const go=()=>{try{retroXp()}catch(_){}};
   /* Steve home: no voice welcome overlay on load. Questions are a secondary CTA from the hero. */
