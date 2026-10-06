@@ -1,0 +1,258 @@
+{
+  "mapping": {
+    "green-beans": "green-beans.webp",
+    "broccoli": "broccoli.webp",
+    "corn-cob": "corn-cob.webp",
+    "zucchini-peppers": "zucchini-peppers.webp",
+    "caesar-salad": "caesar-salad.webp",
+    "carrots-ranch": "carrots-ranch.webp",
+    "asparagus": "asparagus.webp",
+    "baked-potato": "baked-potato.webp",
+    "sweet-potato": "sweet-potato.webp",
+    "rice": "rice.webp",
+    "mac-cheese": "mac-cheese.webp",
+    "garlic-bread": "garlic-bread.webp",
+    "baked-beans": "baked-beans.webp",
+    "pasta-salad": "pasta-salad.webp",
+    "tortillas": "tortillas.webp",
+    "potato-salad": "potato-salad.webp",
+    "fries": "fries.webp",
+    "cottage-cheese": "cottage-cheese.webp",
+    "coleslaw": "coleslaw.webp",
+    "chips-salsa": "chips-salsa.webp",
+    "fruit-cup": "fruit-cup.webp",
+    "yogurt": "yogurt.webp",
+    "banana-fruit": "banana-fruit.webp",
+    "potato-chips": "potato-chips.webp",
+    "side-salad": "side-salad.webp",
+    "black-beans": "black-beans.webp",
+    "corn": "corn.webp",
+    "potatoes": "potatoes.webp"
+  },
+  "credits": [
+    {
+      "slug": "green-beans",
+      "file": "green-beans.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3AJambalaya_an_green_beans.jpg",
+      "author": "Jamin Gray",
+      "license": "CC BY-SA 2.0",
+      "bytes": 6060
+    },
+    {
+      "slug": "broccoli",
+      "file": "broccoli.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ACooked_broccoli_florets_in_a_textured_glass_bowl.jpg",
+      "author": "Horacio Cambeiro",
+      "license": "CC BY-SA 3.0",
+      "bytes": 9212
+    },
+    {
+      "slug": "corn-cob",
+      "file": "corn-cob.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ALiat_Portal_for_Foodie_Disorder_-_Cooked_Corn_on_the_Cob.jpg",
+      "author": "HaJunkiyada",
+      "license": "CC BY-SA 4.0",
+      "bytes": 3350
+    },
+    {
+      "slug": "zucchini-peppers",
+      "file": "zucchini-peppers.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ALiat_Portal_for_Foodie_Disorder_-_Chicken_and_zucchini_preparation_before_oven_grilling.jpg",
+      "author": "HaJunkiyada",
+      "license": "CC BY-SA 4.0",
+      "bytes": 9934
+    },
+    {
+      "slug": "caesar-salad",
+      "file": "caesar-salad.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ACaesar_salad_in_a_plastic_bowl.jpg",
+      "author": "JIP",
+      "license": "CC BY-SA 4.0",
+      "bytes": 6942
+    },
+    {
+      "slug": "carrots-ranch",
+      "file": "carrots-ranch.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ACarrots_%28baby%29_-_Arlington%2C_MA.jpg",
+      "author": "Daderot",
+      "license": "CC0",
+      "bytes": 8120
+    },
+    {
+      "slug": "asparagus",
+      "file": "asparagus.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ALiat_Portal_for_Foodie_Disorder_-_Roasted_cauliflower_with_asparagus_and_smashed_potatoes.jpg",
+      "author": "HaJunkiyada",
+      "license": "CC BY-SA 4.0",
+      "bytes": 8040
+    },
+    {
+      "slug": "baked-potato",
+      "file": "baked-potato.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3A2022-02-14_21_53_42_Baked_potato_skin_from_an_Outback_Steakhouse_Bloomin%27_Fried_Chicken_meal_in_the_Franklin_Farm_section_of_Oak_Hill%2C_Fairfax_County%2C_Virginia.jpg",
+      "author": "Famartin",
+      "license": "CC BY-SA 4.0",
+      "bytes": 15254
+    },
+    {
+      "slug": "sweet-potato",
+      "file": "sweet-potato.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ABaked_potato%2C_baked_sweet_potato%2C_and_steamed_kale.jpg",
+      "author": "User:O'Dea",
+      "license": "CC BY-SA 4.0",
+      "bytes": 5914
+    },
+    {
+      "slug": "rice",
+      "file": "rice.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3AA_bowl_of_rice.jpg",
+      "author": "Douglas Perkins",
+      "license": "CC0",
+      "bytes": 4014
+    },
+    {
+      "slug": "mac-cheese",
+      "file": "mac-cheese.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3AFlickr_qmnonic_123431456--Kraft_Dinner_and_veggie_dogs.jpg",
+      "author": "Matt MacGillivray from Toronto, Ontario, Canada",
+      "license": "CC BY 2.0",
+      "bytes": 10122
+    },
+    {
+      "slug": "garlic-bread",
+      "file": "garlic-bread.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3AGarlic_toast.jpg",
+      "author": "Scudsvlad",
+      "license": "CC BY-SA 4.0",
+      "bytes": 4292
+    },
+    {
+      "slug": "baked-beans",
+      "file": "baked-beans.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3AA_bowl_of_Beanie_Weenies.jpg",
+      "author": "Thomson200",
+      "license": "CC0",
+      "bytes": 7876
+    },
+    {
+      "slug": "pasta-salad",
+      "file": "pasta-salad.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3APasta_salad_closeup.JPG",
+      "author": "Brynn",
+      "license": "CC BY-SA 3.0",
+      "bytes": 8396
+    },
+    {
+      "slug": "tortillas",
+      "file": "tortillas.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3AStack_of_corn_and_flour_tortillas_and_a_large_flour_tortilla.jpg",
+      "author": "Vigilantcosmicpenguin",
+      "license": "CC BY 4.0",
+      "bytes": 3008
+    },
+    {
+      "slug": "potato-salad",
+      "file": "potato-salad.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ACHINA_SALAD_PLATE1.jpg",
+      "author": "Cheryl from River City (Richmond), VA, USA",
+      "license": "CC BY-SA 2.0",
+      "bytes": 6568
+    },
+    {
+      "slug": "fries",
+      "file": "fries.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3AFried_egg_surrounded_by_French_fries_on_a_white_plate.jpg",
+      "author": "Horacio Cambeiro",
+      "license": "CC BY-SA 3.0",
+      "bytes": 6600
+    },
+    {
+      "slug": "cottage-cheese",
+      "file": "cottage-cheese.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ACottagecheese200px.jpg",
+      "author": "FASTILY (TALK)",
+      "license": "CC BY-SA 3.0",
+      "bytes": 6268
+    },
+    {
+      "slug": "coleslaw",
+      "file": "coleslaw.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3APulled_chicken%2C_barbecued_turkey_breast%2C_coleslaw%2C_and_potato_salad_-_Cambridge%2C_MA.jpg",
+      "author": "Daderot",
+      "license": "CC0",
+      "bytes": 8710
+    },
+    {
+      "slug": "chips-salsa",
+      "file": "chips-salsa.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ACabo_Wabo_-_Chips%2C_salsa%2C_queso_and_a_soda_-_March_2020.jpg",
+      "author": "Jon Konrath",
+      "license": "CC BY 2.0",
+      "bytes": 8468
+    },
+    {
+      "slug": "fruit-cup",
+      "file": "fruit-cup.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3AFruit_salad_in_cup.jpg",
+      "author": "Surya Prakash.S.A.",
+      "license": "CC BY-SA 3.0",
+      "bytes": 3160
+    },
+    {
+      "slug": "yogurt",
+      "file": "yogurt.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3AA_bowl_of_frozen_yogurt.jpg",
+      "author": "JacquesDemien",
+      "license": "CC0",
+      "bytes": 6004
+    },
+    {
+      "slug": "banana-fruit",
+      "file": "banana-fruit.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ACavendish_banana_from_Maracaibo.jpg",
+      "author": "Wilfredor",
+      "license": "CC BY-SA 3.0",
+      "bytes": 8346
+    },
+    {
+      "slug": "potato-chips",
+      "file": "potato-chips.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3APotato-Chips.jpg",
+      "author": "Evan-Amos",
+      "license": "Public domain",
+      "bytes": 6526
+    },
+    {
+      "slug": "side-salad",
+      "file": "side-salad.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ASalad_%284%29.jpg",
+      "author": "Poecus",
+      "license": "Public domain",
+      "bytes": 7406
+    },
+    {
+      "slug": "black-beans",
+      "file": "black-beans.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ACooked_Samp_mixed_with_Black_Eye_beans.jpg",
+      "author": "MmaBaggio",
+      "license": "CC BY-SA 4.0",
+      "bytes": 8896
+    },
+    {
+      "slug": "corn",
+      "file": "corn.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3ACorn_kernels_in_bowl_-_Massachusetts.jpg",
+      "author": "Daderot",
+      "license": "CC0",
+      "bytes": 7224
+    },
+    {
+      "slug": "potatoes",
+      "file": "potatoes.webp",
+      "source": "https://commons.wikimedia.org/wiki/File%3APotato_flowers_2016_G1.jpg",
+      "author": "George Chernilevsky",
+      "license": "Public domain",
+      "bytes": 9392
+    }
+  ]
+}
