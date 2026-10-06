@@ -889,7 +889,7 @@
       function updateCount() {
         var n = (ta.value || '').length;
         if (n > MAX_TEXT) n = MAX_TEXT;
-        countEl.textContent = n + ' / ' + MAX_TEXT;
+        countEl.textContent = n + ' of ' + MAX_TEXT;
       }
       updateCount();
       ta.addEventListener('input', updateCount);
