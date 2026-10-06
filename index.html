@@ -159,39 +159,145 @@
   .wbtn.g{background:var(--white);color:var(--wink);border:2px solid rgba(23,48,66,.12)}
   .foot{text-align:center;color:var(--wsoft);font-weight:650;font-size:12px;margin-top:16px;line-height:1.5}
   .foot a{color:var(--teal)}
+
+  /* ===== v3: receipt button, calendar, budget, week customizer, build extras, prep badges ===== */
+  .rcpt-btn{border:0;border-radius:999px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#111;font:inherit;font-weight:800;font-size:15px;padding:10px 16px;min-height:44px;cursor:pointer;box-shadow:0 4px 0 rgba(146,64,14,.45)}
+  .rcpt-top{display:flex;justify-content:center;margin:0 0 12px}
+  body.light .rcpt-btn{background:linear-gradient(135deg,var(--coral),var(--coralD));color:#fff;box-shadow:0 4px 0 rgba(185,68,28,.3)}
+  .wl-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0 4px}
+  .wl-row .wlabel{margin:0}
+  .cal-btn{width:48px;height:48px;border-radius:14px;border:2px solid var(--teal);background:var(--white);font-size:22px;cursor:pointer;box-shadow:0 4px 0 rgba(15,110,110,.16);flex-shrink:0}
+  .pill.btn{border:0;font:inherit;font-weight:800;cursor:pointer;min-height:40px}
+  .pill.bud{background:#fff;color:var(--tealD);border:2px solid rgba(15,110,110,.35)}
+  .pill.bud.off{background:#eef1f3;color:#7a8a96;border-color:#d5dde2;font-weight:700}
+  .bcmp{margin:8px auto 0;max-width:380px;border-radius:12px;padding:8px 12px;font-weight:800;font-size:14px}
+  .bcmp.under{background:#d1fae5;color:#065f46}.bcmp.over{background:#fee2e2;color:#991b1b}
+  .sheet-bg{position:fixed;inset:0;background:rgba(23,48,66,.55);display:none;align-items:flex-end;justify-content:center;z-index:60;padding:10px}
+  .sheet-bg.open{display:flex}
+  .sheet{width:100%;max-width:440px;max-height:88vh;overflow:auto;background:#fffaf4;color:#173042;border-radius:22px 22px 16px 16px;padding:14px 14px 18px;box-shadow:0 20px 50px rgba(0,0,0,.3);font-family:Nunito,Segoe UI,sans-serif;animation:pop .2s ease}
+  .sh-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+  .sh-top h3{margin:0;font-family:Fraunces,Georgia,serif;font-size:21px}
+  .sh-x{width:44px;height:44px;border:0;border-radius:12px;background:#dceee6;color:#173042;font-size:20px;font-weight:800;cursor:pointer;flex-shrink:0}
+  .cal-nav{display:flex;align-items:center;justify-content:space-between;margin:4px 0 6px}
+  .cal-nav b{font-size:18px}
+  .cal-nav button{width:48px;height:44px;border:2px solid rgba(15,110,110,.3);border-radius:12px;background:#fff;font-size:20px;font-weight:800;color:#0a5555;cursor:pointer}
+  .cal-dow,.cal-row{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+  .cal-dow span{text-align:center;font-size:12px;font-weight:800;color:#3d5566;padding:4px 0;text-transform:uppercase}
+  .cal-row{border-radius:12px;padding:2px 0;margin:1px 0}
+  .cal-row.sel{background:#d4efef;box-shadow:inset 0 0 0 2px #0f6e6e}
+  .cal-d{height:46px;border:0;background:transparent;border-radius:10px;font:inherit;font-weight:800;font-size:16px;color:#173042;cursor:pointer}
+  .cal-d.out{color:#a0afb9;font-weight:650}
+  .cal-d.today{background:#ffe3d6;color:#b9441c;box-shadow:inset 0 0 0 2px #d4572a}
+  .cal-d:active{background:#0f6e6e;color:#fff}
+  .cal-foot{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px}
+  .cal-foot button,.sh-btn{min-height:48px;border-radius:12px;border:2px solid rgba(15,110,110,.3);background:#fff;font:inherit;font-weight:800;font-size:14px;color:#0a5555;cursor:pointer}
+  .cal-foot .now,.sh-btn.p{background:linear-gradient(160deg,#0f6e6e,#0a5555);color:#fff;border-color:transparent}
+  .cal-sel{margin:0 0 6px;font-weight:800;color:#b9441c;font-size:14px}
+  .sw{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#eef6f2;border-radius:14px;padding:10px 12px;margin:4px 0 12px;cursor:pointer;font-weight:800}
+  .sw .tg{width:58px;height:34px;border-radius:999px;background:#c5d0d6;position:relative;flex-shrink:0;transition:background .15s}
+  .sw .tg::after{content:"";position:absolute;top:3px;left:3px;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .15s}
+  .sw[aria-checked="true"] .tg{background:#0f6e6e}.sw[aria-checked="true"] .tg::after{left:27px}
+  .fld{display:block;font-weight:800;font-size:14px;margin:8px 0 4px;color:#3d5566}
+  .inp{width:100%;font:inherit;font-size:20px;font-weight:800;border:2px solid rgba(15,110,110,.35);border-radius:12px;padding:10px 12px;background:#fff;color:#173042}
+  .dchips{display:flex;gap:6px;margin:8px 0 4px}
+  .dchips button{flex:1;min-height:44px;border-radius:12px;border:2px solid rgba(15,110,110,.3);background:#fff;font:inherit;font-weight:800;color:#0a5555;cursor:pointer}
+  .dchips button.on{background:#0f6e6e;color:#fff;border-color:#0f6e6e}
+  .sh-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+  .muted2{font-size:12px;color:#3d5566;font-weight:650;margin:8px 0 0}
+  .cz{border:2px solid rgba(23,48,66,.1);border-radius:14px;padding:8px 10px;margin:0 0 8px;background:#fff}
+  .cz.mv{border-color:#d4572a;background:#fff5ef}
+  .cz.ch{border-color:#0f6e6e}
+  .cz-h{display:flex;justify-content:space-between;font-weight:800;font-size:13px;color:#0a5555;text-transform:uppercase;letter-spacing:.03em}
+  .cz-d{font-weight:800;font-size:15px;margin:2px 0 6px}
+  .cz-o{display:flex;flex-wrap:wrap;gap:4px}
+  .cz-o button{min-height:40px;border-radius:10px;border:2px solid rgba(15,110,110,.28);background:#eef6f2;font:inherit;font-weight:800;font-size:12.5px;color:#173042;padding:0 7px;cursor:pointer}
+  .cz-o button.on{background:#0f6e6e;color:#fff;border-color:#0f6e6e}
+  .cz-o button.mvb.on{background:#d4572a;border-color:#d4572a}
+  .cz-list{display:flex;flex-direction:column;gap:5px;margin-top:6px}
+  .cz-list button{text-align:left;min-height:42px;border-radius:10px;border:2px solid rgba(15,110,110,.2);background:#fff;font:inherit;font-weight:800;font-size:14px;padding:6px 10px;cursor:pointer}
+  .lp{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+  .lp-tip{text-align:center;font-size:12px;font-weight:700;color:var(--wsoft);margin:-4px 0 10px}
+  .edited{display:inline-block;margin-left:6px;background:var(--coral);color:#fff;border-radius:999px;padding:2px 8px;font-size:11px;letter-spacing:.04em;vertical-align:middle}
+  .emo-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .emo-row .memo{margin:0}
+  .pc{display:flex;flex-direction:column;gap:2px;font-size:12px;font-weight:800;color:var(--wsoft);background:var(--wbg);border-radius:10px;padding:4px 8px;line-height:1.25}
+  .pc.dk{background:#0b1222;color:var(--mut);border:1px solid var(--chip)}
+  .mtop{display:flex;align-items:center;gap:8px}
+  .meal .mrow{flex-wrap:wrap}.meal .yn{margin-left:auto}.meal .mt{order:3;flex-basis:100%;margin-top:6px}
+  .xtra-btn{display:inline-block;border:2px dashed var(--gold);color:var(--gold);background:transparent;border-radius:999px;padding:10px 16px;font-size:16px;cursor:pointer;margin:0 0 14px}
+  .xlist{background:#0b1222;border:2px solid var(--gold);border-radius:16px;padding:12px;margin:-4px 0 16px;text-align:left}
+  .xlist .ph2{font-size:14px;color:var(--gold);font-weight:700;margin:0 0 8px}
+  .xlist .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .xsel{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:-8px 0 16px}
+  .chip.x{background:#8b5cf6;border-color:#8b5cf6}
+  .snap{background:#0b1222;border:2px solid var(--chip);border-radius:16px;padding:12px;margin:0 0 16px;text-align:left}
+  .snap p{margin:0 0 8px;font-size:14px;line-height:1.4}
+  .snap .sbtn{border:0;border-radius:12px;background:var(--on);color:#fff;font-size:15px;font-weight:700;padding:10px 14px;cursor:pointer;min-height:44px}
+  .thumbs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .thumbs img{width:72px;height:72px;object-fit:cover;border-radius:10px;border:2px solid rgba(15,110,110,.4)}
+  .shr-msg{font-size:13px;font-weight:700;margin:6px 0 0}
+  .src-l{font-size:11px;font-weight:800;color:var(--wsoft);background:#eef1f3;border-radius:8px;padding:1px 6px}
+  .pr span.stale{opacity:.45;text-decoration:line-through dotted}
+  .pchk{font-size:12px;font-weight:800;color:var(--tealD);margin:2px 0 8px}
+
+  .ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left;margin:0 0 12px}
+  .ab-grid label{font-size:13px;color:var(--mut);font-weight:700}
+  .ab-grid input{width:100%;margin-top:4px;border-radius:12px;border:2px solid var(--chip);background:#0b1222;color:var(--ink);padding:12px;font-size:18px}
+  .ab-h{display:flex;gap:6px}
+  .guide{background:#0b1222;border:2px solid #10b981;border-radius:14px;padding:10px 12px;margin:0 0 16px;text-align:left;font-size:14px;line-height:1.45}
+  .guide b{color:#6ee7b7}.guide small{display:block;color:var(--mut);margin-top:4px}
+  .gbox{background:var(--white);border-radius:14px;padding:10px 14px;font-weight:700;font-size:14px;color:var(--wsoft);box-shadow:0 8px 22px rgba(23,48,66,.1);margin:0 0 12px}
+  .gbox b{color:var(--wink)}.gbox small{display:block;font-weight:650;font-size:12px;margin-top:3px}
+  .nut{margin:6px 0 0;font-size:12px;font-weight:800;color:var(--tealD)}
+
+  .rate{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px;font-size:12px;font-weight:800;color:var(--wsoft)}
+  .rate button{min-width:46px;min-height:40px;border-radius:12px;border:2px solid rgba(15,110,110,.25);background:var(--wbg);font-size:16px;cursor:pointer}
+  .rate button[aria-pressed="true"]{background:var(--tealS);border-color:var(--teal)}
+  .favb{display:inline-block;font-size:12px;font-weight:800;background:#fff3c4;color:#8a5a00;border-radius:999px;padding:2px 8px;vertical-align:middle}
+  .rpanel ul{list-style:none;margin:0;padding:0}.rpanel li{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed rgba(23,48,66,.12);font-weight:800}
+  .rpanel li span{flex:1}.rpanel li small{color:var(--wsoft);font-weight:650}
+  .etm{display:inline-block;margin-top:6px;font-size:13px;font-weight:800;color:var(--teal)}
+  .etm.dk{color:#38bdf8}
   .nextwk{background:var(--white);border-radius:14px;padding:10px 14px;font-weight:700;font-size:14px;color:var(--wsoft);box-shadow:0 8px 22px rgba(23,48,66,.1);margin-bottom:12px}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <div class="rcpt-top"><button class="rcpt-btn" data-rcpt="1">📷 Upload receipt</button></div>
   <div class="top"><span>Cameron's Meal Picker</span><span id="count"></span></div>
   <div class="bar"><i id="prog" style="width:0"></i></div>
   <div class="card" id="card"></div>
-  <p class="muted">Taps only (typing just for "Other store" and "+ Custom"). Photos stay on your phone; nothing is saved or sent anywhere.</p>
+  <p class="muted">Taps only (typing just for "Other store", "+ Custom" and About me). Photos stay on your phone unless you share them. About me, budget and ratings are saved on this phone only; nothing is sent anywhere.</p>
 </div>
 <div id="week"></div>
+<div class="sheet-bg" id="sheet" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" id="sheetIn"></div></div>
 <script src="meals.js"></script>
 <script>
-const C=window.CAM, STORES=C.STORES, TOPPINGS=C.TOPPINGS, SIDES=C.SIDES, DRILL=C.DRILL, MEALS=C.MEALS;
+const C=window.CAM, STORES=C.STORES, BUILDS=C.BUILDS, SIDES=C.SIDES, DRILL=C.DRILL, MEALS=C.MEALS;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const $=id=>document.getElementById(id);
 const M=id=>MEALS.find(m=>m.id===id);
 let st, queue, pos;
 function reset(){
-  const top={};TOPPINGS.forEach(t=>top[t.id]={on:true,v:t.v?t.v[0]:t.label});
+  const build={};Object.keys(BUILDS).forEach(k=>{const b=BUILDS[k],o={};b.core.forEach(t=>o[t.id]={on:true,v:t.v?t.v[0]:t.label});b.extras.forEach(t=>o[t.id]={on:false,v:t.label});build[k]={top:o,custom:[]}});
   st={stores:new Set(),extra:[],main:"",photos:{},equip:new Set(["foreman"]),meals:{},mealV:{},tip:null,
-      top,topCustom:[],sides:new Set(),picks:{},custom:{},open:null,cOpen:null,mealCustom:[]};
-  queue=["stores","main","photos","equip","meals","burger","sides","BUILD","summary"]; pos=0;
+      build,xOpen:null,weekStart:null,about:getAbout(),aboutReturn:false,sides:new Set(),picks:{},custom:{},open:null,cOpen:null,mealCustom:[],kitPhotos:[]};
+  queue=["stores","main","photos","about","equip","meals","MEALB","sides","BUILD","summary"]; pos=0;
   document.body.classList.remove("light");
 }
 const card=$("card");
 function go(n=1){pos+=n;
   for(let g=0;g<50;g++){const s=queue[pos];
     if(s==="main"&&st.stores.size<2){if(st.stores.size===1)st.main=[...st.stores][0];pos+=n>0?1:-1;continue}
-    if(s==="burger"&&st.meals.burger==="no"){pos+=n>0?1:-1;continue}
+    if(s==="MEALB"){buildMealSteps();continue}
     if(s==="BUILD"){buildDrill();continue}
     break}
   st.open=null;st.cOpen=null;render();window.scrollTo(0,0)}
+function buildMealSteps(){
+  // ingredient screens: burger unless he said No; other meals only if he said Yes
+  const ids=Object.keys(BUILDS).filter(k=>k==="burger"?st.meals.burger!=="no":st.meals[k]==="yes");
+  queue.splice(pos,1,...ids.map(k=>({build:k})));
+}
 function buildDrill(){
   const steps=[];
   allSides().filter(s=>st.sides.has(s)&&DRILL[s]).forEach(s=>steps.push({side:s,level:"top"}));
@@ -234,7 +340,7 @@ const mv=id=>st.mealV[id]||(M(id).v?M(id).v[0]:"");
 function render(){
   progress();setTimeout(()=>{const p=card.querySelector(".pop,.addrow.cust");if(p&&p.scrollIntoView)p.scrollIntoView({block:"nearest",behavior:"smooth"})},0);
   const s=queue[pos];
-  if(typeof s==="object") return drill(s);
+  if(typeof s==="object") return s.build?buildScreen(s.build):drill(s);
   if(s==="stores"){
     card.innerHTML=`<div class="emoji">🛒</div><h1>Where do you shop?</h1><p class="sub">Tap every store you use.</p>
       ${chipList([...STORES,...st.extra],st.stores)}
@@ -249,7 +355,8 @@ function render(){
       <div class="chips">${[...st.stores].map(x=>`<span class="chip${st.main===x?" main":" off"}" data-x="${esc(x)}">${esc(x)}</span>`).join("")}</div>${btns("Next →",!st.main)}`;
     card.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{st.main=c.dataset.x;render()});
     $("nx").onclick=()=>st.main&&go();
-  } else if(s==="photos"){
+  } else if(s==="about") aboutStep();
+  else if(s==="photos"){
     const tile=(k,e,l)=>`<label class="ph${st.photos[k]?" done":""}">${st.photos[k]?`<img src="${st.photos[k]}"><span class="ok">✓ ${l}</span>`:`<span class="big">${e}</span>${l}<br>Tap for photo`}<input type="file" accept="image/*" capture="environment" data-k="${k}"></label>`;
     const n=Object.keys(st.photos).length;
     card.innerHTML=`<div class="emoji">📸</div><h1>Show me what you have</h1><p class="sub">One photo each so I can see what's already there.</p>
@@ -265,12 +372,19 @@ function render(){
       <p class="fnote">${fm?"✓ Yep. Meals and cook times are built around the Foreman.":"Tap the card if you still use it."}</p>
       <p class="lbl">Also have</p>
       <div class="chips">${rest.map(e=>`<span class="chip${st.equip.has(e.id)?"":" off"}" data-e="${e.id}">${e.emoji} ${e.label}</span>`).join("")}</div>
+      <div class="snap"><p class="lbl" style="margin-top:0">Anything else in your kitchen?</p>
+        <p>Not sure if you have something? 📸 Snap a photo of your counters/cabinets and send it to your chef bot. It'll tell you what you've got.</p>
+        <button class="sbtn" id="kitSnap">📸 Snap a photo</button><input type="file" accept="image/*" capture="environment" id="kitIn" hidden>
+        <div class="thumbs" id="kitThumbs"></div><div id="kitAct"></div>
+        <p class="muted" style="margin-top:6px">This page can't see what's in the photo. Your chef bot reads it. Photos stay on your phone unless you share them.</p></div>
       ${btns("Next →")}`;
     $("fm").onclick=()=>{fm?st.equip.delete("foreman"):st.equip.add("foreman");render()};
     card.querySelectorAll(".chip[data-e]").forEach(c=>c.onclick=()=>{const k=c.dataset.e;st.equip.has(k)?st.equip.delete(k):st.equip.add(k);render()});
     $("nx").onclick=()=>go();
+    photoShare({btn:$("kitSnap"),input:$("kitIn"),thumbs:$("kitThumbs"),act:$("kitAct"),store:st.kitPhotos,
+      shareLabel:"Send to my chef bot",title:"Kitchen photo",text:"What do I have here? (photo from my meal picker)",
+      fallback:"Saved. Send this photo to your chef bot (long-press it → Save, then send it in chat)."});
   } else if(s==="meals") meals();
-  else if(s==="burger") burger();
   else if(s==="sides"){
     const nb=st.meals.burger==="no";
     card.innerHTML=`<div class="emoji">🍽️</div><h1>${nb?"What sides do you like?":"What goes with it?"}</h1><p class="sub">Pick any sides you like.</p>
@@ -280,20 +394,23 @@ function render(){
 }
 function meals(){
   const fm=st.equip.has("foreman");
-  const list=[...MEALS].sort((a,b)=>fm?(b.grill-a.grill):0);
+  const list=[...MEALS].filter(m=>rateOf(m.id)!==-1).sort((a,b)=>(rateOf(b.id)===2)-(rateOf(a.id)===2)||(fm?(b.grill-a.grill):0));
+  const removed=MEALS.filter(m=>rateOf(m.id)===-1);
   const yesN=Object.values(st.meals).filter(x=>x==="yes").length+st.mealCustom.length;
   card.innerHTML=`<div class="emoji">🥩</div><h1>What sounds good?</h1><p class="sub">Tap Yes or No on each.${fm?" 🔥 = great on your Foreman.":""}</p>
    <div class="meals">${list.map(m=>{const a=st.meals[m.id]||"";const op=st.tip===m.id;const po=st.open==="m:"+m.id;
-     return `<div class="meal ${a}"><div class="mrow"><span class="me">${m.emoji}</span><div class="mt"><b>${esc(m.name)}</b><br>
+     return `<div class="meal ${a}"><div class="mrow"><div class="mtop"><span class="me">${m.emoji}</span>${pcBadge(m.prep,m.cook,true)}</div><div class="mt"><b>${rateOf(m.id)===2?"⭐ ":""}${esc(m.name)}</b><br>
        ${m.v?`<span class="vchip" data-mv="${m.id}">${esc(mv(m.id))} ▾</span> `:""}${fm&&m.grill?`<span class="fb">🔥 ${esc(m.time.split(" (")[0])}</span>`:""}</div>
        <div class="yn"><button class="y${a==="yes"?" sel":""}" data-m="${m.id}" data-a="yes">Yes</button><button class="n${a==="no"?" sel":""}" data-m="${m.id}" data-a="no">No</button></div></div>
        ${po?popHTML(m.id==="steak"?"Which cut?":"Which kind?",m.v,mv(m.id),false):""}
        <button class="tipbtn" data-tip="${m.id}">${op?"▾":"▸"} How to cook it</button>${op?tipHTML(m):""}</div>`}).join("")}</div>
+   ${removed.length?`<details class="box"><summary>👎 Removed meals (${removed.length})</summary><p class="no" style="margin:6px 0">You rated these "tried it, no". They're hidden from suggestions and swaps.</p>${removed.map(m=>`<div class="mrow" style="margin-top:6px"><span>${m.emoji} ${esc(m.name)}</span><button class="popt" style="margin-left:auto" data-restore="${m.id}">Restore</button></div>`).join("")}</details>`:""}
    <p class="lbl">Something else you like?</p>
    <div class="chips">${st.mealCustom.map(x=>`<span class="chip cust" data-mc="${esc(x)}">${esc(x)}</span>`).join("")}${customChip("meals")}</div>${customRow("meals")}
    ${tipsBox()}
    ${btns(yesN?`Next → (${yesN} yes)`:"Next →",false,yesN?null:"Skip: pick for me")}`;
   card.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const id=b.dataset.m;st.meals[id]=st.meals[id]===b.dataset.a?undefined:b.dataset.a;if(!st.meals[id])delete st.meals[id];render()});
+  card.querySelectorAll("[data-restore]").forEach(b=>b.onclick=()=>{setRate(b.dataset.restore,0);render()});
   card.querySelectorAll("[data-tip]").forEach(b=>b.onclick=()=>{st.tip=st.tip===b.dataset.tip?null:b.dataset.tip;render()});
   card.querySelectorAll("[data-mv]").forEach(b=>b.onclick=()=>{const k="m:"+b.dataset.mv;st.open=st.open===k?null:k;render()});
   card.querySelectorAll(".pop .popt").forEach(b=>b.onclick=()=>{const id=st.open.slice(2);st.mealV[id]=b.dataset.v;st.meals[id]="yes";st.open=null;render()});
@@ -301,18 +418,27 @@ function meals(){
   bindCustom((k,v)=>{if(!st.mealCustom.includes(v))st.mealCustom.push(v)});
   $("nx").onclick=()=>go();const sk=$("sk");if(sk)sk.onclick=()=>go();
 }
-function burger(){
-  const open=TOPPINGS.find(t=>t.id===st.open);
-  card.innerHTML=`<div class="emoji">🍔</div><h1>Build your burger</h1><p class="sub">Everything's on. Tap ▾ items to swap; tap others off.</p>
-    <div class="chips">${TOPPINGS.map(t=>{const s=st.top[t.id];return `<span class="chip drop${s.on?"":" off"}${st.open===t.id?" open":""}" data-t="${t.id}">${esc(t.v?s.v:t.label)}${t.v?" ▾":""}</span>`}).join("")}
-    ${st.topCustom.map(c=>`<span class="chip drop cust${c.on?"":" off"}" data-tc="${esc(c.label)}">${esc(c.label)}</span>`).join("")}${customChip("burger")}</div>
-    ${open?popHTML(`Swap ${esc(open.label.toLowerCase())} for…`,open.v,st.top[open.id].v,st.top[open.id].on):""}${customRow("burger")}
-    ${btns("Next →")}`;
-  card.querySelectorAll("[data-t]").forEach(c=>c.onclick=()=>{const t=TOPPINGS.find(x=>x.id===c.dataset.t);if(t.v){st.open=st.open===t.id?null:t.id;st.cOpen=null}else{st.top[t.id].on=!st.top[t.id].on}render()});
-  card.querySelectorAll(".pop .popt").forEach(b=>b.onclick=()=>{const s=st.top[st.open];if(b.dataset.rm)s.on=false;else{s.v=b.dataset.v;s.on=true}st.open=null;render()});
-  card.querySelectorAll("[data-tc]").forEach(c=>c.onclick=()=>{const o=st.topCustom.find(x=>x.label===c.dataset.tc);o.on=!o.on;render()});
-  bindCustom((k,v)=>{if(!st.topCustom.some(x=>x.label===v))st.topCustom.push({label:v,on:true})});
-  $("nx").onclick=()=>go();
+function buildScreen(mid){
+  const B=BUILDS[mid], bs=st.build[mid], T=bs.top, m=M(mid);
+  const open=B.core.find(t=>t.id===st.open);
+  const xOn=B.extras.filter(x=>T[x.id].on), xOff=B.extras.filter(x=>!T[x.id].on);
+  const xo=st.xOpen===mid;
+  card.innerHTML=`<div class="emoji">${B.emoji}</div><h1>${esc(B.title)}</h1><p class="sub">The usual stuff is on. Tap ▾ to swap, tap to turn off.</p>
+    <div class="chips">${B.core.map(t=>{const s=T[t.id];return `<span class="chip drop${s.on?"":" off"}${st.open===t.id?" open":""}" data-t="${t.id}">${esc(t.v?s.v:t.label)}${t.v?" ▾":""}</span>`}).join("")}</div>
+    ${open?popHTML(`Swap ${esc(open.label.toLowerCase())} for…`,open.v,T[open.id].v,T[open.id].on):""}
+    ${xOn.length||bs.custom.length?`<p class="lbl">Your extras (tap to remove)</p><div class="xsel" style="margin:0 0 14px">${xOn.map(x=>`<span class="chip x" data-xr="${x.id}">${esc(x.label)} ✕</span>`).join("")}${bs.custom.map(c=>`<span class="chip cust" data-cr="${esc(c)}">${esc(c)} ✕</span>`).join("")}</div>`:""}
+    <button class="xtra-btn" id="xb">${xo?"▾ Hide extras":"+ Add extras"}</button>
+    ${xo?`<div class="xlist"><p class="ph2">Tap to add</p><div class="opts">${xOff.map(x=>`<button class="popt" data-xa="${x.id}">+ ${esc(x.label)}</button>`).join("")}<button class="popt" data-c="b:${mid}" id="xc">+ Custom</button></div>${customRow("b:"+mid)}</div>`:""}
+    ${btns("Looks good →")}`;
+  card.querySelectorAll("[data-t]").forEach(c=>c.onclick=()=>{const t=B.core.find(x=>x.id===c.dataset.t);if(t.v){st.open=st.open===t.id?null:t.id;st.cOpen=null}else{T[t.id].on=!T[t.id].on}render()});
+  card.querySelectorAll(".pop .popt").forEach(b=>b.onclick=()=>{const s=T[st.open];if(b.dataset.rm)s.on=false;else{s.v=b.dataset.v;s.on=true}st.open=null;render()});
+  card.querySelectorAll("[data-xa]").forEach(b=>b.onclick=()=>{T[b.dataset.xa].on=true;render()});
+  card.querySelectorAll("[data-xr]").forEach(b=>b.onclick=()=>{T[b.dataset.xr].on=false;render()});
+  card.querySelectorAll("[data-cr]").forEach(b=>b.onclick=()=>{bs.custom=bs.custom.filter(x=>x!==b.dataset.cr);render()});
+  $("xb").onclick=()=>{st.xOpen=xo?null:mid;st.cOpen=null;st.open=null;render()};
+  const xc=$("xc");if(xc)xc.onclick=()=>{st.cOpen=st.cOpen==="b:"+mid?null:"b:"+mid;render();const i=$("cin");if(i)i.focus()};
+  const cb=$("cadd");if(cb){const add=()=>{const v=$("cin").value.trim().slice(0,30);if(v&&!bs.custom.includes(v))bs.custom.push(v);st.cOpen=null;render()};cb.onclick=add;$("cin").onkeydown=e=>{if(e.key==="Enter")add()}}
+  $("nx").onclick=()=>{st.xOpen=null;go()};
 }
 function drill(step){
   const d=DRILL[step.side];
@@ -337,10 +463,10 @@ function drill(step){
     go();
   };
 }
-function topLabel(id){const s=st.top[id];return s&&s.on?s.v:null}
+function topLabel(id,mid="burger"){const b=st.build[mid];const s=b&&b.top[id];return s&&s.on?s.v:null}
+function buildPicks(mid){const B=BUILDS[mid],T=st.build[mid].top;return {on:[...B.core.filter(t=>T[t.id].on).map(t=>T[t.id].v),...B.extras.filter(t=>T[t.id].on).map(t=>t.label),...st.build[mid].custom],off:B.core.filter(t=>!T[t.id].on).map(t=>t.label)}}
 function summary(){
-  const off=TOPPINGS.filter(t=>!st.top[t.id].on).map(t=>t.label);
-  const on=[...TOPPINGS.filter(t=>st.top[t.id].on).map(t=>st.top[t.id].v),...st.topCustom.filter(c=>c.on).map(c=>c.label)];
+  const built=Object.keys(BUILDS).filter(k=>k==="burger"?st.meals.burger!=="no":st.meals[k]==="yes");
   const sideLines=allSides().filter(s=>st.sides.has(s)).map(s=>{
     if(!DRILL[s])return `<p><b>${esc(s)}</b> <span class="no">(custom)</span></p>`;
     const top=[...(st.picks[s]||[])];
@@ -356,12 +482,14 @@ function summary(){
     <h2>🍳 Gear</h2><p>${eq.length?eq.map(x=>`<span class="tag">${esc(x)}</span>`).join(""):"None picked: assuming Foreman + microwave"}</p>
     <h2>🥩 Meals</h2><p>${ys.length||st.mealCustom.length?[...ys.map(m=>`<span class="tag y">✓ ${esc(m.v?mv(m.id)+" · ":"")}${esc(m.name)}</span>`),...st.mealCustom.map(x=>`<span class="tag y">✓ ${esc(x)}</span>`)].join(""):"Skipped: I'll pick grill favorites"}</p>
     ${ns.length?`<p class="no">No: ${ns.map(m=>esc(m.name)).join(", ")}</p>`:""}
-    ${st.meals.burger==="no"?"":`<h2>🍔 Burger</h2><p>${on.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</p>${off.length?`<p class="no">No: ${off.join(", ")}</p>`:""}`}
+    ${built.map(k=>{const bp=buildPicks(k);return `<h2>${BUILDS[k].emoji} ${esc(BUILDS[k].title.replace(/^(Build your|Your) /,"").replace(/^./,c=>c.toUpperCase()))}</h2><p>${bp.on.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</p>${bp.off.length?`<p class="no">No: ${bp.off.map(esc).join(", ")}</p>`:""}`}).join("")}
     <h2>🍽️ Sides</h2>${sideLines||"<p>None</p>"}
+    <h2>🧍 About me</h2>${aboutSummary()}<button class="next ghost" id="abE" style="margin-top:0;padding:6px 0;text-align:left;width:auto">✎ Edit about me</button>
     <button class="next build" id="bw">📅 Build my week</button>
     <p class="muted">Turns your picks into a 7-day Foreman plan + a priced Aldi/Publix shopping list. All on this page.</p>
     <button class="next" id="rs" style="margin-top:6px;background:var(--chip)">Start over</button></div>`;
   $("rs").onclick=()=>{reset();render()};
+  $("abE").onclick=()=>{st.aboutReturn=true;pos=queue.indexOf("about");render();window.scrollTo(0,0)};
   $("bw").onclick=()=>{buildWeek();document.body.classList.add("light");window.scrollTo(0,0)};
 }
 /* ================= WEEK PLANNER ================= */
@@ -407,10 +535,13 @@ function buildWeek(){
       note:n=>`Cook night: grill ${n+1} ${mv("brats").replace(/ \(.*\)/,"").toLowerCase()}. Eat 1, fridge ${n}, freeze the rest.`}
   };
   // which proteins: yes'd ones, priority steak > burger > chicken > pork > brats; fill to 3
-  const want={steak:yes("steak")||yes("steakq")||yes("stkegg"),burger:yes("burger"),chicken:yes("chicken")||yes("chixq")||yes("bowl"),pork:yes("pork"),brats:yes("brats")};
-  let groups=["steak","burger","chicken","pork","brats"].filter(g=>want[g]);
+  const ok=id=>rateOf(id)!==-1, Y=id=>(yes(id)||rateOf(id)===2)&&ok(id);
+  const want={steak:Y("steak")||Y("steakq")||Y("stkegg"),burger:Y("burger"),chicken:Y("chicken")||Y("chixq")||Y("bowl"),pork:Y("pork"),brats:Y("brats")};
+  const favN=g=>Object.keys(MG).filter(id=>MG[id]===g&&rateOf(id)===2).length;
+  let groups=["steak","burger","chicken","pork","brats"].filter(g=>want[g]).sort((a,b)=>favN(b)-favN(a));
   const extra=groups.slice(3);groups=groups.slice(0,3);
-  for(const g of ["steak","chicken","burger"]) if(groups.length<3&&!groups.includes(g)&&st.meals[g==="steak"?"steak":g]!=="no")groups.push(g);
+  for(const g of ["steak","chicken","burger"]) if(groups.length<3&&!groups.includes(g)&&st.meals[g==="steak"?"steak":g]!=="no"&&ok(g))groups.push(g);
+  for(const g of ["chicken","pork","brats","burger","steak"]) if(groups.length<3&&!groups.includes(g)&&ok(g))groups.push(g);
   for(const g of ["chicken","pork","brats","burger","steak"]) if(groups.length<3&&!groups.includes(g))groups.push(g);
   const order=["chicken","burger","pork","brats","steak"];groups.sort((a,b)=>order.indexOf(a)-order.indexOf(b));
   const F=["burger","chicken","brats","pork"].find(g=>groups.includes(g));
@@ -418,28 +549,29 @@ function buildWeek(){
   const breakfasts=["2 scrambled eggs + toast"];
   if(st.sides.has("Yogurt"))breakfasts.push("Yogurt + fruit");if(st.sides.has("Fruit"))breakfasts.push("Toast + "+(S.lunch.find(x=>/banana|apple|orange/i.test(x))||"fruit").toLowerCase());
   if(breakfasts.length<2)breakfasts.push("Egg sandwich on toast");
-  const start=new Date();start.setHours(0,0,0,0);start.setDate(start.getDate()-((start.getDay()+6)%7)); // Monday
+  const start=weekStartDate(); // Monday of the chosen week (default: this week)
   const dn=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"], icons=["🛒","🔁","🔥","🔁","🥩","🔁","🧊"];
   const days=[];
   const mk=(i,o)=>{const d=new Date(start);d.setDate(d.getDate()+i);days.push({short:`${dn[i]} ${d.getMonth()+1}/${d.getDate()}`,icon:icons[i],...o,bf:i%2===0||i===6?breakfasts[(i/2|0)%breakfasts.length]:null})};
   const custom=st.mealCustom.slice();
   [0,1,2].forEach(k=>{
     const g=G[groups[k]], c=g.cook(), l=g.left(), n=k<2?3:2, i=k*2;
-    mk(i,{cook:true,meal:c.id,e:c.e,dinner:`${c.t} + ${ds()}`,note:(i===0?"🛒 Shop day: split meat into single portions in freezer bags + date them. ":"")+g.note(n),
+    mk(i,{g:groups[k],cook:true,meal:c.id,e:c.e,dinner:`${c.t} + ${ds()}`,note:(i===0?"🛒 Shop day: split meat into single portions in freezer bags + date them. ":"")+g.note(n),
       lunch:i===0?"Shop-day lunch: whatever's in the fridge (your photos would tell me)":`${G[groups[k-1]].lunch} + ${ls()}`});
     let note=n===3?`Leftover night: just reheat (165°F). ${g.name[0].toUpperCase()+g.name.slice(1)} from ${dn[i]} keeps thru ${dn[i+3]}; freeze anything left by then.`:`Leftover night: reheat to 165°F. Fridge should be almost empty after tonight.`;
     if(i+1===5&&F)note+=` 🧊 Tonight: move 2 frozen ${G[F].frozen} to the fridge to thaw for tomorrow.`;
     const lt=custom.length&&k===1?{id:null,e:"⭐",t:custom.shift()+" (your pick)"}:l;
-    mk(i+1,{cook:false,meal:lt.id,e:lt.e,dinner:lt.t,note,lunch:`${g.lunch} + ${ls()}`});
+    mk(i+1,{g:lt.id?groups[k]:null,cook:false,meal:lt.id,e:lt.e,dinner:lt.t,note,lunch:`${g.lunch} + ${ls()}`});
     if(groups[k]==="steak"&&yes("stkegg")&&lt.id!=="stkegg")days[days.length-1].bf="Steak & eggs (a few slices of last night's steak)";
   });
   if(F){const g=G[F],c=g.cook();
-    mk(6,{cook:true,meal:c.id,e:c.e,dinner:`${custom.length?custom.shift()+" (your pick) or ":""}${c.t} (from the freezer) + ${ds()}`,
+    mk(6,{g:F,cook:true,meal:c.id,e:c.e,dinner:`${custom.length?custom.shift()+" (your pick) or ":""}${c.t} (from the freezer) + ${ds()}`,
       note:`Freezer day: grill the 2 thawed ${g.frozen} at once: 1 for lunch, 1 for dinner. Fridge is empty-ish: snap new photos and build next week.`,lunch:`${g.lunch} (just grilled) + ${ls()}`});}
-  W={days,groups,extra,F,have:new Set(),ck:new Set(),open:null,items:buildList(groups)};
+  W={base:days,ov:{},groups,extra,F,have:new Set(),ck:new Set(),open:null,items:[]};
+  recomputeList();
   renderWeek();
 }
-function buildList(groups){
+function buildList(groups,mealIds){
   const P=C.PRICES, out=[], seen={};
   const add=(key,o={})=>{const base=P[key]||{n:key,q:"",aisle:"other",a:null,p:null};
     if(o.brand){o.al=base.a;o.a=null;o.hint=`Aldi usually doesn't carry ${o.brand}; Aldi look-alike ~$${base.a.toFixed(2)} est. (used in the All-Aldi total)`+(base.aisle==="snacks"?" · Publix often runs chips BOGO":"")}const id=o.id||key;if(seen[id]){if(o.why)seen[id].why+=", "+o.why;return}
@@ -458,7 +590,8 @@ function buildList(groups){
     if(T("cheese"))add("cheeseslice",{id:"cheese",n:"Sliced "+T("cheese").replace(" cheese","")+" cheese",why:"burgers"});
     if(T("lettuce"))add("lettuce",{n:T("lettuce"),why:"burgers"});
     if(T("tomato"))add("tomato",{why:"burgers"});
-    if(T("onion"))add("onion",{n:T("onion")==="Red onion"?"Red onions":"White onions",why:T("onion").toLowerCase()});
+    if(T("onion"))add("onion",{n:T("onion")+"s",why:T("onion").toLowerCase()});
+    if(T("gonion"))add("onion",{why:"grilled onions"});
     if(T("pickles"))add("pickles",{n:T("pickles")+" (jar)",why:"burgers"});
     if(T("ketchup"))add("ketchup",{why:"burgers"});
     if(T("mustard"))add("mustard",{n:T("mustard"),why:"burgers"});
@@ -467,10 +600,10 @@ function buildList(groups){
     if(T("avocado"))add(T("avocado")==="Guacamole"?"guac":"avocado",{id:"avo",why:"burgers"});
     if(T("jalapeno"))add(/Fresh/.test(T("jalapeno"))?"jalfresh":"jalpickled",{id:"jal",why:"burgers"});
     if(T("mushroom"))add("mushroom",{why:"burgers"});
-    if(T("bbq"))add("bbq",{n:T("bbq")+" sauce",brand:/Ray/.test(T("bbq"))?"Sweet Baby Ray's":null,why:"burgers"});
+    if(T("bbq"))add("bbq",{why:"burgers"});
     if(T("egg"))add("eggs",{why:"fried-egg burgers"});
-    if(T("hot"))add("hot",{n:T("hot")+" hot sauce",brand:T("hot"),why:"burgers"});
-    st.topCustom.filter(c=>c.on).forEach(c=>add("custom:"+c.label,{n:c.label,q:"",aisle:"other",a:null,p:null,custom:true,why:"your burger add"}));
+    if(T("hot"))add("hot",{why:"burgers"});
+    st.build.burger.custom.forEach(c=>add("custom:"+c,{n:c,q:"",aisle:"other",a:null,p:null,custom:true,why:"your burger add"}));
   }
   const usesQ=(inPlan("chicken")&&yes("chixq")&&mv("chixq")==="Quesadilla")||(inPlan("steak")&&yes("steakq"));
   if(usesQ){add("tortilla",{why:"quesadillas"});add("shred",{why:"quesadillas"});add("salsa",{why:"quesadillas"})}
@@ -494,6 +627,10 @@ function buildList(groups){
   if(!st.sides.size){add("Fruit:Bananas",{why:"default lunch side"});if(!yes("veg"))add("Salad:Garden",{why:"default dinner side"})}
   // custom side / drill items
   Object.entries(st.custom).forEach(([k,arr])=>{if(!["sides","Fruit","Salad"].includes(k))return;arr.forEach(v=>{const isSel=k==="sides"?st.sides.has(v):(st.picks[k]&&st.picks[k].has(v));if(isSel)add("custom:"+k+v,{n:k==="sides"?v:`${v} (${k.replace(" › then"," dressing")})`,q:"",aisle:"other",a:null,p:null,custom:true,why:"your custom pick"})})});
+  // ingredient picks from the other meals' build screens (only meals that are on this week's plan)
+  (mealIds||[]).forEach(mid=>{if(mid==="burger"||!BUILDS[mid]||!st.build[mid])return;const B=BUILDS[mid],T=st.build[mid].top,why=M(mid).name.toLowerCase();
+    [...B.core,...B.extras].forEach(t=>{if(!T[t.id].on)return;const k=t.kv?t.kv[T[t.id].v]:t.k;if(k&&P[k])add(k,{why})});
+    st.build[mid].custom.forEach(v=>add("custom:b"+mid+v,{n:v,q:"",aisle:"other",a:null,p:null,custom:true,why:"your "+why+" add"}))});
   st.mealCustom.forEach(v=>add("custom:meal"+v,{n:`Stuff for: ${v}`,q:"",aisle:"other",a:null,p:null,custom:true,why:"your custom meal"}));
   return out;
 }
@@ -505,60 +642,293 @@ function totals(){let a=0,p=0,b=0,na=0,np=0,cu=0;W.items.forEach(it=>{if(W.have.
 function renderWeek(){
   const t=totals();
   const fm=st.equip.has("foreman")||st.equip.size===0;
-  const start=W.days[0].short.split(" ")[1], end=W.days[6].short.split(" ")[1];
+  const days=effDays(W.ov);
   const mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const s0=new Date();s0.setDate(s0.getDate()-((s0.getDay()+6)%7));const s6=new Date(s0);s6.setDate(s6.getDate()+6);
-  const wl=`${mo[s0.getMonth()]} ${s0.getDate()}–${s0.getMonth()===s6.getMonth()?"":mo[s6.getMonth()]+" "}${s6.getDate()}, ${s6.getFullYear()}`;
+  const wl=fmtWeek(weekStartDate());
+  const bud=getBud(), edited=Object.keys(W.ov).length>0;
   const otherStores=[...st.stores].filter(x=>x!=="Aldi"&&x!=="Publix");
   const main=st.main==="Aldi"||st.main==="Publix"?st.main:"";
   const byA={};W.items.forEach(it=>{(byA[it.aisle]=byA[it.aisle]||[]).push(it)});
   const nCk=W.ck.size;
   const MN=id=>id&&M(id);
   $("week").innerHTML=`
-  <header class="wk-h"><p class="kick">Kitchen HQ · Cameron</p><h1 class="brand">Cameron's Grill Week</h1>
-    <div class="wlabel">${wl}</div>
+  <header class="wk-h"><div class="rcpt-top"><button class="rcpt-btn" data-rcpt="1">📷 Upload receipt</button></div><p class="kick">Kitchen HQ · Cameron</p><h1 class="brand">Cameron's Grill Week</h1>
+    <div class="wl-row"><div class="wlabel" id="wlab">${wl}</div><button class="cal-btn" id="calB" aria-label="Pick a week on a calendar">📅</button></div>
     <p class="tagline">Cooking for 1 · ${fm?"Foreman grill":"stovetop"} first · cook once, eat 2–3 times · lunch packed for Woody's</p>
-    <div class="pills"><span class="pill t">3 cook nights + freezer day</span><span class="pill c">Best split ~$${t.b.toFixed(0)} est.</span></div></header>
+    <div class="pills"><span class="pill t">3 cook nights + freezer day</span><button class="pill c btn" id="bsP" aria-label="Best split estimate. Tap to set a budget">Best split ~$${t.b.toFixed(0)} est.</button><button class="pill btn bud${bud.on?"":" off"}" id="budP">${!bud.on?"Budget off":bud.amt==null?"💵 Set budget":`Budget $${fmtAmt(bud.amt)} / ${bud.days} day${bud.days>1?"s":""}`}</button></div>${budCmp(t.b,7)}</header>
   <aside class="rules"><h2>Cameron's kitchen rules</h2><ul>
     <li><b>Cook nights</b> make 3–4 portions: eat 1, fridge the rest for lunch + the next dinner.</li>
     <li><b>Fridge:</b> cooked leftovers last 3–4 days. Not eaten by day 4 → freezer.</li>
     <li><b>Freezer:</b> split family packs into single bags the day you shop. Date them. Thaw overnight in the fridge.</li>
     <li><b>Temps:</b> steak & pork 145°F + 3 min rest · burgers 160°F · chicken 165°F · leftovers 165°F.</li>
     <li><b>Lunch</b> = leftovers in a container for Woody's. Breakfast is optional.</li></ul></aside>
+  ${guideBox()}
   <details class="lt"><summary>💰 Meat money tips</summary><ul>${C.TIPS.meat.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>
-  <div class="stitle"><h2>This week</h2><span>7 days · tap a day for how-to</span></div>
-  ${W.days.map((d,i)=>{const m=MN(d.meal);return `<div class="day${d.cook?" cook":""}" data-d="${i}" style="animation-delay:${i*.04}s">
+  <div class="stitle" id="thisWk"><h2>This week${edited?'<span class="edited">edited</span>':""}</h2><span>7 days · tap a day for how-to</span></div>
+  <p class="lp-tip">Tip: press and hold a week to customize it.</p>
+  ${days.map((d,i)=>{const m=MN(d.meal);return `<div class="day${d.cook?" cook":""}" data-d="${i}" style="animation-delay:${i*.04}s">
     <div class="dh"><span>${d.short}${d.cook?" · cook":""}</span><span>${d.icon}</span></div>
-    <div class="db"><span class="memo">${d.e}</span><p class="dinner">${esc(d.dinner)}</p><p class="dnote">${esc(d.note)}</p>
+    <div class="db"><div class="emo-row"><span class="memo">${d.e}</span>${dayBadge(d)}</div><p class="dinner">${d.meal&&rateOf(d.meal)===2?'<span class="favb">⭐ favorite</span> ':""}${esc(d.dinner)}</p>${dayNut(d)}<p class="dnote">${esc(d.note)}</p>
     <p class="dl">🎒 Lunch at Woody's: ${esc(d.lunch)}</p>${d.bf?`<p class="dl b">☀️ Breakfast (optional): ${esc(d.bf)}</p>`:""}
     ${W.open===i&&m?`<div class="rec"><h4>${m.emoji} ${esc(m.name)}</h4>${tipHTML(m).replace('class="tip"','')}</div>`:""}
-    <p class="hint">${W.open===i?"▾ tap to close":"▸ tap for how-to + temps"}</p></div></div>`}).join("")}
+    <p class="hint">${W.open===i?"▾ tap to close":"▸ tap for how-to + temps"}</p>${d.meal&&M(d.meal)?rateRow(d.meal):""}</div></div>`}).join("")}
+  ${ratingsPanel()}
   ${W.extra.length?`<div class="nextwk">🔄 Next week rotation: ${W.extra.map(g=>({pork:mv("pork"),brats:mv("brats"),chicken:"chicken",burger:"burgers",steak:"steak"}[g])).join(", ")} (you said yes; saved for next week so this week stays cheap).</div>`:""}
   <section class="gpanel"><div class="stitle" style="margin-top:0"><h2>Shopping list</h2><span>${nCk} checked</span></div>
     <div class="tot"><div class="${main==="Aldi"?"main":""}">${main==="Aldi"?"⭐ ":""}All Aldi<b>$${t.a.toFixed(2)}</b>est.</div><div class="${main==="Publix"?"main":""}">${main==="Publix"?"⭐ ":""}All Publix<b>$${t.p.toFixed(2)}</b>est.</div><div class="best">Best split<b>$${t.b.toFixed(2)}</b>est.</div></div>
+    <p class="pchk">Prices last checked ${fmtDateLong(PRICE_META.updated)}${PRICE_META.loaded?"":" (built-in estimates)"} · grey = older than 60 days</p>
+    ${budCmp(t.b,7)}
     <p class="gnote">Best split = Aldi for ${t.na} items, Publix for ${t.np} (your exact name brands). All-Aldi swaps in Aldi look-alikes.${t.cu?` + ${t.cu} custom item${t.cu>1?"s":""} (check price).`:""} ${otherStores.length?`Also on your list: ${otherStores.map(esc).join(", ")}; compare there too (secondary).`:""}</p>
     <p class="gnote" style="background:#d4efef">📸 ${Object.keys(st.photos).length?`You sent ${Object.keys(st.photos).length} photo(s).`:"No photos yet."} The real bot reads your pantry/fridge/freezer photos and skips what you already have. Here: tap <b>Have it</b> to drop an item and update totals.</p>
+    <p class="gnote" style="background:#fff3c4">🧾 Send a receipt photo or Publix app Purchases screenshot to update prices.</p>
     ${AISLES.filter(([k])=>byA[k]).map(([k,lab])=>`<h3 class="aisle">${lab}<small>${byA[k].length} items</small></h3>
       ${byA[k].map(it=>{const gone=W.have.has(it.id),ck=W.ck.has(it.id);const aw=it.a!=null&&(it.p==null||it.a<=it.p),pw=it.p!=null&&!aw;
         return `<div class="it${ck?" ck":""}${gone?" gone":""}"><div class="cb" data-ck="${esc(it.id)}">${ck?"✓":""}</div>
         <div class="nm" data-ck="${esc(it.id)}">${esc(it.n)}<small>${esc(it.q)}${it.q?" · ":""}for ${esc(it.why)}</small>
           ${it.src?`<small class="src">✓ from store online listing: ${esc(it.hint||"")}</small>`:it.hint?`<small>${esc(it.hint)}</small>`:""}
-          <div class="pr"><span class="${aw?"win":""}">Aldi ${it.a==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.a)}</span><span class="${pw?"win":""}">Publix ${it.p==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.p)}</span>${it.custom?`<span>check price</span>`:aw||pw?`<span class="win">${aw?"Aldi":"Publix"} cheaper</span>`:""}</div></div>
+          <div class="pr"><span class="${aw?"win":""}${isStale(it.sA)?" stale":""}">Aldi ${it.a==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.a)}</span><span class="${pw?"win":""}${isStale(it.sP)?" stale":""}">Publix ${it.p==null?(it.custom?"est. ?":"n/a"):"est. "+$$(it.p)}</span>${it.custom?"":`<span class="src-l">${esc(srcPair(it))}</span>`}${it.custom?`<span>check price</span>`:aw||pw?`<span class="win">${aw?"Aldi":"Publix"} cheaper</span>`:""}</div></div>
         <button class="have" data-have="${esc(it.id)}">${gone?"↩ Need it":"Have it"}</button></div>`}).join("")}`).join("")}
     <p class="gnote" style="margin-top:12px">🌡 One-time buy: a cheap instant-read meat thermometer (~$10–15 at Walmart/Target/Amazon; not in totals).</p>
   </section>
   <a class="gh" href="${C.REPO.url}" target="_blank" rel="noopener"><b>🛠️ Your own repo, cameron-meals</b><span>Menu items, toppings, and prices live in meals.js. Edit it on GitHub to change your menu. github.com/Burnsted/cameron-meals</span></a>
   <button class="wbtn p" id="bk">← Back to my picks</button><button class="wbtn g" id="rs2">Start over</button>
-  <div class="foot">All prices are <b>estimates</b> for St. Pete-area Aldi &amp; Publix as of Oct 2026. Check in-store; sales and BOGOs change weekly. Items marked ✓ came from the store's own online listing (Instacart-powered, can differ from the shelf price); everything else is a rough estimate.<br>
+  <div class="foot">All prices are <b>estimates</b> for St. Pete-area Aldi &amp; Publix as of Oct 2026 (from prices.json when it loads). Check in-store; sales and BOGOs change weekly. Items marked ✓ came from the store's own online listing (Instacart-powered, can differ from the shelf price); everything else is a rough estimate.<br>
    <details style="margin-top:6px"><summary>Price sources</summary>${C.SOURCES.map(([l,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(l)}</a>`).join("<br>")}</details>
-   Cook times are approximate; use a thermometer. Safe temps per USDA.<br>Cameron-owned planner · no account · no APIs · photos never leave your phone</div>`;
+   Cook times are approximate; use a thermometer. Safe temps per USDA.<br>Cameron-owned planner · no account · no APIs · photos stay on your phone unless you share them</div>`;
   const wk=$("week");
   wk.querySelectorAll(".day").forEach(d=>d.onclick=()=>{const i=+d.dataset.d;W.open=W.open===i?null:i;renderWeek()});
   wk.querySelectorAll("[data-ck]").forEach(b=>b.onclick=()=>{const k=b.dataset.ck;W.ck.has(k)?W.ck.delete(k):W.ck.add(k);renderWeek()});
+  wk.querySelectorAll("[data-rate]").forEach(b=>b.onclick=e=>{e.stopPropagation();setRate(b.dataset.m,+b.dataset.rate);renderWeek()});
+  wk.querySelectorAll("[data-unrate]").forEach(b=>b.onclick=e=>{e.stopPropagation();setRate(b.dataset.unrate,0);renderWeek()});
   wk.querySelectorAll("[data-have]").forEach(b=>b.onclick=()=>{const k=b.dataset.have;W.have.has(k)?W.have.delete(k):W.have.add(k);renderWeek()});
   $("bk").onclick=()=>{document.body.classList.remove("light");window.scrollTo(0,0)};
   $("rs2").onclick=()=>{reset();render();window.scrollTo(0,0)};
+  $("calB").onclick=()=>openCal({sel:weekStartDate(),onPick:(mon)=>{st.weekStart=mon.getTime();renderWeek()}});
+  $("bsP").onclick=openBudget;$("budP").onclick=openBudget;
+  longPress($("thisWk"),openCustom);longPress($("wlab"),openCustom);
+  bindReceipt(wk);
 }
+/* ---- shared v3 helpers: sheet, week calendar, long-press, photo share ---- */
+const MO3=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MOFULL=["January","February","March","April","May","June","July","August","September","October","November","December"];
+function mondayOf(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
+function addDays(d,n){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()+n);return x}
+function sameDay(a,b){return a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
+function fmtWeek(mon){const e=addDays(mon,6);return `${MO3[mon.getMonth()]} ${mon.getDate()}–${mon.getMonth()===e.getMonth()?"":MO3[e.getMonth()]+" "}${e.getDate()}, ${e.getFullYear()}`}
+function parseWeekLabel(str){
+  const m=/^\s*([A-Z][a-z]{2})[a-z]*\.?\s+(\d{1,2})\s*[–-]\s*(?:([A-Z][a-z]{2})[a-z]*\.?\s+)?(\d{1,2}),?\s+(\d{4})\s*$/.exec(String(str||""));
+  if(!m)return null;const sm=MO3.indexOf(m[1]);const em=m[3]?MO3.indexOf(m[3]):sm;if(sm<0||em<0)return null;
+  let y=+m[5];const sy=em<sm?y-1:y;const d=new Date(sy,sm,+m[2]);return isNaN(d)?null:mondayOf(d)}
+function shEl(){return document.getElementById("sheet")}
+function openSheet(html,label){const bg=shEl(),inn=document.getElementById("sheetIn");inn.innerHTML=html;if(label)inn.setAttribute("aria-label",label);bg.classList.add("open");bg.setAttribute("aria-hidden","false");const x=inn.querySelector("[data-x]");if(x)x.focus();return inn}
+function closeSheet(){const bg=shEl();if(!bg)return;bg.classList.remove("open");bg.setAttribute("aria-hidden","true");const inn=document.getElementById("sheetIn");if(inn)inn.innerHTML=""}
+function sheetOpen(){const bg=shEl();return bg&&bg.classList.contains("open")}
+function initSheet(){const bg=shEl();if(!bg||bg._init)return;bg._init=1;
+  bg.addEventListener("click",e=>{if(e.target===bg||e.target.closest("[data-x]"))closeSheet()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&sheetOpen()){e.stopPropagation();closeSheet()}},true)}
+const shTop=(t)=>`<div class="sh-top"><h3>${t}</h3><button class="sh-x" data-x="1" aria-label="Close">✕</button></div>`;
+/* Week calendar. opts: sel (Monday Date or null), onPick(monday, keepOpen) */
+function openCal(opts){
+  const today=new Date();today.setHours(0,0,0,0);
+  let sel=opts.sel?mondayOf(opts.sel):null;
+  let view=new Date((sel||today).getFullYear(),(sel||today).getMonth(),1);
+  const inn=openSheet("", "Pick a week");
+  function draw(){
+    const first=view, gs=mondayOf(first);
+    const rows=[];for(let r=0;r<6;r++){const rm=addDays(gs,r*7);if(r>=4&&rm.getMonth()!==view.getMonth()&&rm>first)break;rows.push(rm)}
+    inn.innerHTML=shTop("📅 Pick a week")+`
+      <p class="cal-sel">${sel?"Selected: "+fmtWeek(sel):"Tap any day to pick its Mon–Sun week"}</p>
+      <div class="cal-nav"><button data-cm="-1" aria-label="Previous month">‹</button><b>${MOFULL[view.getMonth()]} ${view.getFullYear()}</b><button data-cm="1" aria-label="Next month">›</button></div>
+      <div class="cal-dow"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+      ${rows.map(rm=>`<div class="cal-row${sel&&sameDay(rm,sel)?" sel":""}">${[0,1,2,3,4,5,6].map(i=>{const d=addDays(rm,i);
+        return `<button class="cal-d${d.getMonth()!==view.getMonth()?" out":""}${sameDay(d,today)?" today":""}" data-day="${d.getFullYear()}-${d.getMonth()}-${d.getDate()}" aria-label="${MOFULL[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}${sameDay(d,today)?" (today)":""}">${d.getDate()}</button>`}).join("")}</div>`).join("")}
+      <div class="cal-foot"><button data-cw="-1">‹ Prev week</button><button class="now" data-now="1">This week</button><button data-cw="1">Next week ›</button></div>`;
+    inn.querySelectorAll("[data-cm]").forEach(b=>b.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+(+b.dataset.cm),1);draw()});
+    inn.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{const [y,m,d]=b.dataset.day.split("-").map(Number);sel=mondayOf(new Date(y,m,d));opts.onPick(sel);closeSheet()});
+    inn.querySelectorAll("[data-cw]").forEach(b=>b.onclick=()=>{sel=addDays(sel||mondayOf(today),7*(+b.dataset.cw));view=new Date(sel.getFullYear(),sel.getMonth(),1);opts.onPick(sel,true);draw()});
+    inn.querySelector("[data-now]").onclick=()=>{sel=mondayOf(today);opts.onPick(sel);closeSheet()};
+  }
+  draw();
+}
+/* Long-press (~500ms). Short tap keeps normal click. Cancels if finger moves. */
+function longPress(el,fn,ms){ms=ms||500;let t=null,x=0,y=0,fired=false;
+  el.classList.add("lp");
+  el.addEventListener("pointerdown",e=>{if(e.button>0)return;fired=false;x=e.clientX;y=e.clientY;clearTimeout(t);t=setTimeout(()=>{t=null;fired=true;try{navigator.vibrate&&navigator.vibrate(15)}catch(_){}fn()},ms)});
+  const cancel=()=>{clearTimeout(t);t=null};
+  el.addEventListener("pointermove",e=>{if(t&&Math.hypot(e.clientX-x,e.clientY-y)>10)cancel()});
+  ["pointerup","pointerleave","pointercancel"].forEach(ev=>el.addEventListener(ev,cancel));
+  el.addEventListener("contextmenu",e=>e.preventDefault());
+  el.addEventListener("click",e=>{if(fired){e.preventDefault();e.stopImmediatePropagation();fired=false}},true)}
+/* Photo picker + Web Share. Nothing is uploaded anywhere. */
+function attachShare(o){
+  const files=o.files;
+  const draw=()=>{
+    o.thumbs.innerHTML=files.map(f=>`<img alt="photo" src="${f._url}">`).join("");
+    if(!files.length){o.act.innerHTML="";return}
+    const can=!!(navigator.canShare&&navigator.share&&navigator.canShare({files}));
+    o.act.innerHTML=can?`<button class="${o.btnClass||"sbtn"}" data-share="1">${o.shareLabel}</button><p class="shr-msg" data-msg></p>`
+      :`<p class="shr-msg">${o.fallback}</p>`;
+    const sb=o.act.querySelector("[data-share]");
+    if(sb)sb.onclick=async()=>{const msg=o.act.querySelector("[data-msg]");
+      try{await navigator.share({files,title:o.title,text:o.text});msg.textContent="Shared. "+(o.after||"")}
+      catch(err){msg.textContent=err&&err.name==="AbortError"?"Share cancelled. Tap again when ready.":o.fallback}};
+  };
+  o.inputs.forEach(inp=>inp.addEventListener("change",()=>{[...inp.files].forEach(f=>{f._url=URL.createObjectURL(f);files.push(f)});inp.value="";draw()}));
+  draw();
+}
+function openReceipt(){
+  const inn=openSheet(shTop("📷 Upload receipt")+`
+    <p style="margin:0 0 10px;font-weight:700;font-size:15px">Snap your receipt (or a Publix app Purchases screenshot), then send it to Jarvis.</p>
+    <div class="sh-row2" style="margin-top:0"><button class="sh-btn p" data-pick="cam">📷 Take photo</button><button class="sh-btn" data-pick="lib">🖼 Choose photos</button></div>
+    <input type="file" accept="image/*" capture="environment" hidden data-in="cam"><input type="file" accept="image/*" multiple hidden data-in="lib">
+    <div class="thumbs" data-th></div><div data-act></div>
+    <p class="muted2"><b>Prices update after Jarvis reads it.</b> This page is a static site: nothing is uploaded from here. "Send to Jarvis" just opens your phone's share sheet so you can send the photo into the chat.</p>`,"Upload receipt");
+  inn.querySelector('[data-pick="cam"]').onclick=()=>inn.querySelector('[data-in="cam"]').click();
+  inn.querySelector('[data-pick="lib"]').onclick=()=>inn.querySelector('[data-in="lib"]').click();
+  attachShare({inputs:[...inn.querySelectorAll("[data-in]")],thumbs:inn.querySelector("[data-th]"),act:inn.querySelector("[data-act]"),files:[],
+    btnClass:"sh-btn p wide",shareLabel:"Send to Jarvis",title:"Receipt",text:"Receipt for the meal-planner prices",
+    after:"Prices update after Jarvis reads it.",fallback:"Your browser can't open the share sheet from here. Save the photo (long-press → Save) and send it to Jarvis in chat."});
+}
+function srcLabel(e){if(!e)return "est.";const md=s=>{const d=new Date(s+"T12:00:00");return isNaN(d)?"":MO3[d.getMonth()]+" "+d.getDate()};
+  if(e.source==="receipt")return "receipt "+md(e.checked);
+  if(e.source==="ad"||e.source==="weekly-ad")return "ad"+(e.sale_ends?" thru "+md(e.sale_ends):"");
+  if(e.source==="online-listing")return "online "+md(e.checked);
+  if(e.source==="shelf-photo")return "shelf "+md(e.checked);
+  return "est. · checked "+md(e.checked||"2026-10-05")}
+function isStale(e){if(!e||!e.checked)return false;const d=new Date(e.checked+"T12:00:00");return !isNaN(d)&&(Date.now()-d.getTime())>60*864e5}
+function fmtDateLong(s){const d=new Date(s+"T12:00:00");return isNaN(d)?s:`${MO3[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`}
+
+/* ---- Cameron v3: week start, effective days, prep badges, budget, week customizer, prices.json ---- */
+const DN=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const MG={steak:"steak",steakq:"steak",stkegg:"steak",burger:"burger",chicken:"chicken",chixq:"chicken",bowl:"chicken",pork:"pork",brats:"brats"};
+function weekStartDate(){return st&&st.weekStart?new Date(st.weekStart):mondayOf(new Date())}
+function effDays(ov){const s0=weekStartDate();return W.base.map((b,i)=>{const d=addDays(s0,i);const short=`${DN[i]} ${d.getMonth()+1}/${d.getDate()}`;
+  const o=ov[i]||{t:"day",j:i};let c;
+  if(o.t==="day"){const src=W.base[o.j];c={cook:src.cook,meal:src.meal,e:src.e,dinner:src.dinner,note:o.j===i?src.note:`Moved from ${DN[o.j]}. ${src.note}`,g:src.g,ch:o.j!==i}}
+  else if(o.t==="meal"){const m=M(o.id);c={cook:true,meal:o.id,e:m.emoji,dinner:`${m.name}${m.v?" ("+mv(o.id)+")":""}`,note:"Your swap. Cook 1 portion, or 2 and keep one for tomorrow's lunch.",g:MG[o.id]||null,ch:true}}
+  else if(o.t==="left")c={cook:false,meal:null,e:"🔁",dinner:"Leftovers night",note:"Reheat whatever's in the fridge to 165°F.",g:null,ch:true,kind:"left"};
+  else c={cook:false,meal:null,e:"🥡",dinner:"Eat out / takeout",note:"Night off. No cooking, no groceries.",g:null,ch:true,kind:"out"};
+  return {...b,short,...c}})}
+function recomputeList(){const days=effDays(W.ov);const gs=[...new Set(days.map(d=>d.g).filter(Boolean))];
+  W.items=buildList(gs,[...new Set(days.map(d=>d.meal).filter(Boolean))])}
+function pcBadge(prep,cook,dark,reheat){return `<span class="pc${dark?" dk":""}"><span>🔪 Prep ~${prep} min</span><span>🔥 ${reheat?"Reheat":"Cook"} ~${cook} min</span></span>`}
+function dayBadge(d){if(d.kind==="out")return "";if(d.kind==="left")return pcBadge(2,3,false,true);const m=d.meal&&M(d.meal);if(!m)return "";
+  if(d.cook||["chixq","steakq","stkegg"].includes(d.meal))return pcBadge(m.prep,m.cook);return pcBadge(2,3,false,true)}
+/* budget (saved on this phone) */
+const BKEY="cameron-meals-budget-v1";
+function getBud(){try{const j=JSON.parse(localStorage.getItem(BKEY)||"null");if(j&&typeof j==="object"){const amt=Number(j.amt);const days=Math.round(Number(j.days));
+  return {on:j.on!==false,amt:j.amt==null||j.amt===""||!isFinite(amt)||amt<=0?null:Math.round(amt*100)/100,days:isFinite(days)&&days>=1&&days<=366?days:7}}}catch(_){}return {on:true,amt:null,days:7}}
+function setBud(b){try{localStorage.setItem(BKEY,JSON.stringify(b))}catch(_){}}
+const fmtAmt=n=>n%1?n.toFixed(2):String(n);
+function budCmp(total,days){const b=getBud();if(!b.on||b.amt==null)return "";const scaled=b.amt*days/b.days,diff=scaled-total;
+  return `<div class="bcmp ${diff>=0?"under":"over"}">${diff>=0?`✓ Under budget by $${diff.toFixed(0)}`:`✗ Over budget by $${(-diff).toFixed(0)}`}<br><small>Best split $${total.toFixed(0)} vs your $${scaled.toFixed(0)} for ${days} days ($${fmtAmt(b.amt)} / ${b.days} days)</small></div>`}
+function openBudget(){const b=getBud();
+  const inn=openSheet(shTop("💵 Budget")+`
+    <div class="sw" role="switch" tabindex="0" aria-checked="${b.on}" id="bSw"><span>Budget ${b.on?"on":"off"}<br><small style="font-weight:650">Off = no budget shown or compared</small></span><span class="tg"></span></div>
+    <label class="fld" for="bAmt">Budget amount ($)</label><input class="inp" id="bAmt" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 120" value="${b.amt==null?"":fmtAmt(b.amt)}">
+    <label class="fld" for="bDays">How many days it covers</label><input class="inp" id="bDays" type="number" inputmode="numeric" min="1" max="366" value="${b.days}">
+    <div class="dchips">${[3,5,7,14].map(n=>`<button data-dd="${n}" class="${b.days===n?"on":""}">${n} days</button>`).join("")}</div>
+    <div class="sh-row2"><button class="sh-btn" id="bClr">Clear budget</button><button class="sh-btn p" id="bSave">Save</button></div>
+    <p class="muted2">Compared with this week's Best split estimate, scaled to the 7-day plan (e.g. $120 / 14 days = $60 for 7 days). Saved on this phone only.</p>`,"Budget");
+  const sw=inn.querySelector("#bSw");
+  const flip=()=>{const c=getBud();c.on=!c.on;setBud(c);sw.setAttribute("aria-checked",c.on);sw.firstElementChild.firstChild.textContent="Budget "+(c.on?"on":"off");if(W)renderWeek()};
+  sw.onclick=flip;sw.onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}};
+  inn.querySelectorAll("[data-dd]").forEach(x=>x.onclick=()=>{inn.querySelector("#bDays").value=x.dataset.dd;inn.querySelectorAll("[data-dd]").forEach(y=>y.classList.toggle("on",y===x))});
+  inn.querySelector("#bSave").onclick=()=>{const c=getBud();const a=parseFloat(String(inn.querySelector("#bAmt").value).replace(/[$,\s]/g,""));const d=Math.round(Number(inn.querySelector("#bDays").value));
+    c.amt=isFinite(a)&&a>0?Math.round(a*100)/100:null;c.days=isFinite(d)&&d>=1&&d<=366?d:7;if(c.amt!=null)c.on=true;setBud(c);closeSheet();if(W)renderWeek()};
+  inn.querySelector("#bClr").onclick=()=>{const c=getBud();c.amt=null;c.days=7;setBud(c);closeSheet();if(W)renderWeek()};
+}
+/* week customizer (long-press "This week") */
+function openCustom(){if(!W)return;let draft=JSON.parse(JSON.stringify(W.ov)),moveFrom=null,swapOpen=null;
+  const opts=MEALS.filter(m=>m.id!=="veg"&&rateOf(m.id)!==-1&&(yes(m.id)||rateOf(m.id)===2||W.base.some(b=>b.meal===m.id))).sort((a,b)=>(rateOf(b.id)===2)-(rateOf(a.id)===2));
+  const desc=i=>draft[i]||{t:"day",j:i};
+  const norm=()=>Object.keys(draft).forEach(k=>{const o=draft[k];if(o.t==="day"&&o.j===+k)delete draft[k]});
+  const inn=openSheet("","Customize this week");
+  function draw(){const days=effDays(draft);
+    inn.innerHTML=shTop("Customize "+esc(fmtWeek(weekStartDate())))+`<p class="muted2" style="margin:0 0 8px">Swap a dinner, make it leftovers or eat out, or tap <b>⇅ Move</b> on two days to swap them. Shopping list updates when you save.</p>
+    ${days.map((d,i)=>{const o=draft[i];const t=o?o.t:"keep";return `<div class="cz${moveFrom===i?" mv":""}${o?" ch":""}"><div class="cz-h"><span>${d.short}</span><span>${o?"changed":""}</span></div>
+      <div class="cz-d">${d.e} ${esc(d.dinner)}</div>
+      <div class="cz-o"><button data-a="keep" data-i="${i}" class="${!o?"on":""}">Keep</button><button data-a="swap" data-i="${i}" class="${t==="meal"||swapOpen===i?"on":""}">Swap ▾</button><button data-a="left" data-i="${i}" class="${t==="left"?"on":""}">Leftovers</button><button data-a="out" data-i="${i}" class="${t==="out"?"on":""}">Eat out</button><button data-a="move" data-i="${i}" class="mvb${moveFrom===i?" on":""}">${moveFrom===null?"⇅ Move":moveFrom===i?"Cancel move":"⇅ Swap with "+DN[moveFrom]}</button></div>
+      ${swapOpen===i?`<div class="cz-list">${opts.map(m=>`<button data-pick="${m.id}" data-i="${i}">${rateOf(m.id)===2?"⭐ ":""}${m.emoji} ${esc(m.name)}${m.v?" ("+esc(mv(m.id))+")":""}</button>`).join("")}</div>`:""}</div>`}).join("")}
+    <div class="sh-row2"><button class="sh-btn" id="czR">Reset this week</button><button class="sh-btn p" id="czS">Save</button></div>`;
+    inn.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const i=+b.dataset.i,a=b.dataset.a;
+      if(a==="keep"){delete draft[i];swapOpen=null}else if(a==="left")draft[i]={t:"left"};else if(a==="out")draft[i]={t:"out"};
+      else if(a==="swap")swapOpen=swapOpen===i?null:i;
+      else if(a==="move"){if(moveFrom===null)moveFrom=i;else if(moveFrom===i)moveFrom=null;else{const x=desc(moveFrom),y=desc(i);draft[moveFrom]=y;draft[i]=x;moveFrom=null}}
+      norm();draw()});
+    inn.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{draft[+b.dataset.i]={t:"meal",id:b.dataset.pick};swapOpen=null;draw()});
+    inn.querySelector("#czR").onclick=()=>{W.ov={};recomputeList();closeSheet();renderWeek()};
+    inn.querySelector("#czS").onclick=()=>{norm();W.ov=draft;recomputeList();closeSheet();renderWeek()};
+  }
+  draw();
+}
+
+/* ---- About me (saved on this phone only) + general daily guide ---- */
+const AKEY="cameron-meals-about-v1";
+const ACT=[["sit","Mostly sitting",1.2],["feet","On my feet at work",1.55],["active","Very active",1.725]];
+function getAbout(){try{const j=JSON.parse(localStorage.getItem(AKEY)||"null");if(j&&typeof j==="object")return j}catch(_){}return {}}
+function setAbout(a){try{localStorage.setItem(AKEY,JSON.stringify(a))}catch(_){}}
+function guideFor(a){const age=+a.age,ft=+a.ft,inch=+(a.inch||0),lb=+a.lb,act=ACT.find(x=>x[0]===a.act);
+  if(!(age>=13&&age<=100&&ft>=3&&ft<=8&&lb>=60&&lb<=700&&act))return null;
+  const kg=lb*0.4536,cm=(ft*12+inch)*2.54,base=10*kg+6.25*cm-5*age;
+  const bmr=base+(a.sex==="m"?5:a.sex==="f"?-161:-78);const tdee=bmr*act[2];const r=n=>Math.round(n/50)*50;
+  return {lo:r(tdee*0.9),hi:r(tdee*1.1),mid:tdee,pLo:Math.round(lb*0.7),pHi:Math.round(lb*1.0)}}
+const NOTMED="General guide, not medical advice; not a diet plan.";
+function guideHTML(g){return g?`Daily guide: <b>~${g.lo.toLocaleString()}–${g.hi.toLocaleString()} calories</b> and <b>${g.pLo}–${g.pHi} g protein</b>.<small>Mifflin-St Jeor estimate × your activity level, ±10%. Protein 0.7–1.0 g per lb. ${NOTMED}</small>`
+  :`Fill in age, height, weight and activity to see a general daily guide.<small>${NOTMED}</small>`}
+function aboutStep(){const a=st.about;
+  card.innerHTML=`<div class="emoji">🧍</div><h1>About me</h1><p class="sub">Optional. Gives you a general daily guide. Saved on this phone only.</p>
+    <div class="ab-grid"><label>Age<input id="abAge" inputmode="numeric" type="number" min="13" max="100" value="${esc(a.age||"")}" placeholder="e.g. 24"></label>
+      <label>Weight (lb)<input id="abLb" inputmode="decimal" type="number" min="60" max="700" value="${esc(a.lb||"")}" placeholder="e.g. 180"></label>
+      <label>Height (ft)<input id="abFt" inputmode="numeric" type="number" min="3" max="8" value="${esc(a.ft||"")}" placeholder="5"></label>
+      <label>Height (in)<input id="abIn" inputmode="numeric" type="number" min="0" max="11" value="${esc(a.inch||"")}" placeholder="10"></label></div>
+    <p class="lbl">Sex (optional)</p><div class="chips">${[["m","Male"],["f","Female"],["","Skip"]].map(([k,l])=>`<span class="chip${(a.sex||"")===k?"":" off"}" data-sx="${k}">${l}</span>`).join("")}</div>
+    <p class="lbl">Activity</p><div class="chips">${ACT.map(([k,l])=>`<span class="chip${a.act===k?"":" off"}" data-ac="${k}">${l}</span>`).join("")}</div>
+    <div class="guide" id="abG">${guideHTML(guideFor(a))}</div>
+    <p style="margin:-8px 0 16px;text-align:left"><a class="etm dk" href="https://www.eatthismuch.com/" target="_blank" rel="noopener">Want more ideas? Try Eat This Much (free) ↗</a></p>
+    ${btns("Next →",false,"Skip for now")}`;
+  const sync=()=>{a.age=$("abAge").value;a.lb=$("abLb").value;a.ft=$("abFt").value;a.inch=$("abIn").value;setAbout(a);$("abG").innerHTML=guideHTML(guideFor(a))};
+  ["abAge","abLb","abFt","abIn"].forEach(id=>$(id).oninput=sync);
+  card.querySelectorAll("[data-sx]").forEach(c=>c.onclick=()=>{sync();a.sex=c.dataset.sx;setAbout(a);aboutStep()});
+  card.querySelectorAll("[data-ac]").forEach(c=>c.onclick=()=>{sync();a.act=c.dataset.ac;setAbout(a);aboutStep()});
+  const done=()=>{if(st.aboutReturn){st.aboutReturn=false;pos=queue.indexOf("summary");render();window.scrollTo(0,0)}else go()};
+  $("nx").onclick=()=>{sync();done()};$("sk").onclick=done;
+}
+function aboutSummary(){const a=st.about,g=guideFor(a);if(!g)return `<p class="no">Not filled in (optional).</p>`;
+  const act=ACT.find(x=>x[0]===a.act);return `<p>${esc(a.age)} yrs · ${esc(a.ft)}′${esc(a.inch||0)}″ · ${esc(a.lb)} lb${a.sex?" · "+(a.sex==="m"?"male":"female"):""} · ${act[1].toLowerCase()}</p><div class="guide" style="margin:6px 0 0">${guideHTML(g)}</div>`}
+function guideBox(){const g=guideFor(st.about||{});if(!g)return "";
+  return `<div class="gbox">🧍 Your daily guide: <b>~${g.lo.toLocaleString()}–${g.hi.toLocaleString()} cal</b> · <b>${g.pLo}–${g.pHi} g protein</b><small>${NOTMED} Dinner numbers on each day are rough USDA-based estimates per serving (est.).</small><a class="etm" href="https://www.eatthismuch.com/" target="_blank" rel="noopener">Want more ideas? Try Eat This Much (free) ↗</a></div>`}
+function dayNut(d){const g=guideFor(st.about||{});const m=d.meal&&M(d.meal);if(!g||!m||!m.nut||d.kind)return "";
+  return `<p class="nut">🍽 Dinner est. ~${m.nut.kcal} cal · ${m.nut.p} g protein (≈${Math.round(m.nut.kcal/g.mid*100)}% of your daily calories, ${Math.round(m.nut.p/((g.pLo+g.pHi)/2)*100)}% of protein)</p>`}
+
+/* ---- meal ratings: 👎 tried it, no · 👍 good · 👍👍 favorite (saved on this phone) ---- */
+const RKEY="cameron-meals-ratings-v1";
+function getRates(){try{const j=JSON.parse(localStorage.getItem(RKEY)||"{}");return j&&typeof j==="object"?j:{}}catch(_){return {}}}
+function rateOf(id){const r=getRates()[id];return r?r.r:0}
+function setRate(id,r){const all=getRates();if(!r||(all[id]&&all[id].r===r))delete all[id];else{const t=new Date();all[id]={r,d:`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`}}
+  try{localStorage.setItem(RKEY,JSON.stringify(all))}catch(_){}}
+function rateRow(id){const r=rateOf(id);return `<div class="rate" onclick="event.stopPropagation()"><span>Made it? Rate it:</span>${[[-1,"👎","Tried it, no"],[1,"👍","Good"],[2,"👍👍","Favorite"]].map(([v,e,t])=>`<button data-rate="${v}" data-m="${id}" aria-pressed="${r===v}" title="${t}">${e}</button>`).join("")}</div>`}
+function ratingsPanel(){const all=getRates();const ids=Object.keys(all).filter(id=>M(id));
+  const row=(id,restore)=>`<li><span>${M(id).emoji} ${esc(M(id).name)}</span><small>${esc(all[id].d||"")}</small><button class="have" data-unrate="${id}">${restore?"Restore":"Clear"}</button></li>`;
+  const g=r=>ids.filter(id=>all[id].r===r);
+  return `<section class="gpanel rpanel"><div class="stitle" style="margin-top:0"><h2>My ratings</h2><span>👎 hides · 👍👍 = ⭐</span></div>
+    ${ids.length?`${g(2).length?`<h3 class="aisle">⭐ Favorites</h3><ul>${g(2).map(id=>row(id)).join("")}</ul>`:""}${g(1).length?`<h3 class="aisle">👍 Good</h3><ul>${g(1).map(id=>row(id)).join("")}</ul>`:""}${g(-1).length?`<h3 class="aisle">👎 Removed meals</h3><p class="hint" style="margin:0 0 4px">Hidden from suggestions and swaps. Restore to bring one back.</p><ul>${g(-1).map(id=>row(id,true)).join("")}</ul>`:""}`
+      :`<p class="hint">No ratings yet. After you make a meal, tap 👎 / 👍 / 👍👍 on its day. Favorites get picked more; 👎 meals stop showing up.</p>`}</section>`}
+/* receipt button */
+function bindReceipt(root){root.querySelectorAll("[data-rcpt]").forEach(b=>b.onclick=openReceipt)}
+function photoShare(o){o.btn.onclick=()=>o.input.click();attachShare({inputs:[o.input],thumbs:o.thumbs,act:o.act,files:o.store,shareLabel:o.shareLabel,title:o.title,text:o.text,fallback:o.fallback})}
+/* prices.json (same folder). Falls back to the built-in estimates in meals.js. */
+const PRICE_META={updated:"2026-10-05",loaded:false,stores:["aldi-stpete","publix-stpete"]};
+Object.values(C.PRICES).forEach(v=>{v.sA=v.sA||{source:"estimate",checked:"2026-10-05"};v.sP=v.sP||{source:"estimate",checked:"2026-10-05"}});
+function srcPair(it){const a=srcLabel(it.sA),p=srcLabel(it.sP);return a===p?a:`Aldi ${a} · Publix ${p}`}
+fetch("prices.json",{cache:"no-cache"}).then(r=>r.ok?r.json():Promise.reject(r.status)).then(j=>{
+  if(!j||!j.items)return;const [sa,sp]=PRICE_META.stores;
+  Object.entries(j.items).forEach(([k,it])=>{const P=C.PRICES[k];if(!P||!Array.isArray(it.prices))return;
+    it.prices.forEach(e=>{if(e.store===sa&&e.price!==undefined){P.a=e.price;P.sA=e}else if(e.store===sp&&e.price!==undefined){P.p=e.price;P.sP=e}})});
+  if(j.updated)PRICE_META.updated=j.updated;PRICE_META.loaded=true;
+  if(W&&document.body.classList.contains("light")){recomputeList();renderWeek()}else if(W)recomputeList();
+}).catch(()=>{});
+initSheet();bindReceipt(document);
 reset();render();
 </script>
 </body>

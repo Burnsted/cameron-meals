@@ -16,70 +16,125 @@ EQUIP:[
   {id:"skillet",label:"Skillet",emoji:"🍳"}
 ],
 
-/* Burger toppings. v = variants (tap the chip to swap); first variant is the default. */
-TOPPINGS:[
-  {id:"patty",label:"Patty",v:["Beef patty (80/20)","Turkey patty","Chicken patty","Ground sirloin patty"]},
-  {id:"bun",label:"Bun",v:["Sesame bun","Brioche bun","Potato bun","Pretzel bun","Plain white bun","Whole wheat bun","Lettuce wrap"]},
-  {id:"cheese",label:"Cheese",v:["American cheese","Provolone","Muenster","Swiss","Cheddar","Pepper jack"]},
-  {id:"lettuce",label:"Lettuce",v:["Iceberg lettuce","Romaine","Shredded lettuce"]},
-  {id:"tomato",label:"Tomato"},
-  {id:"onion",label:"Onion",v:["Raw white onion","Red onion","Grilled onions"]},
-  {id:"pickles",label:"Pickles",v:["Dill chips","Dill spears","Bread & butter pickles"]},
-  {id:"ketchup",label:"Ketchup"},
-  {id:"mustard",label:"Mustard",v:["Yellow mustard","Spicy brown mustard","Honey mustard","Dijon mustard"]},
-  {id:"mayo",label:"Mayo",v:["Mayo","Chipotle mayo","Garlic aioli"]},
-  {id:"bacon",label:"Bacon",v:["Bacon","Turkey bacon"]},
-  {id:"avocado",label:"Avocado",v:["Sliced avocado","Guacamole"]},
-  {id:"jalapeno",label:"Jalapeños",v:["Pickled jalapeños","Fresh jalapeños"]},
-  {id:"mushroom",label:"Mushrooms"},
-  {id:"bbq",label:"BBQ sauce",v:["Sweet Baby Ray's BBQ","Honey BBQ","Kansas City BBQ","Carolina vinegar BBQ"]},
-  {id:"egg",label:"Fried egg"},
-  {id:"hot",label:"Hot sauce",v:["Frank's RedHot","Cholula","Tabasco","Sriracha","Texas Pete"]}
-],
+/* Ingredient screens ("build" steps). Each meal shows only its CORE items (pre-selected, ▾ = swap list).
+   Everything else lives in EXTRAS behind one "+ Add extras" button (not pre-selected).
+   k = price key in PRICES (adds to the shopping list), kv = price key per swap choice. */
+BUILDS:{
+ burger:{emoji:"🍔",title:"Build your burger",
+  core:[
+   {id:"patty",label:"Patty",v:["Beef patty (80/20)","Turkey patty","Chicken patty","Ground sirloin patty"]},
+   {id:"bun",label:"Bun",v:["Sesame bun","Brioche bun","Potato bun","Plain white bun","Lettuce wrap"]},
+   {id:"cheese",label:"Cheese",v:["American cheese","Cheddar","Pepper jack","Swiss","Provolone"]},
+   {id:"onion",label:"Onion",v:["White onion","Red onion","Sweet onion"]},
+   {id:"pickles",label:"Pickles",v:["Dill chips","Dill spears","Bread & butter pickles"]}],
+  extras:[
+   {id:"lettuce",label:"Lettuce"},{id:"tomato",label:"Tomato"},{id:"ketchup",label:"Ketchup"},{id:"mustard",label:"Mustard"},
+   {id:"mayo",label:"Mayo"},{id:"bacon",label:"Bacon"},{id:"avocado",label:"Avocado"},{id:"jalapeno",label:"Jalapeños"},
+   {id:"bbq",label:"BBQ sauce"},{id:"hot",label:"Hot sauce"},{id:"gonion",label:"Grilled onions"},{id:"mushroom",label:"Mushrooms"},{id:"egg",label:"Fried egg"}]},
+ steak:{emoji:"🥩",title:"Your steak",
+  core:[
+   {id:"season",label:"Seasoning",v:["Steak seasoning","Salt & pepper","Montreal steak","Garlic & herb"],k:"season"},
+   {id:"done",label:"Doneness",v:["Medium rare","Medium","Medium well","Well done"]},
+   {id:"butter",label:"Butter",v:["Garlic butter","Plain butter"],k:"butter"},
+   {id:"sauce",label:"Sauce",v:["A1","Heinz 57","BBQ sauce","Chimichurri"],kv:{"A1":"steaksauce","Heinz 57":"steaksauce","BBQ sauce":"bbq"}},
+   {id:"onions",label:"Onions",v:["Grilled onions","Mushrooms & onions"],k:"onion"}],
+  extras:[{id:"mush",label:"Mushrooms",k:"mushroom"},{id:"blue",label:"Blue cheese crumbles",k:"bluecheese"},{id:"egg",label:"Fried egg",k:"eggs"},{id:"hot",label:"Hot sauce",k:"hot"},{id:"horse",label:"Horseradish",k:"horseradish"}]},
+ chicken:{emoji:"🍗",title:"Your grilled chicken",
+  core:[
+   {id:"season",label:"Seasoning",v:["Lemon pepper","Garlic & herb","Cajun","BBQ rub","Salt & pepper"],k:"season"},
+   {id:"marinade",label:"Marinade",v:["Olive oil","Italian dressing","Teriyaki"],kv:{"Italian dressing":"dressing","Teriyaki":"teriyaki"}},
+   {id:"sauce",label:"Dip",v:["BBQ","Ranch","Buffalo","Honey mustard"],kv:{"BBQ":"bbq","Ranch":"dressing","Buffalo":"hot"}},
+   {id:"cheese",label:"Melted cheese",v:["Provolone","Pepper jack","Cheddar","Mozzarella"],k:"cheeseslice"}],
+  extras:[{id:"bacon",label:"Bacon",k:"bacon"},{id:"avo",label:"Avocado",k:"avocado"},{id:"gonion",label:"Grilled onions",k:"onion"},{id:"tomato",label:"Tomato",k:"tomato"},{id:"hot",label:"Hot sauce",k:"hot"}]},
+ chixq:{emoji:"🫓",title:"Your quesadilla / panini",
+  core:[
+   {id:"wrap",label:"Tortilla",v:["Flour tortilla","Whole wheat tortilla","Low-carb tortilla","Sourdough (panini)"],kv:{"Flour tortilla":"tortilla","Whole wheat tortilla":"tortilla","Low-carb tortilla":"tortilla","Sourdough (panini)":"bread"}},
+   {id:"cheese",label:"Cheese",v:["Mexican blend","Cheddar","Pepper jack","Mozzarella"],k:"shred"},
+   {id:"meat",label:"Leftover chicken"},
+   {id:"salsa",label:"Salsa",v:["Mild salsa","Medium salsa","Hot salsa","Pico de gallo"],k:"salsa"},
+   {id:"sour",label:"Sour cream",k:"sourcream"}],
+  extras:[{id:"jal",label:"Jalapeños",k:"jalpickled"},{id:"op",label:"Onions & peppers",k:"veg:Onions & peppers"},{id:"beans",label:"Black beans",k:"blackbeans"},{id:"bacon",label:"Bacon",k:"bacon"},{id:"guac",label:"Guacamole",k:"guac"},{id:"hot",label:"Hot sauce",k:"hot"}]},
+ steakq:{emoji:"🌮",title:"Your steak quesadilla",
+  core:[
+   {id:"wrap",label:"Tortilla",v:["Flour tortilla","Whole wheat tortilla","Low-carb tortilla"],k:"tortilla"},
+   {id:"cheese",label:"Cheese",v:["Mexican blend","Cheddar","Pepper jack","Mozzarella"],k:"shred"},
+   {id:"meat",label:"Leftover steak"},
+   {id:"salsa",label:"Salsa",v:["Mild salsa","Medium salsa","Hot salsa","Pico de gallo"],k:"salsa"},
+   {id:"gonion",label:"Grilled onions",k:"onion"}],
+  extras:[{id:"pep",label:"Peppers",k:"veg:Onions & peppers"},{id:"jal",label:"Jalapeños",k:"jalpickled"},{id:"sour",label:"Sour cream",k:"sourcream"},{id:"guac",label:"Guacamole",k:"guac"},{id:"hot",label:"Hot sauce",k:"hot"}]},
+ stkegg:{emoji:"🍳",title:"Your steak & eggs",
+  core:[
+   {id:"eggs",label:"Eggs",v:["Scrambled","Over easy","Sunny side up","Fried hard"],k:"eggs"},
+   {id:"meat",label:"Leftover steak"},
+   {id:"toast",label:"Toast",v:["Toast","English muffin","No bread"],kv:{"Toast":"bread"}}],
+  extras:[{id:"hot",label:"Hot sauce",k:"hot"},{id:"cheese",label:"Shredded cheese",k:"shred"},{id:"salsa",label:"Salsa",k:"salsa"},{id:"avo",label:"Avocado",k:"avocado"}]},
+ bowl:{emoji:"🍚",title:"Your rice bowl",
+  core:[
+   {id:"rice",label:"Rice",v:["White rice","Brown rice","Cilantro-lime rice","Fried rice"]},
+   {id:"meat",label:"Grilled chicken"},
+   {id:"veg",label:"Veggies",v:["Broccoli","Peppers & onions","Corn","Mixed veggies"],kv:{"Broccoli":"broccoli","Peppers & onions":"veg:Onions & peppers","Corn":"corn","Mixed veggies":"corn"}},
+   {id:"top",label:"Topping",v:["Green onions","Sesame seeds","Shredded cheese"],kv:{"Green onions":"greenonion","Shredded cheese":"shred"}}],
+  extras:[{id:"egg",label:"Fried egg",k:"eggs"},{id:"hot",label:"Sriracha",k:"hot"},{id:"beans",label:"Black beans",k:"blackbeans"},{id:"avo",label:"Avocado",k:"avocado"},{id:"corn",label:"Corn",k:"corn"}]},
+ pork:{emoji:"🐖",title:"Your pork",
+  core:[
+   {id:"season",label:"Seasoning",v:["BBQ rub","Salt & pepper","Garlic & herb","Cajun"],k:"season"},
+   {id:"sauce",label:"Sauce",v:["BBQ sauce","Applesauce","Honey mustard"],kv:{"BBQ sauce":"bbq"}}],
+  extras:[{id:"gonion",label:"Grilled onions",k:"onion"},{id:"mush",label:"Mushrooms",k:"mushroom"},{id:"hot",label:"Hot sauce",k:"hot"},{id:"pick",label:"Pickles",k:"pickles"}]},
+ brats:{emoji:"🌭",title:"Your brats",
+  core:[
+   {id:"bun",label:"Bun",v:["Hot dog bun","Hoagie roll","No bun"],kv:{"Hot dog bun":"hotdogbun","Hoagie roll":"hotdogbun"}},
+   {id:"mustard",label:"Mustard",v:["Yellow mustard","Spicy brown","Dijon"],k:"mustard"},
+   {id:"op",label:"Peppers & onions",k:"veg:Onions & peppers"}],
+  extras:[{id:"ketchup",label:"Ketchup",k:"ketchup"},{id:"relish",label:"Relish",k:"relish"},{id:"kraut",label:"Sauerkraut",k:"sauerkraut"},{id:"cheese",label:"Shredded cheese",k:"shred"},{id:"jal",label:"Jalapeños",k:"jalpickled"}]}
+},
 
 SIDES:["Potato chips","Fries","Fruit","Yogurt","Salad"],
 DRILL:{
- "Potato chips":{emoji:"🥔",q:"Which chips?",opts:["Doritos","Lay's","Pringles","Ruffles","Cheetos","Kettle Brand"],
-   sub:{"Doritos":["Nacho Cheese","Cool Ranch","Spicy Sweet Chili","Flamin' Hot"],"Lay's":["Classic","Sour Cream & Onion","BBQ","Salt & Vinegar"],"Pringles":["Original","Sour Cream & Onion","Cheddar Cheese","BBQ"],"Ruffles":["Original","Cheddar & Sour Cream","All Dressed"],"Cheetos":["Crunchy","Puffs","Flamin' Hot"],"Kettle Brand":["Sea Salt","Jalapeño","Salt & Vinegar","Honey Dijon"]}},
- "Fries":{emoji:"🍟",q:"Which fries?",opts:["Crinkle cut","Shoestring","Waffle","Curly","Steak fries","Sweet potato","Tots"]},
- "Fruit":{emoji:"🍎",q:"Which fruit?",opts:["Apples","Bananas","Grapes","Strawberries","Blueberries","Oranges","Watermelon","Pineapple"]},
- "Yogurt":{emoji:"🥣",q:"Which yogurt?",opts:["Chobani","Yoplait","Oikos","Dannon","Go-Gurt","Store brand"],
-   sub:{"*":["Strawberry","Vanilla","Blueberry","Peach","Mixed berry","Plain"]}},
+ "Potato chips":{emoji:"🥔",q:"Which chips?",opts:["Doritos","Lay's","Pringles","Ruffles","Kettle Brand"],
+   sub:{"Doritos":["Nacho Cheese","Cool Ranch","Spicy Sweet Chili","Flamin' Hot"],"Lay's":["Classic","Sour Cream & Onion","BBQ","Salt & Vinegar"],"Pringles":["Original","Sour Cream & Onion","Cheddar Cheese","BBQ"],"Ruffles":["Original","Cheddar & Sour Cream","All Dressed"],"Kettle Brand":["Sea Salt","Jalapeño","Salt & Vinegar","Honey Dijon"]}},
+ "Fries":{emoji:"🍟",q:"Which fries?",opts:["Crinkle cut","Shoestring","Waffle","Sweet potato","Tots"]},
+ "Fruit":{emoji:"🍎",q:"Which fruit?",opts:["Apples","Bananas","Grapes","Strawberries","Blueberries"]},
+ "Yogurt":{emoji:"🥣",q:"Which yogurt?",opts:["Chobani","Yoplait","Oikos","Dannon","Store brand"],
+   sub:{"*":["Strawberry","Vanilla","Blueberry","Mixed berry","Plain"]}},
  "Salad":{emoji:"🥗",q:"Which salad?",opts:["Garden","Caesar","Spinach","Wedge"],
-   then:{key:"Dressing",emoji:"🫙",q:"Which dressing?",opts:["Ranch","Italian","Caesar","Honey mustard","Balsamic","Blue cheese","Thousand Island"]}}
+   then:{key:"Dressing",emoji:"🫙",q:"Which dressing?",opts:["Ranch","Italian","Caesar","Honey mustard","Balsamic"]}}
 },
 
-/* Meals for the Yes/No step. grill:true = Foreman-friendly. temp = USDA safe minimum. */
+/* Meals for the Yes/No step. grill:true = Foreman-friendly. temp = USDA safe minimum.
+   prep / cook = rough minutes shown beside the big emoji (cook = Foreman time).
+   nut = rough per-serving estimate (calories, g protein) built from USDA FoodData Central values for the main parts
+   (e.g. 6 oz cooked chicken breast, 8 oz cooked sirloin, 1/3 lb 80/20 patty + bun + 1 slice cheese, 10" tortilla + 1/2 cup cheese).
+   Shown as "est." only; real numbers vary with portions and toppings. */
 MEALS:[
- {id:"steak",emoji:"🥩",name:"Steak night",v:["Sirloin","Ribeye","NY strip","Flat iron","Chuck eye"],grill:true,
+ {id:"steak",prep:5,cook:7,nut:{kcal:480,p:62},emoji:"🥩",name:"Steak night",v:["Sirloin","Ribeye","NY strip","Flat iron","Chuck eye"],grill:true,
   time:"about 4–7 min (1-inch steak)",temp:"145°F + 3 min rest",
   grill:["Pat dry, salt + pepper or steak seasoning.","Preheat Foreman 5 min with the lid closed.","Lay steak on, close lid: about 4–7 min. Don't press down.","Check thickest part: 145°F, then rest 3 min before cutting."],
   stove:["Hot skillet, a little oil.","About 4–5 min per side for a 1-inch steak.","145°F, rest 3 min."]},
- {id:"burger",emoji:"🍔",name:"Burgers",grill:true,time:"about 4–6 min (⅓ lb patty)",temp:"160°F (ground beef)",
+ {id:"burger",prep:10,cook:6,nut:{kcal:550,p:37},emoji:"🍔",name:"Burgers",grill:true,time:"about 4–6 min (⅓ lb patty)",temp:"160°F (ground beef)",
   grill:["Make ⅓ lb patties, thumb a dent in the middle.","Season both sides.","Foreman preheated, lid closed: about 4–6 min.","160°F in the middle. Cheese on for the last 30 sec."],
   stove:["Skillet medium-high.","About 4 min per side.","160°F in the middle."]},
- {id:"chicken",emoji:"🍗",name:"Grilled chicken breast",grill:true,time:"about 6–8 min (¾-inch thick)",temp:"165°F",
+ {id:"chicken",prep:10,cook:8,nut:{kcal:280,p:53},emoji:"🍗",name:"Grilled chicken breast",grill:true,time:"about 6–8 min (¾-inch thick)",temp:"165°F",
   grill:["Thick breast? Slice it in half sideways so it's even (¾ inch).","Oil + seasoning.","Foreman lid closed: about 6–8 min.","165°F in the thickest part. Rest 5 min so it stays juicy."],
   stove:["Skillet medium, a little oil.","About 5–7 min per side.","165°F."]},
- {id:"chixq",emoji:"🫓",name:"Chicken quesadilla / panini",v:["Quesadilla","Panini"],grill:true,time:"about 3–5 min",temp:"leftover chicken reheated to 165°F",
+ {id:"chixq",prep:5,cook:5,nut:{kcal:570,p:46},emoji:"🫓",name:"Chicken quesadilla / panini",v:["Quesadilla","Panini"],grill:true,time:"about 3–5 min",temp:"leftover chicken reheated to 165°F",
   grill:["Use leftover grilled chicken, sliced.","Tortilla (or 2 slices bread) + cheese + chicken.","Foreman = panini press: lid closed about 3–5 min till cheese melts.","Inside should be steaming hot (165°F)."],
   stove:["Skillet medium, no oil needed.","About 2–3 min per side till cheese melts."]},
- {id:"steakq",emoji:"🌮",name:"Steak quesadilla",grill:true,time:"about 3–4 min",temp:"leftover steak hot through",
+ {id:"steakq",prep:5,cook:4,nut:{kcal:670,p:51},emoji:"🌮",name:"Steak quesadilla",grill:true,time:"about 3–4 min",temp:"leftover steak hot through",
   grill:["Slice leftover steak thin.","Tortilla + cheese + steak + salsa, fold.","Foreman lid closed about 3–4 min."],
   stove:["Skillet medium, about 2–3 min per side."]},
- {id:"stkegg",emoji:"🍳",name:"Steak & eggs",grill:true,time:"steak 1–2 min reheat · eggs 2–3 min",temp:"eggs till firm",
+ {id:"stkegg",prep:3,cook:5,nut:{kcal:460,p:46},emoji:"🍳",name:"Steak & eggs",grill:true,time:"steak 1–2 min reheat · eggs 2–3 min",temp:"eggs till firm",
   grill:["Warm sliced leftover steak on the Foreman 1–2 min.","Eggs: skillet 2–3 min, or microwave scramble 1–1.5 min, stir halfway.","Cook eggs till no runny white."],
   stove:["Eggs in skillet 2–3 min; steak in the same pan 1–2 min."]},
- {id:"bowl",emoji:"🍚",name:"Chicken rice bowl",v:["Teriyaki","BBQ","Salsa + cheese","Plain"],grill:true,time:"about 6–8 min chicken · rice 90 sec",temp:"chicken 165°F",
+ {id:"bowl",prep:5,cook:8,nut:{kcal:450,p:40},emoji:"🍚",name:"Chicken rice bowl",v:["Teriyaki","BBQ","Salsa + cheese","Plain"],grill:true,time:"about 6–8 min chicken · rice 90 sec",temp:"chicken 165°F",
   grill:["Grill chicken (or use leftovers), slice.","Rice: microwave pouch 90 sec, or rice cooker.","Rice + chicken + sauce + any grilled veggies."],
   stove:["Cook chicken in skillet 5–7 min per side, 165°F.","Rice + chicken + sauce."]},
- {id:"pork",emoji:"🐖",name:"Pork chops / country-style ribs",v:["Boneless pork chops","Country-style ribs (boneless)"],grill:true,time:"about 5–7 min (¾-inch chop)",temp:"145°F + 3 min rest",
+ {id:"pork",prep:5,cook:7,nut:{kcal:330,p:46},emoji:"🐖",name:"Pork chops / country-style ribs",v:["Boneless pork chops","Country-style ribs (boneless)"],grill:true,time:"about 5–7 min (¾-inch chop)",temp:"145°F + 3 min rest",
   grill:["Season (BBQ rub or salt, pepper, garlic powder).","Foreman lid closed: chops about 5–7 min; thick country ribs about 8–12 min.","145°F, rest 3 min. Brush BBQ sauce on at the end."],
   stove:["Skillet medium-high, about 4–5 min per side.","145°F, rest 3 min."]},
- {id:"brats",emoji:"🌭",name:"Sausages / brats",v:["Brats","Italian sausage","Smoked sausage (pre-cooked)"],grill:true,time:"fresh about 10–14 min · pre-cooked about 5–6 min",temp:"fresh 160°F · pre-cooked just heat through",
+ {id:"brats",prep:2,cook:14,nut:{kcal:400,p:16},emoji:"🌭",name:"Sausages / brats",v:["Brats","Italian sausage","Smoked sausage (pre-cooked)"],grill:true,time:"fresh about 10–14 min · pre-cooked about 5–6 min",temp:"fresh 160°F · pre-cooked just heat through",
   grill:["Poke? No, keep the skin whole so they stay juicy.","Foreman lid closed: fresh brats about 10–14 min.","Fresh: 160°F inside. Pre-cooked smoked sausage: about 5–6 min till hot."],
   stove:["Skillet medium, turn often, about 12–15 min.","160°F."]},
- {id:"veg",emoji:"🫑",name:"Grilled veggies (side)",v:["Zucchini & peppers","Onions & peppers","Mushrooms","Asparagus"],grill:true,time:"about 4–6 min",temp:"till tender",
+ {id:"veg",prep:10,cook:6,nut:{kcal:80,p:2},emoji:"🫑",name:"Grilled veggies (side)",v:["Zucchini & peppers","Onions & peppers","Mushrooms","Asparagus"],grill:true,time:"about 4–6 min",temp:"till tender",
   grill:["Slice ½-inch thick, toss with oil + salt.","Foreman lid closed about 4–6 min.","Done when soft with grill marks."],
   stove:["Skillet medium-high, about 6–8 min, stirring."]}
 ],
@@ -168,6 +223,17 @@ PRICES:{
  fries:{n:"Frozen fries",q:"1 bag (~2 lb)",aisle:"frozen",a:2.49,p:3.99},
  chips:{n:"Chips",q:"1 bag",aisle:"snacks",a:2.19,p:5.49,hint:"Aldi price = Aldi's look-alike brand; Publix often has chips BOGO"},
  "chips:Pringles":{n:"Pringles",q:"1 can",aisle:"snacks",a:1.49,p:2.79,hint:"Aldi price = Aldi's look-alike stacked chips"},
+ sourcream:{n:"Sour cream",q:"16 oz",aisle:"dairy",a:1.79,p:2.99},
+ butter:{n:"Butter",q:"1 lb",aisle:"dairy",a:3.49,p:5.29},
+ bluecheese:{n:"Blue cheese crumbles",q:"4 oz",aisle:"dairy",a:2.49,p:3.99},
+ steaksauce:{n:"Steak sauce",q:"1 bottle",aisle:"pantry",a:2.49,p:4.49},
+ horseradish:{n:"Horseradish",q:"1 jar",aisle:"pantry",a:1.99,p:3.29},
+ relish:{n:"Sweet relish",q:"1 jar",aisle:"pantry",a:1.49,p:2.69},
+ sauerkraut:{n:"Sauerkraut",q:"1 jar",aisle:"pantry",a:1.69,p:2.79},
+ blackbeans:{n:"Black beans",q:"2 cans",aisle:"pantry",a:1.18,p:2.38},
+ corn:{n:"Frozen corn",q:"1 bag",aisle:"frozen",a:1.19,p:2.29},
+ broccoli:{n:"Broccoli crowns",q:"~1 lb",aisle:"produce",a:1.79,p:2.99},
+ greenonion:{n:"Green onions",q:"1 bunch",aisle:"produce",a:0.89,p:1.29},
  "chips:Kettle Brand":{n:"Kettle Brand chips",q:"1 bag",aisle:"snacks",a:null,p:4.79,hint:"Not carried at Aldi"}
 },
 

@@ -1,0 +1,2816 @@
+{
+ "updated": "2026-10-05",
+ "note": "Shared price file for the Burns family planner and Cameron's planner. source: receipt | ad | estimate (also allowed: weekly-ad, shelf-photo, online-listing). price null = not carried. Update from receipts / Publix app Purchases screenshots; no scraping.",
+ "stores": {
+  "aldi-vero": {
+   "chain": "Aldi",
+   "area": "Vero Beach FL"
+  },
+  "publix-vero": {
+   "chain": "Publix",
+   "area": "Vero Beach FL"
+  },
+  "aldi-stpete": {
+   "chain": "Aldi",
+   "area": "St. Petersburg FL"
+  },
+  "publix-stpete": {
+   "chain": "Publix",
+   "area": "St. Petersburg FL"
+  }
+ },
+ "items": {
+  "chicken": {
+   "name": "Chicken breast, boneless skinless family pack",
+   "size": "~4 lb",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 9.62,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 22.12,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    }
+   ]
+  },
+  "beef": {
+   "name": "Ground beef 80/20",
+   "size": "~2.25 lb pack (6 patties)",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 11.9,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 19.91,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    }
+   ]
+  },
+  "turkey": {
+   "name": "Ground turkey",
+   "size": "~2 lb",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 7.98,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 11.98,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "chickgr": {
+   "name": "Ground chicken",
+   "size": "~2 lb",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 7.98,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 11.98,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "sirloingr": {
+   "name": "Ground sirloin 90/10",
+   "size": "~2 lb",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 13.98,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 19.98,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "steak:Sirloin": {
+   "name": "Top sirloin steak (2 steaks)",
+   "size": "~1.5 lb",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 14.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 18.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    }
+   ]
+  },
+  "steak:Ribeye": {
+   "name": "Ribeye steak (2 steaks)",
+   "size": "~1.5 lb",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 20.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 25.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "steak:NY strip": {
+   "name": "NY strip steak (2 steaks)",
+   "size": "~1.5 lb",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 19.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 23.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "steak:Flat iron": {
+   "name": "Flat iron steak",
+   "size": "~1.5 lb",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 13.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 17.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "steak:Chuck eye": {
+   "name": "Chuck eye steak",
+   "size": "~1.5 lb",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 11.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 14.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "pork:Boneless pork chops": {
+   "name": "Boneless pork chops, family pack",
+   "size": "~2.5 lb (6 chops)",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 9.98,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 19.38,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    }
+   ]
+  },
+  "pork:Country-style ribs (boneless)": {
+   "name": "Boneless country-style pork ribs",
+   "size": "~2.5 lb",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 8.73,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 12.48,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "brats:Brats": {
+   "name": "Bratwurst",
+   "size": "1 pack (5–6)",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.69,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 8.75,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    }
+   ]
+  },
+  "brats:Italian sausage": {
+   "name": "Italian sausage links",
+   "size": "1 pack (5)",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 3.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 6.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "brats:Smoked sausage (pre-cooked)": {
+   "name": "Smoked sausage rope",
+   "size": "14 oz",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "bacon": {
+   "name": "Bacon",
+   "size": "12 oz",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 4.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 6.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "tbacon": {
+   "name": "Turkey bacon",
+   "size": "12 oz",
+   "page": "cameron",
+   "aisle": "meat",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "eggs": {
+   "name": "Large eggs",
+   "size": "1 dozen",
+   "page": "cameron",
+   "aisle": "dairy",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.85,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.19,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    }
+   ]
+  },
+  "cheeseslice": {
+   "name": "Sliced cheese",
+   "size": "1 pack",
+   "page": "cameron",
+   "aisle": "dairy",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "shred": {
+   "name": "Shredded Mexican cheese",
+   "size": "8 oz",
+   "page": "cameron",
+   "aisle": "dairy",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "yogurt": {
+   "name": "Yogurt cups",
+   "size": "6 cups",
+   "page": "cameron",
+   "aisle": "dairy",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 3.3,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 6,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "lettuce": {
+   "name": "Lettuce",
+   "size": "1 head / bag",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.69,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "tomato": {
+   "name": "Tomatoes",
+   "size": "2",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 1.8,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "onion": {
+   "name": "Onions",
+   "size": "2",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 1.6,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "avocado": {
+   "name": "Avocados",
+   "size": "2",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.38,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "guac": {
+   "name": "Guacamole cups",
+   "size": "1 pack",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "jalfresh": {
+   "name": "Fresh jalapeños",
+   "size": "2",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 0.4,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 0.6,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "mushroom": {
+   "name": "Sliced mushrooms",
+   "size": "8 oz",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "veg:Zucchini & peppers": {
+   "name": "Zucchini (2) + bell peppers (3 pk)",
+   "size": "for 3–4 sides",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 4.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 7.39,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "veg:Onions & peppers": {
+   "name": "Bell peppers (3 pk) + 1 onion",
+   "size": "for 3–4 sides",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 3.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 5.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "veg:Mushrooms": {
+   "name": "Whole mushrooms",
+   "size": "16 oz",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "veg:Asparagus": {
+   "name": "Asparagus",
+   "size": "1 bunch",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "Fruit:Apples": {
+   "name": "Apples",
+   "size": "3 lb bag",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "Fruit:Bananas": {
+   "name": "Bananas",
+   "size": "~6",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.5,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "Fruit:Grapes": {
+   "name": "Grapes",
+   "size": "~2 lb",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 3.98,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 5.98,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "Fruit:Strawberries": {
+   "name": "Strawberries",
+   "size": "1 lb",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "Fruit:Blueberries": {
+   "name": "Blueberries",
+   "size": "1 pint",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "Fruit:Oranges": {
+   "name": "Oranges",
+   "size": "3 lb bag",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 3.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 5.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "Fruit:Watermelon": {
+   "name": "Watermelon (cut, tub)",
+   "size": "1 tub",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 3.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 5.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "Fruit:Pineapple": {
+   "name": "Pineapple",
+   "size": "1",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "Salad:Garden": {
+   "name": "Garden salad bag",
+   "size": "1 bag",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "Salad:Caesar": {
+   "name": "Caesar salad kit",
+   "size": "1 kit",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "Salad:Spinach": {
+   "name": "Baby spinach",
+   "size": "1 bag",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "Salad:Wedge": {
+   "name": "Iceberg head (wedge)",
+   "size": "1",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.69,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "dressing": {
+   "name": "Salad dressing",
+   "size": "1 bottle",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "bun:plain": {
+   "name": "Hamburger buns",
+   "size": "8 ct",
+   "page": "cameron",
+   "aisle": "bread",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.55,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.41,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Instacart online listing, Oct 2026 (treated as estimate)"
+    }
+   ]
+  },
+  "bun:fancy": {
+   "name": "Buns",
+   "size": "4–8 ct",
+   "page": "cameron",
+   "aisle": "bread",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 3.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "hotdogbun": {
+   "name": "Hot dog / brat buns",
+   "size": "8 ct",
+   "page": "cameron",
+   "aisle": "bread",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "tortilla": {
+   "name": "Flour tortillas",
+   "size": "10 ct",
+   "page": "cameron",
+   "aisle": "bread",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "bread": {
+   "name": "Sliced bread (panini/toast)",
+   "size": "1 loaf",
+   "page": "cameron",
+   "aisle": "bread",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "ricepouch": {
+   "name": "Microwave rice pouches",
+   "size": "2",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.58,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.98,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "ricebag": {
+   "name": "Long grain rice",
+   "size": "2 lb bag",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "ketchup": {
+   "name": "Ketchup",
+   "size": "1 bottle",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.89,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "mustard": {
+   "name": "Mustard",
+   "size": "1 bottle",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 0.95,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "mayo": {
+   "name": "Mayo",
+   "size": "1 jar",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "pickles": {
+   "name": "Pickles",
+   "size": "1 jar",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "jalpickled": {
+   "name": "Pickled jalapeños",
+   "size": "1 jar",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.69,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "bbq": {
+   "name": "BBQ sauce",
+   "size": "1 bottle",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "hot": {
+   "name": "Hot sauce",
+   "size": "1 bottle",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "salsa": {
+   "name": "Salsa",
+   "size": "1 jar",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "teriyaki": {
+   "name": "Teriyaki sauce",
+   "size": "1 bottle",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "season": {
+   "name": "Steak seasoning",
+   "size": "1 jar",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "spray": {
+   "name": "Cooking spray",
+   "size": "1 can",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.19,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "bags": {
+   "name": "Gallon freezer bags",
+   "size": "1 box",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fries": {
+   "name": "Frozen fries",
+   "size": "1 bag (~2 lb)",
+   "page": "cameron",
+   "aisle": "frozen",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "chips": {
+   "name": "Chips",
+   "size": "1 bag",
+   "page": "cameron",
+   "aisle": "snacks",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.19,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 5.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "chips:Pringles": {
+   "name": "Pringles",
+   "size": "1 can",
+   "page": "cameron",
+   "aisle": "snacks",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "sourcream": {
+   "name": "Sour cream",
+   "size": "16 oz",
+   "page": "cameron",
+   "aisle": "dairy",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "butter": {
+   "name": "Butter",
+   "size": "1 lb",
+   "page": "cameron",
+   "aisle": "dairy",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 5.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "bluecheese": {
+   "name": "Blue cheese crumbles",
+   "size": "4 oz",
+   "page": "cameron",
+   "aisle": "dairy",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "steaksauce": {
+   "name": "Steak sauce",
+   "size": "1 bottle",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 2.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "horseradish": {
+   "name": "Horseradish",
+   "size": "1 jar",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 3.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "relish": {
+   "name": "Sweet relish",
+   "size": "1 jar",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.69,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "sauerkraut": {
+   "name": "Sauerkraut",
+   "size": "1 jar",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.69,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "blackbeans": {
+   "name": "Black beans",
+   "size": "2 cans",
+   "page": "cameron",
+   "aisle": "pantry",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.18,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.38,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "corn": {
+   "name": "Frozen corn",
+   "size": "1 bag",
+   "page": "cameron",
+   "aisle": "frozen",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.19,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "broccoli": {
+   "name": "Broccoli crowns",
+   "size": "~1 lb",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 1.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "greenonion": {
+   "name": "Green onions",
+   "size": "1 bunch",
+   "page": "cameron",
+   "aisle": "produce",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": 0.89,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 1.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "chips:Kettle Brand": {
+   "name": "Kettle Brand chips",
+   "size": "1 bag",
+   "page": "cameron",
+   "aisle": "snacks",
+   "prices": [
+    {
+     "store": "aldi-stpete",
+     "price": null,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-stpete",
+     "price": 4.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-rotisserie": {
+   "name": "Rotisserie chicken",
+   "size": "1 whole",
+   "page": "family",
+   "aisle": "Meat",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 4.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Publix deli price varies; Aldi when stocked"
+    },
+    {
+     "store": "publix-vero",
+     "price": 7.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Publix deli price varies; Aldi when stocked"
+    }
+   ]
+  },
+  "fam-chicken": {
+   "name": "Chicken breasts, boneless skinless",
+   "size": "~2.5 lb",
+   "page": "family",
+   "aisle": "Meat",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 5.73,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi ~$2.29/lb · Publix ~$5.53/lb (St. Pete listings, Oct 2026)"
+    },
+    {
+     "store": "publix-vero",
+     "price": 13.83,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi ~$2.29/lb · Publix ~$5.53/lb (St. Pete listings, Oct 2026)"
+    }
+   ]
+  },
+  "fam-beef": {
+   "name": "Ground beef 80/20",
+   "size": "~1.5 lb",
+   "page": "family",
+   "aisle": "Meat",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 7.94,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi ~$5.29/lb · Publix ~$8.85/lb (listings, Oct 2026)"
+    },
+    {
+     "store": "publix-vero",
+     "price": 13.28,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi ~$5.29/lb · Publix ~$8.85/lb (listings, Oct 2026)"
+    }
+   ]
+  },
+  "fam-salmon": {
+   "name": "Salmon fillets",
+   "size": "~1 lb",
+   "page": "family",
+   "aisle": "Meat",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 9.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 12.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-tilapia": {
+   "name": "Tilapia fillets",
+   "size": "~1 lb",
+   "page": "family",
+   "aisle": "Meat",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 4.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 7.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-sausage": {
+   "name": "Sausage (breakfast or smoked)",
+   "size": "1 pack",
+   "page": "family",
+   "aisle": "Meat",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 2.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 4.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-eggs": {
+   "name": "Large eggs",
+   "size": "1 dozen",
+   "page": "family",
+   "aisle": "Meat",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 1.85,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi Goldhen · Publix 12 ct (listings, Oct 2026)"
+    },
+    {
+     "store": "publix-vero",
+     "price": 2.19,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi Goldhen · Publix 12 ct (listings, Oct 2026)"
+    }
+   ]
+  },
+  "fam-potatoes": {
+   "name": "Potatoes",
+   "size": "5 lb bag",
+   "page": "family",
+   "aisle": "Produce",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 4.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-onion": {
+   "name": "Yellow onions",
+   "size": "3 lb bag",
+   "page": "family",
+   "aisle": "Produce",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 2.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 3.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-salad": {
+   "name": "Salad bag",
+   "size": "1 bag",
+   "page": "family",
+   "aisle": "Produce",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 1.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-fruit": {
+   "name": "Fruit (bananas + apples)",
+   "size": "~6 bananas + 3 lb apples",
+   "page": "family",
+   "aisle": "Produce",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 4.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 6.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-peppers": {
+   "name": "Bell peppers",
+   "size": "3 pk",
+   "page": "family",
+   "aisle": "Produce",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 4.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-broccoli": {
+   "name": "Broccoli crowns",
+   "size": "~1 lb",
+   "page": "family",
+   "aisle": "Produce",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 1.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-veg": {
+   "name": "Veg for sides",
+   "size": "1 bag / bunch",
+   "page": "family",
+   "aisle": "Produce",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 1.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 2.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-cheese": {
+   "name": "Shredded cheese",
+   "size": "8 oz",
+   "page": "family",
+   "aisle": "Dairy",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 2.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-milk": {
+   "name": "Milk",
+   "size": "1 gallon",
+   "page": "family",
+   "aisle": "Dairy",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 3.09,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 4.69,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-tortillas": {
+   "name": "Flour tortillas",
+   "size": "10 ct",
+   "page": "family",
+   "aisle": "Pantry",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 1.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 3.29,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-alfredo": {
+   "name": "Alfredo sauce + pasta",
+   "size": "1 jar + 1 lb box",
+   "page": "family",
+   "aisle": "Pantry",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 2.94,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 5.08,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-chili-cans": {
+   "name": "Chili beans + diced tomatoes",
+   "size": "2 + 2 cans",
+   "page": "family",
+   "aisle": "Pantry",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 3.2,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 5.36,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-rice": {
+   "name": "Long grain rice",
+   "size": "2 lb bag",
+   "page": "family",
+   "aisle": "Pantry",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 1.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 2.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-buns": {
+   "name": "Hamburger buns",
+   "size": "8 ct",
+   "page": "family",
+   "aisle": "Pantry",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 1.55,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi L'oven Fresh · Publix Bakery (listings, Oct 2026)"
+    },
+    {
+     "store": "publix-vero",
+     "price": 4.41,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi L'oven Fresh · Publix Bakery (listings, Oct 2026)"
+    }
+   ]
+  },
+  "fam-t-yogurt": {
+   "name": "Chobani yogurt cups",
+   "size": "multipack",
+   "page": "family",
+   "aisle": "Tucker lunchbox",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": null,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi look-alike yogurt ~$3.30"
+    },
+    {
+     "store": "publix-vero",
+     "price": 6.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi look-alike yogurt ~$3.30"
+    }
+   ],
+   "brand": "Chobani",
+   "aldi_lookalike": 3.3
+  },
+  "fam-t-cheese": {
+   "name": "Polly-O string cheese",
+   "size": "12 ct",
+   "page": "family",
+   "aisle": "Tucker lunchbox",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": null,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi look-alike string cheese ~$2.89"
+    },
+    {
+     "store": "publix-vero",
+     "price": 5.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi look-alike string cheese ~$2.89"
+    }
+   ],
+   "brand": "Polly-O",
+   "aldi_lookalike": 2.89
+  },
+  "fam-t-pretzels": {
+   "name": "Pretzels / Pringles",
+   "size": "1 bag or can",
+   "page": "family",
+   "aisle": "Tucker lunchbox",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 1.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 2.79,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-t-fruit-snack": {
+   "name": "Fruit snacks",
+   "size": "10 ct box",
+   "page": "family",
+   "aisle": "Tucker lunchbox",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 1.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-t-beef-stick": {
+   "name": "Natural beef sticks",
+   "size": "multipack",
+   "page": "family",
+   "aisle": "Tucker lunchbox",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": 3.49,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    },
+    {
+     "store": "publix-vero",
+     "price": 5.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant"
+    }
+   ]
+  },
+  "fam-t-juice": {
+   "name": "Apple & Eve apple juice boxes",
+   "size": "8 pk",
+   "page": "family",
+   "aisle": "Tucker lunchbox",
+   "prices": [
+    {
+     "store": "aldi-vero",
+     "price": null,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi look-alike juice boxes ~$1.99"
+    },
+    {
+     "store": "publix-vero",
+     "price": 3.99,
+     "per": "pkg",
+     "channel": "in-store",
+     "source": "estimate",
+     "checked": "2026-10-05",
+     "by": "assistant",
+     "source_ref": "Aldi look-alike juice boxes ~$1.99"
+    }
+   ],
+   "brand": "Apple & Eve",
+   "aldi_lookalike": 1.99
+  }
+ }
+}
