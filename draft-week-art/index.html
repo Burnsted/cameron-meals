@@ -3056,8 +3056,8 @@ function boardNote(d){
   n=n.replace(/Your swap\.?.*/i,"Your swap");
   n=n.replace(/Free night\.?.*/i,"Free night");
   n=n.replace(/Grab & go night\.?.*/i,"Grab and go");
-  n=shortMealWords(n,6);
-  if(n&&n.length>2)return n;
+  if(n)n=shortMealWords(n,6);
+  if(n&&n.length>2&&n.toLowerCase()!=="meal")return n;
   if(d.kind==="hol")return "Holiday";
   if(d.kind==="out")return "Night off";
   if(d.kind==="rm")return "Open night";
