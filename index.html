@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b1220" id="theme-color-meta">
-<script>(function(){try{var t=localStorage.getItem("cm-theme");if(t!=="light"&&t!=="dark")t="dark";document.documentElement.setAttribute("data-theme",t);document.documentElement.style.colorScheme=t;if(t==="light")document.documentElement.classList.add("theme-light");}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<script>(function(){try{var t=localStorage.getItem("cm-theme");if(t!=="light"&&t!=="dark")t="light";document.documentElement.setAttribute("data-theme",t);document.documentElement.style.colorScheme=t;if(t==="light")document.documentElement.classList.add("theme-light");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
 <title>My Meal Picker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
@@ -633,7 +633,7 @@ function refreshTitles(){
   document.title=titlePicker();
   const t=$("appTitle"); if(t)t.textContent=titlePicker();
 }
-function getCamTheme(){try{const t=localStorage.getItem("cm-theme");return t==="light"||t==="dark"?t:"dark"}catch(_){return"dark"}}
+function getCamTheme(){try{const t=localStorage.getItem("cm-theme");return t==="light"||t==="dark"?t:"light"}catch(_){return"light"}}
 function applyCamTheme(theme){
   theme=theme==="light"?"light":"dark";
   try{localStorage.setItem("cm-theme",theme)}catch(_){}
