@@ -3,11 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1220" id="theme-color-meta">
+<script>(function(){try{var t=localStorage.getItem("cm-theme");if(t!=="light"&&t!=="dark")t="dark";document.documentElement.setAttribute("data-theme",t);document.documentElement.style.colorScheme=t;if(t==="light")document.documentElement.classList.add("theme-light");}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
 <title>My Meal Picker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#0f172a;--card:#1e293b;--ink:#f1f5f9;--mut:#94a3b8;--chip:#334155;--on:#0ea5e9;--gold:#f59e0b}
+  html[data-theme="light"]{--bg:#f4f7f6;--card:#fffaf4;--ink:#173042;--mut:#5b6b7a;--chip:#d5e3df;--on:#0f6e6e;--gold:#c47a2c}
+  html[data-theme="light"] body{background:var(--bg);color:var(--ink)}
+  html[data-theme="light"] .card,html[data-theme="light"] .welcome-card{background:var(--card);color:var(--ink)}
+  html[data-theme="light"] .addrow input,html[data-theme="light"] .welcome-field,html[data-theme="light"] .ph-new-row input{background:#fff;color:var(--ink);border-color:rgba(15,110,110,.28)}
   *{box-sizing:border-box}
   body{margin:0;font-family:-apple-system,system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;justify-content:center}
   .wrap{width:100%;max-width:440px;padding:20px 16px 40px}
@@ -610,7 +616,15 @@ const M=id=>allMeals().find(m=>m.id===id);
 const WELCOME_KEY="cameron-meals-welcome-done-v1";
 /* ---- Name / titles ---- */
 function aboutNameRaw(){const a=(st&&st.about)||getAbout();return a&&Object.prototype.hasOwnProperty.call(a,"name")?String(a.name||"").trim():null}
-function displayName(){const n=aboutNameRaw();if(n===null)return "Cameron";return n}
+function displayName(){
+  const n=aboutNameRaw();
+  // Item C: template import must never fall back to "Cameron"
+  if(n===null){
+    if(st&&st._fromTemplate)return "";
+    return "Cameron";
+  }
+  return n;
+}
 function possessive(n){if(!n)return "My";return /s$/i.test(n)?n+"'":n+"'s"}
 function titlePicker(){const n=displayName();return n?possessive(n)+" Meal Picker":"My Meal Picker"}
 function titleWeek(){const n=displayName();return n?possessive(n)+" Grill Week":"My Grill Week"}
@@ -619,6 +633,19 @@ function refreshTitles(){
   document.title=titlePicker();
   const t=$("appTitle"); if(t)t.textContent=titlePicker();
 }
+function getCamTheme(){try{const t=localStorage.getItem("cm-theme");return t==="light"||t==="dark"?t:"dark"}catch(_){return"dark"}}
+function applyCamTheme(theme){
+  theme=theme==="light"?"light":"dark";
+  try{localStorage.setItem("cm-theme",theme)}catch(_){}
+  document.documentElement.setAttribute("data-theme",theme);
+  document.documentElement.style.colorScheme=theme;
+  const meta=$("theme-color-meta"); if(meta)meta.content=theme==="light"?"#f4f7f6":"#0b1220";
+  // Week view historically used body.light — keep in sync with theme
+  if(document.getElementById("week")&&!document.getElementById("week").hidden){
+    if(theme==="light")document.body.classList.add("light"); else document.body.classList.remove("light");
+  }
+}
+function toggleCamTheme(){applyCamTheme(getCamTheme()==="dark"?"light":"dark")}
 
 /* ---- Food autocomplete (local) ---- */
 const FOOD_WORDS=["apple","applesauce","asparagus","avocado","bacon","bagel","banana","basil","beans","beef","bell pepper","black beans","blueberry","bread","broccoli","broth","brown rice","brussels sprouts","butter","cabbage","carrot","cauliflower","celery","cheddar","cheese","chicken","chicken breast","chicken thigh","chili","chips","chocolate","cilantro","cinnamon","coconut","coffee","coleslaw","corn","cottage cheese","crackers","cream cheese","cucumber","deli meat","egg","eggs","english muffin","flour","garlic","granola","grape","green beans","ground beef","guac","guacamole","ham","honey","hot dog","hot sauce","hummus","jalapeno","ketchup","lemon","lettuce","lime","macaroni","mango","mayo","milk","mushroom","mustard","noodles","cereal","olive oil","onion","orange","pasta","peanut butter","pear","pepper","pickle","pineapple","pizza","pork","pork chop","potato","potato chips","pretzel","protein","quesadilla","ranch","rice","roast beef","roll","salad","salmon","salsa","sausage","sirloin","sour cream","spinach","steak","strawberry","sweet potato","syrup","taco","tomato","tortilla","tuna","turkey","waffle","watermelon","yogurt","zucchini","almond milk","oat milk","brioche","sesame bun","potato bun","american cheese","pepper jack","swiss","provolone","ribeye","filet","ny strip","flat iron","chuck eye","brats","italian sausage","smoked sausage","frozen pizza","rotisserie","bagel cream cheese","breakfast burrito","tater tots","air fryer fries","baked potato","microwave rice","caesar salad","fruit cup","baked beans","potato salad","green onion","teriyaki","bbq sauce","a1 sauce","cereal","granola bar","deli turkey","roast chicken","frozen burrito","protein box","sushi","fried egg","garlic bread","texas toast","mac and cheese","cottage","coleslaw","baby carrots","ranch dip","corn on the cob","asparagus spears","black bean","refried beans","sourdough","hoagie","pub sub","cream","half and half","espresso","lavazza","nespresso","frozen fries","hash browns","pancake","syrup maple","blue cheese","horseradish","sauerkraut","relish","pickled jalapenos","shredded cheese","mexican blend","flour tortilla","corn tortilla","english muffin","canadian bacon","sausage link","ground sirloin","chuck roast","skirt steak","flank steak","pork ribs","country ribs","chicken tender","wing","thigh","drumstick","salmon fillet","tilapia","shrimp","crab","lobster","clam","scallop","tofu","tempeh","edamame","quinoa","couscous","farro","barley","lentil","chickpea","hummus cup","pita","naan","bagel plain","everything bagel","croissant","muffin","danish","donut","brownie","cookie","ice cream","popsicle","gelato","pudding","jello","applesauce cup","fruit snacks","trail mix","almonds","peanuts","cashews","walnuts","sunflower seeds","pumpkin seeds","raisins","dates","fig","prune","kiwi","peach","plum","cherry","raspberry","blackberry","cantaloupe","honeydew","grapefruit","tangerine","clementine","nectarine","apricot","papaya","passion fruit","dragon fruit","pomegranate","coconut water","sparkling water","soda","juice","orange juice","apple juice","sports drink","protein shake","protein powder","creamer","sugar","brown sugar","salt","peppercorn","paprika","cumin","chili powder","oregano","thyme","rosemary","parsley","dill","bay leaf","vanilla","cocoa","baking soda","baking powder","flour all purpose","cornmeal","breadcrumb","panko","soy sauce","worcestershire","fish sauce","sesame oil","canola oil","vegetable oil","coconut oil","vinegar","balsamic","apple cider vinegar","stock","chicken stock","beef stock","vegetable stock","tomato sauce","tomato paste","crushed tomato","diced tomato","marinara","alfredo","pesto","gravy","stuffing","cranberry","mashed potato","scalloped potato","au gratin","risotto","paella","stir fry","fried rice","lo mein","ramen","udon","pho","curry","tikka","butter chicken","gyro","falafel","shawarma","kebab","meatball","meatloaf","pot roast","stew","soup","chili con carne","mac cheese","lasagna","spaghetti","ravioli","tortellini","gnocchi","pierogi","dumpling","egg roll","spring roll","wonton","bao","sushi roll","sashimi","poke","ceviche","tacos","burrito","enchilada","fajita","chimichanga","tamale","empanada","arepa","pupusa","pastelito","croqueta","cuban sandwich","philly cheese","reuben","club sandwich","blt","grilled cheese","panini","wrap","pita pocket","salad kit","caesar","cobb","greek salad","wedge salad","coleslaw mix","potato salad deli","pasta salad","macaroni salad","fruit salad","parfait","smoothie","acai","chia pudding"];
@@ -981,6 +1008,10 @@ function openSettings(){const rules=getRules().join("\n"), set=getSettings(), ho
       <div class="dchips">${["bec","bagel","cereal","eggs_toast","bf_burrito"].filter(k=>BF_CFG.items[k]).map(k=>`<button type="button" data-bfe="${k}" class="${set.bfWeekend===k?"on":""}">${esc((BF_CFG.items[k]||{}).label||k)}</button>`).join("")}</div>
       <p class="set-sec">Holidays this week</p>
             ${hols.length?hols.map(h=>`<div class="hol-row"><span>${esc(h.name)}</span><div class="sw sm" role="switch" tabindex="0" aria-checked="${!!hol[h.id]}" data-hid="${h.id}"><span class="tg"></span></div><small>Cook normally</small></div>`).join(""):`<p class="muted2">No major holidays in this week.</p>`}
+      <p class="set-sec">Theme</p>
+      <div class="dchips"><button type="button" data-theme="dark" class="${getCamTheme()==="dark"?"on":""}">Dark</button><button type="button" data-theme="light" class="${getCamTheme()==="light"?"on":""}">Light</button></div>
+      <p class="set-sec">Weekly grocery budget</p>
+      <div class="dchips">${[0,40,60,80,100,120].map(n=>`<button type="button" data-bud="${n}" class="${(!getBud().on&&n===0)||(getBud().on&&+getBud().amt===n)?"on":""}">${n?("$"+n):"Off"}</button>`).join("")}</div>
       <p class="set-sec">Share</p>
       <button type="button" class="sh-btn wide share-app-link" id="shareAppSettings" style="justify-content:center">${icons.copy} Share this app</button>
       <p class="set-sec">Welcome</p>
@@ -990,6 +1021,8 @@ function openSettings(){const rules=getRules().join("\n"), set=getSettings(), ho
     inn.querySelectorAll("[data-bfw]").forEach(b=>b.onclick=()=>{set.bfWeekday=b.dataset.bfw;draw()});
     inn.querySelectorAll("[data-bfa]").forEach(b=>b.onclick=()=>{set.bfAlt=b.dataset.bfa;draw()});
     inn.querySelectorAll("[data-bfe]").forEach(b=>b.onclick=()=>{set.bfWeekend=b.dataset.bfe;draw()});
+    inn.querySelectorAll("[data-theme]").forEach(b=>b.onclick=()=>{applyCamTheme(b.dataset.theme);draw()});
+    inn.querySelectorAll("[data-bud]").forEach(b=>b.onclick=()=>{const n=+b.dataset.bud;const c=getBud();if(!n){c.on=false;c.amt=null}else{c.on=true;c.amt=n;c.days=7}setBud(c);draw()});
     inn.querySelectorAll(".sw[data-hid]").forEach(sw=>{const flip=()=>{const id=sw.dataset.hid;const o=getHolCook();o[id]=!o[id];setHolCook(o);draw()};
       sw.onclick=flip;sw.onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}}});
     const rp=inn.querySelector("#setReplay");if(rp)rp.onclick=()=>{closeSheet();startWelcome(true)};
@@ -1581,13 +1614,13 @@ function summary(){
     <h2>🍽️ Sides</h2>${sideLines||"<p>None</p>"}
     <h2>🧍 About me</h2>${aboutSummary()}<button class="next ghost" id="abE" style="margin-top:0;padding:6px 0;text-align:left;width:auto">✎ Edit about me</button>
     <button class="next build" id="bw">📅 Build my week</button>
-    <p class="muted">Turns your picks into a 7-day Foreman plan + a priced Aldi/Publix shopping list. All on this page.</p>
+    
     <button class="next" id="rs" style="margin-top:6px;background:var(--chip)">Start over</button></div>`;
   $("rs").onclick=()=>{reset();render()};
   $("abE").onclick=()=>{st.aboutReturn=true;pos=queue.indexOf("about");render();window.scrollTo(0,0)};
   $("bw").onclick=()=>goBuildWeek();
 }
-function goBuildWeek(){buildWeek();document.body.classList.add("light");window.scrollTo(0,0)}
+function goBuildWeek(){buildWeek();applyCamTheme(getCamTheme());window.scrollTo(0,0)}
 /* ================= WEEK PLANNER ================= */
 const yes=id=>st.meals[id]==="yes";
 let W=null; // {days, items, have:Set, ck:Set}
@@ -1638,7 +1671,7 @@ function shuffleWeek(){
     used.push(m.id);
     const side=(typeof assignSides==="function"?null:null);
     const sideName=d.sideName||(W.daySides&&W.daySides[i]&&W.daySides[i][0])||null;
-    const cut=m.protein?pickNextCut(m.id==="burger"?"burger":MG[m.id]||m.id,{}):null;
+    const cut=m.protein?fixNextCut(m.id==="burger"?"burger":MG[m.id]||m.id,{}):null;
     const title=mealTitle(m.id,cut)||m.name;
     W.ov[i]={t:"pick",meal:m.id,e:m.emoji,dinner:sideName?title+" + "+sideName:title,cut:cut||null,cook:!!m.grill||!m.grab,note:m.time?("⏱ "+m.time):"",lunch:d.lunch||"Lunch on your own",sideName,g:MG[m.id]||null,kind:null};
   });
@@ -1836,16 +1869,14 @@ function renderWeek(){
     if(hol&&!getHolCook()[hol.id])return {...d,kind:"hol",hol:hol.name,dinner:hol.name,e:"🎉",note:"",cook:false,meal:null,grab:false};
     return d});
   const wl=fmtWeek(s0), bud=getBud(), edited=Object.keys(W.ov).length>0;
-  const bh=budHero(t.b);
   const otherStores=[...st.stores].filter(x=>x!=="Aldi"&&x!=="Publix");
   const main=deriveMainStore();
   const byA={};W.items.forEach(it=>{(byA[it.aisle]=byA[it.aisle]||[]).push(it)});
-  const nCk=W.ck.size, filt=W.listFilter;
+  const nCk=W.ck.size; W.listFilter=null; const filt=null;
   const MN=id=>id&&M(id);
   const dayCls=d=>`${d.cook?" cook":""}${d.grab?" grab":""}${d.kind==="hol"?" hol":""}`;
   const cutTag=d=>d.cut?`<span class="daytag">${esc(d.cut)}</span>`:"";
-  const shopBtn=i=>`<button type="button" class="list-link" data-shop="${i}" aria-label="Jump to ${days[i].short} on shopping list">${icons.listSm}<span>list</span></button>`;
-  $("week").innerHTML=`
+    $("week").innerHTML=`
   <section class="hero">
     <div class="hero-top">
       <div><p class="kick">${titleHQ()}</p><h1 class="brand">${esc(titleWeek())}</h1></div>
@@ -1856,23 +1887,13 @@ function renderWeek(){
       <div class="wlabel" id="wlab">${wl}</div>
       <button type="button" class="cal-btn ico-btn" id="calB" aria-label="Pick a week on a calendar">${icons.cal}</button>
     </div>
-    <p class="tagline">Cooking for 1 · ${fm?"Foreman grill":"stovetop"} first · cook once, eat 2–3 times · lunch packed for Woody's</p>
-    ${bh.line?`<p class="budline ${bh.cls}">${bh.line}</p>${bh.bar}`:""}
-    <div class="pills">
-      <span class="pill t">3 cook nights + grab & freezer</span>
-      <button type="button" class="pill c btn" id="bsP" aria-label="Best split estimate">Best split ~$${t.b.toFixed(0)} est.</button>
-      <button type="button" class="pill btn bud${bud.on?"":" off"}" id="budP">${!bud.on?"Budget off":bud.amt==null?"Set budget":`Budget $${fmtAmt(bud.amt)} / ${bud.days}d`}</button>
-    </div>
     <div class="rcpt-top" style="margin-top:10px"><button type="button" class="back-link" id="backBtnWeek" aria-label="Back">${icons.backSm}<span>Back</span></button><span class="rcpt-right">${icons.rcpt}<button type="button" class="rcpt-btn" data-rcpt="1">Upload receipt</button></span></div>
   </section>
-  ${guideBox()}
-  <details class="lt"><summary>💰 Meat money tips</summary><ul>${C.TIPS.meat.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>
-  ${logBanner(days)}
   ${typeof weekLogStrip==="function"?weekLogStrip(days):""}
   <div class="stitle" id="thisWk"><h2>This week${edited?'<span class="edited">edited</span>':""}</h2><span class="week-actions"><button type="button" class="shuffle-link" id="shuffleBtn" aria-label="Shuffle this week">${icons.shuffle}<span>Shuffle</span></button><button type="button" class="shuffle-link" id="custB" aria-label="Customize week">${icons.repeat}<span>Customize</span></button></span></div>
   ${days.map((d,i)=>{const m=MN(d.meal);const cut=d.cut?` · ${esc(d.cut)}`:"";
     return `<div class="day${dayCls(d)}" data-d="${i}" style="animation-delay:${i*.04}s">
-    <div class="dh"><span>${d.short}${d.cook?" · cook":""}${d.grab?" · grab":""}</span><span class="dha">${d.kind!=="hol"?shopBtn(i):""}
+    <div class="dh"><span>${d.short}${d.cook?" · cook":""}${d.grab?" · grab":""}</span><span class="dha">
       <button type="button" class="swap-link" data-swapd="${i}" aria-label="Swap ${d.short} dinner">Swap</button>
       <span class="memo-sm">${d.e}</span></span></div>
     <div class="db"><div class="emo-row"><span class="memo">${d.e}</span>${dayBadge(d)}</div>
@@ -1885,22 +1906,16 @@ function renderWeek(){
     <p class="hint">${W.open===i?"▾ tap to close":"▸ tap for how-to + temps"}</p>${rateRow(d.meal&&M(d.meal)?d.meal:null,i,d.short)}${d.kind==="rm"||d.kind==="hol"?"":logRow(i,d)}</div></div>`}).join("")}
   ${weekReview(days)}
   ${ratingsPanel()}
-  ${W.extra.length?`<div class="nextwk">🔄 Next week rotation: ${W.extra.map(g=>({pork:mv("pork"),brats:mv("brats"),chicken:"chicken",burger:"burgers",steak:"steak"}[g])).join(", ")}</div>`:""}
-  <section class="gpanel"><div class="stitle" style="margin-top:0"><h2>Shopping list</h2><span>${nCk} checked</span></div>
+  ${W.extra.length?`<div class="nextwk">Next up: ${W.extra.map(g=>({pork:mv("pork"),brats:mv("brats"),chicken:"chicken",burger:"burgers",steak:"steak"}[g])).join(", ")}</div>`:""}
+  <section class="gpanel"><div class="stitle" style="margin-top:0"><h2>Shopping list · week of ${esc(wl.split(",")[0]||wl)}</h2><span>${nCk} checked</span></div>
     <div class="grocery-tools"><label class="visually-hidden" for="grocery-search">Search list</label><input type="search" id="grocery-search" class="grocery-search" placeholder="Search list" value="${esc(W.gSearch||"")}" autocomplete="off" /><button type="button" class="share-list-link" id="grocery-share">Share list</button><a class="share-list-link" id="grocery-sms" hidden>Text list</a></div>
-    <div class="byday" id="byDay">${["All",...DN].map((lab,ix)=>`<button type="button" data-fd="${ix===0?"":ix-1}" class="${(filt==null&&ix===0)||filt===ix-1?"on":""}">${lab}</button>`).join("")}</div>
-    <div class="tot"><div class="best">Est. total (${esc(main==="Publix"?"Publix":main==="Aldi"?"Aldi":(main||"Aldi"))})<b>$${(main==="Publix"?t.p:t.a).toFixed(2)}</b>est.${estStoreNote(main==="Publix"?"Publix":"Aldi")}</div>
-      <div>All Aldi<b>${t.a.toFixed(2)}</b>est.${estStoreNote("Aldi")}</div>
-      <div>All Publix<b>${t.p.toFixed(2)}</b>est.${estStoreNote("Publix")}</div>
-      <div>Best split<b>$${t.b.toFixed(2)}</b>est.</div></div>
-    <div class="cpy"><button type="button" class="cpb p ico-btn" data-copy="all">${icons.copy} Copy whole list</button>
-      <button type="button" class="cpb ico-btn" data-copy="Aldi">${icons.copy} Aldi</button>
-      <button type="button" class="cpb ico-btn" data-copy="Publix">${icons.copy} Publix</button></div>
+    <div class="tot"><div class="best">Est. total (${esc(main==="Publix"?"Publix":main==="Aldi"?"Aldi":(main||"Aldi"))})<b>$${(main==="Publix"?t.p:t.a).toFixed(2)}</b>est.${estStoreNote(main==="Publix"?"Publix":"Aldi")}</div></div>
+    <div class="cpy"><button type="button" class="cpb p ico-btn" data-copy="all">${icons.copy} Copy list</button></div>
     ${W.cph?`<div class="cph" id="cphBox"><p class="cph-t">✓ Copied. Want to send a photo with it?</p><button type="button" class="cpb p ico-btn" id="cphB">${icons.cam} Take a photo</button><input type="file" accept="image/*" capture="environment" hidden id="cphIn"><div class="thumbs" id="cphTh"></div><div id="cphAct"></div></div>`:""}
     ${(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))?`<p class="emo" style="margin:8px 0 2px">☕</p><p class="gnote cof">${coffeeLine(false)}</p>`:""}
-    <p class="pchk">Prices last checked ${fmtDateLong(PRICE_META.updated)}${PRICE_META.loaded?"":" (built-in estimates)"}</p>
-    ${budCmp(t.b,7)}
-    <p class="emo" style="margin:8px 0 2px">🧊</p><p class="gnote freezer-tip">Freezer tip: split family packs into single bags when you get home; date each bag.</p>
+    <p class="pchk">Prices ${fmtDateLong(PRICE_META.updated)}${PRICE_META.loaded?"":" · estimates"}</p>
+    ${budCmp(main==="Publix"?t.p:t.a,7)}
+    
     ${renderListItems(byA,filt,days)}
     <div class="g-custom-add" id="gCustomAdd">
       <select id="gCat" aria-label="Category">${[...AISLES.map(([k,lab])=>[k,lab]),...(typeof getCamCats==="function"?getCamCats():[]).map(c=>[c,c]),["__new__","+ New category…"]].map(([k,lab])=>`<option value="${esc(k)}" ${(W.gCat||"other")===k?"selected":""}>${esc(String(lab).replace(/^[^\w]+/," ").trim()||lab)}</option>`).join("")}</select>
@@ -1909,7 +1924,7 @@ function renderWeek(){
       <input id="gQty" type="text" maxlength="20" placeholder="Qty" style="flex:0 0 72px" />
       <button type="button" class="sbtn" id="gAdd">Add item</button>
     </div>
-    <p class="emo" style="margin:12px 0 2px">🌡</p><p class="gnote">One-time buy: instant-read thermometer (~$10–15; not in totals).</p>
+    
   </section>
   <a class="gh" href="${C.REPO.url}" target="_blank" rel="noopener"><b>🛠️ Your own repo, cameron-meals</b><span>Edit meals.js on GitHub to change your menu.</span></a>
   <button type="button" class="share-app-quiet" id="shareAppQuiet">Share this app</button>
@@ -1926,8 +1941,7 @@ function renderWeek(){
   const bbw=$("backBtnWeek");if(bbw)bbw.onclick=e=>{e.stopPropagation();goBackApp()};
   wk.querySelectorAll("[data-del]").forEach(b=>b.onclick=e=>{e.stopPropagation();openDelete(+b.dataset.del)});
   wk.querySelectorAll("[data-shop]").forEach(b=>b.onclick=e=>{e.stopPropagation();const i=+b.dataset.shop;W.shopHi=i;W.listFilter=i;renderWeek();const el=wk.querySelector(`[data-li="${i}"]`);if(el)el.scrollIntoView({behavior:"smooth",block:"center"})});
-  wk.querySelectorAll("#byDay [data-fd]").forEach(b=>b.onclick=()=>{const v=b.dataset.fd;W.listFilter=v===""?null:+v;renderWeek()});
-  wk.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>{const tx=listText(b.dataset.copy);W.cph=true;W.cphText=tx;renderWeek();copyTxt(tx,b.dataset.copy==="all"?"Whole list copied":`${b.dataset.copy} list copied`)});
+    wk.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>{const tx=listText(b.dataset.copy);W.cph=true;W.cphText=tx;renderWeek();copyTxt(tx,b.dataset.copy==="all"?"Whole list copied":`${b.dataset.copy} list copied`)});
   if(W.cph&&$("cphB")){W.cphFiles=W.cphFiles||[];photoShare({btn:$("cphB"),input:$("cphIn"),thumbs:$("cphTh"),act:$("cphAct"),store:W.cphFiles,shareLabel:"Share",title:"My shopping list",text:W.cphText||"",fallback:"Save the photo and send with your list."})}
   bindLog(wk,days);
   $("bk").onclick=()=>{document.body.classList.remove("light");window.scrollTo(0,0);updateBackBtn()};
@@ -1935,8 +1949,9 @@ function renderWeek(){
   $("rs2").onclick=()=>{reset();render();window.scrollTo(0,0)};
   $("calB").onclick=()=>openCal({sel:s0,onPick:(mon)=>{st.weekStart=mon.getTime();buildWeek()}});
   $("custB").onclick=openCustom;longPress($("thisWk"),openCustom);longPress($("wlab"),openCustom);const sh=$("shuffleBtn");if(sh)sh.onclick=e=>{e.stopPropagation();shuffleWeek()};
-  $("bsP").onclick=openBudget;$("budP").onclick=openBudget;$("setBtn").onclick=openSettings;
+  $("setBtn").onclick=openSettings;
   const star=$("starBtn");if(star){try{refreshStarBtn()}catch(_){}star.onclick=e=>{e.stopPropagation();openBadgesSheet()}}
+  const tmAll=$("tmAll");if(tmAll)tmAll.onclick=()=>{const L=getLog().log||{};const keys=[...new Set(Object.values(L).map(logKey).filter(Boolean))];const S=keys.map(k=>{const es=Object.values(L).filter(e=>logKey(e)===k);return{k,made:es.filter(e=>e.s==="made").length}}).filter(x=>x.made).sort((a,b)=>b.made-a.made);const inn=openSheet("","Times made");inn.innerHTML=shTop("Times made")+`<ul class="tml">${S.map(x=>`<li><span>${esc(mealName(x.k))}</span><b>×${x.made}</b></li>`).join("")}</ul>`};
   wk.querySelectorAll("[data-jumplog]").forEach(b=>b.onclick=e=>{e.stopPropagation();const i=+b.dataset.jumplog;W.open=i;renderWeek();const el2=$("week").querySelector('.day[data-d="'+i+'"]');if(el2)el2.scrollIntoView({behavior:"smooth",block:"center"})});
   wk.querySelectorAll("details.aisle-fold").forEach(d=>d.addEventListener("toggle",()=>{if(typeof camSearchQ==="function"&&!camSearchQ())setCamAisleOpen(d.dataset.aisle,d.open)}));
   const gs=$("grocery-search");if(gs){gs.addEventListener("input",()=>{W.gSearch=gs.value;renderWeek();const el=$("grocery-search");if(el){el.focus();try{el.setSelectionRange(el.value.length,el.value.length)}catch(_){}}})}
@@ -2108,6 +2123,8 @@ function effDays(ov){const s0=weekStartDate();return W.base.map((b,i)=>{const d=
   else if(o.t==="side"){c={...W.base[i],sideName:o.sideName,extraSides:o.extraSides||[],ch:true}}
   else if(o.t==="rm")c={cook:false,meal:null,e:"🚫",dinner:"Removed from this week",note:"Free night: no cooking, no groceries for this one. Tap Swap to pick something.",g:null,ch:true,kind:"rm"};
   else if(o.t==="left")c={cook:false,meal:null,e:"🔁",dinner:"Leftovers night",note:"Reheat whatever's in the fridge to 165°F.",g:null,ch:true,kind:"left",sideName:o.sideName!=null?o.sideName:W.base[i].sideName,extraSides:o.extraSides||W.base[i].extraSides};
+  else if(o.t==="pick"){const src=W.base[i]||{};c={cook:!!o.cook,meal:o.meal||null,e:o.e||src.e||"🍽",dinner:o.dinner||src.dinner||"",note:o.note||"",g:o.g!=null?o.g:(o.meal&&MG[o.meal])||null,ch:true,cut:o.cut||null,sideName:o.sideName!=null?o.sideName:src.sideName,extraSides:o.extraSides||src.extraSides,bf:o.bf!=null?o.bf:src.bf,grab:!!o.grab,kind:o.kind||null,lunch:o.lunch!=null?o.lunch:src.lunch}}
+  else if(o.t==="out")c={cook:false,meal:null,e:"🥡",dinner:"Eat out / takeout",note:"Night off. No cooking, no groceries.",g:null,ch:true,kind:"out"};
   else c={cook:false,meal:null,e:"🥡",dinner:"Eat out / takeout",note:"Night off. No cooking, no groceries.",g:null,ch:true,kind:"out"};
   return {...b,short,...c}})}
 function recomputeList(){const days=effDays(W.ov).filter(d=>d.kind!=="hol");const gs=[...new Set(days.map(d=>d.g).filter(Boolean))];
@@ -2122,7 +2139,7 @@ function getBud(){try{const j=JSON.parse(localStorage.getItem(BKEY)||"null");if(
 function setBud(b){try{localStorage.setItem(BKEY,JSON.stringify(b))}catch(_){}}
 const fmtAmt=n=>n%1?n.toFixed(2):String(n);
 function budCmp(total,days){const b=getBud();if(!b.on||b.amt==null)return "";const scaled=b.amt*days/b.days,diff=scaled-total;
-  return `<div class="bcmp ${diff>=0?"under":"over"}">${diff>=0?`✓ Under budget by $${diff.toFixed(0)}`:`✗ Over budget by $${(-diff).toFixed(0)}`}<br><small>Best split $${total.toFixed(0)} vs your $${scaled.toFixed(0)} for ${days} days ($${fmtAmt(b.amt)} / ${b.days} days)</small></div>`}
+  return `<div class="bcmp ${diff>=0?"under":"over"}">${diff>=0?`✓ Under budget by $${diff.toFixed(0)}`:`✗ Over budget by $${(-diff).toFixed(0)}`}<br><small>Est. $${total.toFixed(0)} vs your $${scaled.toFixed(0)} for ${days} days ($${fmtAmt(b.amt)} / ${b.days} days)</small></div>`}
 function openBudget(){const b=getBud();
   const inn=openSheet(shTop("💵 Budget")+`
     <div class="sw" role="switch" tabindex="0" aria-checked="${b.on}" id="bSw"><span>Budget ${b.on?"on":"off"}<br><small style="font-weight:650">Off = no budget shown or compared</small></span><span class="tg"></span></div>
@@ -2130,7 +2147,7 @@ function openBudget(){const b=getBud();
     <label class="fld" for="bDays">How many days it covers</label><input class="inp" id="bDays" type="number" inputmode="numeric" min="1" max="366" value="${b.days}">
     <div class="dchips">${[3,5,7,14].map(n=>`<button data-dd="${n}" class="${b.days===n?"on":""}">${n} days</button>`).join("")}</div>
     <div class="sh-row2"><button class="sh-btn" id="bClr">Clear budget</button><button class="sh-btn p" id="bSave">Save</button></div>
-    <p class="muted2">Compared with this week's Best split estimate, scaled to the 7-day plan (e.g. $120 / 14 days = $60 for 7 days). Saved on this phone only.</p>`,"Budget");
+    <p class="muted2">Compared with this week's est. total. Saved on this phone.</p>`,"Budget");
   const sw=inn.querySelector("#bSw");
   const flip=()=>{const c=getBud();c.on=!c.on;setBud(c);sw.setAttribute("aria-checked",c.on);sw.firstElementChild.firstChild.textContent="Budget "+(c.on?"on":"off");if(W)renderWeek()};
   sw.onclick=flip;sw.onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}};
@@ -2225,11 +2242,13 @@ function rateRow(id,i,short){const del=`<button type="button" class="rate-del ic
   if(!id)return `<div class="rate" onclick="event.stopPropagation()">${del}</div>`;
   const r=rateOf(id);return `<div class="rate" onclick="event.stopPropagation()" role="group" aria-label="Rate this meal">${[[-1,"👎","Tried it, no — never suggest again"],[1,"👍","Good"],[2,"❤️","Favorite"]].map(([v,e,t])=>`<button type="button" data-rate="${v}" data-m="${id}" aria-pressed="${r===v}" aria-label="${t}" title="${t}">${e}</button>`).join("")}${del}</div>`}
 function ratingsPanel(){const all=getRates();const ids=Object.keys(all).filter(id=>M(id));
-  const row=(id,restore)=>`<li><span>${M(id).emoji} ${esc(M(id).name)}${restore?` <small>👎 never suggest</small>`:""}${timesMade(id)?` <small>· made ${timesMade(id)}×</small>`:""}</span><small>${esc(all[id].d||"")}</small><button class="have" data-unrate="${id}">${restore?"Restore":"Clear"}</button></li>`;
+  if(!ids.length)return "";
+  const row=(id,restore)=>`<li><span>${M(id).emoji} ${esc(M(id).name)}</span><small>${esc(all[id].d||"")}</small><button class="have" data-unrate="${id}">${restore?"Restore":"Clear"}</button></li>`;
   const g=r=>ids.filter(id=>all[id].r===r);
-  return `<section class="gpanel rpanel"><div class="stitle" style="margin-top:0"><h2>My ratings</h2><span>👎 hides · ❤️ = favorite</span></div>
-    ${ids.length?`${g(2).length?`<h3 class="aisle">❤️ Favorites</h3><ul>${g(2).map(id=>row(id)).join("")}</ul>`:""}${g(1).length?`<h3 class="aisle">👍 Good</h3><ul>${g(1).map(id=>row(id)).join("")}</ul>`:""}${g(-1).length?`<h3 class="aisle">Removed meals</h3><p class="hint" style="margin:0 0 4px">👎 means never suggest again. Hidden from suggestions and Swap. Tap Restore to bring one back.</p><ul>${g(-1).map(id=>row(id,true)).join("")}</ul>`:""}`
-      :`<p class="hint">No ratings yet. After you make a meal, tap 👎 / 👍 / ❤️ on its day. ❤️ = favorite; 👎 = never suggest again (Removed meals).</p>`}</section>`}
+  return `<section class="gpanel rpanel"><div class="stitle" style="margin-top:0"><h2>My ratings</h2></div>
+    ${g(2).length?`<h3 class="aisle">❤️ Favorites</h3><ul>${g(2).map(id=>row(id)).join("")}</ul>`:""}
+    ${g(1).length?`<h3 class="aisle">👍 Good</h3><ul>${g(1).map(id=>row(id)).join("")}</ul>`:""}
+    ${g(-1).length?`<h3 class="aisle">👎</h3><ul>${g(-1).map(id=>row(id,true)).join("")}</ul>`:""}</section>`}
 /* receipt button */
 function bindReceipt(root){root.querySelectorAll("[data-rcpt]").forEach(b=>b.onclick=openReceipt)}
 function photoShare(o){o.btn.onclick=()=>o.input.click();attachShare({inputs:[o.input],thumbs:o.thumbs,act:o.act,files:o.store,shareLabel:o.shareLabel,title:o.title,text:o.text,fallback:o.fallback})}
@@ -2306,13 +2325,13 @@ async function copyTxt(text,msg){try{if(navigator.clipboard&&window.isSecureCont
 function listText(which){const t=totals(),wl=fmtWeek(weekStartDate()),items=W.items.filter(it=>!W.have.has(it.id));
   const aw=it=>it.a!=null&&(it.p==null||it.a<=it.p),pw=it=>it.p!=null&&!aw(it);
   const pr=it=>`Aldi ${it.a==null?"n/a":"est. "+$$(it.a)} / Publix ${it.p==null?"n/a":"est. "+$$(it.p)}`;const L=[];
-  if(which==="all"){L.push(`My shopping list: ${wl}`,`Est. totals: All Aldi ${$$(t.a)} · All Publix ${$$(t.p)} · Best split ${$$(t.b)}`);if(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))L.push(coffeeLine(true));
+  if(which==="all"){L.push(`My shopping list: ${wl}`,(()=>{const main=typeof deriveMainStore==="function"?deriveMainStore():(st&&st.main)||"Aldi";const v=main==="Publix"?t.p:t.a;return `Est. total (${main==="Publix"?"Publix":"Aldi"}) ${$$(v)}`})());if(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso"))L.push(coffeeLine(true));
     AISLES.forEach(([k,lab])=>{const g=items.filter(i=>i.aisle===k);if(!g.length)return;L.push("",lab.toUpperCase());
       g.forEach(it=>L.push(`[ ] ${it.n}${it.q?" ("+it.q+")":""} - ${it.custom?"check price":pr(it)}${aw(it)?" · Aldi cheaper":pw(it)?" · Publix cheaper":""}`))})}
   else{const pick=which==="Aldi"?aw:pw,g=items.filter(pick),sum=g.reduce((a,it)=>a+(which==="Aldi"?it.a:it.p),0);
     L.push(`${which} list (best split): ${wl}`,`${g.length} items · est. ${$$(sum)}`);
     AISLES.forEach(([k,lab])=>{const h=g.filter(i=>i.aisle===k);if(!h.length)return;L.push("",lab.toUpperCase());h.forEach(it=>L.push(`[ ] ${it.n}${it.q?" ("+it.q+")":""} - est. ${$$(which==="Aldi"?it.a:it.p)}`))})}
-  L.push("","Prices are estimates (St. Pete area). Check in store.");return L.join("\n")}
+  L.push("","Estimates — check in store.");return L.join("\n")}
 function openDaySwap(i){const d=effDays(W.ov)[i],o=W.ov[i];
   const opts=allMeals().filter(m=>m.id!=="veg"&&!m.bf&&rateOf(m.id)!==-1).sort((a,b)=>(rateOf(b.id)===2)-(rateOf(a.id)===2)||(yes(b.id)-yes(a.id)));
   const inn=openSheet(shTop("Swap "+esc(d.short))+`<p class="muted2" style="margin:0 0 8px">Now: <b>${d.e} ${esc(d.dinner)}</b></p>
@@ -2370,11 +2389,21 @@ function weekReview(days){const L=getLog().log,s0=weekStartDate();
     if(M(x.k)&&x.made>=2&&!rateOf(x.k))sug.push(`<li>👍 <b>${esc(nm)}</b>: Made ${x.made}×: rate it? ❤️ gets it suggested more.</li>`);
     if(M(x.k)&&x.made&&rateOf(x.k)===2)sug.push(`<li>❤️ <b>${esc(nm)}</b>: favorite — keep it in the rotation.</li>`)});
   const RE={"-1":"👎","1":"👍","2":"❤️"};
+  const madeN=c("made"),skipN=c("skip"),outN=c("out");
+  const main=typeof deriveMainStore==="function"?deriveMainStore():(st&&st.main)||"Aldi";
+  const tot=typeof totals==="function"?totals():{a:0,p:0}; const est=main==="Publix"?tot.p:tot.a;
+  const bud=getBud(); const budget=bud.on&&bud.amt!=null?Math.round(bud.amt*7/bud.days*100)/100:null;
+  const cals=wk.map(x=>x.d&&x.d.meal&&M(x.d.meal)&&M(x.d.meal).nut?M(x.d.meal).nut.kcal:null).filter(n=>n!=null);
+  const avgCal=cals.length?Math.round(cals.reduce((a,b)=>a+b,0)/cals.length):null;
+  const highlights=[];
+  if(top.length)highlights.push(`Top: ${top.slice(0,2).map(id=>`${RE[rateOf(id)]} ${esc(M(id).name)}`).join(" · ")}`);
+  if(sug[0])highlights.push(sug[0].replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim().slice(0,90));
+  if(madeN>=5)highlights.push("Full week mostly logged — nice.");
+  const tmTop=tm.slice(0,5);
   return `<section class="gpanel wrev"><div class="stitle" style="margin-top:0"><h2>Week review</h2><span>${esc(fmtWeek(s0))}</span></div>
-   <div class="wst"><div><b>${c("made")}/${planned}</b>made vs planned</div><div><b>${c("skip")}</b>skipped</div><div><b>${c("out")}</b>ate out</div></div>
-   <p class="wtop">${top.length?`Top-rated this week: ${top.map(id=>`${RE[rateOf(id)]} ${esc(M(id).name)}`).join(" · ")}`:"Top-rated this week: rate the meals you made (👎 / 👍 / ❤️) and they show up here."}</p>
-   <h3 class="aisle">Times made (all-time)</h3>${tm.length?`<ul class="tml">${tm.map(x=>`<li><span>${esc(mealName(x.k))}</span>${M(x.k)&&rateOf(x.k)?`<small>${RE[rateOf(x.k)]}</small>`:""}<b>×${x.made}</b></li>`).join("")}</ul>`:`<p class="hint">Nothing logged yet. Tap ✅ Made on a day after you cook it.</p>`}
-   <h3 class="aisle">Suggestions</h3>${sug.length?`<ul class="sgl">${sug.join("")}</ul>`:`<p class="hint">Log a few days and simple tips show up here (like "Skipped twice: swap it?").</p>`}</section>`}
+   <div class="wst"><div><b>$${est.toFixed(0)}</b>${budget!=null?` / $${budget.toFixed(0)}`:""}<small>est.${budget!=null?" vs budget":""}</small></div><div><b>${avgCal!=null?avgCal:"—"}</b><small>avg cal</small></div><div><b>${madeN}/${skipN}/${outN}</b><small>made / skip / out</small></div></div>
+   ${highlights.length?`<ul class="sgl">${highlights.slice(0,3).map(h=>`<li>${h}</li>`).join("")}</ul>`:""}
+   <h3 class="aisle">Times made (all-time)</h3>${tmTop.length?`<ul class="tml">${tmTop.map(x=>`<li><span>${esc(mealName(x.k))}</span>${M(x.k)&&rateOf(x.k)?`<small>${RE[rateOf(x.k)]}</small>`:""}<b>×${x.made}</b></li>`).join("")}</ul>${tm.length>5?`<button type="button" class="have" id="tmAll">See all (${tm.length})</button>`:""}`:""}</section>`}
 
 
 
@@ -2638,7 +2667,7 @@ async function decompressPayload(raw){
 function buildShareTemplate(dropPlan,dropRatings){
   const set=getSettings()||{},bud=getBud()||{},rules=typeof getRules==="function"?getRules():[];
   const ratings={};try{const r=getRates();Object.keys(r).forEach(k=>{if(r[k]&&(r[k].r===1||r[k].r===2||r[k].r===-1))ratings[k]={r:r[k].r}})}catch(_){}
-  const theme=(()=>{try{return localStorage.getItem("cameron-meals-theme-v1")||document.documentElement.getAttribute("data-theme")||"light"}catch(_){return"light"}})();
+  const theme=(()=>{try{return getCamTheme()}catch(_){return"light"}})();
   const tpl={v:1,stores:st?[...st.stores]:[],storeLoc:st&&st.storeLoc?st.storeLoc:{},extra:st?(st.extra||[]).slice():[],budget:bud,breakfast:{bfWeekday:set.bfWeekday,bfAlt:set.bfAlt,bfWeekend:set.bfWeekend,bfAltWeeks:set.bfAltWeeks,grabNights:set.grabNights},rules,customCats:getCamCats(),customItems:getCamCustom(),theme,meals:st?st.meals:{},mealV:st?st.mealV:{},sides:st?[...st.sides]:[],picks:{}};
   // Item 40: no equipment. Item 42: no custom storage sections/photos. Item 44: no primary/main store.
   if(st&&st.picks)Object.keys(st.picks).forEach(k=>{tpl.picks[k]=[...(st.picks[k]||[])]});
@@ -2713,9 +2742,10 @@ async function importTemplate(tpl,replace){
   if(Array.isArray(tpl.customCats))setCamCats(tpl.customCats);
   if(Array.isArray(tpl.customItems))setCamCustom(tpl.customItems);
   if(tpl.ratings){try{const cur={};Object.keys(tpl.ratings).forEach(id=>{const r=tpl.ratings[id];if(r&&r.r)cur[id]={r:r.r,d:isoD(new Date())}});localStorage.setItem(RKEY,JSON.stringify(cur))}catch(_){}}
-  if(tpl.theme){try{document.documentElement.setAttribute("data-theme",tpl.theme);localStorage.setItem("cameron-meals-theme-v1",tpl.theme)}catch(_){}}
-  // clear name / health for friend — ask name + confirm equipment
-  const ab=getAbout()||{};delete ab.name;delete ab.exercise;delete ab.ex;delete ab.activity;delete ab.act;setAbout(ab);st.about=ab;
+  if(tpl.theme){try{document.documentElement.setAttribute("data-theme",tpl.theme);localStorage.setItem("cm-theme",tpl.theme);applyCamTheme(tpl.theme)}catch(_){}}
+  // clear name / health for friend — empty name → "My Meal Picker" (never Cameron)
+  const ab=getAbout()||{};ab.name="";delete ab.exercise;delete ab.ex;delete ab.activity;delete ab.act;setAbout(ab);st.about=ab;
+  st._fromTemplate=true;
   toast("Template loaded — confirm your name & equipment");
 }
 async function handleTemplateHash(){
@@ -2782,7 +2812,7 @@ function startTemplateWelcome(){
 
 
 initSheet();bindReceipt(document);
-reset();refreshTitles();
+reset();try{applyCamTheme(getCamTheme())}catch(_){};refreshTitles();
 const b0=$("backBtn");if(b0){b0.innerHTML=icons.backSm+'<span>Back</span>';b0.onclick=goBackApp}
 const bwTop=$("bwTop");if(bwTop){bwTop.innerHTML=icons.cal+'<span>Build my week</span>';bwTop.onclick=goBuildWeek}
 const _render=render;
