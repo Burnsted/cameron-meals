@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cameron's Meal Picker (sample)</title>
+<style>
+  :root{--bg:#0f172a;--card:#1e293b;--ink:#f1f5f9;--mut:#94a3b8;--chip:#334155;--on:#0ea5e9;--gold:#f59e0b}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;justify-content:center}
+  .wrap{width:100%;max-width:440px;padding:20px 16px 40px}
+  .top{display:flex;justify-content:space-between;align-items:center;color:var(--mut);font-size:14px;margin-bottom:10px}
+  .bar{height:6px;background:var(--chip);border-radius:6px;overflow:hidden;margin-bottom:18px}
+  .bar i{display:block;height:100%;background:var(--on);transition:width .3s}
+  .card{background:var(--card);border-radius:18px;padding:22px 18px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+  .emoji{font-size:64px;line-height:1;margin:4px 0 10px}
+  h1{font-size:24px;margin:0 0 6px}
+  p.sub{color:var(--mut);margin:0 0 18px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:4px 0 20px}
+  .chip{border:2px solid var(--on);background:var(--on);color:#fff;border-radius:999px;padding:10px 14px;font-size:16px;cursor:pointer;user-select:none}
+  .chip.off{background:transparent;color:var(--ink);border-color:var(--chip)}
+  .chip.drop.off{color:var(--mut);text-decoration:line-through}
+  .chip.main{background:var(--gold);border-color:var(--gold)}
+  .next{width:100%;border:0;border-radius:14px;padding:16px;font-size:18px;font-weight:700;background:var(--on);color:#fff;cursor:pointer}
+  .next:disabled{opacity:.4}
+  .ghost{background:transparent;color:var(--mut);font-weight:500;font-size:15px;margin-top:8px;padding:10px}
+  .addrow{display:flex;gap:8px;margin:0 0 18px}
+  .addrow input{flex:1;border-radius:12px;border:2px solid var(--chip);background:#0b1222;color:var(--ink);padding:12px;font-size:16px}
+  .addrow button{border:0;border-radius:12px;background:var(--chip);color:#fff;padding:0 16px;font-size:16px;cursor:pointer}
+  .photos{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:0 0 18px}
+  .ph{position:relative;aspect-ratio:3/4;border:2px dashed var(--chip);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;font-size:14px;color:var(--mut)}
+  .ph span.big{font-size:34px;margin-bottom:6px}
+  .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .ph.done{border:2px solid var(--on)}
+  .ph .ok{position:absolute;bottom:6px;left:6px;right:6px;background:rgba(14,165,233,.9);color:#fff;border-radius:8px;padding:3px;font-size:12px}
+  .ph input{display:none}
+  .sum{text-align:left}
+  .sum h2{font-size:17px;margin:16px 0 6px}
+  .sum p{margin:0}
+  .tag{display:inline-block;background:var(--chip);border-radius:999px;padding:4px 10px;margin:3px;font-size:14px}
+  .no{color:var(--mut);font-size:14px}
+  .muted{color:var(--mut);font-size:13px;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><span>Cameron's Meal Picker · sample</span><span id="count"></span></div>
+  <div class="bar"><i id="prog" style="width:0"></i></div>
+  <div class="card" id="card"></div>
+  <p class="muted">Sample only: one meal (burger) to show the flow. Taps only. Photos stay on your phone; nothing is saved or sent anywhere.</p>
+</div>
+<script>
+const STORES=["Aldi","Publix","Walmart","Target","Trader Joe's","Winn-Dixie","Costco","Sam's Club"];
+const TOPPINGS=["Beef patty","Bun","Cheese","Lettuce","Tomato","Onion","Pickles","Ketchup","Mustard","Mayo","Bacon","Avocado","Jalapeños","Grilled onions","Mushrooms","BBQ sauce","Fried egg","Hot sauce"];
+const SIDES=["Potato chips","Fries","Fruit","Yogurt","Salad"];
+const DRILL={
+ "Potato chips":{emoji:"🥔",q:"Which chips?",opts:["Doritos","Lay's","Pringles","Ruffles","Cheetos","Kettle Brand"],
+   sub:{"Doritos":["Nacho Cheese","Cool Ranch","Spicy Sweet Chili","Flamin' Hot"],"Lay's":["Classic","Sour Cream & Onion","BBQ","Salt & Vinegar"],"Pringles":["Original","Sour Cream & Onion","Cheddar Cheese","BBQ"],"Ruffles":["Original","Cheddar & Sour Cream","All Dressed"],"Cheetos":["Crunchy","Puffs","Flamin' Hot"],"Kettle Brand":["Sea Salt","Jalapeño","Salt & Vinegar","Honey Dijon"]}},
+ "Fries":{emoji:"🍟",q:"Which fries?",opts:["Crinkle cut","Shoestring","Waffle","Curly","Steak fries","Sweet potato","Tots"]},
+ "Fruit":{emoji:"🍎",q:"Which fruit?",opts:["Apples","Bananas","Grapes","Strawberries","Blueberries","Oranges","Watermelon","Pineapple"]},
+ "Yogurt":{emoji:"🥣",q:"Which yogurt?",opts:["Chobani","Yoplait","Oikos","Dannon","Go-Gurt","Store brand"],
+   sub:{"*":["Strawberry","Vanilla","Blueberry","Peach","Mixed berry","Plain"]}},
+ "Salad":{emoji:"🥗",q:"Which salad?",opts:["Garden","Caesar","Spinach","Wedge"],
+   then:{key:"Dressing",emoji:"🫙",q:"Which dressing?",opts:["Ranch","Italian","Caesar","Honey mustard","Balsamic","Blue cheese","Thousand Island"]}}
+};
+const BUNS=["Sesame","Brioche","Potato","Plain white","Pretzel","Whole wheat","Lettuce wrap"];
+const CHEESES=["American","Cheddar","Swiss","Pepper jack","Provolone"];
+
+let st, queue, pos;
+function reset(){
+  st={stores:new Set(),extra:[],main:"",photos:{},toppings:new Set(TOPPINGS),sides:new Set(),picks:{},bun:new Set(),cheese:new Set()};
+  queue=["stores","main","photos","burger","sides","BUILD","bun","cheese","summary"]; pos=0;
+}
+const card=document.getElementById("card");
+function go(n=1){pos+=n; if(queue[pos]==="main"&&st.stores.size<2){if(st.stores.size===1)st.main=[...st.stores][0];pos+=n>0?1:-1}
+  if(queue[pos]==="BUILD"){buildDrill();} if(queue[pos]==="cheese"&&!st.toppings.has("Cheese")){pos++} render();}
+function buildDrill(){
+  const steps=[];
+  SIDES.filter(s=>st.sides.has(s)).forEach(s=>{
+    steps.push({side:s,level:"top"});
+  });
+  queue.splice(pos,1,...steps);
+}
+function progress(){
+  const total=queue.length-1;
+  document.getElementById("prog").style.width=Math.min(pos/total,1)*100+"%";
+  document.getElementById("count").textContent=queue[pos]==="summary"?"Done":`Step ${pos+1} of ${queue.length}`;
+}
+function chipList(opts,set,cls=""){return `<div class="chips">${opts.map(x=>`<span class="chip ${cls}${set.has(x)?"":" off"}" data-x="${x.replace(/"/g,'&quot;')}">${x}</span>`).join("")}</div>`}
+function bindChips(set,single=false,after){card.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{const x=c.dataset.x;if(single){set.clear();set.add(x)}else{set.has(x)?set.delete(x):set.add(x)}render()})}
+function btns(label,disabled=false,skip=null){return `<button class="next" id="nx" ${disabled?"disabled":""}>${label}</button>${skip?`<button class="next ghost" id="sk">${skip}</button>`:""}`}
+function render(){
+  progress();
+  const s=queue[pos];
+  if(typeof s==="object") return drill(s);
+  if(s==="stores"){
+    card.innerHTML=`<div class="emoji">🛒</div><h1>Where do you shop?</h1><p class="sub">Tap every store you use.</p>
+      ${chipList([...STORES,...st.extra],st.stores)}
+      <div class="addrow"><input id="own" placeholder="Other store…" maxlength="30"><button id="add">Add</button></div>
+      ${btns("Next →",!st.stores.size)}`;
+    bindChips(st.stores);
+    const add=()=>{const v=document.getElementById("own").value.trim();if(v&&!STORES.includes(v)&&!st.extra.includes(v)){st.extra.push(v);st.stores.add(v)}render()};
+    document.getElementById("add").onclick=add;document.getElementById("own").onkeydown=e=>{if(e.key==="Enter")add()};
+    document.getElementById("nx").onclick=()=>st.stores.size&&go();
+  } else if(s==="main"){
+    card.innerHTML=`<div class="emoji">⭐</div><h1>Which store most?</h1><p class="sub">Prices and the grocery list lean toward this one.</p>
+      <div class="chips">${[...st.stores].map(x=>`<span class="chip${st.main===x?" main":" off"}" data-x="${x}">${x}</span>`).join("")}</div>${btns("Next →",!st.main)}`;
+    card.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{st.main=c.dataset.x;render()});
+    document.getElementById("nx").onclick=()=>st.main&&go();
+  } else if(s==="photos"){
+    const tile=(k,e,l)=>`<label class="ph${st.photos[k]?" done":""}">${st.photos[k]?`<img src="${st.photos[k]}"><span class="ok">✓ ${l}</span>`:`<span class="big">${e}</span>${l}<br>Tap for photo`}<input type="file" accept="image/*" capture="environment" data-k="${k}"></label>`;
+    const n=Object.keys(st.photos).length;
+    card.innerHTML=`<div class="emoji">📸</div><h1>Show me what you have</h1><p class="sub">One photo each so I can see what's already there.</p>
+      <div class="photos">${tile("pantry","🥫","Pantry")}${tile("fridge","🧊","Fridge")}${tile("freezer","❄️","Freezer")}</div>
+      ${btns(n===3?"Next →":`Next → (${n}/3)`,false,n<3?"Skip photos for now":null)}`;
+    card.querySelectorAll("input[type=file]").forEach(inp=>inp.onchange=()=>{const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{st.photos[inp.dataset.k]=r.result;render()};r.readAsDataURL(f)});
+    document.getElementById("nx").onclick=()=>go();const sk=document.getElementById("sk");if(sk)sk.onclick=()=>go();
+  } else if(s==="burger"){
+    card.innerHTML=`<div class="emoji">🍔</div><h1>Build your burger</h1><p class="sub">Everything's on. Tap off what you don't want.</p>
+      ${chipList(TOPPINGS,st.toppings,"drop")}${btns("Next →")}`;
+    bindChips(st.toppings);document.getElementById("nx").onclick=()=>go();
+  } else if(s==="sides"){
+    card.innerHTML=`<div class="emoji">🍽️</div><h1>What goes with it?</h1><p class="sub">Pick any sides you like.</p>
+      ${chipList(SIDES,st.sides)}${btns(st.sides.size?"Next →":"No sides →")}`;
+    bindChips(st.sides);document.getElementById("nx").onclick=()=>go();
+  } else if(s==="bun"){
+    card.innerHTML=`<div class="emoji">🍞</div><h1>Back to the burger: which bun?</h1><p class="sub">Pick any you'd eat.</p>${chipList(BUNS,st.bun)}${btns("Next →",!st.bun.size)}`;
+    bindChips(st.bun);document.getElementById("nx").onclick=()=>st.bun.size&&go();
+  } else if(s==="cheese"){
+    card.innerHTML=`<div class="emoji">🧀</div><h1>Which cheese?</h1><p class="sub">Pick any you'd eat.</p>${chipList(CHEESES,st.cheese)}${btns("See my picks →",!st.cheese.size)}`;
+    bindChips(st.cheese);document.getElementById("nx").onclick=()=>st.cheese.size&&go();
+  } else if(s==="summary") summary();
+}
+function drill(step){
+  const d=DRILL[step.side];
+  const key=step.level==="top"?step.side:step.side+" › "+step.level;
+  st.picks[key]=st.picks[key]||new Set();
+  let opts,q,emoji=d.emoji;
+  if(step.level==="top"){opts=d.opts;q=d.q}
+  else if(step.level==="then"){opts=d.then.opts;q=d.then.q;emoji=d.then.emoji}
+  else {opts=(d.sub[step.level]||d.sub["*"]);q=`${step.level}: which flavors?`}
+  card.innerHTML=`<div class="emoji">${emoji}</div><h1>${q}</h1><p class="sub">${step.side}${step.level!=="top"&&step.level!=="then"?" › "+step.level:""}. Pick any you like.</p>
+    ${chipList(opts,st.picks[key])}${btns("Next →",!st.picks[key].size)}`;
+  bindChips(st.picks[key]);
+  document.getElementById("nx").onclick=()=>{
+    if(!st.picks[key].size)return;
+    if(step.level==="top"){
+      const extra=[];
+      if(d.sub) [...st.picks[key]].forEach(b=>extra.push({side:step.side,level:b}));
+      if(d.then) extra.push({side:step.side,level:"then"});
+      // remove any previously inserted children for this side
+      queue=queue.filter((x,ix)=>!(ix>pos&&typeof x==="object"&&x.side===step.side&&x.level!=="top"));
+      queue.splice(pos+1,0,...extra);
+    }
+    go();
+  };
+}
+function summary(){
+  const off=TOPPINGS.filter(x=>!st.toppings.has(x));
+  const sideLines=SIDES.filter(s=>st.sides.has(s)).map(s=>{
+    const top=[...(st.picks[s]||[])];
+    const subs=Object.keys(st.picks).filter(k=>k.startsWith(s+" › ")).map(k=>{const lv=k.split(" › ")[1];return `${lv==="then"?DRILL[s].then.key:lv}: ${[...st.picks[k]].join(", ")}`});
+    return `<p><b>${s}</b>: ${top.join(", ")}${subs.length?`<br><span class="no">${subs.join("<br>")}</span>`:""}</p>`;
+  }).join("");
+  const others=[...st.stores].filter(x=>x!==st.main);
+  card.innerHTML=`<div class="sum"><h1 style="text-align:center">Your picks</h1>
+    <h2>🛒 Stores</h2><p><b>${st.main}</b> (main)${others.length?", also "+others.join(", "):""}</p>
+    <h2>📸 Photos</h2><p>${["pantry","fridge","freezer"].map(k=>(st.photos[k]?"✓ ":"✗ ")+k).join(" · ")}</p>
+    <h2>🍔 Burger</h2><p>${[...st.toppings].map(x=>`<span class="tag">${x}</span>`).join("")}</p>
+    ${off.length?`<p class="no">No: ${off.join(", ")}</p>`:""}
+    <p><b>Bun:</b> ${[...st.bun].join(", ")}${st.cheese.size?` · <b>Cheese:</b> ${[...st.cheese].join(", ")}`:""}</p>
+    <h2>🍽️ Sides</h2>${sideLines||"<p>None</p>"}
+    <p class="muted">In the real version, the chef bot does this for about 20 meals. It reads your photos to see what's already there, then builds a cheap weekly plan and a grocery list sorted by aisle with prices from ${st.main} first, plus freezer notes.</p>
+    <button class="next" id="rs" style="margin-top:14px;background:var(--chip)">Start over</button></div>`;
+  document.getElementById("rs").onclick=()=>{reset();render()};
+}
+reset();render();
+</script>
+</body>
+</html>
