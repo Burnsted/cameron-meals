@@ -16,3 +16,6 @@
 - `takeout.webp` — Ginny from USA (CC BY-SA 2.0) https://commons.wikimedia.org/wiki/File%3AOyster_pail_takeout_box_%282558467231%29.jpg
 - `coffee.webp` — Julius Schorzman (CC BY-SA 2.0) https://commons.wikimedia.org/wiki/File%3AA_small_cup_of_coffee.JPG
 - `holiday.webp` — Pink Sherbet Photography from USA (CC BY 2.0) https://commons.wikimedia.org/wiki/File%3AThanksgiving_Dinner_Turkey_Drumstick_Leg_On_Paper_Plate_free_creative_commons_%284139402158%29.jpg
+
+- `leftover.webp` — Bento box lunch (CC BY 2.0)
+- `grab.webp` / `takeout.webp` — refreshed food photos
