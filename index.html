@@ -514,6 +514,16 @@
   html[data-theme="dark"] body.view-week .log button,html[data-theme="dark"] body.view-week .have{background:#0b1220;color:var(--wink);border-color:rgba(45,212,191,.35)}
   html[data-theme="dark"] body.view-week .log button.on{background:var(--teal);color:#041016}
 
+  
+  /* fix-round snap/shuffle contrast */
+  body.view-week .tot{grid-template-columns:1fr}
+  body.view-week .tot .best{text-align:left;padding:10px 14px}
+  html[data-theme="dark"] body.view-week .gnote.cof{background:#3b2412;color:#ffe8cc;border:1px solid #7c4a1e}
+  html[data-theme="dark"] body.view-week .gnote{color:var(--wink)}
+  html[data-theme="dark"] body.view-week .sbtn,
+  html[data-theme="dark"] body.view-week #gAdd{background:var(--teal);color:#041016;font-weight:800}
+  html[data-theme="light"] body.view-week .gnote.cof{background:#efe4d6;color:var(--wink)}
+
   html[data-theme="dark"] #grocery-sms[hidden],#grocery-sms[hidden]{display:none!important}
 </style>
 </head>
@@ -654,8 +664,8 @@ function deleteCustomMeal(id){
   try{const all=getRates();delete all[id];localStorage.setItem(RKEY,JSON.stringify(all))}catch(_){}
 }
 
-const allMeals=()=>[...MEALS,...EXTRA_MEALS,...CUSTOM_MEALS];
-const M=id=>allMeals().find(m=>m.id===id);
+const allMeals=()=>[...MEALS,...(typeof MORE_MEALS!=="undefined"?MORE_MEALS:[]),...EXTRA_MEALS,...CUSTOM_MEALS];
+const M=id=>{const a=allMeals();const hit=a.find(m=>m.id===id);if(hit)return hit;return (typeof MORE_MEALS!=="undefined"?MORE_MEALS:[]).find(m=>m.id===id)};
 const WELCOME_KEY="cameron-meals-welcome-done-v1";
 /* ---- Name / titles ---- */
 function aboutNameRaw(){const a=(st&&st.about)||getAbout();return a&&Object.prototype.hasOwnProperty.call(a,"name")?String(a.name||"").trim():null}
@@ -687,6 +697,36 @@ function applyCamTheme(theme){
 }
 function toggleCamTheme(){applyCamTheme(getCamTheme()==="dark"?"light":"dark")}
 const CM_VIEW_KEY="cm-view-week-v1";
+
+function coffeeToJSON(c){
+  if(!c||typeof c!=="object")return null;
+  const arr=v=>{
+    if(v instanceof Set)return [...v];
+    if(Array.isArray(v))return v.filter(Boolean);
+    return [];
+  };
+  return {brand:c.brand||"",brandOther:c.brandOther||"",machines:arr(c.machines),drinks:arr(c.drinks),milk:c.milk||"No milk",perWeek:c.perWeek||7};
+}
+function normalizeCoffee(c){
+  const defMachines=["lavazza","nespresso"], defDrinks=["shot","americano"];
+  const toSet=(v,fallback)=>{
+    if(v instanceof Set){const a=[...v].filter(Boolean);return new Set(a.length?a:fallback)}
+    if(Array.isArray(v)){const a=v.filter(Boolean);return new Set(a.length?a:fallback)}
+    // JSON turned Set into {} — rebuild from defaults so drinks.has works
+    return new Set(fallback);
+  };
+  if(!c||typeof c!=="object")return {brand:"Lavazza Qualità Oro",brandOther:"",machines:new Set(defMachines),drinks:new Set(defDrinks),milk:"No milk",perWeek:7};
+  const machines=toSet(c.machines, defMachines.slice());
+  if(typeof st!=="undefined"&&st&&st.equip){["lavazza","nespresso"].forEach(id=>{if(st.equip.has(id))machines.add(id)})}
+  return {
+    brand:c.brand||"Lavazza Qualità Oro",
+    brandOther:c.brandOther||"",
+    machines,
+    drinks:toSet(c.drinks,defDrinks),
+    milk:c.milk||"No milk",
+    perWeek:Number(c.perWeek)>0?Number(c.perWeek):7
+  };
+}
 const CM_WEEK_SNAP="cm-week-snap-v1";
 function isWeekView(){return document.body.classList.contains("view-week")}
 function saveWeekSnap(){
@@ -696,7 +736,7 @@ function saveWeekSnap(){
     sessionStorage.setItem(CM_WEEK_SNAP,JSON.stringify({
       base:W.base,ov:W.ov,groups:W.groups,extra:W.extra,F:W.F,
       have:[...W.have],ck:[...W.ck],daySides:W.daySides||{},
-      st:{stores:[...st.stores],equip:[...st.equip],meals:st.meals,sides:[...st.sides],main:st.main||"",weekStart:st.weekStart||null,about:st.about||null,coffee:st.coffee||null}
+      st:{stores:[...st.stores],equip:[...st.equip],meals:st.meals,sides:[...st.sides],main:st.main||"",weekStart:st.weekStart||null,about:st.about||null,coffee:coffeeToJSON(st.coffee)}
     }));
   }catch(_){}
 }
@@ -727,7 +767,7 @@ function restoreWeekSnap(){
       st.main=j.st.main||"";
       st.weekStart=j.st.weekStart||null;
       if(j.st.about)st.about=j.st.about;
-      if(j.st.coffee)st.coffee=j.st.coffee;
+      st.coffee=normalizeCoffee(j.st.coffee||st.coffee);
     }
     W={base:j.base,ov:j.ov||{},groups:j.groups||[],extra:j.extra||[],F:j.F,have:new Set(j.have||[]),ck:new Set(j.ck||[]),open:null,items:[],listFilter:null,shopHi:null,daySides:j.daySides||{},gSearch:""};
     recomputeList();
@@ -1237,7 +1277,7 @@ function reset(){
   const rawPatty=build.burger&&build.burger.top.patty?build.burger.top.patty.v:"";
   const migPatty=/Turkey|Chicken/i.test(rawPatty)?"80/20 beef patty":(rawPatty==="Beef patty (80/20)"?"80/20 beef patty":(rawPatty||"80/20 beef patty"));
   if(build.burger&&build.burger.top.patty)build.burger.top.patty.v=migPatty;
-  st={stores:new Set(),extra:[],storeLoc:loadStoreLoc(),main:"",photos:{},equip:new Set(["foreman","lavazza","nespresso"]),coffee:{brand:"Lavazza Qualità Oro",brandOther:"",machines:new Set(["lavazza","nespresso"]),drinks:new Set(["shot","americano"]),milk:"No milk",perWeek:7},meals:{},mealV:{},mealVs:{},pattyVs:[migPatty],tip:null,
+  st={stores:new Set(),extra:[],storeLoc:loadStoreLoc(),main:"",photos:{},equip:new Set(["foreman","lavazza","nespresso"]),coffee:normalizeCoffee({brand:"Lavazza Qualità Oro",brandOther:"",machines:["lavazza","nespresso"],drinks:["shot","americano"],milk:"No milk",perWeek:7}),meals:{},mealV:{},mealVs:{},pattyVs:[migPatty],tip:null,
       build,xOpen:null,weekStart:null,about:getAbout(),aboutReturn:false,sides:new Set(),picks:{},custom:{},open:null,cOpen:null,mealCustom:[],kitPhotos:[],sidePick:null,pickBackup:null};
   loadBuildCheese();
   CUSTOM_MEALS.forEach(m=>{if(st.meals[m.id]==null){/* keep unset until user picks */}});
@@ -1733,45 +1773,97 @@ function sidesFor(){
   return {lunch,dinner};
 }
 
+
+function mealShopKeys(mid){
+  if(C.MEAL_SHOP&&C.MEAL_SHOP[mid]&&C.MEAL_SHOP[mid].length)return C.MEAL_SHOP[mid].slice();
+  const m=M(mid);
+  if(m&&m.shop&&m.shop.length)return m.shop.slice();
+  const g=MG[mid]; if(g)return ["__group__:"+g];
+  if(m&&m.grab&&(C.PRICES||{})[mid])return [mid];
+  if(m&&typeof BUILDS!=="undefined"&&BUILDS[mid])return ["__build__:"+mid];
+  if(m&&!m.bf&&!m.grab)return []; // known meal, no mapping
+  return [];
+}
+function assertCamDinnerGroceryCoverage(){
+  const dinners=allMeals().filter(m=>!m.bf&&!m.grab&&m.id!=="veg");
+  const more=(typeof MORE_MEALS!=="undefined"?MORE_MEALS:[]).filter(m=>!m.bf&&!m.grab);
+  const pool=[]; const seen=new Set();
+  [...dinners,...more].forEach(m=>{if(!seen.has(m.id)){seen.add(m.id);pool.push(m)}});
+  const missing=pool.filter(m=>mealShopKeys(m.id).length===0).map(m=>m.id);
+  if(missing.length){
+    console.error("[cam grocery self-check] dinners with no grocery mapping:", missing);
+    throw new Error("Cameron dinner grocery coverage failed: "+missing.join(", "));
+  }
+  console.log("[cam grocery self-check] ok", pool.length, "dinners");
+  return true;
+}
+window.__assertCamDinnerGroceryCoverage=assertCamDinnerGroceryCoverage;
 const SHUFFLE_PREV_KEY="cameron-meals-shuffle-prev-v1";
 function shuffleWeek(){
   // Self-check: uniqueness — used[] + while(used.includes) skip duplicates; SHUFFLE_PREV_KEY avoids immediate repeat set.
+  // Preserves cook-night + next-day leftover structure from the built week (item 20).
   if(!W){toast("Finish setup first");return}
   const days=effDays(W.ov);
   const pool=allMeals().filter(m=>!m.bf&&!m.grab&&m.id!=="veg"&&rateOf(m.id)!==-1);
-  // Prefer yes + favorites, then MORE_MEALS
-  const more=(typeof MORE_MEALS!=="undefined"?MORE_MEALS:[]).filter(m=>!m.bf&&rateOf(m.id)!==-1&&!pool.find(p=>p.id===m.id));
+  const more=(typeof MORE_MEALS!=="undefined"?MORE_MEALS:[]).filter(m=>!m.bf&&!m.grab&&rateOf(m.id)!==-1&&!pool.find(p=>p.id===m.id));
   let candidates=[...pool.filter(m=>yes(m.id)||rateOf(m.id)===2),...pool,...more];
-  // unique by id
   const seen=new Set(); candidates=candidates.filter(m=>{if(seen.has(m.id))return false;seen.add(m.id);return true});
   let prev=[]; try{prev=JSON.parse(localStorage.getItem(SHUFFLE_PREV_KEY)||"[]")}catch(_){prev=[]}
   const prevSet=new Set(prev);
   let fresh=candidates.filter(m=>!prevSet.has(m.id));
   if(fresh.length<5)fresh=candidates.slice();
-  // shuffle
   for(let i=fresh.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[fresh[i],fresh[j]]=[fresh[j],fresh[i]]}
-  const fillable=days.map((d,i)=>({d,i})).filter(x=>x.d.kind!=="hol");
-  const used=[];
-  let fi=0;
-  fillable.forEach(({d,i})=>{
-    // Keep ❤️ favorite locked pick
-    if(d.meal&&rateOf(d.meal)===2&&W.ov[i]&&W.ov[i].t==="pick"){used.push(d.meal);return}
-    // Keep eat-out / removed
-    if(W.ov[i]&&(W.ov[i].t==="out"||W.ov[i].t==="rm"))return;
+  const leftMealFor=(m)=>{
+    const g=MG[m.id]||null;
+    if(g==="chicken")return yes("chixq")?{id:"chixq",e:"🫓",t:"Chicken "+mv("chixq").toLowerCase()}:yes("bowl")?{id:"bowl",e:"🍚",t:mv("bowl")+" chicken rice bowl"}:{id:m.id,e:m.emoji,t:(m.name||"Dinner")+" leftovers"};
+    if(g==="steak")return yes("steakq")?{id:"steakq",e:"🌮",t:"Steak quesadilla"}:yes("stkegg")?{id:"stkegg",e:"🍳",t:"Steak & eggs"}:{id:m.id,e:m.emoji,t:(m.name||"Steak")+" leftovers"};
+    if(g==="burger")return {id:m.id,e:m.emoji||"🍔",t:"Burger round 2"};
+    if(g==="pork")return {id:"bowl",e:"🍚",t:"BBQ pork rice bowl"};
+    if(g==="brats")return {id:m.id,e:m.emoji||"🌭",t:(m.name||"Sausage")+" round 2"};
+    return {id:m.id,e:m.emoji||"🍱",t:"Leftovers · "+(m.name||"last night")};
+  };
+  // Roles from the built week base: cook vs leftover vs skip
+  const roles=W.base.map((b,i)=>{
+    if((days[i]&&days[i].kind==="hol")||(b&&b.kind==="hol"))return "skip";
+    if(W.ov[i]&&(W.ov[i].t==="out"||W.ov[i].t==="rm"))return "skip";
+    if(b&&b.grab)return "skip";
+    if(b&&b.cook)return "cook";
+    return "left";
+  });
+  const cookSlots=roles.map((r,i)=>r==="cook"?i:-1).filter(i=>i>=0);
+  const used=[]; let fi=0;
+  const cookPick={};
+  cookSlots.forEach(i=>{
+    const d=days[i];
+    if(d.meal&&rateOf(d.meal)===2&&W.ov[i]&&W.ov[i].t==="pick"){used.push(d.meal);cookPick[i]=M(d.meal)||{id:d.meal,emoji:d.e,name:d.dinner};return}
     let m=fresh[fi++];
     while(m&&used.includes(m.id))m=fresh[fi++];
-    if(!m){m=candidates.find(x=>!used.includes(x.id));}
+    if(!m)m=candidates.find(x=>!used.includes(x.id));
     if(!m)return;
     used.push(m.id);
-    const side=(typeof assignSides==="function"?null:null);
+    cookPick[i]=m;
     const sideName=d.sideName||(W.daySides&&W.daySides[i]&&W.daySides[i][0])||null;
-    const cut=m.protein?fixNextCut(m.id==="burger"?"burger":MG[m.id]||m.id,{}):null;
+    const g=MG[m.id]||null;
+    const cut=m.protein||g?fixNextCut(m.id==="burger"||g==="burger"?"burger":g||m.id,{}):null;
     const title=mealTitle(m.id,cut)||m.name;
-    W.ov[i]={t:"pick",meal:m.id,e:m.emoji,dinner:sideName?title+" + "+sideName:title,cut:cut||null,cook:!!m.grill||!m.grab,note:m.time?("⏱ "+m.time):"",lunch:d.lunch||"Lunch on your own",sideName,g:MG[m.id]||null,kind:null};
+    W.ov[i]={t:"pick",meal:m.id,e:m.emoji,dinner:sideName?title+" + "+sideName:title,cut:cut||null,cook:true,note:m.time?("⏱ "+m.time+" · cook night: make extra for leftovers tomorrow."):"Cook night: make extra for lunch tomorrow. Fridge leftovers 3–4 days.",lunch:d.lunch||"Lunch on your own",sideName,g,kind:null};
   });
-  // Refresh breakfasts from plan (cereal etc.) — keep bf on days
+  roles.forEach((r,i)=>{
+    if(r!=="left")return;
+    let prevCook=-1;
+    for(let j=i-1;j>=0;j--){if(roles[j]==="cook"){prevCook=j;break} if(roles[j]==="skip")continue; break;}
+    const d=days[i];
+    const pm=prevCook>=0?cookPick[prevCook]:null;
+    if(!pm){
+      W.ov[i]={t:"left",meal:null,e:"🔁",dinner:"Leftovers night",cook:false,note:"Leftover night: reheat to 165°F.",lunch:d.lunch||"Leftovers + side",sideName:d.sideName||null,g:null,kind:"left"};
+      return;
+    }
+    const lm=leftMealFor(pm);
+    const g=MG[pm.id]||MG[lm.id]||null;
+    W.ov[i]={t:"pick",meal:lm.id,e:lm.e,dinner:lm.t,cut:null,cook:false,note:"Leftover night: reheat to 165°F.",lunch:d.lunch||("Leftovers + "+(d.sideName||"side").toLowerCase()),sideName:d.sideName||null,g,kind:"left"};
+  });
   const bfs=planBreakfast(weekStartDate());
-  fillable.forEach(({i})=>{if(W.ov[i])W.ov[i].bf=bfs[i]});
+  [...cookSlots, ...roles.map((r,i)=>r==="left"?i:-1).filter(i=>i>=0)].forEach(i=>{if(W.ov[i])W.ov[i].bf=bfs[i]});
   try{localStorage.setItem(SHUFFLE_PREV_KEY,JSON.stringify(used))}catch(_){}
   recomputeList();renderWeek();toast("Week shuffled — list & budget updated");
 }
@@ -1847,7 +1939,7 @@ function buildWeek(){
 
 function buildList(groups,mealIds){
   const P=C.PRICES, out=[], seen={};
-  const days=W?W.base:[];
+  const days=W?(typeof effDays==="function"?effDays(W.ov):W.base):[];
   const add=(key,o={})=>{const base=P[key]||{n:key,q:"",aisle:"other",a:null,p:null};
     if(o.brand){o.al=base.a;o.a=null;o.hint=`Aldi usually doesn't carry ${o.brand}; Aldi look-alike ~$${base.a!=null?base.a.toFixed(2):"?"}`+(base.aisle==="snacks"?" · Publix often runs chips BOGO":"")}
     const id=o.id||key;if(seen[id]){if(o.why)seen[id].why+=", "+o.why;return}
@@ -1941,6 +2033,17 @@ function buildList(groups,mealIds){
   days.filter(d=>d.grab&&d.meal).forEach(d=>{const m=M(d.meal); if(!m) return;
     const k=d.meal; if(P[k])add(k,{id:"gg:"+k,listStore:m.store||st.main,why:"grab & go dinner"});
     else add("custom:"+k,{id:"gg:"+k,n:m.name,q:"1",aisle:"grab",a:null,p:null,custom:true,listStore:m.store,why:"grab & go"})});
+  // MORE_MEALS / extras: explicit shop keys (and any meal.shop)
+  (mealIds||[]).forEach(mid=>{
+    const m=M(mid); if(!m)return;
+    const keys=m.shop||(C.MEAL_SHOP&&C.MEAL_SHOP[mid])||null;
+    if(!keys||!keys.length)return;
+    keys.forEach(k=>{
+      if(P[k])add(k,{why:m.name});
+      else if(String(k).startsWith("veg:"))add(k,{id:k,why:m.name});
+      else add("custom:"+k,{id:"shop:"+mid+":"+k,n:String(k).replace(/^custom:/,""),q:"",aisle:"other",a:null,p:null,custom:true,why:m.name});
+    });
+  });
   if(st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso")){const k=coffeeCalc();
     add("coffee:oro",{n:k.brandName+" (large can/bag)",q:k.bagLine,a:null,p:null,custom:true,hint:"price: add from receipt · est. only",why:`${k.n} drinks/wk · ~${k.gPerShot} g/shot · ${k.g} g/wk`});
     if(k.needLids)add("coffee:lids",{why:`refillable capsule seals · restock every ~${C.COFFEE.lidsEveryWeeks} weeks`});
@@ -2209,7 +2312,7 @@ function fmtDateLong(s){const d=new Date(s+"T12:00:00");return isNaN(d)?s:`${MO3
 
 /* ---- Cameron v3: week start, effective days, prep badges, budget, week customizer, prices.json ---- */
 const DN=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-const MG={steak:"steak",steakq:"steak",stkegg:"steak",burger:"burger",chicken:"chicken",chixq:"chicken",bowl:"chicken",pork:"pork",brats:"brats"};
+const MG={steak:"steak",steakq:"steak",stkegg:"steak",burger:"burger",chicken:"chicken",chixq:"chicken",bowl:"chicken",pork:"pork",brats:"brats",x_sirloin_plate:"steak",x_ribeye_simple:"steak",x_strip_onion:"steak",x_flat_iron:"steak",x_chuck_eye:"steak",x_steak_taco:"steak",x_philly:"steak",x_steak_salad:"steak",x_steak_sandwich:"steak",x_smash_burger:"burger",x_cheese_burger:"burger",x_sloppy:"burger",x_chix_lemon:"chicken",x_chix_cajun:"chicken",x_chix_bbq:"chicken",x_chix_thighs:"chicken",x_chix_nugget:"chicken",x_chix_taco:"chicken",x_chix_salad:"chicken",x_garlic_chix:"chicken",x_protein_bowl:"chicken",x_pork_bbq:"pork",x_pork_garlic:"pork",x_pork_rice:"pork",x_italian_sausage:"brats",x_smoked_sausage:"brats",x_brat_mustard:"brats",x_hot_dog:"brats",x_chili_dog:"brats",x_sausage_eggs:"brats"};
 function weekStartDate(){return st&&st.weekStart?new Date(st.weekStart):mondayOf(new Date())}
 function effDays(ov){const s0=weekStartDate();return W.base.map((b,i)=>{const d=addDays(s0,i);const short=`${DN[i]} ${d.getMonth()+1}/${d.getDate()}`;
   const o=ov[i]||{t:"day",j:i};let c;
@@ -2363,6 +2466,7 @@ function isoD(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,
 function hasCoffeeGear(){return st.equip.has("lavazza")||st.equip.has("nespresso")||st.equip.has("espresso")}
 function coffeeBrandName(){const c=st.coffee;return c.brand==="Other"?(c.brandOther||"Other coffee"):(c.brand||"Lavazza Qualità Oro")}
 function coffeeCalc(){
+  st.coffee=normalizeCoffee(st.coffee);
   const K=C.COFFEE,c=st.coffee,P=C.PRICES;
   const ds=K.drinks.filter(d=>c.drinks.has(d.id));const list=ds.length?ds:[K.drinks[0]];
   const n=c.perWeek||7, gPerShot=K.gPerShot||7, g=n*gPerShot, bags=Math.max(1,Math.ceil(g/(K.bagG||250)));
@@ -2391,7 +2495,7 @@ function coffeeLine(short){
   if(short||!W)return base;
   return `${base} List: ${k.brandName} sized to ~${k.g} g/week${k.needLids?" + capsule foil lids (periodic)":""}.`;
 }
-function coffeeStep(){const K=C.COFFEE,c=st.coffee;
+function coffeeStep(){st.coffee=normalizeCoffee(st.coffee);const K=C.COFFEE,c=st.coffee;
   if(!c.machines||!(c.machines instanceof Set))c.machines=new Set(["lavazza","nespresso"].filter(id=>st.equip.has(id)));
   // keep machines in sync with gear chips
   K.machines.forEach(m=>{if(st.equip.has(m.id))c.machines.add(m.id)});
@@ -2498,7 +2602,7 @@ function weekReview(days){const L=getLog().log,s0=weekStartDate();
   return `<section class="gpanel wrev"><div class="stitle" style="margin-top:0"><h2>Week review</h2><span>${esc(fmtWeek(s0))}</span></div>
    <div class="wst"><div><b>$${est.toFixed(0)}</b>${budget!=null?` / $${budget.toFixed(0)}`:""}<small>est.${budget!=null?" vs budget":""}</small></div><div><b>${avgCal!=null?avgCal:"—"}</b><small>avg cal</small></div><div><b>${madeN}/${skipN}/${outN}</b><small>made / skip / out</small></div></div>
    ${highlights.length?`<ul class="sgl">${highlights.slice(0,3).map(h=>`<li>${h}</li>`).join("")}</ul>`:""}
-   <h3 class="aisle">Times made (all-time)</h3>${tmTop.length?`<ul class="tml">${tmTop.map(x=>`<li><span>${esc(mealName(x.k))}</span>${M(x.k)&&rateOf(x.k)?`<small>${RE[rateOf(x.k)]}</small>`:""}<b>×${x.made}</b></li>`).join("")}</ul>${tm.length>5?`<button type="button" class="have" id="tmAll">See all (${tm.length})</button>`:""}`:""}</section>`}
+   ${tmTop.length?`<h3 class="aisle">Times made (all-time)</h3><ul class="tml">${tmTop.map(x=>`<li><span>${esc(mealName(x.k))}</span>${M(x.k)&&rateOf(x.k)?`<small>${RE[rateOf(x.k)]}</small>`:""}<b>×${x.made}</b></li>`).join("")}</ul>${tm.length>5?`<button type="button" class="have" id="tmAll">See all (${tm.length})</button>`:""}`:""}</section>`}
 
 
 
