@@ -687,19 +687,20 @@
     object-fit:cover;display:block;
   }
   .wk-col-name{
-    font-family:Fraunces,Georgia,serif;font-size:11px;font-weight:800;line-height:1.15;
+    font-family:Fraunces,Georgia,serif;font-size:10px;font-weight:800;line-height:1.2;
     letter-spacing:-.02em;color:var(--wink);
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-    min-height:2.3em;padding:0 1px;
+    /* Full short names — no mid-word ellipsis truncate at 390 */
+    overflow:visible;white-space:normal;word-break:break-word;hyphens:manual;
+    min-height:2.4em;padding:0 1px;
   }
   .wk-col.tone-teal .wk-col-name{color:var(--tealD)}
   .wk-col.tone-coral .wk-col-name{color:var(--coral)}
   .wk-col.tone-slate .wk-col-name{color:#d5dee8}
   html[data-theme="light"] .wk-col.tone-slate .wk-col-name{color:#173042}
   .wk-col-note{
-    font-size:10px;font-weight:700;line-height:1.25;color:var(--wsoft);
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-    min-height:2.4em;padding:0 1px;
+    font-size:9px;font-weight:700;line-height:1.25;color:var(--wsoft);
+    overflow:visible;white-space:normal;word-break:break-word;
+    min-height:2.2em;padding:0 1px;
   }
   /* Legacy chip hooks still used in day cards */
   .wk-chip-art{width:40px;height:40px;display:block;object-fit:cover;background:#1a2430;border-radius:4px}
@@ -708,15 +709,17 @@
     .wk-strip{gap:8px}
     .wk-col{gap:8px}
     .wk-col-day{min-height:32px;font-size:12px;letter-spacing:.12em;padding:7px 4px}
-    .wk-col-name{font-size:14px}
+    .wk-col-name{font-size:13px}
     .wk-col-note{font-size:11px}
   }
   @media (min-width:1100px){
     .wk-board{margin:8px 0 20px;padding:22px 18px 18px}
     .wk-strip{gap:12px;padding-bottom:4px}
-    .wk-col-name{font-size:16px}
+    .wk-col-name{font-size:15px}
     .wk-col-note{font-size:12px}
   }
+  /* Hide legacy week-log M–S chip strip (Steve: reads like second tracker under board) */
+  .week-log-strip{display:none!important}
   /* Day meal picker: max 7 + Regenerate (Ted soft-bar) */
   .day-meal-regen{
     display:block;width:100%;margin:10px 0 4px;min-height:44px;padding:10px 12px;
@@ -2184,13 +2187,13 @@ function isHolidayOff(date){const h=holidayOn(date);if(!h)return null;return get
 
 /* ---- Steve home: interactive week brochure board (photo-real, fit-all-7) ---- */
 const HOME_MOCK=[
-  {letter:"M",name:"Steak night",art:"steak",note:"Grill night"},
-  {letter:"T",name:"Steak rice bowl",art:"bowl",note:"Leftovers"},
-  {letter:"W",name:"Smash burgers",art:"burger",note:"Grill night"},
-  {letter:"T",name:"Burger round 2",art:"leftover",note:"Leftovers"},
-  {letter:"F",name:"Grilled chicken",art:"chicken",note:"Grill night"},
-  {letter:"S",name:"Chicken quesadilla",art:"quesadilla",note:"Leftovers"},
-  {letter:"S",name:"Brats night",art:"brat",note:"Grill night"}
+  {letter:"M",name:"Steak",art:"steak",note:"Grill night"},
+  {letter:"T",name:"Rice bowl",art:"bowl",note:"Leftovers"},
+  {letter:"W",name:"Burgers",art:"burger",note:"Grill night"},
+  {letter:"T",name:"Leftovers",art:"leftover",note:"Leftovers"},
+  {letter:"F",name:"Chicken",art:"chicken",note:"Grill night"},
+  {letter:"S",name:"Quesadilla",art:"quesadilla",note:"Leftovers"},
+  {letter:"S",name:"Brats",art:"brat",note:"Grill night"}
 ];
 function isReturningUser(){
   try{
@@ -2963,52 +2966,90 @@ function totals(){let a=0,p=0,b=0,na=0,np=0,cu=0;W.items.forEach(it=>{if(typeof 
 const CM_WEEK_LOCK_KEY="cm-week-lock-v1";
 const CM_LOCK_LABEL={lock:"Lock in this week",locked:"Week locked",edit:"Edit week",confirm:"Confirm lock",keep:"Keep editing",phone:"Saved on this phone only",random:"Random meal"};
 const DAY_LETTER=["M","T","W","T","F","S","S"];
+/* Board labels: short + complete (fit all 7 at 390). No cut ratios, no mid-word truncate. */
+const BOARD_SHORT={
+  steak:"Steak",burger:"Burgers",chicken:"Chicken",chixq:"Quesadilla",steakq:"Quesadilla",
+  stkegg:"Steak eggs",bowl:"Rice bowl",pork:"Pork chops",brats:"Brats",veg:"Veggies",
+  gg_rotisserie:"Rotisserie",gg_pubsub:"Pub Sub",gg_aldirot:"Rotisserie",gg_delihot:"Deli hot",
+  gg_pizza:"Pizza",gg_burritos:"Burritos",gg_sushi:"Sushi",gg_pbox:"Protein box",
+  x_smash_burger:"Burgers",x_cheese_burger:"Cheeseburger",x_sirloin_plate:"Sirloin",
+  x_ribeye_simple:"Ribeye",x_strip_onion:"NY strip",x_flat_iron:"Flat iron",x_chuck_eye:"Chuck eye",
+  x_chix_lemon:"Chicken",x_chix_cajun:"Chicken",x_chix_bbq:"BBQ chicken",x_chix_thighs:"Thighs",
+  x_chix_nugget:"Tenders",x_pork_bbq:"Pork chops",x_pork_garlic:"Pork chops",
+  x_italian_sausage:"Sausage",x_smoked_sausage:"Sausage"
+};
+function mealArtKeyFromId(id, dinner){
+  const t=String(id||"")+" "+String(dinner||"");
+  if(/pizza|gg_pizza/i.test(t))return "pizza";
+  if(/gg_pubsub|sandwich|sub/i.test(t))return "sandwich";
+  if(/quesadilla|chixq|steakq|panini/i.test(t))return "quesadilla";
+  if(/bowl|rice bowl/i.test(t))return "bowl";
+  if(/stkegg|steak\s*&\s*eggs|eggs\s*\+|bf_eggs|bf_bec/i.test(t))return "eggs";
+  if(/brat|sausage|hot.?dog|x_italian|x_smoked/i.test(t))return "brat";
+  if(/pork|x_pork/i.test(t))return "pork";
+  if(/burger|x_smash|x_cheese_burger/i.test(t))return "burger";
+  if(/chicken|chix|rotisserie|gg_aldirot|gg_delihot|x_chix/i.test(t))return "chicken";
+  if(/steak|sirloin|ribeye|strip|flat iron|chuck|x_sirloin|x_ribeye|x_strip|x_flat|x_chuck/i.test(t))return "steak";
+  if(/burrito/i.test(t))return "grab";
+  if(/sushi|protein box|gg_pbox/i.test(t))return "plate";
+  if(/coffee/i.test(t))return "coffee";
+  return null;
+}
 function mealArtKey(d){
+  /* Diversify: remake leftovers use their own meal photo (not cook-night burger ×3). */
   if(!d)return "plate";
   if(d.kind==="hol")return "holiday";
   if(d.kind==="out")return "takeout";
   if(d.kind==="rm")return "plate";
-  if(d.kind==="left"||(!d.cook&&!d.grab&&d.dinner&&/leftover/i.test(d.dinner)))return "leftover";
   if(d.grab||(d.kind==="grab"))return "grab";
   const id=d.meal||"";
-  if(/pizza/i.test(id)||/pizza/i.test(d.dinner||""))return "pizza";
-  if(/gg_pubsub|sandwich|sub/i.test(id)||/sub|sandwich/i.test(d.dinner||""))return "sandwich";
-  if(/quesadilla|chixq|steakq|panini/i.test(id)||/quesadilla|panini/i.test(d.dinner||""))return "quesadilla";
-  if(/bowl/i.test(id)||/rice bowl/i.test(d.dinner||""))return "bowl";
-  if(/stkegg|eggs|bf_eggs|bf_bec/i.test(id)||/steak\s*&\s*eggs|^eggs/i.test(d.dinner||""))return "eggs";
-  if(/burger/i.test(id)||/burger/i.test(d.dinner||""))return "burger";
-  if(/pork/i.test(id)||/pork/i.test(d.dinner||""))return "pork";
-  if(/brat|sausage|hot.?dog/i.test(id)||/brat|sausage|hot dog/i.test(d.dinner||""))return "brat";
-  if(/chicken|chix|rotisserie/i.test(id)||/chicken/i.test(d.dinner||""))return "chicken";
-  if(/steak/i.test(id)||/steak|sirloin|ribeye|strip|flat iron|chuck/i.test(d.dinner||""))return "steak";
-  if(/coffee/i.test(d.dinner||""))return "coffee";
-  return "plate";
+  const dinner=d.dinner||"";
+  const isLeft=d.kind==="left"||(!d.cook&&!d.grab&&/leftover|round 2/i.test(dinner));
+  if(isLeft){
+    /* Remake nights get remake art; plain leftovers alternate leftover packs — never reuse cook burger. */
+    const remake=mealArtKeyFromId(id, dinner);
+    if(remake&&remake!=="burger"&&remake!=="steak"&&remake!=="chicken"&&remake!=="pork"&&remake!=="brat"){
+      return remake; /* quesadilla, bowl, eggs, etc. */
+    }
+    /* Same-protein remake / generic leftover: rotate leftover packs by day */
+    const i=d._boardIdx;
+    return (typeof i==="number"&&i%2===1)?"leftover2":"leftover";
+  }
+  return mealArtKeyFromId(id, dinner)||"plate";
 }
 function mealArtSrc(d){return "img/meals/"+mealArtKey(d)+".webp"}
 function chipMealName(d){
-  /* Full meal names on board — no 3-word truncate (no "Burgers: 80 or"). Main meal only; sides stay off board. */
-  if(!d)return "Open night";
-  if(d.kind==="hol")return cleanCopy(d.hol||d.dinner||"Holiday");
+  /* Short complete names for board — fit-all-seven at 390, no "Grilled chick…" / "80 o…". */
+  if(!d)return "Open";
+  if(d.kind==="hol")return shortMealWords(cleanCopy(d.hol||d.dinner||"Holiday"),2);
   if(d.kind==="out")return "Eat out";
-  if(d.kind==="rm")return "Open night";
-  if(d.kind==="left")return "Leftovers";
+  if(d.kind==="rm")return "Open";
+  if(d.kind==="left"||(!d.cook&&!d.grab&&/leftover|round 2/i.test(d.dinner||""))){
+    const remake=d.meal&&BOARD_SHORT[d.meal];
+    if(remake&&!/Burgers|Steak$|Chicken$|Pork|Brats/i.test(remake))return remake;
+    return "Leftovers";
+  }
+  if(d.meal&&BOARD_SHORT[d.meal])return BOARD_SHORT[d.meal];
   const m=d.meal&&typeof M==="function"?M(d.meal):null;
   if(m&&m.name){
     let n=cleanCopy(m.name);
-    if(d.cut){
-      let cut=cleanCopy(String(d.cut).replace(/\s*patty\s*/i," ").trim());
-      if(cut&&!new RegExp(cut.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i").test(n))n=n+" · "+cut;
-    }
-    return n;
+    n=n.replace(/\s+night$/i,"");
+    n=n.replace(/\s+or\s+panini$/i,"");
+    n=n.replace(/\s+or\s+brats$/i,"");
+    n=n.replace(/^grilled\s+/i,"");
+    n=n.replace(/\s*\([^)]*\)/g,"");
+    return shortMealWords(n,2);
   }
   let n=cleanCopy(String(d.dinner||"").trim());
-  n=n.replace(/\s*[·•]\s*.*$/,"");
-  n=n.replace(/\s*\+\s*.*$/,""); /* strip sides from dinner string — board is main meal only */
+  n=n.replace(/\s*[·•:].*$/,"");
+  n=n.replace(/\s*\+\s*.*$/,"");
   n=n.replace(/\s*\([^)]*\)/g,"");
   n=n.replace(/\s*from the freezer/i,"");
+  n=n.replace(/^grilled\s+/i,"");
+  n=n.replace(/\s+night$/i,"");
   n=n.replace(/\s{2,}/g," ").trim();
-  if(!n)return "Easy night";
-  return n;
+  if(!n)return "Easy";
+  return shortMealWords(n,2);
 }
 function shortMealWords(s,max){
   const parts=String(s||"").trim().split(/\s+/).filter(Boolean);
@@ -3075,12 +3116,13 @@ function weekStripHTML(days){
   const cells=days.map((d,i)=>{
     const today=isDayToday(d,i);
     const tone=DAY_COL_TONE[i]||"teal";
+    const boardDay={...d,_boardIdx:i};
     const cls=["wk-col","tone-"+tone,today?"is-today":"",W.open===i?"is-open":"",d.cook?"is-cook":""].filter(Boolean).join(" ");
-    const label=cleanCopy(chipMealName(d));
-    const note=boardNote(d);
+    const label=cleanCopy(chipMealName(boardDay));
+    const note=boardNote(boardDay);
     return `<button type="button" class="${cls}" data-wkchip="${i}" role="listitem" aria-label="${esc(DAY_FULL[i]+" "+label)}${today?" (today)":""}">
       <span class="wk-col-day">${DAY_FULL[i]}</span>
-      <span class="wk-col-art-wrap"><img class="wk-col-art" src="${mealArtSrc(d)}" alt="" width="160" height="160" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='img/meals/plate.webp'"></span>
+      <span class="wk-col-art-wrap"><img class="wk-col-art" src="${mealArtSrc(boardDay)}" alt="" width="160" height="160" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='img/meals/plate.webp'"></span>
       <span class="wk-col-name">${esc(label)}</span>
       <span class="wk-col-note">${esc(note)}</span>
     </button>`;
@@ -3777,7 +3819,6 @@ function renderWeek(){
   ${typeof weekStripHTML==="function"?weekStripHTML(days):""}
   ${typeof lockBarHTML==="function"?lockBarHTML(locked):""}
   ${typeof utilitiesUnderLockHTML==="function"?utilitiesUnderLockHTML():""}
-  ${typeof weekLogStrip==="function"?weekLogStrip(days):""}
   <div class="stitle" id="thisWk"><h2>This week${edited?'<span class="edited">edited</span>':""}${locked?'<span class="edited" style="background:var(--teal);color:#041016">locked</span>':""}</h2><span class="week-actions"><button type="button" class="shuffle-link" id="shuffleBtn" aria-label="Shuffle this week" ${locked?"disabled":""}>${icons.shuffle}<span>Shuffle</span></button><button type="button" class="shuffle-link" id="randomMealBtn" aria-label="Random meal" ${locked?"disabled":""}><span>Random meal</span></button><button type="button" class="shuffle-link" id="custB" aria-label="Customize week" ${locked?"disabled":""}>${icons.repeat}<span>Customize</span></button></span></div>
   ${days.map((d,i)=>{const m=MN(d.meal);
     return `<div class="day${dayCls(d)}${W.open===i?" is-open":""}" data-d="${i}" style="animation-delay:${i*.04}s">
