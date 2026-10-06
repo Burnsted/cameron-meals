@@ -699,10 +699,11 @@
   .wk-col.tone-slate .wk-col-name{color:#d5dee8}
   html[data-theme="light"] .wk-col.tone-slate .wk-col-name{color:#173042}
   .wk-col-note{
-    font-size:9px;font-weight:700;line-height:1.15;color:var(--wsoft);
-    overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+    font-size:9px;font-weight:700;line-height:1.2;color:var(--wsoft);
+    /* Wrap long notes (Make extra for tomorrow) to 2 lines; no mid-word breaks */
+    overflow:hidden;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
     word-break:normal;overflow-wrap:normal;hyphens:none;
-    min-height:1.15em;max-width:100%;padding:0 1px;
+    min-height:1.2em;max-height:2.4em;max-width:100%;padding:0 1px;
   }
   /* Legacy chip hooks still used in day cards */
   .wk-chip-art{width:40px;height:40px;display:block;object-fit:cover;background:#1a2430;border-radius:4px}
@@ -1066,13 +1067,13 @@ function buildMealFromName(name){
   if(hit){
     return {id,name:q,emoji:hit.emoji||"🍽️",tag:hit.tag||(hit.bf?"Breakfast":hit.grab?"Lunch":"Dinner"),
       prep:hit.prep||10,cook:hit.cook||8,nut:hit.nut?{...hit.nut}:null,grill:!!hit.grill,bf:!!hit.bf,bfKey:hit.bfKey,
-      grab:!!hit.grab,time:hit.time||"about 10 to 15 min",temp:hit.temp||"cook to safe temp",
+      grab:!!hit.grab,time:hit.time||"10 to 15 min",temp:hit.temp||"cook to safe temp",
       grill:hit.grill?hit.grill.slice():["Cook on Foreman or skillet until done."],
       stove:hit.stove?hit.stove.slice():["Cook in a skillet until done."],custom:true,fromId:hit.id};
   }
   const tag=/oat|bagel|egg|breakfast|yogurt|scramble|omelette|toast/i.test(q)?"Breakfast":/salad|sandwich|wrap|melt|taco|lunch/i.test(q)?"Lunch":"Dinner";
   return {id,name:q,emoji:tag==="Breakfast"?"🍳":tag==="Lunch"?"🥪":"🍽️",tag,prep:8,cook:8,nut:null,grill:true,custom:true,
-    time:"about 10 to 15 min",temp:"165°F poultry · 160°F ground · 145°F steak or pork + rest",
+    time:"10 to 15 min",temp:"165°F poultry · 160°F ground · 145°F steak or pork + rest",
     grill:["Season. Cook on your Foreman or skillet to a safe temp.","Rest a few minutes; plate with a side."],
     stove:["Cook in a skillet until done."]};
 }
@@ -1770,7 +1771,7 @@ function startWelcome(force){
         const set=getSettings();set.bfWeekday=b.dataset.bf;setSettings(set);runStep(5);
       });
     }},
-    {id:"act",ask:"Daily exercise?",speak:"How much daily exercise? About 30 minutes, an hour, or more?",render(box){
+    {id:"act",ask:"Daily exercise?",speak:"How much daily exercise? 30 minutes, an hour, or more?",render(box){
       box.innerHTML=tools()+ `<p class="welcome-q">Daily exercise?</p>
         <div class="welcome-opts">${ACT.map(([k,l])=>`<button type="button" class="welcome-opt" data-ac="${k}">${esc(l)}</button>`).join("")}</div>`;
       bindTools(box,5);
@@ -1832,7 +1833,7 @@ function openSettings(){const rules=getRules().join("\n"), set=getSettings(), ho
       <p class="set-sec">Grab & go nights / week</p>
       <div class="dchips">${[0,1,2,3].map(n=>`<button type="button" data-gn="${n}" class="${set.grabNights===n?"on":""}">${n}</button>`).join("")}</div>
       <p class="set-sec">Breakfast defaults</p>
-      <p class="muted2" style="margin:0 0 6px">Mon to Fri: mostly cereal + milk; bagel+cream cheese about 1 weekday every 1 to 2 weeks. Sat to Sun: bacon egg cheese bagel.</p>
+      <p class="muted2" style="margin:0 0 6px">Mon to Fri: mostly cereal + milk; bagel+cream cheese 1 weekday every 1 to 2 weeks. Sat to Sun: bacon egg cheese bagel.</p>
       <label class="fld">Weekday default</label>
       <div class="dchips">${Object.keys(BF_CFG.items||{}).map(k=>`<button type="button" data-bfw="${k}" class="${set.bfWeekday===k?"on":""}">${esc((BF_CFG.items[k]||{}).label||k)}</button>`).join("")}</div>
       <label class="fld">Weekday alt (every 1 to 2 wks)</label>
@@ -2071,9 +2072,9 @@ function popHTML(title,opts,cur,on,extra={}){
 const tool=()=>st.equip.has("foreman")?"grill":(st.equip.has("stove")||st.equip.has("skillet"))?"stove":st.equip.has("airfryer")?"air":(st.equip.has("oven")||st.equip.has("sheet"))?"oven":"grill";
 function tipHTML(m){
   const t=tool();let steps=t==="grill"?m.grill:t==="stove"?m.stove:
-    t==="air"?["Air fryer 400°F. Chicken or chops about 10 to 14 min, burgers or steak about 8 to 10 min, flip halfway."]:["Oven or broiler: sheet pan, broil about 4 to 6 min per side for steak or chops; chicken bake 400°F about 20 to 25 min."];
+    t==="air"?["Air fryer 400°F. Chicken or chops 10 to 14 min, burgers or steak 8 to 10 min, flip halfway."]:["Oven or broiler: sheet pan, broil 4 to 6 min per side for steak or chops; chicken bake 400°F 20 to 25 min."];
   const tn={grill:"🔥 On your Foreman",stove:"🍳 Stovetop",air:"💨 Air fryer",oven:"♨️ Oven"}[t];
-  return `<div class="tip"><b>${tn}</b><ol>${steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ol>
+  return `<div class="tip"><b>${tn}</b><ol>${steps.map(s=>`<li>${esc(cleanCopy(s))}</li>`).join("")}</ol>
    ${t==="grill"?`<div class="t1">⏱ ${esc(cleanCopy(m.time||""))}</div>`:""}<div class="t2">🌡 Check ${esc(cleanCopy(m.temp||""))}</div>
    <div class="t3">Times vary by grill. A cheap instant-read thermometer ($10 to $15) is the real test.</div></div>`}
 const tipsBox=()=>`<details class="box"><summary>💰 Meat money tips (tap)</summary><ul>${C.TIPS.meat.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></details>`;
@@ -2162,7 +2163,7 @@ function mealPickerChipLabel(m, alts){
 /* ---- calories (USDA-based est., round to 10; Other → ?) ---- */
 const PROTEIN_CAL=C.PROTEIN_CAL||{};
 const round10=n=>n==null||!isFinite(n)?null:Math.round(n/10)*10;
-const calTxt=n=>n==null?"cal: ?":`🔥 ~${round10(n)} cal`;
+const calTxt=n=>n==null?"cal: ?":`🔥 ${round10(n)} cal`;
 function proteinCal(name){if(!name)return null;return PROTEIN_CAL[name]!=null?PROTEIN_CAL[name]:null}
 function mealBaseCal(id,cut){const m=M(id);if(!m)return null;if(m.grab)return m.nut&&m.nut.kcal!=null?m.nut.kcal:null;
   if(id==="burger"){const p=cut||pattyAll()[0];const pc=proteinCal(p);return pc!=null?pc:(m.nut&&m.nut.kcal)}
@@ -2181,13 +2182,13 @@ function buildExtrasCal(mid){
 function sideCal(name){const m=sideMeta(name);if(m.custom&&m.kcal==null)return null;return m.kcal!=null?m.kcal:null}
 function mealTotalCal(mid, cutOverride){
   const m=M(mid); if(!m)return {cal:null,unk:true,label:"This meal: cal: ?"};
-  if(m.grab){const c=m.nut&&m.nut.kcal;return {cal:c,unk:false,label:c==null?"This meal: cal: ?":`This meal: ~${round10(c)} cal`}}
+  if(m.grab){const c=m.nut&&m.nut.kcal;return {cal:c,unk:false,label:c==null?"This meal: cal: ?":`This meal: ${round10(c)} cal`}}
   let base=mealBaseCal(mid, cutOverride), unk=false;
   if(base==null)unk=true;
   const ex=buildExtrasCal(mid); if(ex.unk)unk=true;
   if(base==null&&!ex.cal)return {cal:null,unk:true,label:"This meal: cal: ?"};
   const total=(base||0)+ex.cal;
-  return {cal:total,unk,label:`This meal: ~${round10(total)} cal${unk?" · some cal: ?":""}`};
+  return {cal:total,unk,label:`This meal: ${round10(total)} cal${unk?" · some cal: ?":""}`};
 }
 function dayCalTotal(d){
   if(d.kind==="hol"||d.kind==="rm"||d.kind==="out")return null;
@@ -2202,8 +2203,8 @@ function dayCalTotal(d){
 function dayCalHTML(d){
   const t=dayCalTotal(d); if(!t)return "";
   const g=guideFor(st.about||{});
-  let line=t.cal==null?`🍽 Dinner cal: ?`:`🍽 Dinner ~${round10(t.cal)} cal`;
-  if(g&&t.cal!=null){const pct=Math.round(t.cal/g.mid*100);line+=` · ~${pct}% of your ~${g.lo.toLocaleString()} to ${g.hi.toLocaleString()} guide`}
+  let line=t.cal==null?`🍽 Dinner cal: ?`:`🍽 Dinner ${round10(t.cal)} cal`;
+  if(g&&t.cal!=null){const pct=Math.round(t.cal/g.mid*100);line+=` · ${pct}% of your ${g.lo.toLocaleString()} to ${g.hi.toLocaleString()} guide`}
   return `<p class="nut">${line}${t.unk?" · some cal: ?":""}</p>`;
 }
 const mealTotalHTML=mid=>`<div class="mtot">${esc(mealTotalCal(mid).label)}</div>`;
@@ -2242,7 +2243,7 @@ const HOME_MOCK=[
   {letter:"W",name:"Burgers",art:"burger",note:"Grill"},
   {letter:"T",name:"Lefto",art:"leftover",note:"Lefto"},
   {letter:"F",name:"Chicken",art:"chicken",note:"Grill"},
-  {letter:"S",name:"Rice bowl",art:"bowl",note:"Lefto"},
+  {letter:"S",name:"Rice",art:"bowl",note:"Lefto"},
   {letter:"S",name:"Brats",art:"brat",note:"Grill"}
 ];
 function isReturningUser(){
@@ -2460,7 +2461,7 @@ const DRINK_YN=[
   {id:"drink_milk",emoji:"🥛",name:"Milk"},
   {id:"drink_oj",emoji:"🍊",name:"Orange juice"},
   {id:"drink_sparkling",emoji:"🫧",name:"Sparkling water"},
-  {id:"drink_sports",emoji:"🥤",name:"Sports drinks"},
+  {id:"drink_sports",emoji:"⚡",name:"Sports drinks"},
   {id:"drink_soda",emoji:"🥤",name:"Soda"}
 ];
 function ensureDrinkDefaults(){
@@ -2940,7 +2941,7 @@ function buildList(groups,mealIds){
   const P=C.PRICES, out=[], seen={};
   const days=W?(typeof effDays==="function"?effDays(W.ov):W.base):[];
   const add=(key,o={})=>{const base=P[key]||{n:key,q:"",aisle:"other",a:null,p:null};
-    if(o.brand){o.al=base.a;o.a=null;o.hint=`Aldi usually doesn't carry ${o.brand}; Aldi look-alike ~$${base.a!=null?base.a.toFixed(2):"?"}`+(base.aisle==="snacks"?" · Publix often runs chips BOGO":"")}
+    if(o.brand){o.al=base.a;o.a=null;o.hint=`Aldi usually doesn't carry ${o.brand}; Aldi look-alike $${base.a!=null?base.a.toFixed(2):"?"}`+(base.aisle==="snacks"?" · Publix often runs chips BOGO":"")}
     const id=o.id||key;if(seen[id]){if(o.why)seen[id].why+=", "+o.why;return}
     const it={id,...base,...o,why:o.why||""};seen[id]=it;out.push(it)};
   const inPlan=g=>groups.includes(g);
@@ -3032,7 +3033,7 @@ function buildList(groups,mealIds){
     const meta=sideMeta(name), pr=meta.a!=null||meta.p!=null;
     const key=meta.custom?null:Object.keys(P).find(k=>P[k].n===name);
     if(key)add(key,{why:"dinner side",prep:meta.prep,kcal:meta.kcal});
-    else add("custom:side:"+name,{id:"side:"+name,n:name,q:"",aisle:meta.aisle||"produce",a:meta.a||null,p:meta.p||null,custom:!pr,why:`side · ~${meta.prep||5} min prep · ${calTxt(meta.kcal)}`});
+    else add("custom:side:"+name,{id:"side:"+name,n:name,q:"",aisle:meta.aisle||"produce",a:meta.a||null,p:meta.p||null,custom:!pr,why:`side · ${meta.prep||5} min prep · ${calTxt(meta.kcal)}`});
   });
   if(sideNames.has("Potato chips")){const pk=k=>[...(st.picks[k]||[])];pk("Potato chips").slice(0,2).forEach(b=>{const f=pk("Potato chips › "+b);const k=P["chips:"+b]?"chips:"+b:"chips";add(k,{id:"chips:"+b,brand:k==="chips:Kettle Brand"?null:b,n:`${b}${f.length?" ("+f.slice(0,2).join(", ")+")":""}`,why:"side"})})}
   /* Custom sides only when actually on this week's day sides */
@@ -3137,7 +3138,7 @@ const DAY_LETTER=["M","T","W","T","F","S","S"];
 /* Board labels: short + complete (fit all 7 at 390). No cut ratios, no mid-word truncate. */
 const BOARD_SHORT={
   steak:"Steak",burger:"Burgers",chicken:"Chicken",chixq:"Quesa",steakq:"Quesa",
-  stkegg:"Steak eggs",bowl:"Rice bowl",pork:"Pork",brats:"Brats",veg:"Veggies",
+  stkegg:"Steak eggs",bowl:"Rice",pork:"Pork",brats:"Brats",veg:"Veggies",
   gg_rotisserie:"Rotis",gg_pubsub:"Pub Sub",gg_aldirot:"Rotis",gg_delihot:"Deli",
   gg_pizza:"Pizza",gg_burritos:"Burritos",gg_sushi:"Sushi",gg_pbox:"Protein",
   x_smash_burger:"Burgers",x_cheese_burger:"Cheese",x_sirloin_plate:"Sirloin",
@@ -3245,12 +3246,16 @@ function isDayToday(d,i){
 }
 
 function cleanCopy(s){
-  /* Steve copy bar: no slashes, no en/em dashes, no hyphen ranges. Apostrophes OK. */
+  /* Steve copy bar: no slashes, no en/em dashes, no hyphen ranges, no estimate words. Apostrophes OK. */
   return String(s||"")
     .replace(/[–—]/g," to ")
     .replace(/(\d)\s*-\s*(\d)/g,"$1 to $2")
     .replace(/(\d)\s*\/\s*(\d)/g,"$1 or $2")
     .replace(/\s*\/\s*/g," or ")
+    .replace(/~/g,"")
+    .replace(/\bapprox\.?\b/gi,"")
+    .replace(/\best\.?\b/gi,"")
+    .replace(/\babout\s+/gi,"")
     .replace(/\s{2,}/g," ")
     .trim();
 }
@@ -3272,7 +3277,7 @@ function boardNote(d){
   if(d.kind==="hol")return "Holiday";
   if(d.kind==="out")return "Night off";
   if(d.kind==="rm")return "Open night";
-  if(d.kind==="left"||(!d.cook&&!d.grab))return "Lefto";
+  if(d.kind==="left"||(!d.cook&&!d.grab))return "Leftovers";
   if(d.grab)return "Grab and go";
   if(d.cook)return "Grill night";
   return "Easy night";
@@ -4152,7 +4157,7 @@ function renderListItems(byA,filt,days){
 function listItemRow(it,filt,days){
   const aw=it.a!=null&&(it.p==null||it.a<=it.p),pw=it.p!=null&&!aw;
   const hi=days&&W.shopHi!=null&&days.some((d,i)=>{if(i!==W.shopHi)return false;const w=(it.why||"").toLowerCase();return w.includes((d.sideName||"").toLowerCase())||(d.meal&&w.includes(((M(d.meal)||{}).name||"").toLowerCase()))});
-  const tags=it.prep!=null||it.kcal!=null?`<small> ~${it.prep||"?"} min prep · ${calTxt(it.kcal)}</small>`:"";
+  const tags=it.prep!=null||it.kcal!=null?`<small> ${it.prep||"?"} min prep · ${calTxt(it.kcal)}</small>`:"";
   const suppressed=typeof itemHaveSuppressed==="function"&&itemHaveSuppressed(it.id);
   const until=typeof haveUntilOf==="function"?haveUntilOf(it.id):0;
   const back=suppressed&&typeof fmtHaveBack==="function"?fmtHaveBack(until):"";
@@ -4277,7 +4282,7 @@ function effDays(ov){const s0=weekStartDate();return W.base.map((b,i)=>{const d=
   return {...b,short,...c}})}
 function recomputeList(){const days=effDays(W.ov).filter(d=>d.kind!=="hol");const gs=[...new Set(days.map(d=>d.g).filter(Boolean))];
   W.items=buildList(gs,[...new Set(days.map(d=>d.meal).filter(Boolean))])}
-function pcBadge(prep,cook,dark,reheat){return `<span class="pc${dark?" dk":""}"><span><span class="emo">🔪</span> Prep ~${prep} min</span><span><span class="emo">🔥</span> ${reheat?"Reheat":"Cook"} ~${cook} min</span></span>`}
+function pcBadge(prep,cook,dark,reheat){return `<span class="pc${dark?" dk":""}"><span><span class="emo">🔪</span> ${prep} min prep</span><span><span class="emo">🔥</span> ${cook} min ${reheat?"reheat":"cook"}</span></span>`}
 function dayBadge(d){if(d.kind==="out"||d.kind==="rm")return "";if(d.kind==="left")return pcBadge(2,3,false,true);const m=d.meal&&M(d.meal);if(!m)return "";
   if(d.cook||["chixq","steakq","stkegg"].includes(d.meal))return pcBadge(m.prep,m.cook);return pcBadge(2,3,false,true)}
 /* budget (saved on this phone) */
@@ -4351,7 +4356,7 @@ function guideFor(a){const age=+a.age,ft=+a.ft,inch=+(a.inch||0),lb=+a.lb;
   const bmr=base+(a.sex==="m"?5:a.sex==="f"?-161:-78);const tdee=bmr*actOf(a)[2];const r=n=>Math.round(n/50)*50;
   return {lo:r(tdee*0.9),hi:r(tdee*1.1),mid:tdee,pLo:Math.round(lb*0.7),pHi:Math.round(lb*1.0)}}
 const NOTMED="General guide, not medical advice; not a diet plan.";
-function guideHTML(g){return g?`Daily guide: <b>about ${g.lo.toLocaleString()} to ${g.hi.toLocaleString()} calories</b> and <b>${g.pLo} to ${g.pHi} g protein</b>.<small>Mifflin-St Jeor guide, about 10 percent either way. Based on the exercise you picked. Protein 0.7 to 1.0 g per lb. ${NOTMED}</small>`
+function guideHTML(g){return g?`Daily guide: <b>${g.lo.toLocaleString()} to ${g.hi.toLocaleString()} calories</b> and <b>${g.pLo} to ${g.pHi} g protein</b>.<small>Mifflin-St Jeor guide, 10 percent either way. Based on the exercise you picked. Protein 0.7 to 1.0 g per lb. ${NOTMED}</small>`
   :`Fill in age, height and weight to see a general daily guide.<small>${NOTMED}</small>`}
 function aboutStep(){const a=st.about;
   card.innerHTML=`<div class="emoji">🧍</div><h1>About me</h1><p class="sub">Optional. Gives you a general daily guide. Saved on this phone only.</p>
@@ -4378,9 +4383,9 @@ function aboutStep(){const a=st.about;
 function aboutSummary(){const a=st.about,g=guideFor(a);if(!g)return `<p class="no">Not filled in (optional).</p>`;
   return `<p>${esc(a.age)} yrs · ${esc(a.ft)}′${esc(a.inch||0)}″ · ${esc(a.lb)} lb${a.sex?" · "+(a.sex==="m"?"male":"female"):""} · exercise: ${actOf(a)[1].toLowerCase()}</p><div class="guide" style="margin:6px 0 0">${guideHTML(g)}</div>`}
 function guideBox(){const g=guideFor(st.about||{});if(!g)return "";
-  return `<div class="gbox">🧍 Your daily guide: <b>~${g.lo.toLocaleString()} to ${g.hi.toLocaleString()} cal</b> · <b>${g.pLo} to ${g.pHi} g protein</b><small>${NOTMED} Dinner numbers on each day are rough USDA-based figures per serving.</small><a class="etm" href="https://www.eatthismuch.com/" target="_blank" rel="noopener">Want more ideas? Try Eat This Much (free) ↗</a></div>`}
+  return `<div class="gbox">🧍 Your daily guide: <b>${g.lo.toLocaleString()} to ${g.hi.toLocaleString()} cal</b> · <b>${g.pLo} to ${g.pHi} g protein</b><small>${NOTMED} Dinner numbers on each day are rough USDA-based figures per serving.</small><a class="etm" href="https://www.eatthismuch.com/" target="_blank" rel="noopener">Want more ideas? Try Eat This Much (free) ↗</a></div>`}
 function dayNut(d){const g=guideFor(st.about||{});const m=d.meal&&M(d.meal);if(!g||!m||!m.nut||d.kind)return "";
-  return `<p class="nut">🍽 Dinner ~${m.nut.kcal} cal · ${m.nut.p} g protein (≈${Math.round(m.nut.kcal/g.mid*100)}% of your daily calories, ${Math.round(m.nut.p/((g.pLo+g.pHi)/2)*100)}% of protein)</p>`}
+  return `<p class="nut">🍽 Dinner ${m.nut.kcal} cal · ${m.nut.p} g protein (${Math.round(m.nut.kcal/g.mid*100)}% of your daily calories, ${Math.round(m.nut.p/((g.pLo+g.pHi)/2)*100)}% of protein)</p>`}
 
 /* ---- meal ratings: 👎 tried it, no · 👍 good · ❤️ favorite (saved on this phone) ---- */
 const RKEY="cameron-meals-ratings-v1";
