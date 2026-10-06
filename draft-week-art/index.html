@@ -720,6 +720,14 @@
   }
   /* Hide legacy week-log M–S chip strip (Steve: reads like second tracker under board) */
   .week-log-strip{display:none!important}
+  /* Yes/no meal picker: gear + meat/cut chevron */
+  .meals-head{position:relative}
+  .meals-head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:0 0 4px}
+  .meals-head-row .emoji{margin:4px 0 0}
+  .meals-head .gear{margin-top:2px}
+  .meal .vchip{border-color:var(--teal,#2dd4bf);color:var(--tealD,#5eead4)}
+  html[data-theme="light"] .meal .vchip{border-color:var(--teal,#0f6e6e);color:var(--teal,#0f6e6e)}
+  .meal .vchip.meat-alt{border-style:dashed}
   /* Day meal picker: max 7 + Regenerate (Ted soft-bar) */
   .day-meal-regen{
     display:block;width:100%;margin:10px 0 4px;min-height:44px;padding:10px 12px;
@@ -2109,6 +2117,63 @@ function proteinPop(id,title,opts,selected,multi){
     ${st.cOpen==="prot:"+id?`<div class="addrow cust"><input id="cin" placeholder="Your protein…" maxlength="30" autocomplete="off"><button id="cadd">Add</button></div>`:""}
     ${multi?`<button class="next" id="protDone" style="margin-top:10px">Done</button>`:""}</div>`;
 }
+/* Ted soft-bar: meat/cut dropdown on yes/no picker (restore for rotisserie + protein meals) */
+const MEAL_PICKER_SWAP={
+  "Publix rotisserie + salad":"gg_rotisserie",
+  "Aldi rotisserie":"gg_aldirot",
+  "Deli hot bar chicken":"gg_delihot",
+  "Frozen pizza":"gg_pizza",
+  "Pub Sub":"gg_pubsub"
+};
+function mealPickerAlts(m){
+  if(!m)return null;
+  const custom=(st.custom&&st.custom["prot:"+m.id])||[];
+  if(m.v&&m.v.length){
+    return {opts:[...m.v,...custom], multi:!!m.protein, mode:"cut", label:m.protein?"cuts":"kind"};
+  }
+  const id=String(m.id||"");
+  const nm=String(m.name||"").toLowerCase();
+  const blob=id+" "+nm;
+  /* Grab rotisserie / chicken — restore chicken meat-alt chevron (Ted) */
+  if(/gg_aldirot|gg_rotisserie|gg_delihot|rotisserie|fried chicken|hot bar|deli hot/i.test(blob)){
+    const opts=[...(MEAT_ALT_GROUPS["chicken breast"]||[])];
+    ["Publix rotisserie + salad","Aldi rotisserie","Deli hot bar chicken"].forEach(o=>{
+      if(!opts.includes(o))opts.splice(Math.max(0,opts.length-1),0,o);
+    });
+    custom.forEach(c=>{if(c&&!opts.includes(c))opts.push(c)});
+    return {opts, multi:false, mode:"meatAlt", label:"chicken or meat"};
+  }
+  if(/gg_/.test(id)&&/chicken|poultry|rotisserie/i.test(nm)){
+    return {opts:[...(MEAT_ALT_GROUPS["chicken breast"]||[]),...custom], multi:false, mode:"meatAlt", label:"chicken or meat"};
+  }
+  if(/burger|patty/i.test(blob)){
+    return {opts:[...(MEAT_ALT_GROUPS["beef patty"]||[]),...custom], multi:true, mode:"cut", label:"patties"};
+  }
+  if(/steak|sirloin|ribeye|strip/i.test(blob)){
+    return {opts:[...(MEAT_ALT_GROUPS.sirloin||[]),...custom], multi:true, mode:"cut", label:"cuts"};
+  }
+  if(/pork|brat|sausage|hot.?dog/i.test(blob)){
+    const opts=["Brats","Italian sausage","Smoked sausage (pre-cooked)","Boneless pork chops","Skip meat",...custom];
+    return {opts:[...new Set(opts)], multi:false, mode:"cut", label:"kind"};
+  }
+  try{
+    const g=typeof altGroupForName==="function"?altGroupForName(m.name):null;
+    if(g&&g.kind==="meat"&&g.opts&&g.opts.length)return {opts:[...g.opts,...custom], multi:false, mode:"meatAlt", label:"meat"};
+  }catch(_){}
+  return null;
+}
+function mealPickerChipLabel(m, alts){
+  if(!alts)return "";
+  if(alts.mode==="cut"&&alts.multi)return mvLabel(m.id)||(alts.opts[0]||"Pick");
+  const cur=mv(m.id);
+  if(cur)return cur;
+  if(alts.mode==="meatAlt"){
+    if(/gg_rotisserie/i.test(m.id))return "Publix rotisserie + salad";
+    if(/gg_aldirot/i.test(m.id))return "Aldi rotisserie";
+    if(/gg_delihot/i.test(m.id))return "Deli hot bar chicken";
+  }
+  return alts.opts[0]||"Swap meat";
+}
 /* ---- calories (USDA-based est., round to 10; Other → ?) ---- */
 const PROTEIN_CAL=C.PROTEIN_CAL||{};
 const round10=n=>n==null||!isFinite(n)?null:Math.round(n/10)*10;
@@ -2187,13 +2252,13 @@ function isHolidayOff(date){const h=holidayOn(date);if(!h)return null;return get
 
 /* ---- Steve home: interactive week brochure board (photo-real, fit-all-7) ---- */
 const HOME_MOCK=[
-  {letter:"M",name:"Steak",art:"steak",note:"Grill night"},
-  {letter:"T",name:"Rice bowl",art:"bowl",note:"Leftovers"},
-  {letter:"W",name:"Burgers",art:"burger",note:"Grill night"},
+  {letter:"M",name:"Steak",art:"steak",note:"Grill"},
+  {letter:"T",name:"Quesadilla",art:"quesadilla",note:"Leftovers"},
+  {letter:"W",name:"Burgers",art:"burger",note:"Grill"},
   {letter:"T",name:"Leftovers",art:"leftover",note:"Leftovers"},
-  {letter:"F",name:"Chicken",art:"chicken",note:"Grill night"},
-  {letter:"S",name:"Quesadilla",art:"quesadilla",note:"Leftovers"},
-  {letter:"S",name:"Brats",art:"brat",note:"Grill night"}
+  {letter:"F",name:"Chicken",art:"chicken",note:"Grill"},
+  {letter:"S",name:"Rice bowl",art:"bowl",note:"Leftovers"},
+  {letter:"S",name:"Brats",art:"brat",note:"Grill"}
 ];
 function isReturningUser(){
   try{
@@ -2432,20 +2497,34 @@ function meals(){
   const yesN=Object.values(st.meals).filter(x=>x==="yes").length;
   const grabs=list.filter(m=>m.grab), bfs=list.filter(m=>m.bf), customs=CUSTOM_MEALS.filter(m=>rateOf(m.id)!==-1);
   const rateStrip=id=>{const r=rateOf(id);return `<div class="rate" onclick="event.stopPropagation()" role="group" aria-label="Rate this meal">${[[-1,"👎","Tried it, no. Never suggest again"],[1,"👍","Good"],[2,"★","Favorite"]].map(([v,e,t])=>`<button type="button" data-rate="${v}" data-m="${id}" aria-pressed="${r===v}" aria-label="${t}" title="${t}">${e}</button>`).join("")}</div>`};
-  const row=m=>{const a=st.meals[m.id]||"";const op=st.tip===m.id;const po=st.open==="m:"+m.id;const multi=!!m.protein;
-     const opts=[...(m.v||[]),...(st.custom["prot:"+m.id]||[])];
+  const row=m=>{
+     const a=st.meals[m.id]||"";
+     const op=st.tip===m.id;
+     const po=st.open==="m:"+m.id;
+     const alts=mealPickerAlts(m);
+     const multi=!!(alts&&alts.multi);
+     const opts=alts?alts.opts:[];
      const tag=m.tag?esc(m.tag):(m.bf?"Breakfast":"");
-     return `<div class="meal ${a}${m.custom?" custom-m":""}" data-mid="${m.id}"><div class="mrow"><div class="mtop"><span class="me">${m.emoji}</span>${pcBadge(m.prep,m.cook||0,true,false,mealBaseCal(m.id))}</div><div class="mt"><b>${rateOf(m.id)===2?"★ ":""}${esc(m.name)}</b><br>
-       ${tag&&!m.grab?`<span class="meal-tag">${tag}</span> `:""}${m.grab?`<span class="gtag"><span class="emo">🛍</span> Grab & go</span> `:""}${m.v?`<span class="vchip${multi?" multi":""}" data-mv="${m.id}">${esc(multi?mvLabel(m.id):mv(m.id))} ▾</span> `:""}${!m.grab&&fm&&m.grill?`<span class="fb">🔥 ${esc((m.time||"").split(" (")[0])}</span>`:m.grab?`<span class="fb">⏱ ${esc(m.time||"0-5 min")}</span>`:""}</div>
+     const chip=alts?`<span class="vchip${multi?" multi":""}${alts.mode==="meatAlt"?" meat-alt":""}" data-mv="${m.id}" aria-label="Change ${alts.label||"cut"}">${esc(cleanCopy(mealPickerChipLabel(m,alts)))} ▾</span>`:"";
+     const pop=po&&alts?(multi
+       ?proteinPop(m.id,m.id==="steak"||alts.label==="cuts"?"Which cuts? (pick several)":"Which kinds? (pick several)",opts,mvAll(m.id),true)
+       :popHTML(alts.mode==="meatAlt"?"Swap meat or cut":(m.id==="steak"?"Which cut?":"Which kind?"),opts,mealPickerChipLabel(m,alts),false)):"";
+     return `<div class="meal ${a}${m.custom?" custom-m":""}" data-mid="${m.id}"><div class="mrow"><div class="mtop"><span class="me">${m.emoji}</span>${pcBadge(m.prep,m.cook||0,true,false,mealBaseCal(m.id))}</div><div class="mt"><b>${rateOf(m.id)===2?"★ ":""}${esc(cleanCopy(m.name))}</b><br>
+       ${tag&&!m.grab?`<span class="meal-tag">${tag}</span> `:""}${m.grab?`<span class="gtag"><span class="emo">🛍</span> Grab and go</span> `:""}${chip}${!m.grab&&fm&&m.grill?`<span class="fb">🔥 ${esc(cleanCopy((m.time||"").split(" (")[0]))}</span>`:m.grab?`<span class="fb">⏱ ${esc(cleanCopy(m.time||"0 to 5 min"))}</span>`:""}</div>
        <div class="yn"><button class="y${a==="yes"?" sel":""}" data-m="${m.id}" data-a="yes">Yes</button><button class="n${a==="no"?" sel":""}" data-m="${m.id}" data-a="no">No</button></div></div>
-       ${po?(multi?proteinPop(m.id,m.id==="steak"?"Which cuts? (pick several)":"Which kinds? (pick several)",opts,mvAll(m.id),true):popHTML(m.id==="steak"?"Which cut?":"Which kind?",opts,mv(m.id),false)):""}
+       ${pop}
        <button class="tipbtn" data-tip="${m.id}">${op?"▾":"▸"} ${m.grab?"How it works":"How to cook it"}</button>${op?tipHTML(m):""}
-       ${m.custom?`<div class="m-edit"><button type="button" data-cedit="${m.id}">Edit name</button><button type="button" data-cdel="${m.id}">Delete</button></div>${rateStrip(m.id)}`:""}</div>`};
+       ${m.custom?`<div class="m-edit"><button type="button" data-cedit="${m.id}">Edit name</button><button type="button" data-cdel="${m.id}">Delete</button></div>${rateStrip(m.id)}`:""}</div>`;
+  };
   const from=pool.length?mealListOffset+1:0, to=Math.min(mealListOffset+page.length,pool.length);
-  card.innerHTML=`<div class="emoji">🥩</div><h1>What sounds good?</h1><p class="sub">Tap Yes or No on each.${fm?" 🔥 = great on your Foreman.":""} Showing ${from}-${to} of ${pool.length}.</p>
+  card.innerHTML=`<div class="meals-head">
+    <div class="meals-head-row"><div class="emoji">🥩</div><button type="button" class="gear ico-btn" id="mealsGear" aria-label="Settings">${icons.gear}</button></div>
+    <h1>What sounds good?</h1>
+    <p class="sub">Tap Yes or No on each.${fm?" 🔥 = great on your Foreman.":""} Showing ${from} to ${to} of ${pool.length}. Tap ▾ to swap meat or cut.</p>
+   </div>
    <div class="meals">${page.map(row).join("")}</div>
    ${bfs.length?`<p class="lbl">Breakfast</p><div class="meals">${bfs.map(row).join("")}</div>`:""}
-   ${grabs.length?`<p class="lbl">Grab & go (0-5 min · no real cooking)</p><div class="meals">${grabs.map(row).join("")}</div>`:""}
+   ${grabs.length?`<p class="lbl">Grab and go (0 to 5 min · no real cooking)</p><div class="meals">${grabs.map(row).join("")}</div>`:""}
    ${customs.length?`<p class="lbl">Your custom meals</p><div class="meals">${customs.map(row).join("")}</div>`:""}
    ${removed.length?`<details class="box"><summary>Removed meals (${removed.length})</summary><p class="no" style="margin:6px 0">👎 = never suggest again. Hidden from suggestions and Swap. Tap Restore to bring one back.</p>${removed.map(m=>`<div class="mrow" style="margin-top:6px"><span>${m.emoji} ${esc(m.name)}</span><button class="popt" style="margin-left:auto" data-restore="${m.id}">Restore</button></div>`).join("")}</details>`:""}
    <p class="lbl">Something else you like?</p>
@@ -2453,15 +2532,27 @@ function meals(){
    ${tipsBox()}
    ${hasMore?`<button class="next" id="moreMeals" style="margin-bottom:10px;background:var(--chip)">Next 7</button>`:""}
    ${btns(yesN?`Next → (${yesN} yes)`:"Next →",false,yesN?null:"Skip: pick for me")}`;
+  const gearBtn=$("mealsGear");
+  if(gearBtn)gearBtn.onclick=e=>{e.preventDefault();e.stopPropagation();openSettings()};
   card.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const id=b.dataset.m;st.meals[id]=st.meals[id]===b.dataset.a?undefined:b.dataset.a;if(!st.meals[id])delete st.meals[id];syncBreakfastFromMeals();render()});
   const mm=$("moreMeals");if(mm)mm.onclick=()=>appendMoreMeals();
   card.querySelectorAll("[data-restore]").forEach(b=>b.onclick=()=>{setRate(b.dataset.restore,0);render()});
   card.querySelectorAll("[data-tip]").forEach(b=>b.onclick=()=>{st.tip=st.tip===b.dataset.tip?null:b.dataset.tip;render()});
-  card.querySelectorAll("[data-mv]").forEach(b=>b.onclick=()=>{const k="m:"+b.dataset.mv;st.open=st.open===k?null:k;st.cOpen=null;render()});
-  card.querySelectorAll(".pop .popt[data-v]").forEach(b=>b.onclick=()=>{const id=st.open.slice(2);const m=M(id);
-    if(m&&m.protein){const set=new Set(mvAll(id));set.has(b.dataset.v)?set.delete(b.dataset.v):set.add(b.dataset.v);if(!set.size)set.add(b.dataset.v);st.mealVs[id]=[...set];st.mealV[id]=st.mealVs[id][0]}
-    else{st.mealV[id]=b.dataset.v;st.mealVs[id]=[b.dataset.v];st.open=null}
-    st.meals[id]="yes";render()});
+  card.querySelectorAll("[data-mv]").forEach(b=>b.onclick=e=>{e.stopPropagation();const k="m:"+b.dataset.mv;st.open=st.open===k?null:k;st.cOpen=null;render()});
+  card.querySelectorAll(".pop .popt[data-v]").forEach(b=>b.onclick=()=>{
+    const id=st.open.slice(2);const m=M(id);const alts=mealPickerAlts(m);const v=b.dataset.v;
+    /* Meat-alt swap to another meal (rotisserie → other chicken option) */
+    const swapId=MEAL_PICKER_SWAP[v];
+    if(alts&&alts.mode==="meatAlt"&&swapId&&swapId!==id){
+      delete st.meals[id];
+      st.meals[swapId]="yes";
+      st.mealV[swapId]=v;st.mealVs[swapId]=[v];
+      st.open=null;st.cOpen=null;syncBreakfastFromMeals();render();return;
+    }
+    if(m&&(m.protein||(alts&&alts.multi))){const set=new Set(mvAll(id));set.has(v)?set.delete(v):set.add(v);if(!set.size)set.add(v);st.mealVs[id]=[...set];st.mealV[id]=st.mealVs[id][0]}
+    else{st.mealV[id]=v;st.mealVs[id]=[v];st.open=null}
+    st.meals[id]="yes";render();
+  });
   card.querySelectorAll(".pop [data-other]").forEach(b=>b.onclick=()=>{const id=st.open.slice(2);st.cOpen="prot:"+id;render();const i=$("cin");if(i)i.focus()});
   const pd=$("protDone");if(pd)pd.onclick=()=>{st.open=null;st.cOpen=null;render()};
   const ca=$("cadd");if(ca&&st.cOpen&&String(st.cOpen).startsWith("prot:")){const add=()=>{const id=st.cOpen.slice(5);const v=$("cin").value.trim().slice(0,30);if(!v)return;
