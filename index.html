@@ -699,11 +699,11 @@
   .wk-col.tone-slate .wk-col-name{color:#d5dee8}
   html[data-theme="light"] .wk-col.tone-slate .wk-col-name{color:#173042}
   .wk-col-note{
-    font-size:8px;font-weight:700;line-height:1.2;color:var(--wsoft);
-    /* Wrap long notes to 2 lines at 390; no mid-word breaks, no single-line ellipsis cut */
-    overflow:hidden;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
+    font-size:9px;font-weight:700;line-height:1.15;color:var(--wsoft);
+    /* Wrap notes at 390 (Make extra for tomorrow) instead of single-line ellipsis; labels stay 1 line */
+    overflow:hidden;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;
     word-break:normal;overflow-wrap:normal;hyphens:none;
-    min-height:1.2em;max-height:2.5em;max-width:100%;padding:0 1px;
+    min-height:1.15em;max-height:3.45em;max-width:100%;padding:0 1px;
   }
   /* Legacy chip hooks still used in day cards */
   .wk-chip-art{width:40px;height:40px;display:block;object-fit:cover;background:#1a2430;border-radius:4px}
@@ -3264,7 +3264,7 @@ function boardNote(d){
   let n=cleanCopy(d.note||"");
   n=n.replace(/^⏱\s*/,"").replace(/cook night:?\s*/ig,"");
   /* Prefer short canned one-liners (no slash, no jammed words). */
-  if(/make extra for (leftovers|lunch) tomorrow/i.test(n))return "Make extra tomorrow";
+  if(/make extra for (leftovers|lunch) tomorrow/i.test(n))return "Make extra for tomorrow";
   if(/Fridge leftovers/i.test(n)&&!/make extra/i.test(n))return "Fridge leftovers";
   if(/Freezer day/i.test(n)||/from the freezer/i.test(n))return "From the freezer";
   if(/Night off/i.test(n))return "Night off";
