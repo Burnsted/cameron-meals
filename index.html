@@ -184,7 +184,7 @@
   .gone{opacity:.45}
   .gone .have{background:var(--wgold,#fbbf24);color:#1a1a1a}
   .gone .nm{text-decoration:line-through}
-  .gh{display:block;background:#173042;color:#fff;border-radius:16px;padding:14px;text-decoration:none;margin:0 0 14px;box-shadow:0 8px 22px rgba(23,48,66,.18)}
+  .gh{display:none!important} /* Steve: hide repo/dev card from Cameron view */
   .gh b{font-size:16px}.gh span{display:block;font-size:13px;opacity:.85;margin-top:3px;font-weight:650}
   .wbtn{display:block;width:100%;border:0;border-radius:14px;min-height:52px;font:inherit;font-weight:800;font-size:16px;cursor:pointer;margin-top:10px}
   .wbtn.p{background:linear-gradient(160deg,var(--teal),var(--tealD));color:#fff}
@@ -687,20 +687,22 @@
     object-fit:cover;display:block;
   }
   .wk-col-name{
-    font-family:Fraunces,Georgia,serif;font-size:10px;font-weight:800;line-height:1.2;
+    font-family:Fraunces,Georgia,serif;font-size:10px;font-weight:800;line-height:1.15;
     letter-spacing:-.02em;color:var(--wink);
-    /* Full short names — no mid-word ellipsis truncate at 390 */
-    overflow:visible;white-space:normal;word-break:break-word;hyphens:manual;
-    min-height:2.4em;padding:0 1px;
+    /* Steve: no mid-word breaks at 390. Single line + ellipsis; shorter board labels. */
+    overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+    word-break:normal;overflow-wrap:normal;hyphens:none;
+    min-height:1.2em;max-width:100%;padding:0 1px;
   }
   .wk-col.tone-teal .wk-col-name{color:var(--tealD)}
   .wk-col.tone-coral .wk-col-name{color:var(--coral)}
   .wk-col.tone-slate .wk-col-name{color:#d5dee8}
   html[data-theme="light"] .wk-col.tone-slate .wk-col-name{color:#173042}
   .wk-col-note{
-    font-size:9px;font-weight:700;line-height:1.25;color:var(--wsoft);
-    overflow:visible;white-space:normal;word-break:break-word;
-    min-height:2.2em;padding:0 1px;
+    font-size:9px;font-weight:700;line-height:1.15;color:var(--wsoft);
+    overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+    word-break:normal;overflow-wrap:normal;hyphens:none;
+    min-height:1.15em;max-width:100%;padding:0 1px;
   }
   /* Legacy chip hooks still used in day cards */
   .wk-chip-art{width:40px;height:40px;display:block;object-fit:cover;background:#1a2430;border-radius:4px}
@@ -2253,11 +2255,11 @@ function isHolidayOff(date){const h=holidayOn(date);if(!h)return null;return get
 /* ---- Steve home: interactive week brochure board (photo-real, fit-all-7) ---- */
 const HOME_MOCK=[
   {letter:"M",name:"Steak",art:"steak",note:"Grill"},
-  {letter:"T",name:"Quesadilla",art:"quesadilla",note:"Leftovers"},
+  {letter:"T",name:"Quesa",art:"quesadilla",note:"Lefto"},
   {letter:"W",name:"Burgers",art:"burger",note:"Grill"},
-  {letter:"T",name:"Leftovers",art:"leftover",note:"Leftovers"},
+  {letter:"T",name:"Lefto",art:"leftover",note:"Lefto"},
   {letter:"F",name:"Chicken",art:"chicken",note:"Grill"},
-  {letter:"S",name:"Rice bowl",art:"bowl",note:"Leftovers"},
+  {letter:"S",name:"Rice bowl",art:"bowl",note:"Lefto"},
   {letter:"S",name:"Brats",art:"brat",note:"Grill"}
 ];
 function isReturningUser(){
@@ -3089,14 +3091,14 @@ const CM_LOCK_LABEL={lock:"Lock in this week",locked:"Week locked",edit:"Edit we
 const DAY_LETTER=["M","T","W","T","F","S","S"];
 /* Board labels: short + complete (fit all 7 at 390). No cut ratios, no mid-word truncate. */
 const BOARD_SHORT={
-  steak:"Steak",burger:"Burgers",chicken:"Chicken",chixq:"Quesadilla",steakq:"Quesadilla",
-  stkegg:"Steak eggs",bowl:"Rice bowl",pork:"Pork chops",brats:"Brats",veg:"Veggies",
-  gg_rotisserie:"Rotisserie",gg_pubsub:"Pub Sub",gg_aldirot:"Rotisserie",gg_delihot:"Deli hot",
-  gg_pizza:"Pizza",gg_burritos:"Burritos",gg_sushi:"Sushi",gg_pbox:"Protein box",
-  x_smash_burger:"Burgers",x_cheese_burger:"Cheeseburger",x_sirloin_plate:"Sirloin",
-  x_ribeye_simple:"Ribeye",x_strip_onion:"NY strip",x_flat_iron:"Flat iron",x_chuck_eye:"Chuck eye",
-  x_chix_lemon:"Chicken",x_chix_cajun:"Chicken",x_chix_bbq:"BBQ chicken",x_chix_thighs:"Thighs",
-  x_chix_nugget:"Tenders",x_pork_bbq:"Pork chops",x_pork_garlic:"Pork chops",
+  steak:"Steak",burger:"Burgers",chicken:"Chicken",chixq:"Quesa",steakq:"Quesa",
+  stkegg:"Steak eggs",bowl:"Rice bowl",pork:"Pork",brats:"Brats",veg:"Veggies",
+  gg_rotisserie:"Rotis",gg_pubsub:"Pub Sub",gg_aldirot:"Rotis",gg_delihot:"Deli",
+  gg_pizza:"Pizza",gg_burritos:"Burritos",gg_sushi:"Sushi",gg_pbox:"Protein",
+  x_smash_burger:"Burgers",x_cheese_burger:"Cheese",x_sirloin_plate:"Sirloin",
+  x_ribeye_simple:"Ribeye",x_strip_onion:"NY strip",x_flat_iron:"Flat iron",x_chuck_eye:"Chuck",
+  x_chix_lemon:"Chicken",x_chix_cajun:"Chicken",x_chix_bbq:"BBQ chix",x_chix_thighs:"Thighs",
+  x_chix_nugget:"Tenders",x_pork_bbq:"Pork",x_pork_garlic:"Pork",
   x_italian_sausage:"Sausage",x_smoked_sausage:"Sausage"
 };
 function mealArtKeyFromId(id, dinner){
@@ -3148,7 +3150,7 @@ function chipMealName(d){
   if(d.kind==="left"||(!d.cook&&!d.grab&&/leftover|round 2/i.test(d.dinner||""))){
     const remake=d.meal&&BOARD_SHORT[d.meal];
     if(remake&&!/Burgers|Steak$|Chicken$|Pork|Brats/i.test(remake))return remake;
-    return "Leftovers";
+    return "Lefto";
   }
   if(d.meal&&BOARD_SHORT[d.meal])return BOARD_SHORT[d.meal];
   const m=d.meal&&typeof M==="function"?M(d.meal):null;
@@ -3225,7 +3227,7 @@ function boardNote(d){
   if(d.kind==="hol")return "Holiday";
   if(d.kind==="out")return "Night off";
   if(d.kind==="rm")return "Open night";
-  if(d.kind==="left"||(!d.cook&&!d.grab))return "Leftovers";
+  if(d.kind==="left"||(!d.cook&&!d.grab))return "Lefto";
   if(d.grab)return "Grab and go";
   if(d.cook)return "Grill night";
   return "Easy night";
@@ -3973,7 +3975,6 @@ function renderWeek(){
     ${renderListItems(byA,filt,days)}
     ${typeof groceryEstimateHTML==="function"?groceryEstimateHTML():""}${typeof groceryFooterHTML==="function"?groceryFooterHTML():""}
   </section>
-  <a class="gh" href="${C.REPO.url}" target="_blank" rel="noopener"><b>🛠️ Your own repo, cameron-meals</b><span>Edit meals.js on GitHub to change your menu.</span></a>
   <button type="button" class="share-app-quiet" id="shareAppQuiet">Share this app</button>
   <button type="button" class="wbtn p ico-btn" id="bk">${icons.back} Back to my picks</button><button type="button" class="wbtn g" id="rs2">Start over</button>
   <div class="foot">${otherStores.length?`Also shop: ${otherStores.map(esc).join(", ")}.`:""}</div>`;
