@@ -1482,7 +1482,7 @@ function sideCountInWeek(name,exceptIdx){
   const days=effDays(W.ov);
   let n=0;
   days.forEach((d,i)=>{
-    if(i===exceptIdx||d.kind==="hol"||d.kind==="rm"||d.kind==="out")return;
+    if(i===exceptIdx||d.kind==="hol"||d.kind==="rm"||d.kind==="out"||d.kind==="ff")return;
     if(d.sideName===name)n++;
     (d.extraSides||[]).forEach(s=>{if(s===name)n++});
   });
@@ -1627,7 +1627,7 @@ function sideSlotHTML(n, dayIdx, slotIdx, on){
   </div>`;
 }
 function sidesBlockHTML(d,i){
-  if(d.kind==="hol"||d.kind==="rm"||d.kind==="out")return "";
+  if(d.kind==="hol"||d.kind==="rm"||d.kind==="out"||d.kind==="ff")return "";
   const offers=ensureSideOffers(i,d);
   const active=dayActiveSides(d);
   const actSet=new Set(active);
@@ -1955,7 +1955,7 @@ function budCmp(total,days){
 
 
 function dayNut(d){
-  if(d.kind==="hol"||d.kind==="rm"||d.kind==="out")return "";
+  if(d.kind==="hol"||d.kind==="rm"||d.kind==="out"||d.kind==="ff")return "";
   return dayCalHTML(d);
 }
 
@@ -2192,7 +2192,7 @@ function mealTotalCal(mid, cutOverride){
   return {cal:total,unk,label:`This meal: ${round10(total)} cal${unk?" · some cal: ?":""}`};
 }
 function dayCalTotal(d){
-  if(d.kind==="hol"||d.kind==="rm"||d.kind==="out")return null;
+  if(d.kind==="hol"||d.kind==="rm"||d.kind==="out"||d.kind==="ff")return null;
   let total=0, unk=false;
   if(d.meal){const t=mealTotalCal(d.meal, d.cut); if(t.cal==null)unk=true; else total+=t.cal; if(t.unk)unk=true}
   else unk=true;
@@ -2238,14 +2238,14 @@ function isHolidayOff(date){const h=holidayOn(date);if(!h)return null;return get
 
 
 /* ---- Steve home: interactive week brochure board (photo-real, fit-all-7) ---- */
-/* Brochure sample: varied cooks Mon to Sun; at most one remake night (not leftover every other day). */
+/* Brochure sample: varied cooks, one remake, open night, fast food (not leftover every other day). */
 const HOME_MOCK=[
   {letter:"M",name:"Steak",art:"steak",note:"Grill"},
   {letter:"T",name:"Burgers",art:"burger",note:"Grill"},
-  {letter:"W",name:"Chicken",art:"chicken",note:"Grill"},
-  {letter:"T",name:"Quesa",art:"quesadilla",note:"Remake"},
-  {letter:"F",name:"Pork",art:"pork",note:"Grill"},
-  {letter:"S",name:"Brats",art:"brat",note:"Grill"},
+  {letter:"W",name:"Open",art:"plate",note:"Open night"},
+  {letter:"T",name:"Chicken",art:"chicken",note:"Grill"},
+  {letter:"F",name:"Fast food",art:"takeout",note:"Fast food"},
+  {letter:"S",name:"Quesa",art:"quesadilla",note:"Remake"},
   {letter:"S",name:"Bowl",art:"bowl",note:"Grill"}
 ];
 function isReturningUser(){
@@ -2303,17 +2303,14 @@ function enterSetupFromHome(mode){
     mode="build";
   }
   if(mode==="build"){
-    /* Resume mid-setup draft if present instead of jumping to empty meals */
+    /* Ted: Build my week goes to the board when possible, not mid meal-picker. */
     try{
-      const d=typeof loadDraft==="function"?loadDraft():null;
-      if(d&&d.st&&d.step&&d.step!=="home"&&d.view!=="week"){
-        if(typeof restoreDraft==="function")restoreDraft();
-        render();window.scrollTo(0,0);return;
-      }
       if(W&&W.base&&W.base.length){showWeekView();renderWeek();window.scrollTo(0,0);return}
+      if(st&&st.meals&&Object.values(st.meals).some(v=>v==="yes")){goBuildWeek();return}
     }catch(_){}
     const i=queue.indexOf("meals");
     pos=i>=0?i:1;
+    try{mealListOffset=0}catch(_){}
     render();window.scrollTo(0,0);return;
   }
   if(mode==="photos"){
@@ -2850,11 +2847,52 @@ function assertCamDinnerGroceryCoverage(){
 }
 window.__assertCamDinnerGroceryCoverage=assertCamDinnerGroceryCoverage;
 const SHUFFLE_PREV_KEY="cameron-meals-shuffle-prev-v1";
+/* Week role plan: cook nights + at most one leftover + open ~every other week + exactly one fast food. */
+function planWeekRoles(start,rnd){
+  const dayDate=i=>{const d=new Date(start);d.setDate(d.getDate()+i);return d};
+  const isHolIdx=i=>!!isHolidayOff(dayDate(i));
+  const roles=Array(7).fill("cook");
+  let leftDay=-1;
+  if(rnd(21)>0.32){
+    const leftCandidates=[2,3,4,5].filter(i=>!isHolIdx(i));
+    if(leftCandidates.length){
+      leftDay=leftCandidates[Math.floor(rnd(22)*leftCandidates.length)];
+      roles[leftDay]="left";
+    }
+  }
+  /* Open on odd week index so the current Oct 2026 week shows Open (about every other week). */
+  const seed=Math.floor(start.getTime()/86400000);
+  const weekIdx=Math.floor(seed/7);
+  let openDay=-1;
+  if(weekIdx%2===1){
+    const openCands=roles.map((r,i)=>r==="cook"&&i<6&&!isHolIdx(i)?i:-1).filter(i=>i>=0);
+    if(openCands.length){
+      openDay=openCands[Math.floor(rnd(23)*openCands.length)];
+      roles[openDay]="open";
+    }
+  }
+  let ffDay=-1;
+  {
+    const cookLeft=roles.map((r,i)=>r==="cook"&&!isHolIdx(i)?i:-1).filter(i=>i>=0);
+    let ffCands=cookLeft.filter(i=>i===4||i===5);
+    if(!ffCands.length)ffCands=cookLeft.filter(i=>i<6);
+    if(!ffCands.length)ffCands=cookLeft.slice();
+    if(ffCands.length){
+      ffDay=ffCands[Math.floor(rnd(24)*ffCands.length)];
+      roles[ffDay]="ff";
+    }
+  }
+  return {roles,leftDay,openDay,ffDay,weekIdx};
+}
 function shuffleWeek(){
-  // Self-check: uniqueness — used[] + while(used.includes) skip duplicates; SHUFFLE_PREV_KEY avoids immediate repeat set.
-  // Preserves cook vs leftover roles from the built week (not a fixed every-other-day leftover grid).
+  // Rebuild week roles (open / fast food / ≤1 leftover) then shuffle cook-night meals.
   if(!W){toast("Finish setup first");return}
-  const days=effDays(W.ov);
+  const start=weekStartDate();
+  const seed=Math.floor(start.getTime()/86400000)^Math.floor(Math.random()*1e6);
+  const rnd=n=>{const x=Math.sin((seed+1)*(n+1)*9301+49297)*233280;return x-Math.floor(x)};
+  const {roles,leftDay}=planWeekRoles(start,rnd);
+  const sideSlots=assignSides(start,7);
+  const breakfasts=planBreakfast(start);
   const pool=allMeals().filter(m=>!m.bf&&!m.grab&&m.id!=="veg"&&rateOf(m.id)!==-1);
   const more=(typeof MORE_MEALS!=="undefined"?MORE_MEALS:[]).filter(m=>!m.bf&&!m.grab&&rateOf(m.id)!==-1&&!pool.find(p=>p.id===m.id));
   let candidates=[...pool.filter(m=>yes(m.id)||rateOf(m.id)===2),...pool,...more];
@@ -2873,52 +2911,87 @@ function shuffleWeek(){
     if(g==="brats")return {id:m.id,e:m.emoji||"🌭",t:(m.name||"Sausage")+" round 2"};
     return {id:m.id,e:m.emoji||"🍱",t:"Leftovers · "+(m.name||"last night")};
   };
-  // Roles from the built week base: cook vs leftover vs skip
-  const roles=W.base.map((b,i)=>{
-    if((days[i]&&days[i].kind==="hol")||(b&&b.kind==="hol"))return "skip";
-    if(W.ov[i]&&(W.ov[i].t==="out"||W.ov[i].t==="rm"))return "skip";
-    if(b&&b.grab)return "skip";
-    if(b&&b.cook)return "cook";
-    return "left";
-  });
   const cookSlots=roles.map((r,i)=>r==="cook"?i:-1).filter(i=>i>=0);
   const used=[]; let fi=0;
   const cookPick={};
+  const dn=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  const days=[];
+  const mk=(i,o)=>{const d=new Date(start);d.setDate(d.getDate()+i);
+    const hol=isHolidayOff(d);
+    const icon=o.cook?"🔥":(o.kind==="left"?"🔁":(o.kind==="ff"?"🥡":(o.kind==="rm"?"🆓":"🍽")));
+    days.push({short:`${dn[i]} ${d.getMonth()+1}/${d.getDate()}`,date:d.getTime(),icon,bf:breakfasts[i],...o,
+      kind:hol?"hol":o.kind||null,hol:hol?hol.name:null})};
   cookSlots.forEach(i=>{
-    const d=days[i];
-    if(d.meal&&rateOf(d.meal)===2&&W.ov[i]&&W.ov[i].t==="pick"){used.push(d.meal);cookPick[i]=M(d.meal)||{id:d.meal,emoji:d.e,name:d.dinner};return}
     let m=fresh[fi++];
     while(m&&used.includes(m.id))m=fresh[fi++];
     if(!m)m=candidates.find(x=>!used.includes(x.id));
+    if(!m)m=candidates[0];
     if(!m)return;
     used.push(m.id);
     cookPick[i]=m;
-    const sideName=d.sideName||(W.daySides&&W.daySides[i]&&W.daySides[i][0])||null;
+  });
+  for(let i=0;i<7;i++){
+    const side=sideSlots[i];
+    if(roles[i]==="open"){
+      mk(i,{g:null,cook:false,meal:null,e:"🆓",dinner:"Open night",cut:null,kind:"rm",
+        note:"Open night: no fixed meal. Cook whatever you want, eat out, or skip. No groceries planned for dinner.",
+        lunch:"Lunch on your own",sideName:null});
+      continue;
+    }
+    if(roles[i]==="ff"){
+      mk(i,{g:null,cook:false,meal:null,e:"🥡",dinner:"Fast food",cut:null,kind:"ff",
+        note:"Fast food night: pick a drive thru or counter. No groceries for dinner.",
+        lunch:"Lunch on your own",sideName:null});
+      continue;
+    }
+    if(roles[i]==="left"){
+      let prevCook=-1;
+      for(let j=i-1;j>=0;j--){if(roles[j]==="cook"){prevCook=j;break}}
+      const pm=prevCook>=0?cookPick[prevCook]:null;
+      if(!pm){
+        mk(i,{g:null,cook:false,meal:null,e:"🔁",dinner:"Leftovers",cut:null,kind:"left",
+          note:"",lunch:"Leftovers + side",sideName:side});
+        continue;
+      }
+      const lm=leftMealFor(pm);
+      const g=MG[pm.id]||MG[lm.id]||null;
+      mk(i,{g,cook:false,meal:lm.id,e:lm.e,dinner:lm.t,cut:null,kind:"left",
+        note:"",lunch:"Leftovers + "+(side||"side").toLowerCase(),sideName:side});
+      continue;
+    }
+    const m=cookPick[i];
+    if(!m){
+      mk(i,{cook:false,meal:null,e:"🍽",dinner:"Easy night",note:"",lunch:"Lunch on your own",sideName:side});
+      continue;
+    }
     const g=MG[m.id]||null;
     const cut=m.protein||g?fixNextCut(m.id==="burger"||g==="burger"?"burger":g||m.id,{}):null;
     const title=mealTitle(m.id,cut)||m.name;
     const makeExtra=roles[i+1]==="left";
-    const note=makeExtra
-      ?(m.time?("⏱ "+m.time+". Cook night: make extra for leftovers tomorrow."):"Cook night: make extra for lunch tomorrow. Fridge leftovers 3 to 4 days.")
-      :(m.time?("⏱ "+m.time):"Cook night. Plate with a side.");
-    W.ov[i]={t:"pick",meal:m.id,e:m.emoji,dinner:sideName?title+" + "+sideName:title,cut:cut||null,cook:true,note,lunch:d.lunch||"Lunch on your own",sideName,g,kind:null};
-  });
-  roles.forEach((r,i)=>{
-    if(r!=="left")return;
-    let prevCook=-1;
-    for(let j=i-1;j>=0;j--){if(roles[j]==="cook"){prevCook=j;break} if(roles[j]==="skip")continue; break;}
-    const d=days[i];
-    const pm=prevCook>=0?cookPick[prevCook]:null;
-    if(!pm){
-      W.ov[i]={t:"left",meal:null,e:"🔁",dinner:"Leftovers",cook:false,note:"",lunch:d.lunch||"Leftovers + side",sideName:d.sideName||null,g:null,kind:"left"};
-      return;
+    let note=makeExtra
+      ?(m.time?("⏱ "+m.time+". Cook night: make extra for leftovers tomorrow."):"Cook night: make extra for leftovers tomorrow. Fridge leftovers 3 to 4 days.")
+      :(m.time?("⏱ "+m.time):"Cook night. Grill or Foreman, then plate with a side.");
+    let dinner=side?title+" + "+side:title;
+    let lunch=i===0?"Use what's in the fridge for lunch":"Lunch on your own";
+    if(i===6){
+      dinner=`${title} (from the freezer)${side?" + "+side:""}`;
+      note="Freezer day: grill thawed portions; eat one for lunch, one for dinner.";
+      lunch=`${title} (just grilled)${side?" + "+side.toLowerCase():""}`;
     }
-    const lm=leftMealFor(pm);
-    const g=MG[pm.id]||MG[lm.id]||null;
-    W.ov[i]={t:"pick",meal:lm.id,e:lm.e,dinner:lm.t,cut:null,cook:false,note:"",lunch:d.lunch||("Leftovers + "+(d.sideName||"side").toLowerCase()),sideName:d.sideName||null,g,kind:"left"};
-  });
-  const bfs=planBreakfast(weekStartDate());
-  [...cookSlots, ...roles.map((r,i)=>r==="left"?i:-1).filter(i=>i>=0)].forEach(i=>{if(W.ov[i])W.ov[i].bf=bfs[i]});
+    mk(i,{g,cook:true,meal:m.id,e:m.emoji,dinner,cut:cut||null,note,lunch,sideName:side});
+  }
+  days.forEach((d,i)=>{if(d.kind==="hol"){d.dinner=d.hol;d.e="🎉";d.note="";d.cook=false;d.meal=null;d.grab=false}});
+  if(!days.some(d=>d.kind==="ff")){
+    const slots=days.map((d,i)=>i).filter(i=>days[i].cook&&days[i].kind!=="hol");
+    if(slots.length){
+      const idx=slots[Math.floor(rnd(25)*slots.length)];
+      days[idx]={...days[idx],g:null,cook:false,meal:null,e:"🥡",dinner:"Fast food",cut:null,kind:"ff",grab:false,
+        note:"Fast food night: pick a drive thru or counter. No groceries for dinner.",
+        lunch:"Lunch on your own",sideName:null,icon:"🥡"};
+    }
+  }
+  W={base:days,ov:{},groups:W.groups||[],extra:W.extra||[],F:W.F||null,have:new Set(),ck:new Set(),open:null,items:[],listFilter:null,shopHi:null,daySides:{},sideOffers:{},dayMealOffers:{}};
+  days.forEach((d,i)=>{const xs=dayActiveSides(d);if(xs.length)W.daySides[i]=xs});
   try{localStorage.setItem(SHUFFLE_PREV_KEY,JSON.stringify(used))}catch(_){}
   recomputeList();renderWeek();toast("Week shuffled. List and budget updated");
 }
@@ -2957,15 +3030,10 @@ function buildWeek(){
   const seed=Math.floor(start.getTime()/86400000);
   const rnd=n=>{const x=Math.sin((seed+1)*(n+1)*9301+49297)*233280;return x-Math.floor(x)};
   const shuffleArr=(arr,salt)=>{const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd(salt+i)*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-  /* Ted: varied cook nights across the week. At most one leftover remake after a make-extra cook, not leftover every other day. */
+  /* Ted: varied cook nights. At most one leftover remake after make-extra.
+     Open night about every other week. Fast food once per week. */
   groups=shuffleArr(groups.length?groups:["chicken","burger","steak"],11);
-  const roles=Array(7).fill("cook");
-  let leftDay=-1;
-  if(groups.length&&rnd(21)>0.32){
-    const leftCandidates=[2,3,4,5];
-    leftDay=leftCandidates[Math.floor(rnd(22)*leftCandidates.length)];
-    roles[leftDay]="left";
-  }
+  const {roles,leftDay}=planWeekRoles(start,rnd);
   const cookIdx=roles.map((r,i)=>r==="cook"?i:-1).filter(i=>i>=0);
   const groupSeq=[];
   let gi=0;
@@ -2978,12 +3046,24 @@ function buildWeek(){
   });
   const mk=(i,o)=>{const d=new Date(start);d.setDate(d.getDate()+i);
     const hol=isHolidayOff(d);
-    const icon=o.cook?"🔥":(o.kind==="left"?"🔁":"🍽");
+    const icon=o.cook?"🔥":(o.kind==="left"?"🔁":(o.kind==="ff"?"🥡":(o.kind==="rm"?"🆓":"🍽")));
     days.push({short:`${dn[i]} ${d.getMonth()+1}/${d.getDate()}`,date:d.getTime(),icon,bf:breakfasts[i],sideName:sideSlots[i],...o,
       kind:hol?"hol":o.kind||null,hol:hol?hol.name:null})};
   let cookN=0;
   for(let i=0;i<7;i++){
     const side=sideSlots[i];
+    if(roles[i]==="open"){
+      mk(i,{g:null,cook:false,meal:null,e:"🆓",dinner:"Open night",cut:null,kind:"rm",
+        note:"Open night: no fixed meal. Cook whatever you want, eat out, or skip. No groceries planned for dinner.",
+        lunch:"Lunch on your own",sideName:null});
+      continue;
+    }
+    if(roles[i]==="ff"){
+      mk(i,{g:null,cook:false,meal:null,e:"🥡",dinner:"Fast food",cut:null,kind:"ff",
+        note:"Fast food night: pick a drive thru or counter. No groceries for dinner.",
+        lunch:"Lunch on your own",sideName:null});
+      continue;
+    }
     if(roles[i]==="left"){
       let prevCook=-1;
       for(let j=i-1;j>=0;j--){if(roles[j]==="cook"){prevCook=j;break}}
@@ -3025,6 +3105,19 @@ function buildWeek(){
     }
   }
   days.forEach((d,i)=>{if(d.kind==="hol"){d.dinner=d.hol;d.e="🎉";d.note="";d.cook=false;d.meal=null;d.grab=false}});
+  /* Guarantee one fast food night even if a holiday landed on the first pick. */
+  if(!days.some(d=>d.kind==="ff")){
+    const slots=days.map((d,i)=>i).filter(i=>days[i].cook&&days[i].kind!=="hol"&&!days[i].grab&&days[i].kind!=="left");
+    let pool=slots.filter(i=>i===4||i===5);
+    if(!pool.length)pool=slots.filter(i=>i<6);
+    if(!pool.length)pool=slots.slice();
+    if(pool.length){
+      const idx=pool[Math.floor(rnd(25)*pool.length)];
+      days[idx]={...days[idx],g:null,cook:false,meal:null,e:"🥡",dinner:"Fast food",cut:null,kind:"ff",grab:false,
+        note:"Fast food night: pick a drive thru or counter. No groceries for dinner.",
+        lunch:"Lunch on your own",sideName:null,icon:"🥡"};
+    }
+  }
   W={base:days,ov:{},groups,extra,F,have:new Set(),ck:new Set(),open:null,items:[],listFilter:null,shopHi:null,daySides:{},sideOffers:{},dayMealOffers:{}};
   days.forEach((d,i)=>{const xs=dayActiveSides(d);if(xs.length)W.daySides[i]=xs});
   recomputeList();
@@ -3122,7 +3215,7 @@ function buildList(groups,mealIds){
   if(bfBurWk){add("eggs",{why:"breakfast"});add("tortilla",{why:"breakfast"});add("cheeseslice",{why:"breakfast"});add("salsa",{why:"breakfast"})}
   /* DROPPED always-on: bread/season/spray/bags staple padding (Ted week-only grocery). */
   const sideNames=new Set();
-  days.filter(d=>d.kind!=="hol").forEach(d=>{if(d.sideName)sideNames.add(d.sideName);(d.extraSides||[]).forEach(s=>sideNames.add(s))});
+  days.filter(d=>d.kind!=="hol"&&d.kind!=="rm"&&d.kind!=="out"&&d.kind!=="ff").forEach(d=>{if(d.sideName)sideNames.add(d.sideName);(d.extraSides||[]).forEach(s=>sideNames.add(s))});
   sideNames.forEach(name=>{
     const meta=sideMeta(name), pr=meta.a!=null||meta.p!=null;
     const key=meta.custom?null:Object.keys(P).find(k=>P[k].n===name);
@@ -3238,21 +3331,24 @@ const BOARD_SHORT={
   x_smash_burger:"Burgers",x_cheese_burger:"Cheese",x_sirloin_plate:"Sirloin",
   x_ribeye_simple:"Ribeye",x_strip_onion:"NY strip",x_flat_iron:"Flat iron",x_chuck_eye:"Chuck",
   x_chix_lemon:"Chicken",x_chix_cajun:"Chicken",x_chix_bbq:"BBQ chix",x_chix_thighs:"Thighs",
-  x_chix_nugget:"Tenders",x_pork_bbq:"Pork",x_pork_garlic:"Pork",
-  x_italian_sausage:"Sausage",x_smoked_sausage:"Sausage"
+  x_chix_nugget:"Tenders",x_chix_salad:"Chicken salad",x_chili_dog:"Chili dogs",
+  x_pork_bbq:"Pork",x_pork_garlic:"Pork",
+  x_italian_sausage:"Sausage",x_smoked_sausage:"Sausage",x_hot_dog:"Hot dogs"
 };
 function mealArtKeyFromId(id, dinner){
   const t=String(id||"")+" "+String(dinner||"");
   if(/pizza|gg_pizza/i.test(t))return "pizza";
-  if(/gg_pubsub|sandwich|sub/i.test(t))return "sandwich";
+  if(/gg_pubsub|sandwich|sub|meatball/i.test(t))return "sandwich";
   if(/quesadilla|chixq|steakq|panini/i.test(t))return "quesadilla";
-  if(/bowl|rice bowl/i.test(t))return "bowl";
+  if(/x_chix_salad|chicken salad/i.test(t))return "bowl";
+  if(/egg.?fried|fried rice|x_egg_fried|bowl|rice bowl/i.test(t))return "bowl";
   if(/stkegg|steak\s*&\s*eggs|eggs\s*\+|bf_eggs|bf_bec/i.test(t))return "eggs";
-  if(/brat|sausage|hot.?dog|x_italian|x_smoked/i.test(t))return "brat";
+  if(/chili.?dog|x_chili_dog|hot.?dog|x_hot_dog|brat|sausage|x_italian|x_smoked/i.test(t))return "brat";
+  if(/x_chili_beef|beef chili|simple beef chili/i.test(t))return "bowl";
   if(/pork|x_pork/i.test(t))return "pork";
-  if(/burger|x_smash|x_cheese_burger/i.test(t))return "burger";
+  if(/sloppy|burger|x_smash|x_cheese_burger/i.test(t))return "burger";
   if(/chicken|chix|rotisserie|gg_aldirot|gg_delihot|x_chix/i.test(t))return "chicken";
-  if(/steak|sirloin|ribeye|strip|flat iron|chuck|x_sirloin|x_ribeye|x_strip|x_flat|x_chuck/i.test(t))return "steak";
+  if(/philly|steak|sirloin|ribeye|strip|flat iron|chuck|x_sirloin|x_ribeye|x_strip|x_flat|x_chuck|x_philly/i.test(t))return "steak";
   if(/burrito/i.test(t))return "grab";
   if(/sushi|protein box|gg_pbox/i.test(t))return "plate";
   if(/coffee/i.test(t))return "coffee";
@@ -3262,8 +3358,8 @@ function mealArtKey(d){
   /* Diversify: remake leftovers use their own meal photo (not cook-night burger ×3). */
   if(!d)return "plate";
   if(d.kind==="hol")return "holiday";
-  if(d.kind==="out")return "takeout";
-  if(d.kind==="rm")return "plate";
+  if(d.kind==="out"||d.kind==="ff")return "takeout";
+  if(d.kind==="rm")return "plate"; /* open night: empty plate (chili etc. use bowl/brat) */
   if(d.grab||(d.kind==="grab"))return "grab";
   const id=d.meal||"";
   const dinner=d.dinner||"";
@@ -3285,6 +3381,7 @@ function chipMealName(d){
   /* Short complete names for board — fit-all-seven at 390, no "Grilled chick…" / "80 o…". */
   if(!d)return "Open";
   if(d.kind==="hol")return shortMealWords(cleanCopy(d.hol||d.dinner||"Holiday"),2);
+  if(d.kind==="ff")return "Fast food";
   if(d.kind==="out")return "Eat out";
   if(d.kind==="rm")return "Open";
   if(d.kind==="left"||(!d.cook&&!d.grab&&/leftover|round 2/i.test(d.dinner||""))){
@@ -3323,6 +3420,7 @@ function shortMealWords(s,max){
 function chipRole(d){
   if(!d)return "";
   if(d.kind==="hol")return "holiday";
+  if(d.kind==="ff")return "fast food";
   if(d.kind==="out")return "eat out";
   if(d.kind==="rm")return "off";
   if(d.kind==="left")return "leftover";
@@ -3365,11 +3463,14 @@ function boardNote(d){
   if(/Your swap/i.test(n))return "Your swap";
   if(/Free night/i.test(n))return "Free night";
   if(/Grab & go night|Grab and go/i.test(n))return "Grab and go";
+  if(/Fast food night|drive thru/i.test(n))return "Fast food";
+  if(/Open night/i.test(n))return "Open night";
   if(/Grill or Foreman/i.test(n)||/^then plate/i.test(n)||/plate with a side/i.test(n))return "Grill night";
   n=n.replace(/^\.\s*/,"").replace(/\s+/g," ").trim();
   if(n)n=shortMealWords(n,6);
   if(n&&n.length>2&&n.toLowerCase()!=="meal")return n;
   if(d.kind==="hol")return "Holiday";
+  if(d.kind==="ff")return "Fast food";
   if(d.kind==="out")return "Night off";
   if(d.kind==="rm")return "Open night";
   if(d.kind==="left"||(!d.cook&&!d.grab))return "Leftovers";
@@ -4102,7 +4203,7 @@ function renderWeek(){
     ${d.bf?`<p class="dl b">${bfLine(d.bf)}</p>`:""}
     ${sidesBlockHTML(d,i)}
     ${m?`<div class="rec${W.open===i?" is-shown":""}"><h4>${m.emoji} ${esc(m.name)}</h4>${tipHTML(m).replace('class="tip"','')}</div>`:""}
-    <p class="hint">${W.open===i?"▾ tap to close":"▸ tap for how-to + temps"}</p>${rateRow(d.meal&&M(d.meal)?d.meal:null,i,d.short)}${d.kind==="rm"||d.kind==="hol"?"":logRow(i,d)}</div></div>`}).join("")}
+    <p class="hint">${W.open===i?"▾ tap to close":"▸ tap for how-to + temps"}</p>${rateRow(d.meal&&M(d.meal)?d.meal:null,i,d.short)}${d.kind==="rm"||d.kind==="hol"||d.kind==="ff"?"":logRow(i,d)}</div></div>`}).join("")}
   ${weekReview(days)}
   ${ratingsPanel()}
   ${W.extra.length?`<div class="nextwk">Next up: ${W.extra.map(g=>({pork:mv("pork"),brats:mv("brats"),chicken:"chicken",burger:"burgers",steak:"steak"}[g])).join(", ")}</div>`:""}
@@ -4378,7 +4479,7 @@ function effDays(ov){const s0=weekStartDate();return W.base.map((b,i)=>{const d=
 function recomputeList(){const days=effDays(W.ov).filter(d=>d.kind!=="hol");const gs=[...new Set(days.map(d=>d.g).filter(Boolean))];
   W.items=buildList(gs,[...new Set(days.map(d=>d.meal).filter(Boolean))])}
 function pcBadge(prep,cook,dark,reheat){return `<span class="pc${dark?" dk":""}"><span><span class="emo">🔪</span> ${prep} min prep</span><span><span class="emo">🔥</span> ${cook} min ${reheat?"reheat":"cook"}</span></span>`}
-function dayBadge(d){if(d.kind==="out"||d.kind==="rm")return "";if(d.kind==="left")return pcBadge(2,3,false,true);const m=d.meal&&M(d.meal);if(!m)return "";
+function dayBadge(d){if(d.kind==="out"||d.kind==="rm"||d.kind==="ff")return "";if(d.kind==="left")return pcBadge(2,3,false,true);const m=d.meal&&M(d.meal);if(!m)return "";
   if(d.cook||["chixq","steakq","stkegg"].includes(d.meal))return pcBadge(m.prep,m.cook);return pcBadge(2,3,false,true)}
 /* budget (saved on this phone) */
 const BKEY="cameron-meals-budget-v1";
