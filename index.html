@@ -2238,14 +2238,15 @@ function isHolidayOff(date){const h=holidayOn(date);if(!h)return null;return get
 
 
 /* ---- Steve home: interactive week brochure board (photo-real, fit-all-7) ---- */
+/* Brochure sample: varied cooks Mon to Sun; at most one remake night (not leftover every other day). */
 const HOME_MOCK=[
   {letter:"M",name:"Steak",art:"steak",note:"Grill"},
-  {letter:"T",name:"Quesa",art:"quesadilla",note:"Lefto"},
-  {letter:"W",name:"Burgers",art:"burger",note:"Grill"},
-  {letter:"T",name:"Lefto",art:"leftover",note:"Lefto"},
-  {letter:"F",name:"Chicken",art:"chicken",note:"Grill"},
-  {letter:"S",name:"Rice",art:"bowl",note:"Lefto"},
-  {letter:"S",name:"Brats",art:"brat",note:"Grill"}
+  {letter:"T",name:"Burgers",art:"burger",note:"Grill"},
+  {letter:"W",name:"Chicken",art:"chicken",note:"Grill"},
+  {letter:"T",name:"Quesa",art:"quesadilla",note:"Remake"},
+  {letter:"F",name:"Pork",art:"pork",note:"Grill"},
+  {letter:"S",name:"Brats",art:"brat",note:"Grill"},
+  {letter:"S",name:"Bowl",art:"bowl",note:"Grill"}
 ];
 function isReturningUser(){
   try{
@@ -2851,7 +2852,7 @@ window.__assertCamDinnerGroceryCoverage=assertCamDinnerGroceryCoverage;
 const SHUFFLE_PREV_KEY="cameron-meals-shuffle-prev-v1";
 function shuffleWeek(){
   // Self-check: uniqueness — used[] + while(used.includes) skip duplicates; SHUFFLE_PREV_KEY avoids immediate repeat set.
-  // Preserves cook-night + next-day leftover structure from the built week (item 20).
+  // Preserves cook vs leftover roles from the built week (not a fixed every-other-day leftover grid).
   if(!W){toast("Finish setup first");return}
   const days=effDays(W.ov);
   const pool=allMeals().filter(m=>!m.bf&&!m.grab&&m.id!=="veg"&&rateOf(m.id)!==-1);
@@ -2896,7 +2897,11 @@ function shuffleWeek(){
     const g=MG[m.id]||null;
     const cut=m.protein||g?fixNextCut(m.id==="burger"||g==="burger"?"burger":g||m.id,{}):null;
     const title=mealTitle(m.id,cut)||m.name;
-    W.ov[i]={t:"pick",meal:m.id,e:m.emoji,dinner:sideName?title+" + "+sideName:title,cut:cut||null,cook:true,note:m.time?("⏱ "+m.time+" · cook night: make extra for leftovers tomorrow."):"Cook night: make extra for lunch tomorrow. Fridge leftovers 3 to 4 days.",lunch:d.lunch||"Lunch on your own",sideName,g,kind:null};
+    const makeExtra=roles[i+1]==="left";
+    const note=makeExtra
+      ?(m.time?("⏱ "+m.time+". Cook night: make extra for leftovers tomorrow."):"Cook night: make extra for lunch tomorrow. Fridge leftovers 3 to 4 days.")
+      :(m.time?("⏱ "+m.time):"Cook night. Plate with a side.");
+    W.ov[i]={t:"pick",meal:m.id,e:m.emoji,dinner:sideName?title+" + "+sideName:title,cut:cut||null,cook:true,note,lunch:d.lunch||"Lunch on your own",sideName,g,kind:null};
   });
   roles.forEach((r,i)=>{
     if(r!=="left")return;
@@ -2946,38 +2951,77 @@ function buildWeek(){
     if(g==="pork")return {id:"bowl",e:"🍚",t:"BBQ pork rice bowl"};
     return {id:"brats",e:"🌭",t:`${mv("brats").replace(/ \(.*\)/,"")} round 2`};
   };
-  const lunchFor=(g,prev)=>prev?`Leftovers + ${sideSlots[prev].toLowerCase()}`:`Quick lunch + ${sideSlots[0].toLowerCase()}`;
+  const lunchFor=(g,prev)=>prev!=null&&prev>=0?`Leftovers + ${sideSlots[prev].toLowerCase()}`:`Quick lunch + ${sideSlots[0].toLowerCase()}`;
   const dn=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-  const icons=["🛒","🔥","🍽","🔥","🥩","🍽","🧊"];
   const days=[]; const custom=st.mealCustom.slice();
+  const seed=Math.floor(start.getTime()/86400000);
+  const rnd=n=>{const x=Math.sin((seed+1)*(n+1)*9301+49297)*233280;return x-Math.floor(x)};
+  const shuffleArr=(arr,salt)=>{const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd(salt+i)*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+  /* Ted: varied cook nights across the week. At most one leftover remake after a make-extra cook, not leftover every other day. */
+  groups=shuffleArr(groups.length?groups:["chicken","burger","steak"],11);
+  const roles=Array(7).fill("cook");
+  let leftDay=-1;
+  if(groups.length&&rnd(21)>0.32){
+    const leftCandidates=[2,3,4,5];
+    leftDay=leftCandidates[Math.floor(rnd(22)*leftCandidates.length)];
+    roles[leftDay]="left";
+  }
+  const cookIdx=roles.map((r,i)=>r==="cook"?i:-1).filter(i=>i>=0);
+  const groupSeq=[];
+  let gi=0;
+  cookIdx.forEach(()=>{
+    let g=groups[gi%groups.length];
+    if(groupSeq.length&&groups.length>1&&g===groupSeq[groupSeq.length-1]){
+      gi++; g=groups[gi%groups.length];
+    }
+    groupSeq.push(g); gi++;
+  });
   const mk=(i,o)=>{const d=new Date(start);d.setDate(d.getDate()+i);
     const hol=isHolidayOff(d);
-    days.push({short:`${dn[i]} ${d.getMonth()+1}/${d.getDate()}`,date:d.getTime(),icon:icons[i]||"🍽",bf:breakfasts[i],sideName:sideSlots[i],...o,
+    const icon=o.cook?"🔥":(o.kind==="left"?"🔁":"🍽");
+    days.push({short:`${dn[i]} ${d.getMonth()+1}/${d.getDate()}`,date:d.getTime(),icon,bf:breakfasts[i],sideName:sideSlots[i],...o,
       kind:hol?"hol":o.kind||null,hol:hol?hol.name:null})};
-  [0,1,2].forEach(k=>{
-    const g=groups[k]; if(!g)return;
-    const c=cookMeal(g), l=leftMeal(g), n=k<2?3:2, i=k*2, side=sideSlots[i];
-    mk(i,{g,cook:true,meal:c.id,e:c.e,dinner:`${c.t} + ${side}`,cut:c.cut,note:`Cook night: make extra for lunch tomorrow. Fridge leftovers 3 to 4 days; freeze what you won't eat.`,
-      lunch:i===0?"Use what's in the fridge for lunch":lunchFor(g,i-1)});
-    const lt=custom.length&&k===1?{id:null,e:"🍽️",t:custom.shift()+" (your pick)"}:l;
-    mk(i+1,{g:lt.id?g:null,cook:false,meal:lt.id,e:lt.e,dinner:lt.t,cut:lt.id?null:c.cut,
-      note:"",lunch:lunchFor(g,i),sideName:sideSlots[i+1]});
-    if(groups[k]==="steak"&&yes("stkegg")&&lt.id!=="stkegg"&&days[days.length-1].bf)days[days.length-1].bf={...breakfasts[i+1],label:"Steak & eggs (a few slices of last night's steak)",kcal:460};
-  });
-  if(F&&groups.length){const g=F,c=cookMeal(g);
-    mk(6,{g:F,cook:true,meal:c.id,e:c.e,dinner:`${custom.length?custom.shift()+" (your pick) or ":""}${c.t} (from the freezer) + ${sideSlots[6]}`,
-      cut:c.cut,note:"Freezer day: grill thawed portions; eat one for lunch, one for dinner.",lunch:`${c.t} (just grilled) + ${sideSlots[6].toLowerCase()}`});}
+  let cookN=0;
+  for(let i=0;i<7;i++){
+    const side=sideSlots[i];
+    if(roles[i]==="left"){
+      let prevCook=-1;
+      for(let j=i-1;j>=0;j--){if(roles[j]==="cook"){prevCook=j;break}}
+      const prevG=prevCook>=0&&days[prevCook]?days[prevCook].g:groups[0];
+      const l=leftMeal(prevG||groups[0]);
+      const lt=custom.length&&i===leftDay?{id:null,e:"🍽️",t:custom.shift()+" (your pick)"}:l;
+      mk(i,{g:lt.id?prevG:null,cook:false,meal:lt.id,e:lt.e,dinner:lt.t,cut:null,kind:"left",
+        note:"",lunch:lunchFor(prevG,prevCook),sideName:side});
+      if(prevG==="steak"&&yes("stkegg")&&lt.id!=="stkegg"&&days[i].bf)
+        days[i].bf={...breakfasts[i],label:"Steak & eggs (a few slices of last night's steak)",kcal:460};
+      continue;
+    }
+    let g=groupSeq[cookN++]||groups[0]||"chicken";
+    let c=cookMeal(g);
+    const makeExtra=roles[i+1]==="left";
+    let dinner=`${c.t} + ${side}`;
+    let note=makeExtra
+      ?"Cook night: make extra for leftovers tomorrow. Fridge leftovers 3 to 4 days; freeze what you will not eat."
+      :"Cook night. Grill or Foreman, then plate with a side.";
+    let lunch=i===0?"Use what's in the fridge for lunch":"Lunch on your own";
+    if(i===6&&F){
+      g=F; c=cookMeal(F);
+      dinner=`${custom.length?custom.shift()+" (your pick) or ":""}${c.t} (from the freezer) + ${side}`;
+      note="Freezer day: grill thawed portions; eat one for lunch, one for dinner.";
+      lunch=`${c.t} (just grilled) + ${side.toLowerCase()}`;
+    }
+    mk(i,{g,cook:true,meal:c.id,e:c.e,dinner,cut:c.cut,note,lunch});
+  }
   while(days.length<7){const i=days.length;mk(i,{cook:false,meal:null,e:"🍽",dinner:"Easy night",note:"",lunch:"Lunch on your own"});}
   const grabs=MEALS.filter(m=>m.grab&&yes(m.id));
   const gn=Math.min(getSettings().grabNights||0,grabs.length,2);
   if(grabs.length&&gn>0){
-    const slots=days.map((d,i)=>i).filter(i=>!days[i].cook&&days[i].kind!=="hol"&&!days[i].grab);
-    const seed=Math.floor(start.getTime()/86400000);
+    const slots=days.map((d,i)=>i).filter(i=>days[i].cook&&days[i].kind!=="hol"&&!days[i].grab);
     for(let n=0;n<gn&&slots.length;n++){
-      const idx=slots.splice((seed+n*3)%slots.length,1)[0];
+      const idx=slots.splice(Math.floor(rnd(40+n)*slots.length),1)[0];
       const gm=grabs[(seed+n)%grabs.length];
       days[idx]={...days[idx],grab:true,meal:gm.id,e:gm.emoji,dinner:gm.name+(gm.tag?` · ${gm.tag}`:""),
-        note:gm.time?`⏱ ${gm.time}`:"Grab & go night.",cook:false,kind:"grab"};
+        note:gm.time?`⏱ ${gm.time}`:"Grab & go night.",cook:false,kind:"grab",g:null};
     }
   }
   days.forEach((d,i)=>{if(d.kind==="hol"){d.dinner=d.hol;d.e="🎉";d.note="";d.cook=false;d.meal=null;d.grab=false}});
