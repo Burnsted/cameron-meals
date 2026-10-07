@@ -1098,10 +1098,10 @@ const WELCOME_KEY="cameron-meals-welcome-done-v1";
 function aboutNameRaw(){const a=(st&&st.about)||getAbout();return a&&Object.prototype.hasOwnProperty.call(a,"name")?String(a.name||"").trim():null}
 function displayName(){
   const n=aboutNameRaw();
-  // Item C: template import must never fall back to "Cameron"
+  // Untitled users get a neutral title (My Meal Picker), not a personal name
   if(n===null){
     if(st&&st._fromTemplate)return "";
-    return "Cameron";
+    return "";
   }
   return n;
 }
@@ -1708,12 +1708,12 @@ function startWelcome(force){
   let step=0;
   const a=()=>(st&&st.about)||getAbout();
   const steps=[
-    {id:"name",ask:"What's your name?",speak:"Welcome! What's your name? Type it or tap skip to stay as Cameron.",render(box){
+    {id:"name",ask:"What's your name?",speak:"Welcome! What's your name? Type it, or skip and add it later.",render(box){
       const cur=aboutNameRaw();
       box.innerHTML=tools()+ `<p class="welcome-q">What's your name?</p>
         <input class="welcome-field" id="w-name" placeholder="Your name" maxlength="30" value="${esc(cur===null?"":cur||"")}" autocomplete="off">
         <div class="welcome-opts"><button type="button" class="welcome-opt primary" data-next="1">Continue</button>
-        <button type="button" class="welcome-opt" data-cam="1">Keep Cameron</button></div>
+        <button type="button" class="welcome-opt" data-cam="1">Skip for now</button></div>
         ${hasSpeechRec()?`<button type="button" class="back-link" id="w-mic" aria-label="Answer by voice">${icons.mic}<span>Voice</span></button>`:""}`;
       bindTools(box,0);wireAllAutocomplete(box);
       const goN=()=>{const v=$("w-name").value.trim().slice(0,30);const ab=a();if(v){ab.name=v}else{ab.name=ab.name||""; }setAbout(ab);if(st)st.about=ab;refreshTitles();runStep(1)};
@@ -1721,8 +1721,8 @@ function startWelcome(force){
       box.querySelector("[data-cam]").onclick=()=>{const ab=a();delete ab.name;setAbout(ab);if(st)st.about=ab;refreshTitles();runStep(1)};
       const mic=$("w-mic");if(mic)mic.onclick=()=>startMic(t=>{$("w-name").value=t.trim().slice(0,30)});
     }},
-    {id:"equip",ask:"Do you still use your George Foreman grill?",speak:"Do you still cook on your George Foreman grill?",render(box){
-      box.innerHTML=tools()+ `<p class="welcome-q">Foreman grill still your go-to?</p>
+    {id:"equip",ask:"Do you cook on a George Foreman grill?",speak:"Do you cook on a George Foreman grill?",render(box){
+      box.innerHTML=tools()+ `<p class="welcome-q">Do you cook on a George Foreman grill?</p>
         <div class="welcome-opts">
           <button type="button" class="welcome-opt primary" data-y="1">Yes</button>
           <button type="button" class="welcome-opt" data-n="1">Not really</button>
@@ -1738,7 +1738,7 @@ function startWelcome(force){
           <button type="button" class="welcome-opt" data-s="Aldi">Aldi</button>
           <button type="button" class="welcome-opt" data-s="Publix">Publix</button>
         </div>
-        <input class="welcome-field" id="w-loc" placeholder="Store location (e.g. St. Pete)" maxlength="60" autocomplete="off">`;
+        <input class="welcome-field" id="w-loc" placeholder="Store location (e.g. downtown)" maxlength="60" autocomplete="off">`;
       bindTools(box,2);wireAllAutocomplete(box);
       box.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{
         const v=b.dataset.s, loc=($("w-loc").value||"").trim();
@@ -1794,8 +1794,8 @@ function startWelcome(force){
   // first card: tap to start (audio unlock)
   overlay.innerHTML=`<div class="welcome-card">
     <p class="welcome-hello">Welcome!</p>
-    <p class="welcome-sub">Tap to start a quick setup. I'll talk you through name, gear, stores, budget, breakfast, and exercise.</p>
-    <button type="button" class="welcome-opt primary" id="w-start">Welcome! Tap to start</button>
+    <p class="welcome-sub">Plan simple meals, a weekly menu, and a grocery list. Tap start for a short setup. We will cover your name, kitchen tools, stores, budget, breakfast, and exercise.</p>
+    <button type="button" class="welcome-opt primary" id="w-start">Tap to start</button>
     <div style="margin-top:12px"><button type="button" class="back-link" id="w-skip0">Skip</button></div>
   </div>`;
   overlay.querySelector("#w-start").onclick=()=>runStep(0);
@@ -2276,8 +2276,8 @@ function homeBrochureBoardHTML(){
     </button>`;
   }).join("");
   return `<section class="wk-board" aria-label="Week brochure">
-    <p class="wk-board-kicker">St. Pete grill week</p>
-    <h2 class="wk-board-title">Cameron Meals</h2>
+    <p class="wk-board-kicker">Your week of meals</p>
+    <h2 class="wk-board-title">Meal Picker</h2>
     <p class="wk-board-dates">Tap a day to open your week</p>
     <div class="wk-strip" role="list">${cells}</div>
   </section>`;
@@ -2371,7 +2371,7 @@ function render(){
     card.innerHTML=`<div class="emoji">🛒</div><h1>Where do you shop?</h1><p class="sub">Tap every store you use. Add a location for each (shown on your list).</p>
       ${chipList([...STORES,...st.extra],st.stores)}
       <div class="addrow"><input id="own" placeholder="Other store…" maxlength="30"><button id="add">Add</button></div>
-      ${picked.length?`<div class="sloc">${picked.map(s=>`<label>${esc(s)} location<input data-sloc="${esc(s)}" placeholder="e.g. 34th St N, St. Pete" maxlength="60" value="${esc(st.storeLoc[s]||"")}"></label>`).join("")}</div>`:""}
+      ${picked.length?`<div class="sloc">${picked.map(s=>`<label>${esc(s)} location<input data-sloc="${esc(s)}" placeholder="e.g. Main Street" maxlength="60" value="${esc(st.storeLoc[s]||"")}"></label>`).join("")}</div>`:""}
       ${btns("Next →",!st.stores.size)}`;
     bindChips(st.stores);
     card.querySelectorAll("[data-sloc]").forEach(inp=>{inp.oninput=()=>{st.storeLoc[inp.dataset.sloc]=inp.value.trim();saveStoreLoc()};inp.onclick=e=>e.stopPropagation()});
@@ -2398,13 +2398,13 @@ function render(){
     const fm=st.equip.has("foreman");
     const rest=C.EQUIP.filter(e=>!e.featured);
     card.innerHTML=`<div class="emoji">🍳</div><h1>What do you cook with?</h1><p class="sub">Tap what you've got. Meals lean toward these.</p>
-      <div class="feat${fm?" on":""}" id="fm"><div class="fe">🔥</div><div><b>George Foreman grill</b><div class="dad">🎁 Dad got you this. Still your go-to?</div></div><div class="ck">${fm?"✓":""}</div></div>
+      <div class="feat${fm?" on":""}" id="fm"><div class="fe">🔥</div><div><b>George Foreman grill</b><div class="dad">Handy for quick dinners. Tap if you have one.</div></div><div class="ck">${fm?"✓":""}</div></div>
       <p class="fnote">${fm?"✓ Yep. Meals and cook times are built around the Foreman.":"Tap the card if you still use it."}</p>
       <p class="lbl">Also have</p>
       <div class="chips">${rest.map(e=>`<span class="chip-row"><span class="emo">${e.emoji}</span><span class="chip${st.equip.has(e.id)?"":" off"}" data-e="${e.id}">${esc(e.label)}</span></span>`).join("")}${(st.custom.equip||[]).map(v=>`<span class="chip-row"><span class="emo">🔧</span><span class="chip cust${st.equip.has("c:"+v)?"":" off"}" data-e="c:${esc(v)}">${esc(v)}</span></span>`).join("")}${customChip("equip")}</div>${customRow("equip")}
       <p class="fnote">Coffee and drinks are on the next Yes or No page.</p>
       <div class="snap"><p class="lbl" style="margin-top:0">Anything else in your kitchen?</p>
-        <p>Not sure if you have something? 📸 Snap a photo of your counters/cabinets and send it to your chef bot. It'll tell you what you've got.</p>
+        <p>Not sure if you have something? 📸 Snap a photo of your counters or cabinets and send it to your chef bot. It will tell you what you have.</p>
         <span class="emo">📸</span> <button class="sbtn" id="kitSnap">Snap a photo</button><input type="file" accept="image/*" capture="environment" id="kitIn" hidden>
         <div class="thumbs" id="kitThumbs"></div><div id="kitAct"></div>
         <p class="muted" style="margin-top:6px">This page can't see what's in the photo. Your chef bot reads it. Photos stay on your phone unless you share them.</p></div>
@@ -3303,8 +3303,8 @@ function weekStripHTML(days){
     </button>`;
   }).join("");
   return `<section class="wk-board" aria-label="Week board">
-    <p class="wk-board-kicker">St. Pete grill week</p>
-    <h2 class="wk-board-title">Cameron Meals</h2>
+    <p class="wk-board-kicker">Your week of meals</p>
+    <h2 class="wk-board-title">Meal Picker</h2>
     <p class="wk-board-dates">Week of ${esc(cleanCopy(fmtWeek(s0)))}</p>
     <div class="wk-strip" role="list">${cells}</div>
   </section>`;
@@ -4361,7 +4361,7 @@ function guideHTML(g){return g?`Daily guide: <b>${g.lo.toLocaleString()} to ${g.
 function aboutStep(){const a=st.about;
   card.innerHTML=`<div class="emoji">🧍</div><h1>About me</h1><p class="sub">Optional. Gives you a general daily guide. Saved on this phone only.</p>
     <label class="fld" style="display:block;text-align:left;margin:0 0 8px;font-size:13px;color:var(--mut);font-weight:700">Your name
-      <input id="abName" maxlength="30" value="${esc(a.name!=null?a.name:"")}" placeholder="e.g. Cameron" autocomplete="off" style="width:100%;margin-top:4px;border-radius:12px;border:2px solid var(--chip);background:#0b1222;color:var(--ink);padding:12px;font-size:18px">
+      <input id="abName" maxlength="30" value="${esc(a.name!=null?a.name:"")}" placeholder="e.g. Alex" autocomplete="off" style="width:100%;margin-top:4px;border-radius:12px;border:2px solid var(--chip);background:#0b1222;color:var(--ink);padding:12px;font-size:18px">
     </label>
     <div class="ab-grid"><label>Age<input id="abAge" inputmode="numeric" type="number" min="13" max="100" value="${esc(a.age||"")}" placeholder="e.g. 24"></label>
       <label>Weight (lb)<input id="abLb" inputmode="decimal" type="number" min="60" max="700" value="${esc(a.lb||"")}" placeholder="e.g. 180"></label>
