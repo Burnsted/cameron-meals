@@ -689,11 +689,18 @@
   .wk-col-name{
     font-family:Fraunces,Georgia,serif;font-size:10px;font-weight:800;line-height:1.15;
     letter-spacing:-.02em;color:var(--wink);
-    /* Steve: no mid-word breaks at 390. Single line + ellipsis; shorter board labels. */
-    overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
-    word-break:normal;overflow-wrap:normal;hyphens:none;
-    min-height:1.2em;max-width:100%;padding:0 1px;
+    /* Steve soft: wrap to 2 lines of whole words at 390 (no Fast fo… / Lefto). */
+    overflow:hidden;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
+    word-break:normal;overflow-wrap:break-word;hyphens:none;
+    min-height:1.2em;max-height:2.4em;max-width:100%;padding:0 1px;
   }
+  /* Steve soft: FAB must not sit on This week heading or bury bottom content */
+  body.view-week #week{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+  body.view-week #thisWk{
+    padding-left:58px;box-sizing:border-box;
+    scroll-margin-bottom:calc(72px + env(safe-area-inset-bottom,0px));
+  }
+
   .wk-col.tone-teal .wk-col-name{color:var(--tealD)}
   .wk-col.tone-coral .wk-col-name{color:var(--coral)}
   .wk-col.tone-slate .wk-col-name{color:#d5dee8}
@@ -3403,7 +3410,7 @@ function chipMealName(d){
   if(d.kind==="left"||(!d.cook&&!d.grab&&/leftover|round 2/i.test(d.dinner||""))){
     const remake=d.meal&&BOARD_SHORT[d.meal];
     if(remake&&!/Burgers|Steak$|Chicken$|Pork|Brats/i.test(remake))return remake;
-    return "Lefto";
+    return "Left over";
   }
   if(d.meal&&BOARD_SHORT[d.meal])return BOARD_SHORT[d.meal];
   const m=d.meal&&typeof M==="function"?M(d.meal):null;
