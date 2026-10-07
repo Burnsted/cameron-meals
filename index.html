@@ -3344,6 +3344,7 @@ function mealArtKeyFromId(id, dinner){
   if(/egg.?fried|fried rice|x_egg_fried|bowl|rice bowl/i.test(t))return "bowl";
   if(/stkegg|steak\s*&\s*eggs|eggs\s*\+|bf_eggs|bf_bec/i.test(t))return "eggs";
   if(/chili.?dog|x_chili_dog|hot.?dog|x_hot_dog|brat|sausage|x_italian|x_smoked/i.test(t))return "brat";
+  if(/x_chili_beef|beef chili|simple beef chili/i.test(t))return "bowl";
   if(/pork|x_pork/i.test(t))return "pork";
   if(/sloppy|burger|x_smash|x_cheese_burger/i.test(t))return "burger";
   if(/chicken|chix|rotisserie|gg_aldirot|gg_delihot|x_chix/i.test(t))return "chicken";
@@ -3358,7 +3359,7 @@ function mealArtKey(d){
   if(!d)return "plate";
   if(d.kind==="hol")return "holiday";
   if(d.kind==="out"||d.kind==="ff")return "takeout";
-  if(d.kind==="rm")return "plate";
+  if(d.kind==="rm")return "leftover2"; /* open night: distinct from cook plate art */
   if(d.grab||(d.kind==="grab"))return "grab";
   const id=d.meal||"";
   const dinner=d.dinner||"";
