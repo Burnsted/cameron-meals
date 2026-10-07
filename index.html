@@ -3359,7 +3359,7 @@ function mealArtKey(d){
   if(!d)return "plate";
   if(d.kind==="hol")return "holiday";
   if(d.kind==="out"||d.kind==="ff")return "takeout";
-  if(d.kind==="rm")return "leftover2"; /* open night: distinct from cook plate art */
+  if(d.kind==="rm")return "plate"; /* open night: empty plate (chili etc. use bowl/brat) */
   if(d.grab||(d.kind==="grab"))return "grab";
   const id=d.meal||"";
   const dinner=d.dinner||"";
