@@ -2637,10 +2637,14 @@ function loadBuildCheese(){
 }
 function buildScreen(mid){
   const B=BUILDS[mid], bs=st.build[mid], T=bs.top, m=M(mid);
+  if(!bs.custom)bs.custom=[];
+  if(!Array.isArray(bs.custom))bs.custom=[];
   if(bs.cheeseBackup==null&&!bs._cheeseLoaded){loadBuildCheese();bs._cheeseLoaded=1}
   const open=B.core.find(t=>t.id===st.open);
   const xOn=B.extras.filter(x=>T[x.id].on), xOff=B.extras.filter(x=>!T[x.id].on);
   const xo=st.xOpen===mid;
+  const customKey="b:"+mid;
+  const customOpen=st.cOpen===customKey;
   const cheeseCore=B.core.find(t=>t.id==="cheese");
   const pickBk=st.pickBackup===mid;
   const pattyBlock=mid==="burger"?(()=>{
@@ -2659,15 +2663,17 @@ function buildScreen(mid){
     }
     return `${esc(t.v?s.v:t.label)}${t.v?" ▾":""}`;
   };
+  /* Ted: + Custom chip under Tap to add → type → on chip in Your extras (all build meals). */
+  const customEntry=customOpen?`<div class="addrow cust" id="buildCustomRow"><input id="cin" placeholder="Type your own topping" maxlength="30" autocomplete="off" enterkeyhint="done"><button type="button" id="cadd">Add</button></div>`:"";
   card.innerHTML=`<div class="emoji">${B.emoji}</div><h1>${esc(B.title)}</h1><p class="sub">The usual stuff is on. Tap ▾ to swap, tap to turn off. Off chips stay visible (not crossed out).</p>
     ${pattyBlock}
     <div class="chips">${B.core.filter(t=>mid!=="burger"||t.id!=="patty").map(t=>{const s=T[t.id];const isCh=t.id==="cheese";
       return `<span class="chip drop${s.on?"":" off"}${st.open===t.id?" open":""}${isCh&&s.on?" primary-ch":""}${isCh&&bs.cheeseBackup?" backup-ch":""}" data-t="${t.id}">${chipLabel(t)}</span>`}).join("")}</div>
     ${open?popHTML(`Swap ${esc(open.label.toLowerCase())} for…`,open.v||[],T[open.id].v,T[open.id].on,{cheese:open.id==="cheese",backup:bs.cheeseBackup,pickBackup:pickBk&&open.id==="cheese"}):""}
     ${mealTotalHTML(mid)}
-    ${xOn.length||bs.custom.length?`<p class="lbl">Your extras (tap to remove)</p><div class="xsel" style="margin:0 0 14px">${xOn.map(x=>`<span class="chip x" data-xr="${x.id}">${esc(x.label)} ✕</span>`).join("")}${bs.custom.map(c=>`<span class="chip cust" data-cr="${esc(c)}">${esc(c)} ✕</span>`).join("")}</div>`:""}
+    ${xOn.length||bs.custom.length?`<p class="lbl">Your extras (tap to remove)</p><div class="xsel" style="margin:0 0 14px">${xOn.map(x=>`<span class="chip x" data-xr="${x.id}">${esc(x.label)} ✕</span>`).join("")}${bs.custom.map(c=>`<span class="chip x cust" data-cr="${esc(c)}">${esc(c)} ✕</span>`).join("")}</div>`:""}
     <button class="xtra-btn" id="xb">${xo?"▾ Hide extras":"+ Add extras"}</button>
-    ${xo?`<div class="xlist"><p class="ph2">Tap to add</p><div class="opts">${xOff.map(x=>`<button class="popt" data-xa="${x.id}">+ ${esc(x.label)}</button>`).join("")}<button class="popt" data-c="b:${mid}" id="xc">+ Custom</button></div>${customRow("b:"+mid)}</div>`:""}
+    ${xo?`<div class="xlist"><p class="ph2">Tap to add</p><div class="opts">${xOff.map(x=>`<button type="button" class="popt" data-xa="${x.id}">+ ${esc(x.label)}</button>`).join("")}<button type="button" class="chip addc${customOpen?" open":""}" id="xc" aria-expanded="${customOpen?"true":"false"}">+ Custom</button></div>${customEntry}</div>`:""}
     ${btns("Looks good →")}`;
   card.querySelectorAll("[data-patty]").forEach(b=>b.onclick=()=>{st.open=st.open==="patty"?null:"patty";st.cOpen=null;st.pickBackup=null;render()});
   card.querySelectorAll("[data-t]").forEach(c=>c.onclick=()=>{const t=B.core.find(x=>x.id===c.dataset.t);if(t&&t.v){st.open=st.open===t.id?null:t.id;st.cOpen=null;if(st.open!=="cheese")st.pickBackup=null}else if(t){T[t.id].on=!T[t.id].on;if(t.id==="cheese"&&!T[t.id].on){/* fully unselected */ if(bs.cheeseBackup){T[t.id].v=bs.cheeseBackup;T[t.id].on=true;bs.cheeseBackup=null;persistBuildCheese()} } }render()});
@@ -2694,10 +2700,38 @@ function buildScreen(mid){
   const ca=$("cadd");if(ca&&st.cOpen==="patty"){const add=()=>{const v=$("cin").value.trim().slice(0,30);if(!v)return;st.custom.patty=st.custom.patty||[];if(!st.custom.patty.includes(v))st.custom.patty.push(v);const set=new Set(pattyAll());set.add(v);st.pattyVs=[...set];st.cOpen=null;render()};ca.onclick=add;$("cin").onkeydown=e=>{if(e.key==="Enter")add()}}
   card.querySelectorAll("[data-xa]").forEach(b=>b.onclick=()=>{T[b.dataset.xa].on=true;render()});
   card.querySelectorAll("[data-xr]").forEach(b=>b.onclick=()=>{T[b.dataset.xr].on=false;render()});
-  card.querySelectorAll("[data-cr]").forEach(b=>b.onclick=()=>{bs.custom=bs.custom.filter(x=>x!==b.dataset.cr);render()});
+  card.querySelectorAll("[data-cr]").forEach(b=>b.onclick=()=>{
+    const pack=st.build[mid]; if(!pack)return;
+    pack.custom=(pack.custom||[]).filter(x=>x!==b.dataset.cr);
+    try{persistDraft(true)}catch(_){}
+    render();
+  });
   $("xb").onclick=()=>{st.xOpen=xo?null:mid;st.cOpen=null;st.open=null;st.pickBackup=null;render()};
-  const xc=$("xc");if(xc)xc.onclick=()=>{st.cOpen=st.cOpen==="b:"+mid?null:"b:"+mid;render();const i=$("cin");if(i)i.focus()};
-  const cb=$("cadd");if(cb&&st.cOpen&&st.cOpen.startsWith("b:")){const add=()=>{const v=$("cin").value.trim().slice(0,30);if(v&&!bs.custom.includes(v))bs.custom.push(v);st.cOpen=null;render()};cb.onclick=add;$("cin").onkeydown=e=>{if(e.key==="Enter")add()}}
+  const xc=$("xc");
+  if(xc)xc.onclick=()=>{
+    st.cOpen=st.cOpen===customKey?null:customKey;
+    st.open=null;st.pickBackup=null;
+    render();
+    const row=$("buildCustomRow"), i=$("cin");
+    if(row&&row.scrollIntoView)row.scrollIntoView({block:"center",behavior:"smooth"});
+    if(i){try{i.focus({preventScroll:true})}catch(_){i.focus()}}
+  };
+  const cb=$("cadd");
+  if(cb&&st.cOpen===customKey){
+    const add=()=>{
+      const inp=$("cin"); if(!inp)return;
+      const v=inp.value.trim().slice(0,30); if(!v)return;
+      const pack=st.build[mid]; if(!pack)return;
+      if(!Array.isArray(pack.custom))pack.custom=[];
+      if(!pack.custom.includes(v))pack.custom.push(v);
+      st.cOpen=null;
+      try{persistDraft(true)}catch(_){}
+      render();
+    };
+    cb.onclick=e=>{e.preventDefault();e.stopPropagation();add()};
+    const inp=$("cin");
+    if(inp)inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();add()}};
+  }
   $("nx").onclick=()=>{st.xOpen=null;st.pickBackup=null;persistBuildCheese();go()};
 }
 
