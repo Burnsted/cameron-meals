@@ -689,11 +689,18 @@
   .wk-col-name{
     font-family:Fraunces,Georgia,serif;font-size:10px;font-weight:800;line-height:1.15;
     letter-spacing:-.02em;color:var(--wink);
-    /* Steve: no mid-word breaks at 390. Single line + ellipsis; shorter board labels. */
-    overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
-    word-break:normal;overflow-wrap:normal;hyphens:none;
-    min-height:1.2em;max-width:100%;padding:0 1px;
+    /* Steve soft: wrap to 2 lines of whole words at 390 (no Fast fo… / Lefto). */
+    overflow:hidden;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
+    word-break:normal;overflow-wrap:break-word;hyphens:none;
+    min-height:1.2em;max-height:2.4em;max-width:100%;padding:0 1px;
   }
+  /* Steve soft: FAB must not sit on This week heading or bury bottom content */
+  body.view-week #week{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+  body.view-week #thisWk{
+    padding-left:58px;box-sizing:border-box;
+    scroll-margin-bottom:calc(72px + env(safe-area-inset-bottom,0px));
+  }
+
   .wk-col.tone-teal .wk-col-name{color:var(--tealD)}
   .wk-col.tone-coral .wk-col-name{color:var(--coral)}
   .wk-col.tone-slate .wk-col-name{color:#d5dee8}
@@ -3403,7 +3410,7 @@ function chipMealName(d){
   if(d.kind==="left"||(!d.cook&&!d.grab&&/leftover|round 2/i.test(d.dinner||""))){
     const remake=d.meal&&BOARD_SHORT[d.meal];
     if(remake&&!/Burgers|Steak$|Chicken$|Pork|Brats/i.test(remake))return remake;
-    return "Lefto";
+    return "Left over";
   }
   if(d.meal&&BOARD_SHORT[d.meal])return BOARD_SHORT[d.meal];
   const m=d.meal&&typeof M==="function"?M(d.meal):null;
@@ -3459,6 +3466,15 @@ function weekCookPlateTotal(days){
   let t=0;
   (days||[]).forEach(d=>{const c=plateCostForDay(d);if(c.cookHome)t+=c.n});
   return t;
+}
+function chipNameHTML(label){
+  /* Soft 390: break known two-word board labels on a word boundary (no Fast fo…). */
+  const s=String(label||"").trim();
+  if(/^(Fast food|Left over)$/i.test(s)){
+    const i=s.indexOf(" ");
+    if(i>0)return esc(s.slice(0,i))+"<br>"+esc(s.slice(i+1));
+  }
+  return esc(s);
 }
 function plateCostHTML(d,cls){
   const c=plateCostForDay(d);
@@ -3548,7 +3564,7 @@ function weekStripHTML(days){
     return `<button type="button" class="${cls}" data-wkchip="${i}" role="listitem" aria-label="${esc(DAY_FULL[i]+" "+label+" "+cost.label)}${today?" (today)":""}">
       <span class="wk-col-day">${DAY_FULL[i]}</span>
       <span class="wk-col-art-wrap"><img class="wk-col-art" src="${mealArtSrc(boardDay)}" alt="" width="160" height="160" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='img/meals/plate.webp'"></span>
-      <span class="wk-col-name">${esc(label)}</span>
+      <span class="wk-col-name">${chipNameHTML(label)}</span>
       <span class="wk-col-cost">${esc(cost.label)}</span>
       <span class="wk-col-note">${esc(note)}</span>
     </button>`;
