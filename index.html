@@ -705,6 +705,20 @@
     word-break:normal;overflow-wrap:normal;hyphens:none;
     min-height:1.15em;max-height:3.45em;max-width:100%;padding:0 1px;
   }
+  .wk-col-cost{
+    font-size:10px;font-weight:900;line-height:1.1;letter-spacing:-.02em;
+    color:var(--wgold,#f59e0b);min-height:1.1em;max-width:100%;padding:0 1px;
+    overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  }
+  .wk-col.tone-teal .wk-col-cost{color:var(--tealD)}
+  .wk-col.tone-coral .wk-col-cost{color:var(--coral)}
+  .day-plate-cost{
+    margin:4px 0 0;font-size:15px;font-weight:900;letter-spacing:-.02em;color:var(--wgold,#f59e0b);
+  }
+  .wk-plate-rollup{
+    margin:8px 0 0;text-align:center;font-size:14px;font-weight:800;color:var(--wink);
+  }
+  .wk-plate-rollup b{color:var(--wgold,#f59e0b);font-weight:900}
   /* Legacy chip hooks still used in day cards */
   .wk-chip-art{width:40px;height:40px;display:block;object-fit:cover;background:#1a2430;border-radius:4px}
   .wk-chip-role{display:none!important}
@@ -714,12 +728,14 @@
     .wk-col-day{min-height:32px;font-size:12px;letter-spacing:.12em;padding:7px 4px}
     .wk-col-name{font-size:13px}
     .wk-col-note{font-size:11px}
+    .wk-col-cost{font-size:12px}
   }
   @media (min-width:1100px){
     .wk-board{margin:8px 0 20px;padding:22px 18px 18px}
     .wk-strip{gap:12px;padding-bottom:4px}
     .wk-col-name{font-size:15px}
     .wk-col-note{font-size:12px}
+    .wk-col-cost{font-size:14px}
   }
   /* Hide legacy week-log M–S chip strip (Steve: reads like second tracker under board) */
   .week-log-strip{display:none!important}
@@ -3411,6 +3427,43 @@ function chipMealName(d){
   if(!n)return "Easy";
   return shortMealWords(n,2);
 }
+/* Aldi one-plate ballparks (Ted CLEARED-FOR-WOZ). No About/est/~ in labels. */
+const PLATE_LEFTOVER_BUILD={chixq:4,steakq:4,stkegg:3};
+function isFreezerDay(d){
+  if(!d)return false;
+  return /from the freezer/i.test(d.dinner||"")||/Freezer day/i.test(d.note||"");
+}
+function plateCostForDay(d){
+  /* Returns {n, label, cookHome}. cookHome = counts toward Lock-in week rollup. */
+  if(!d)return {n:0,label:"$0",cookHome:false};
+  if(d.kind==="ff")return {n:12,label:"$12 out",cookHome:false};
+  if(d.kind==="rm"||d.kind==="hol"||d.kind==="out")return {n:0,label:"$0",cookHome:false};
+  if(isFreezerDay(d))return {n:0,label:"$0",cookHome:false};
+  if(d.kind==="left"||(!d.cook&&!d.grab&&/leftover|round 2/i.test(d.dinner||""))){
+    const build=PLATE_LEFTOVER_BUILD[d.meal];
+    if(build!=null)return {n:build,label:"$"+build,cookHome:false};
+    return {n:0,label:"$0",cookHome:false};
+  }
+  if(d.grab||d.kind==="grab")return {n:0,label:"$0",cookHome:false};
+  let n=null;
+  const m=d.meal&&typeof M==="function"?M(d.meal):null;
+  if(m&&m.plateCost!=null&&isFinite(m.plateCost))n=+m.plateCost;
+  const cut=String(d.cut||"");
+  const dinner=String(d.dinner||"");
+  const ribeye=/ribeye/i.test(cut)||/ribeye/i.test(dinner)||(d.meal==="x_ribeye_simple");
+  if(ribeye&&(d.meal==="steak"||d.meal==="x_ribeye_simple"||d.g==="steak"||(m&&/steak|ribeye/i.test(m.name||""))))n=14;
+  if(n==null)n=0;
+  return {n,label:"$"+n,cookHome:!!d.cook};
+}
+function weekCookPlateTotal(days){
+  let t=0;
+  (days||[]).forEach(d=>{const c=plateCostForDay(d);if(c.cookHome)t+=c.n});
+  return t;
+}
+function plateCostHTML(d,cls){
+  const c=plateCostForDay(d);
+  return `<span class="${cls||"plate-cost"}">${esc(c.label)}</span>`;
+}
 function shortMealWords(s,max){
   const parts=String(s||"").trim().split(/\s+/).filter(Boolean);
   if(!parts.length)return "Meal";
@@ -3491,10 +3544,12 @@ function weekStripHTML(days){
     const cls=["wk-col","tone-"+tone,today?"is-today":"",W.open===i?"is-open":"",d.cook?"is-cook":""].filter(Boolean).join(" ");
     const label=cleanCopy(chipMealName(boardDay));
     const note=boardNote(boardDay);
-    return `<button type="button" class="${cls}" data-wkchip="${i}" role="listitem" aria-label="${esc(DAY_FULL[i]+" "+label)}${today?" (today)":""}">
+    const cost=plateCostForDay(boardDay);
+    return `<button type="button" class="${cls}" data-wkchip="${i}" role="listitem" aria-label="${esc(DAY_FULL[i]+" "+label+" "+cost.label)}${today?" (today)":""}">
       <span class="wk-col-day">${DAY_FULL[i]}</span>
       <span class="wk-col-art-wrap"><img class="wk-col-art" src="${mealArtSrc(boardDay)}" alt="" width="160" height="160" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='img/meals/plate.webp'"></span>
       <span class="wk-col-name">${esc(label)}</span>
+      <span class="wk-col-cost">${esc(cost.label)}</span>
       <span class="wk-col-note">${esc(note)}</span>
     </button>`;
   }).join("");
@@ -3505,7 +3560,9 @@ function weekStripHTML(days){
     <div class="wk-strip" role="list">${cells}</div>
   </section>`;
 }
-function lockBarHTML(locked){
+function lockBarHTML(locked,days){
+  const roll=typeof weekCookPlateTotal==="function"?weekCookPlateTotal(days||[]):0;
+  const rollLine=`<p class="wk-plate-rollup">Cook nights <b>$${roll}</b></p>`;
   if(locked){
     return `<div class="lock-bar" data-lock-bar="1">
       <p class="lock-readonly-note">This week is locked. Tap Edit week to change meals, sides, or the list.</p>
@@ -3513,10 +3570,12 @@ function lockBarHTML(locked){
         <div class="lock-status" role="status">${icons.lock}<span>${esc(CM_LOCK_LABEL.locked)}</span></div>
         <button type="button" class="lock-edit" id="editWeekBtn">${esc(CM_LOCK_LABEL.edit)}</button>
       </div>
+      ${rollLine}
     </div>`;
   }
   return `<div class="lock-bar" data-lock-bar="1">
     <button type="button" class="lock-btn" id="lockWeekBtn">${esc(CM_LOCK_LABEL.lock)}</button>
+    ${rollLine}
   </div>`;
 }
 function getWeekLock(){
@@ -4188,7 +4247,7 @@ function renderWeek(){
     <div class="rcpt-top" style="margin-top:10px"><button type="button" class="back-link" id="backBtnWeek" aria-label="Back">${icons.backSm}<span>Back</span></button><span class="rcpt-right">${icons.rcpt}<button type="button" class="rcpt-btn" data-rcpt="1">Upload receipt</button></span></div>
   </section>
   ${typeof weekStripHTML==="function"?weekStripHTML(days):""}
-  ${typeof lockBarHTML==="function"?lockBarHTML(locked):""}
+  ${typeof lockBarHTML==="function"?lockBarHTML(locked,days):""}
   ${typeof utilitiesUnderLockHTML==="function"?utilitiesUnderLockHTML():""}
   <div class="stitle" id="thisWk"><h2>This week${edited?'<span class="edited">edited</span>':""}${locked?'<span class="edited" style="background:var(--teal);color:#041016">locked</span>':""}</h2><span class="week-actions"><button type="button" class="shuffle-link" id="shuffleBtn" aria-label="Shuffle this week" ${locked?"disabled":""}>${icons.shuffle}<span>Shuffle</span></button><button type="button" class="shuffle-link" id="randomMealBtn" aria-label="Random meal" ${locked?"disabled":""}><span>Random meal</span></button><button type="button" class="shuffle-link" id="custB" aria-label="Customize week" ${locked?"disabled":""}>${icons.repeat}<span>Customize</span></button></span></div>
   ${days.map((d,i)=>{const m=MN(d.meal);
@@ -4197,7 +4256,8 @@ function renderWeek(){
       ${locked?"":`<button type="button" class="swap-link" data-swapd="${i}" aria-label="Swap ${d.short} dinner">Swap</button>`}
       <span class="memo-sm">${d.e}</span></span></div>
     <div class="db"><div class="emo-row"><img class="wk-chip-art" src="${mealArtSrc(d)}" alt="" width="40" height="40" loading="lazy" decoding="async" style="margin-bottom:6px">${dayBadge(d)}</div>
-    <p class="dinner">${d.meal&&rateOf(d.meal)===2?'<span class="favb">favorite</span> ':""}${cutTag(d)}${esc(d.dinner)}${(typeof meatDayAltGroup==="function"&&meatDayAltGroup(d)&&!locked)?`<button type="button" class="meat-cut-chev" data-meatcut="${i}" aria-label="Change cut">▾</button>`:""}</p>${dayNut(d)}
+    <p class="dinner">${d.meal&&rateOf(d.meal)===2?'<span class="favb">favorite</span> ':""}${cutTag(d)}${esc(d.dinner)}${(typeof meatDayAltGroup==="function"&&meatDayAltGroup(d)&&!locked)?`<button type="button" class="meat-cut-chev" data-meatcut="${i}" aria-label="Change cut">▾</button>`:""}</p>
+    <p class="day-plate-cost">${esc(plateCostForDay(d).label)}</p>${dayNut(d)}
     ${d.note?`<p class="dnote">${esc(d.note)}</p>`:""}
     <p class="dl">Lunch at Woody's: ${esc(d.lunch||"-")}</p>
     ${d.bf?`<p class="dl b">${bfLine(d.bf)}</p>`:""}
