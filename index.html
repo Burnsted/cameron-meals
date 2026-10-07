@@ -4265,7 +4265,7 @@ function renderWeek(){
   $("bk").onclick=()=>{hideWeekView();try{persistDraft(true)}catch(_){};try{render()}catch(_){};window.scrollTo(0,0);updateBackBtn()};
   updateBackBtn();
   $("rs2").onclick=()=>{if(typeof clearMidFlowDraft==="function")clearMidFlowDraft();if(typeof clearWeekLock==="function")clearWeekLock();reset();render();window.scrollTo(0,0)};
-  $("calB").onclick=()=>openCal({sel:s0,onPick:(mon)=>{st.weekStart=mon.getTime();buildWeek()}});
+  $("calB").onclick=()=>openCal({sel:s0,onPick:(mon)=>applyCalendarWeek(mon)});
   $("custB").onclick=openCustom;longPress($("thisWk"),openCustom);longPress($("wlab"),openCustom);const sh=$("shuffleBtn");if(sh)sh.onclick=e=>{e.stopPropagation();if(typeof isWeekLocked==="function"&&isWeekLocked()){toast("Unlock with Edit week first");return}shuffleWeek()};
   const rnd=$("randomMealBtn");if(rnd)rnd.onclick=e=>{e.stopPropagation();randomMealForDay()};
   if(typeof bindWeekStrip==="function")bindWeekStrip(wk);
@@ -4388,27 +4388,56 @@ function initSheet(){const bg=shEl();if(!bg||bg._init)return;bg._init=1;
   bg.addEventListener("click",e=>{if(e.target===bg||e.target.closest("[data-x]"))closeSheet()});
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&sheetOpen()){e.stopPropagation();closeSheet()}},true)}
 const shTop=(t)=>`<div class="sh-top"><h3>${t}</h3><button type="button" class="sh-x ico-btn" data-x="1" aria-label="Close">${icons.close}</button></div>`;
+/* Normalize to Monday 00:00 local ms for week identity compares. */
+function mondayMs(d){
+  const m=mondayOf(d instanceof Date?d:new Date(d||Date.now()));
+  m.setHours(0,0,0,0);
+  return m.getTime();
+}
+/* Ted: changing the calendar week must rebuild a fresh random week of meals.
+   Re-selecting the same Mon to Sun week in one session does not reshuffle. */
+function applyCalendarWeek(mon, opts){
+  opts=(opts&&typeof opts==="object")?opts:{};
+  const next=mondayMs(mon);
+  const cur=mondayMs(weekStartDate());
+  if(next===cur){
+    if(!opts.silent)toast("Already on that week");
+    return false;
+  }
+  st.weekStart=next;
+  try{
+    const L=typeof getWeekLock==="function"?getWeekLock():null;
+    if(L&&L.locked&&Number(L.weekStart)!==next&&typeof clearWeekLock==="function")clearWeekLock();
+  }catch(_){}
+  if(W)W.ov={};
+  buildWeek();
+  try{showWeekView()}catch(_){}
+  try{persistDraft(true)}catch(_){}
+  if(!opts.silent)toast("New week of meals ready");
+  return true;
+}
 /* Week calendar. opts: sel (Monday Date or null), onPick(monday, keepOpen) */
 function openCal(opts){
   const today=new Date();today.setHours(0,0,0,0);
   let sel=opts.sel?mondayOf(opts.sel):null;
   let view=new Date((sel||today).getFullYear(),(sel||today).getMonth(),1);
+  const pick=opts.onPick||applyCalendarWeek;
   const inn=openSheet("", "Pick a week");
   function draw(){
     const first=view, gs=mondayOf(first);
     const rows=[];for(let r=0;r<6;r++){const rm=addDays(gs,r*7);if(r>=4&&rm.getMonth()!==view.getMonth()&&rm>first)break;rows.push(rm)}
-    inn.innerHTML=shTop("📅 Pick a week")+`
+    inn.innerHTML=shTop("Pick a week")+`
       <p class="cal-sel">${sel?"Selected: "+fmtWeek(sel):"Tap any day to pick its Mon to Sun week"}</p>
       <div class="cal-nav"><button data-cm="-1" aria-label="Previous month">‹</button><b>${MOFULL[view.getMonth()]} ${view.getFullYear()}</b><button data-cm="1" aria-label="Next month">›</button></div>
-      <p class="month-hold-hint">Hold a week to customize</p>
+      <p class="month-hold-hint">Changing week builds a new set of meal picks</p>
       <div class="cal-dow"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
       ${rows.map(rm=>`<div class="cal-row${sel&&sameDay(rm,sel)?" sel":""}">${[0,1,2,3,4,5,6].map(i=>{const d=addDays(rm,i);
         return `<button class="cal-d${d.getMonth()!==view.getMonth()?" out":""}${sameDay(d,today)?" today":""}" data-day="${d.getFullYear()}-${d.getMonth()}-${d.getDate()}" aria-label="${MOFULL[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}${sameDay(d,today)?" (today)":""}">${d.getDate()}</button>`}).join("")}</div>`).join("")}
-      <div class="cal-foot"><button data-cw="-1">‹ Prev week</button><button class="now" data-now="1">This week</button><button data-cw="1">Next week ›</button></div>`;
+      <div class="cal-foot"><button data-cw="-1">Prev week</button><button class="now" data-now="1">This week</button><button data-cw="1">Next week</button></div>`;
     inn.querySelectorAll("[data-cm]").forEach(b=>b.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+(+b.dataset.cm),1);draw()});
-    inn.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{const [y,m,d]=b.dataset.day.split("-").map(Number);sel=mondayOf(new Date(y,m,d));opts.onPick(sel);closeSheet()});
-    inn.querySelectorAll("[data-cw]").forEach(b=>b.onclick=()=>{sel=addDays(sel||mondayOf(today),7*(+b.dataset.cw));view=new Date(sel.getFullYear(),sel.getMonth(),1);opts.onPick(sel,true);draw()});
-    inn.querySelector("[data-now]").onclick=()=>{sel=mondayOf(today);opts.onPick(sel);closeSheet()};
+    inn.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{const [y,m,d]=b.dataset.day.split("-").map(Number);sel=mondayOf(new Date(y,m,d));pick(sel);closeSheet()});
+    inn.querySelectorAll("[data-cw]").forEach(b=>b.onclick=()=>{sel=addDays(sel||mondayOf(today),7*(+b.dataset.cw));view=new Date(sel.getFullYear(),sel.getMonth(),1);pick(sel);draw()});
+    inn.querySelector("[data-now]").onclick=()=>{sel=mondayOf(today);pick(sel);closeSheet()};
   }
   draw();
 }
