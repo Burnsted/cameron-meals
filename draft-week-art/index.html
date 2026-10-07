@@ -2575,6 +2575,21 @@ function meals(){
        ${m.custom?`<div class="m-edit"><button type="button" data-cedit="${m.id}">Edit name</button><button type="button" data-cdel="${m.id}">Delete</button></div>${rateStrip(m.id)}`:""}</div>`;
   };
   const from=pool.length?mealListOffset+1:0, to=Math.min(mealListOffset+page.length,pool.length);
+  /* Ted: primary Next pages the next 7. Looks good → after 12+ yes continues the flow (not toppings early). */
+  const pageDone=page.length>0&&page.every(m=>st.meals[m.id]==="yes"||st.meals[m.id]==="no");
+  const looksGood=yesN>=12;
+  let mealFoot="";
+  if(hasMore){
+    mealFoot+=`<button class="next" id="moreMeals" ${pageDone?"":"disabled"}>Next →</button>`;
+    if(looksGood)mealFoot+=`<button class="next" id="nx" style="margin-top:10px">Looks good →</button>`;
+  }else if(looksGood){
+    mealFoot+=`<button class="next" id="nx">Looks good →</button>`;
+  }else if(yesN){
+    mealFoot+=`<button class="next" id="nx">Next → (${yesN} yes)</button>`;
+  }else{
+    mealFoot+=`<button class="next" id="nx" disabled>Next →</button>`;
+  }
+  if(!yesN)mealFoot+=`<button class="next ghost" id="sk">Skip: pick for me</button>`;
   ensureDrinkDefaults();
   card.innerHTML=`<div class="meals-head">
     <div class="meals-head-row"><div class="emoji">🥩</div><button type="button" class="gear ico-btn" id="mealsGear" aria-label="Settings">${icons.gear}</button></div>
@@ -2589,13 +2604,12 @@ function meals(){
    <p class="lbl">Something else you like?</p>
    <div class="chips">${customChip("meals")}</div>${customRow("meals")}
    ${tipsBox()}
-   ${hasMore?`<button class="next" id="moreMeals" style="margin-bottom:10px;background:var(--chip)">Next 7</button>`:""}
-   ${btns(yesN?`Next → (${yesN} yes)`:"Next →",false,yesN?null:"Skip: pick for me")}`;
+   ${mealFoot}`;
   const gearBtn=$("mealsGear");
   if(gearBtn)gearBtn.onclick=e=>{e.preventDefault();e.stopPropagation();openSettings()};
   bindDrinkYesNo(card);
   card.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const id=b.dataset.m;st.meals[id]=st.meals[id]===b.dataset.a?undefined:b.dataset.a;if(!st.meals[id])delete st.meals[id];syncBreakfastFromMeals();render()});
-  const mm=$("moreMeals");if(mm)mm.onclick=()=>appendMoreMeals();
+  const mm=$("moreMeals");if(mm)mm.onclick=()=>{if(mm.disabled)return;appendMoreMeals()};
   card.querySelectorAll("[data-restore]").forEach(b=>b.onclick=()=>{setRate(b.dataset.restore,0);render()});
   card.querySelectorAll("[data-tip]").forEach(b=>b.onclick=()=>{st.tip=st.tip===b.dataset.tip?null:b.dataset.tip;render()});
   card.querySelectorAll("[data-mv]").forEach(b=>b.onclick=e=>{e.stopPropagation();const k="m:"+b.dataset.mv;st.open=st.open===k?null:k;st.cOpen=null;render()});
@@ -2625,7 +2639,8 @@ function meals(){
   bindCustom((k,v)=>{addCustomMealCard(v);});
   wireAllAutocomplete(card);
   const cin=$("cin");if(cin)bindAutocomplete(cin,v=>{addCustomMealCard(v);st.cOpen=null;render()});
-  $("nx").onclick=()=>{syncBreakfastFromMeals();go()};const sk=$("sk");if(sk)sk.onclick=()=>go();
+  const nx=$("nx");if(nx)nx.onclick=()=>{syncBreakfastFromMeals();go()};
+  const sk=$("sk");if(sk)sk.onclick=()=>go();
 }
 function persistBuildCheese(){
   try{const o={};Object.keys(st.build||{}).forEach(k=>{const b=st.build[k];if(b&&b.cheeseBackup)o[k]=b.cheeseBackup});
