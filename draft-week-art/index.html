@@ -3467,6 +3467,15 @@ function weekCookPlateTotal(days){
   (days||[]).forEach(d=>{const c=plateCostForDay(d);if(c.cookHome)t+=c.n});
   return t;
 }
+function chipNameHTML(label){
+  /* Soft 390: break known two-word board labels on a word boundary (no Fast fo…). */
+  const s=String(label||"").trim();
+  if(/^(Fast food|Left over)$/i.test(s)){
+    const i=s.indexOf(" ");
+    if(i>0)return esc(s.slice(0,i))+"<br>"+esc(s.slice(i+1));
+  }
+  return esc(s);
+}
 function plateCostHTML(d,cls){
   const c=plateCostForDay(d);
   return `<span class="${cls||"plate-cost"}">${esc(c.label)}</span>`;
@@ -3555,7 +3564,7 @@ function weekStripHTML(days){
     return `<button type="button" class="${cls}" data-wkchip="${i}" role="listitem" aria-label="${esc(DAY_FULL[i]+" "+label+" "+cost.label)}${today?" (today)":""}">
       <span class="wk-col-day">${DAY_FULL[i]}</span>
       <span class="wk-col-art-wrap"><img class="wk-col-art" src="${mealArtSrc(boardDay)}" alt="" width="160" height="160" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='img/meals/plate.webp'"></span>
-      <span class="wk-col-name">${esc(label)}</span>
+      <span class="wk-col-name">${chipNameHTML(label)}</span>
       <span class="wk-col-cost">${esc(cost.label)}</span>
       <span class="wk-col-note">${esc(note)}</span>
     </button>`;
