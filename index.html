@@ -2969,11 +2969,14 @@ function buildWeek(){
     leftDay=leftCandidates[Math.floor(rnd(22)*leftCandidates.length)];
     roles[leftDay]="left";
   }
+  /* Skip holiday dates when placing open or fast food. */
+  const dayDate=i=>{const d=new Date(start);d.setDate(d.getDate()+i);return d};
+  const isHolIdx=i=>!!isHolidayOff(dayDate(i));
   /* Open night ~every other calendar week (seeded by week start). */
   const weekIdx=Math.floor(seed/7);
   let openDay=-1;
   if(weekIdx%2===0){
-    const openCands=roles.map((r,i)=>r==="cook"&&i<6?i:-1).filter(i=>i>=0);
+    const openCands=roles.map((r,i)=>r==="cook"&&i<6&&!isHolIdx(i)?i:-1).filter(i=>i>=0);
     if(openCands.length){
       openDay=openCands[Math.floor(rnd(23)*openCands.length)];
       roles[openDay]="open";
@@ -2982,7 +2985,7 @@ function buildWeek(){
   /* Fast food once per week on a remaining cook night (prefer Fri or Sat). */
   let ffDay=-1;
   {
-    const cookLeft=roles.map((r,i)=>r==="cook"?i:-1).filter(i=>i>=0);
+    const cookLeft=roles.map((r,i)=>r==="cook"&&!isHolIdx(i)?i:-1).filter(i=>i>=0);
     let ffCands=cookLeft.filter(i=>i===4||i===5);
     if(!ffCands.length)ffCands=cookLeft.filter(i=>i<6);
     if(!ffCands.length)ffCands=cookLeft.slice();
@@ -3062,6 +3065,19 @@ function buildWeek(){
     }
   }
   days.forEach((d,i)=>{if(d.kind==="hol"){d.dinner=d.hol;d.e="🎉";d.note="";d.cook=false;d.meal=null;d.grab=false}});
+  /* Guarantee one fast food night even if a holiday landed on the first pick. */
+  if(!days.some(d=>d.kind==="ff")){
+    const slots=days.map((d,i)=>i).filter(i=>days[i].cook&&days[i].kind!=="hol"&&!days[i].grab&&days[i].kind!=="left");
+    let pool=slots.filter(i=>i===4||i===5);
+    if(!pool.length)pool=slots.filter(i=>i<6);
+    if(!pool.length)pool=slots.slice();
+    if(pool.length){
+      const idx=pool[Math.floor(rnd(25)*pool.length)];
+      days[idx]={...days[idx],g:null,cook:false,meal:null,e:"🥡",dinner:"Fast food",cut:null,kind:"ff",grab:false,
+        note:"Fast food night: pick a drive thru or counter. No groceries for dinner.",
+        lunch:"Lunch on your own",sideName:null,icon:"🥡"};
+    }
+  }
   W={base:days,ov:{},groups,extra,F,have:new Set(),ck:new Set(),open:null,items:[],listFilter:null,shopHi:null,daySides:{},sideOffers:{},dayMealOffers:{}};
   days.forEach((d,i)=>{const xs=dayActiveSides(d);if(xs.length)W.daySides[i]=xs});
   recomputeList();
