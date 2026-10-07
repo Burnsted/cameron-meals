@@ -3562,7 +3562,7 @@ function weekStripHTML(days){
 }
 function lockBarHTML(locked,days){
   const roll=typeof weekCookPlateTotal==="function"?weekCookPlateTotal(days||[]):0;
-  const rollLine=`<p class="wk-plate-rollup">This week <b>$${roll}</b></p>`;
+  const rollLine=`<p class="wk-plate-rollup">Cook nights <b>$${roll}</b></p>`;
   if(locked){
     return `<div class="lock-bar" data-lock-bar="1">
       <p class="lock-readonly-note">This week is locked. Tap Edit week to change meals, sides, or the list.</p>
