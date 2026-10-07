@@ -3356,7 +3356,7 @@ function cleanCopy(s){
 function boardNote(d){
   if(!d)return "Plan it";
   let n=cleanCopy(d.note||"");
-  n=n.replace(/^⏱\s*/,"").replace(/cook night:?\s*/ig,"");
+  n=n.replace(/^⏱\s*/,"").replace(/cook night[:.]?\s*/ig,"");
   /* Prefer short canned one-liners (no slash, no jammed words). */
   if(/make extra for (leftovers|lunch) tomorrow/i.test(n))return "Make extra for tomorrow";
   if(/Fridge leftovers/i.test(n)&&!/make extra/i.test(n))return "Fridge leftovers";
@@ -3365,7 +3365,8 @@ function boardNote(d){
   if(/Your swap/i.test(n))return "Your swap";
   if(/Free night/i.test(n))return "Free night";
   if(/Grab & go night|Grab and go/i.test(n))return "Grab and go";
-  n=n.replace(/\s+/g," ").trim();
+  if(/Grill or Foreman/i.test(n)||/^then plate/i.test(n)||/plate with a side/i.test(n))return "Grill night";
+  n=n.replace(/^\.\s*/,"").replace(/\s+/g," ").trim();
   if(n)n=shortMealWords(n,6);
   if(n&&n.length>2&&n.toLowerCase()!=="meal")return n;
   if(d.kind==="hol")return "Holiday";
